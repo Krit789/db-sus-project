@@ -1,28 +1,20 @@
-/**
- * Represents a book.
- * @constructor
- * @param {any} rows - The title of the book.
- * @param {any} fields - The author of the book.
- */
+// export async function load() {
+//     const user = 1;
+//     let result;
+//     const res = await fetch('http://localhost:5173/api/user', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//             user: user
+//         }),	
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
 
-import { mysqlconnFn } from "$lib/db/mysql";
-
-export async function load() {
-  let mysqlconn = await mysqlconnFn();
-  try {
-    let results = await mysqlconn
-      .query("SELECT * FROM users;")
-      .then(function ([rows, fields]) {
-        //        console.log(rows);
-        return rows;
-      });
-
-    return {
-      data: results,
-    };
-  } catch (error) {
-    console.error("Got an error!!!");
-    console.log(error);
-    return error;
-  }
-}
+//     })
+//     const json = await res.json()
+//     result = json
+//     console.log(result);
+//     return {
+//         data: result
+//     }
+// }

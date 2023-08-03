@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"mysql2": "^3.5.2"
+		"mysql2": "^3.5.2",
+		"svelte-material-icons": "^3.0.5"
 	}
 }

@@ -1,35 +1,34 @@
-
 <script>
-  export default {
-    data: () => ({
-      drawer: false,
-      group: null,
-      items: [
-        {
-          title: 'Koo',
-          value: 'koo',
-        },
-        {
-          title: 'Bar',
-          value: 'bar',
-        },
-        {
-          title: 'Fizz',
-          value: 'fizz',
-        },
-        {
-          title: 'Buzz',
-          value: 'buzz',
-        },
-      ],
-    }),
-
-    watch: {
-      group () {
-        this.drawer = false
+export default {
+  data: () => ({
+    drawer: false,
+    group: null,
+    items: [
+      {
+        title: 'Koo',
+        value: 'koo',
       },
+      {
+        title: 'Bar',
+        value: 'bar',
+      },
+      {
+        title: 'Fizz',
+        value: 'fizz',
+      },
+      {
+        title: 'Buzz',
+        value: 'buzz',
+      },
+    ],
+  }),
+
+  watch: {
+    group() {
+      this.drawer = false
     },
-  }
+  },
+}
 </script>
 
 <template>
@@ -37,9 +36,9 @@
     <v-layout>
 
       <v-app-bar
-        color="#F1F1F1"
-        prominent
-        elevation="8"
+          color="#F1F1F1"
+          elevation="8"
+          prominent
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
@@ -47,35 +46,34 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn variant="text" icon="mdi-magnify"></v-btn>
+        <v-btn icon="mdi-magnify" variant="text"></v-btn>
 
-        <v-btn variant="text" icon="mdi-filter"></v-btn>
+        <v-btn icon="mdi-filter" variant="text"></v-btn>
 
-        <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
+        <v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
 
-        <v-btn variant="text" color="blue" >Register</v-btn>
-        <v-btn variant="rounded" background-color="#D9D9D9">Login</v-btn>
+        <v-btn color="blue" variant="text">Register</v-btn>
+        <v-btn background-color="#D9D9D9" variant="rounded">Login</v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
-        v-model="drawer"
-        location="left"
-        temporary
+          v-model="drawer"
+          location="left"
+          temporary
       >
         <v-list
-          :items="items"
+            :items="items"
         ></v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 600px;" color="#D9D9D9">
-        <div class="text-center ">
-            <v-btn
-            rounded
-            color="#22A2FF"
-            dark
-            >
+      <v-main color="#D9D9D9" style="height: 600px;">
+        <div class="text-center " style="color:red;">
+          <v-btn
+              color="Blue"
+              rounded
+          >
             Book Now!
-            </v-btn>
+          </v-btn>
         </div>
       </v-main>
     </v-layout>

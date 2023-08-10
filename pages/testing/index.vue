@@ -35,7 +35,6 @@
 <template>
   <v-card>
     <v-layout>
-      <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
 
       <v-app-bar
         color="#F1F1F1"
@@ -79,22 +78,6 @@
             </v-btn>
         </div>
       </v-main>
-      <!-- <v-main style="height: 500px;">
-        <v-card-text>
-          The navigation drawer will appear from the bottom on smaller size screens.
-        </v-card-text>
-        <div>
-          <h1>Nuxt Routing set up successfully!</h1>
-          <p>Current route: {{ $route.path }}</p>
-          <v-btn v-on:click="() => $router.push({ name: 'account' })">
-            Button
-          </v-btn>
-          <v-btn v-on:click="() => $router.push({ name: 'index' })">
-            Button
-          </v-btn>
-          <a href="https://nuxt.com/docs/getting-started/routing" target="_blank">Learn more about Nuxt Routing</a>
-        </div>
-      </v-main> -->
     </v-layout>
   </v-card>
 

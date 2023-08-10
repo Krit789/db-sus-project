@@ -1,0 +1,11 @@
+{
+    "require": {
+        "firebase/php-jwt": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Api\\": "api/"
+        }
+    }
+
+}

@@ -1,8 +1,4 @@
-<script setup>
-const route = useRoute();
-// const router = useRouter();
 
-</script>
 <script>
   export default {
     data: () => ({
@@ -10,8 +6,8 @@ const route = useRoute();
       group: null,
       items: [
         {
-          title: 'Foo',
-          value: 'foo',
+          title: 'Koo',
+          value: 'koo',
         },
         {
           title: 'Bar',
@@ -42,12 +38,13 @@ const route = useRoute();
       <!-- <v-system-bar color="deep-purple darken-3"></v-system-bar> -->
 
       <v-app-bar
-        color="primary"
+        color="#F1F1F1"
         prominent
+        elevation="8"
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>SUS App</v-toolbar-title>
+        <v-toolbar-title v-on:click="() => $router.push({ name: 'index' })">SUS App</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -56,6 +53,9 @@ const route = useRoute();
         <v-btn variant="text" icon="mdi-filter"></v-btn>
 
         <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
+
+        <v-btn variant="text" color="blue" >Register</v-btn>
+        <v-btn variant="rounded" background-color="#D9D9D9">Login</v-btn>
       </v-app-bar>
 
       <v-navigation-drawer
@@ -68,7 +68,18 @@ const route = useRoute();
         ></v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 500px;">
+      <v-main style="height: 600px;" color="#D9D9D9">
+        <div class="text-center ">
+            <v-btn
+            rounded
+            color="#22A2FF"
+            dark
+            >
+            Book Now!
+            </v-btn>
+        </div>
+      </v-main>
+      <!-- <v-main style="height: 500px;">
         <v-card-text>
           The navigation drawer will appear from the bottom on smaller size screens.
         </v-card-text>
@@ -78,12 +89,12 @@ const route = useRoute();
           <v-btn v-on:click="() => $router.push({ name: 'account' })">
             Button
           </v-btn>
-          <v-btn v-on:click="() => $router.push({ name: 'testing' })">
-            Test
+          <v-btn v-on:click="() => $router.push({ name: 'index' })">
+            Button
           </v-btn>
           <a href="https://nuxt.com/docs/getting-started/routing" target="_blank">Learn more about Nuxt Routing</a>
         </div>
-      </v-main>
+      </v-main> -->
     </v-layout>
   </v-card>
 

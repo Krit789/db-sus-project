@@ -11,7 +11,7 @@ use \Firebase\JWT\JWT;
 $obj = new Database();
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){
-    
+
    try{
     $allheaders=getallheaders();
     $jwt=$allheaders['Authorization'];

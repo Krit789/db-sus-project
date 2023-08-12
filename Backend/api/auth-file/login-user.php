@@ -5,6 +5,7 @@ header('Access-Control-Allow-Method:POST');
 header('Content-Type:application/json');
 include '../database/Database.php';
 include '../../vendor/autoload.php';
+session_start();
 
 use \Firebase\JWT\JWT;
 
@@ -12,8 +13,8 @@ $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents("php://input", true));
-    $email = htmlentities($data->email);
-    $password = htmlentities($data->password);
+    $email = htmlentities($data->EMali);
+    $password = htmlentities($data->pAswoSrd);
 
     $obj->select('users', '*', null, "email='{$email}'", null, null);
     $datas = $obj->getResult();
@@ -53,6 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ]);
         }
     }
+
+    #การดึงข้อมูล
+    $secret_key = "Hilal ahmad khan";
+    $user_data=JWT::decode($jwt,$secret_key,array('HS256'));
+    $data=$user_data->data;
+    echo $data->fn;
+
 } else {
     echo json_encode([
         'status' => 0,

@@ -5,4 +5,8 @@ export default defineNuxtConfig({
     build: {
         transpile: ["vuetify"],
     },
+    modules: [
+        '@nuxtjs/axios',
+        '@nuxtjs/auth-next'
+      ],
 });

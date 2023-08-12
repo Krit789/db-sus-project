@@ -1,4 +1,10 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
+  "compilerOptions": {
+    "types": [
+      "@nuxtjs/auth-next",
+    ]
+  },
   "extends": "./.nuxt/tsconfig.json"
+  
 }

@@ -1,9 +1,22 @@
-<script setup>
+<script setup lang="ts">
 const route = useRoute();
 // const router = useRouter();
+definePageMeta({ auth: false })
 
+const {
+  status,
+  data,
+  lastRefreshedAt,
+  getCsrfToken,
+  getProviders,
+  getSession,
+  signIn,
+  signOut,
+} = useAuth()
+
+console.log(data.value);
 </script>
-<script>
+<script lang="ts">
 export default {
   data: () => ({
     drawer: false,
@@ -80,6 +93,9 @@ export default {
           </v-btn>
           <v-btn v-on:click="() => $router.push({ name: 'testing' })">
             Test
+          </v-btn>
+          <v-btn v-on:click="() => signOut()">
+            Sign Out
           </v-btn>
           <a href="https://nuxt.com/docs/getting-started/routing" target="_blank">Learn more about Nuxt Routing</a>
         </div>

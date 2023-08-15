@@ -1,5 +1,5 @@
 ต้องลง composer ก่อน
 ค่อยมาที่ folder Backend
 Command : composer install
-          composer create-project laravel/laravel # ไม่ได้ให้ไปที่ php.ini แก้ extension ของ zip กับ gd
+          composer create-project laravel/laravel # ไม่ได้ให้ไปที่ php.ini แก้ extension ของ zip กับ gd # อันนี้ไม่ใช้
           php -S 127.0.0.1:8000

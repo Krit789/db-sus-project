@@ -13,12 +13,12 @@ $obj = new Database();
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $data = json_decode(file_get_contents("php://input", true));
 
-    $first_name = htmlentities($data->firSt_n);
-    $last_name = htmlentities($data->LAst_na);
-    $email = htmlentities($data->eMaiL);
-    $password = htmlentities($data->passW0rd);
+    $first_name = htmlentities($data->fn);
+    $last_name = htmlentities($data->ln);
+    $email = htmlentities($data->email);
+    $password = htmlentities($data->password);
     $new_password = password_hash($password, PASSWORD_DEFAULT);
-    $telephone = htmlentities($data->teLe);
+    $telephone = htmlentities($data->tele);
     $role = htmlentities($data->role);
     // check user by email
     $obj->select("users", "*", null, "email='{$email}'", null, null);

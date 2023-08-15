@@ -6,7 +6,6 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
 include '../../vendor/autoload.php';
-session_start();
 
 use \Firebase\JWT\JWT;
 

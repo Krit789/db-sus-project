@@ -2,6 +2,7 @@
 
 header('Access-Control-Allow-Origin:*');
 header('Access-Control-Allow-Method:POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
 include '../../vendor/autoload.php';
@@ -13,8 +14,8 @@ $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents("php://input", true));
-    $email = htmlentities($data->EMali);
-    $password = htmlentities($data->pAswoSrd);
+    $email = htmlentities($data->email);
+    $password = htmlentities($data->password);
 
     $obj->select('users', '*', null, "email='{$email}'", null, null);
     $datas = $obj->getResult();
@@ -57,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     #การดึงข้อมูล
     $secret_key = "Hilal ahmad khan";
-    $user_data=JWT::decode($jwt,$secret_key,array('HS256'));
-    $data=$user_data->data;
-    echo $data->fn;
+    $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
+    $data = $user_data->data;
+    // echo $data->fn;
 
 } else {
     echo json_encode([

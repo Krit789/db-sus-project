@@ -66,7 +66,7 @@ class Database
                 $sql .= " LIMIT $limit";
             }
             $query = $this->mysqli->query($sql);
-            echo $sql;
+            // echo $sql;
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);
                 return true;

@@ -8,6 +8,10 @@ include '../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Method: GET ,POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
+
 $obj = new Database();
 
 if($_SERVER["REQUEST_METHOD"] == "GET"){

@@ -48,6 +48,23 @@ class Database
         }
     }
 
+    public function insertlagacy($table, $table_column, $table_value)
+    {
+        if ($this->tableExist($table)) {
+            $sql = "INSERT INTO $table ($table_column) VALUES $table_value";
+            echo $sql;
+            // if ($this->mysqli->query($sql)) {
+            //     array_push($this->result, true);
+            //     return true;
+            // } else {
+            //     array_push($this->result, false);
+            //     return false;
+            // }
+        } else {
+            return false;
+        }
+    }
+
     // get data
     public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
     {

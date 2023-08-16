@@ -1,16 +1,20 @@
 <?php
-$servername = "49.228.131.109";
-$username = "susproject";
-$password = "tIuc]@zwVzqQp)Cs";
-$database = "susproject";
-$port = 3357;
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Method:POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
+header('Content-Type:application/json');
+include '../database/Database.php';
+include '../../vendor/autoload.php';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $database, $port);
+use \Firebase\JWT\JWT;
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+$obj = new Database();
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+  
+} else {
+    echo json_encode([
+        'status' => 0,
+        'message' => 'Access Denied',
+    ]);
 }
-echo "Connected successfully";
-?>

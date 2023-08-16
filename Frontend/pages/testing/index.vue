@@ -1,5 +1,5 @@
-<script setup lang="ts">
-definePageMeta({ auth: false })
+<script lang="ts" setup>
+definePageMeta({auth: false})
 const {
   status,
   data,
@@ -61,7 +61,7 @@ export default {
           <v-btn background-color="#D9D9D9">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated'">
-          <v-btn color="blue" @click="signOut()" variant="text">Sign Out</v-btn>
+          <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
         </div>
       </v-app-bar>
 

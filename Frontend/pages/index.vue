@@ -1,5 +1,5 @@
-<script setup lang="ts">
-definePageMeta({ auth: false })
+<script lang="ts" setup>
+definePageMeta({auth: false})
 const {
   status,
   data,

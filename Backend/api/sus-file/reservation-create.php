@@ -25,10 +25,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $result = $obj->getResult();
         if ($result[0] == 1) {
 
-            #ต้องใส่ก้อน orders
             if ($data->menu[0] != null){
                 $tmp = "";
-                $obj->select('tables', 'location_id', null, "table=$table_id", null, null); #ยังไม่เสร็จ
+                $obj->select('reservations', 'res_id', null, "table=$table_id and user_id=$user_id", null, null);
+                $resutl = $obj->getResult();
+                $res_id = $resutl[0]['res_id'];
+
                 foreach ($data->menu as $menu){
                     if ($menu == $data->menu[sizeof($data->menu)-1]){
                         $tmp .= "($res_id, $menu[0], $menu[1])";
@@ -36,8 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $tmp .= "($res_id, $menu[0], $menu[1]),";
                     }
                 }
+
                 $obj->insertlagacy('orders', 'res_id, user_id, amount', $tmp);
-                # ต้องเช็คว่าเข้าไปไหมด้วย
+                # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
+
+                $resutl = $obj->getResult();
+                // if ($resutl[0] == 1){
+                    # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม
+                // }
             }
 
             echo json_encode([

@@ -59,7 +59,7 @@ export default {
 
         <v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
         <div v-if="status == 'unauthenticated'">
-          <v-btn color="blue" variant="text">Register</v-btn>
+          <v-btn color="blue" variant="text" @click="dialog = true">Register</v-btn>
           <v-btn background-color="#D9D9D9" @click="dialog = true">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated'">
@@ -74,8 +74,7 @@ export default {
         <v-list :items="items"></v-list>
       </v-navigation-drawer>
 
-      <v-main color="#D9D9D9" style="height: 600px;">
-        <slot/>
+      <!-- <v-main color="#D9D9D9" style="height: 1100px;"> under construction-->
         <div class="text-center">
           <v-dialog v-model="dialog" width="auto">
             <v-card>
@@ -97,7 +96,10 @@ export default {
             </v-card>
           </v-dialog>
         </div>
-      </v-main>
+        
+      <!-- </v-main> -->
+      
+      <slot/>
     </v-layout>
   </v-card>
 </template>

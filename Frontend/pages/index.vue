@@ -39,27 +39,6 @@ const {
                 v-slot="{ isSelected, toggle, selectedClass }"
               >
               <!-- Put Location card here -->
-
-
-                <!-- <v-card
-                  color="grey-lighten-1"
-                  :class="['ma-4', selectedClass]"
-                  height="500"
-                  width="350"
-                  @click="toggle"
-                >
-                  <div class="d-flex fill-height align-center justify-center">
-                    <v-scale-transition>
-                      <v-icon
-                        v-if="isSelected"
-                        color="white"
-                        size="48"
-                        icon="mdi-close-circle-outline"
-                      >
-                      </v-icon>
-                    </v-scale-transition>
-                  </div>
-                </v-card> -->
                 <v-card
                   class="ma-2"
                   max-width="350"

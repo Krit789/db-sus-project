@@ -52,12 +52,12 @@ export default {
         <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation Service</a></v-toolbar-title>
 
         <v-spacer></v-spacer>
-
+        <!-- 
         <v-btn icon="mdi-magnify" variant="text"></v-btn>
 
         <v-btn icon="mdi-filter" variant="text"></v-btn>
 
-        <v-btn icon="mdi-dots-vertical" variant="text"></v-btn>
+        <v-btn icon="mdi-dots-vertical" variant="text"></v-btn> -->
         <div v-if="status == 'unauthenticated'">
           <v-btn color="blue" variant="text" @click="dialog = true">Register</v-btn>
           <v-btn background-color="#D9D9D9" @click="dialog = true">Login</v-btn>
@@ -84,7 +84,7 @@ export default {
                   <v-form @submit.prevent>
                     <v-text-field v-model="email" label="E-Mail"></v-text-field>
                     <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-                    <v-btn block class="mt-2" type="submit"
+                    <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
                            @click="signIn('credentials', { email: email, password: password, callbackUrl: '/' })">Submit
                     </v-btn>
                   </v-form>

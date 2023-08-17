@@ -49,7 +49,7 @@ export default {
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">SUS App</a></v-toolbar-title>
+        <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation Service</a></v-toolbar-title>
 
         <v-spacer></v-spacer>
 

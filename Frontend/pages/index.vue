@@ -26,6 +26,94 @@ const {
     <div class="text-center ma-16">
       <v-card text="" class="pa-2">
         <v-card-text class="text-h3">Locations</v-card-text>
+          <v-sheet
+            class="mx-auto"
+            elevation="0"
+            max-width="1800"
+            rounded="lg"
+          >
+            <v-slide-group>
+              <v-slide-group-item
+                v-for="n in 15"
+                :key="n"
+                v-slot="{ isSelected, toggle, selectedClass }"
+              >
+              <!-- Put Location card here -->
+
+
+                <!-- <v-card
+                  color="grey-lighten-1"
+                  :class="['ma-4', selectedClass]"
+                  height="500"
+                  width="350"
+                  @click="toggle"
+                >
+                  <div class="d-flex fill-height align-center justify-center">
+                    <v-scale-transition>
+                      <v-icon
+                        v-if="isSelected"
+                        color="white"
+                        size="48"
+                        icon="mdi-close-circle-outline"
+                      >
+                      </v-icon>
+                    </v-scale-transition>
+                  </div>
+                </v-card> -->
+                <v-card
+                  class="ma-2"
+                  max-width="350"
+                >
+                  <template v-slot:loader="{ isActive }">
+                    <v-progress-linear
+                      :active="isActive"
+                      color="deep-purple"
+                      height="4"
+                      indeterminate
+                    ></v-progress-linear>
+                  </template>
+
+                  <v-img
+                    cover
+                    height="250"
+                    src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+                  ></v-img>
+
+                  <v-card-item>
+                    <v-card-title>Restaurant Name</v-card-title>
+                  </v-card-item>
+                  <v-card-text>
+                    <div class="my-4 text-subtitle-1">
+                      Location Name
+                    </div>
+                    <div>Location description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                  </v-card-text>
+
+                  <v-divider class="mx-4 mb-1"></v-divider>
+
+                  <!-- <v-card-title>Tonight's availability</v-card-title>
+
+                  <div class="mx-5">
+                    <v-chip-group>
+                      <v-chip>5:30PM</v-chip>
+                    </v-chip-group>
+                  </div> -->
+
+                    <v-btn
+                      class="mb-2"
+                      color="deep-purple-lighten-2"
+                      variant="outlined"
+                      @click=""
+                    >
+                      Reserve
+                    </v-btn>
+                </v-card>
+
+
+              <!-- Location card ends here -->
+              </v-slide-group-item>
+            </v-slide-group>
+          </v-sheet>
       </v-card>
     </div>
     </v-parallax>

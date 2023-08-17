@@ -84,6 +84,7 @@ const {
                       color="deep-purple-lighten-2"
                       variant="outlined"
                       @click=""
+                      v-if="status == 'authenticated'"
                     >
                       Reserve
                     </v-btn>

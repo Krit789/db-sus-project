@@ -98,6 +98,18 @@ const {
       </v-card>
     </div>
     </v-parallax>
+    
+    
+    <v-footer class="d-flex flex-column">
+      <strong>About Us</strong>
+      <v-card>
+        <template v-slot:subtitle>
+          
+        <v-avatar image="https://cdn.vuetifyjs.com/images/lists/3.jpg"></v-avatar>
+          <span class="font-weight-bold">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?
+        </template>
+      </v-card>
+    </v-footer>
   </v-main>
   </Navbar>
 </template>

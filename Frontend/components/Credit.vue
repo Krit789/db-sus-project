@@ -1,0 +1,64 @@
+<template>
+        <v-footer class="d-flex flex-column">
+      <strong>About Us</strong>
+      <v-row no-gutters>
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070005 นายกนกพล โป้ยขำ</span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070028 นายคณิศร สมศรีอักษรแสง </span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+
+        <v-responsive width="100%"></v-responsive>
+
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070030 นายจารุกิตติ์ ศรีพาเพลิน</span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070035 นายจิรโชติ อินทรวงษ์โชติ</span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+
+        <v-responsive width="100%"></v-responsive>
+
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070064 นายณภัทร เวชพันธุ์</span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <v-card class="ma-2 pa-2">
+            <template v-slot:subtitle>
+            <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+              <span class="font-weight-bold"> 65070085 นายธนกฤต ทรัพย์ประสิทธิ์</span> &mdash; Some contact infomation idk
+            </template>
+          </v-card>
+        </v-col>
+      </v-row>
+            
+    </v-footer>
+</template>

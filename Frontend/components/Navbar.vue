@@ -1,20 +1,51 @@
 <script lang="ts" setup>
+import { emit } from 'process';
+
 const {
   status,
   data,
   signIn,
   signOut,
 } = useAuth()
+
+const mySignInHandler = async ({ username, password }: { username: string, password: string }) => {
+  const { error, url } = await signIn('credentials', { username, password, redirect: false, callbackUrl: '/' })
+  if (error) {
+    // Do your custom error handling here
+    alert('You have made a terrible mistake while entering your credentials')
+  } else {
+    // No error, continue with the sign in, e.g., by following the returned redirect:
+    return navigateTo(url, { external: true })
+  }
+}
+
 </script>
 
 <script lang="ts">
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
 export default {
   data: () => ({
     first_name: '',
     last_name: '',
     email: '',
+    emailReg: '',
+    emailValidation: [
+      value => {
+        if (validateEmail(value)) return true
+
+        return 'E-Mail must be in correct format.'
+      },
+    ],
     password: '',
-    confirm_password: '',
+    passwordReg: '',
+    passwordRegConfirm: '',
     dialogIn: false,
     dialogRe: false,
     drawer: false,
@@ -51,9 +82,11 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
-        <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text"
+          @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation Service</a></v-toolbar-title>
+        <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation
+            Service</a></v-toolbar-title>
 
         <v-spacer></v-spacer>
         <!-- 
@@ -63,8 +96,8 @@ export default {
 
         <v-btn icon="mdi-dots-vertical" variant="text"></v-btn> -->
         <div v-if="status == 'unauthenticated'">
-          <v-btn color="blue" variant="text" @click="dialogRe = true">Register</v-btn>
-          <v-btn background-color="#D9D9D9" @click="dialogIn = true">Login</v-btn>
+          <v-btn color="blue" variant="text" id="regisActivator">Register</v-btn>
+          <v-btn background-color="#D9D9D9" id="loginActivator">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated'">
           <v-btn variant="text">
@@ -79,68 +112,68 @@ export default {
       </v-navigation-drawer>
 
       <!-- <v-main color="#D9D9D9" style="height: 1100px;"> under construction-->
-        <div class="text-center">
-          <v-dialog v-model="dialogIn" width="auto">
-            <v-card>
-              <v-card-text>
-                <h1>Sign In</h1>
-                <v-sheet class="mx-auto" width="300">
-                  <v-form @submit.prevent>
-                    <v-text-field v-model="email" label="E-Mail"></v-text-field>
-                    <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-                    <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
-                           @click="signIn('credentials', { email: email, password: password, callbackUrl: '/' })">Submit
-                    </v-btn>
-                  </v-form>
-                </v-sheet>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-        <v-dialog v-model="dialogRe" width="auto">
-            <v-card>
-              <v-card-text>
-                <h1>Register</h1>
-                <v-sheet class="mx-auto" width="600">
-                  <v-form @submit.prevent>
-                    <v-row>
-                      <v-col>
-                        <v-text-field v-model="first_name" label="First Name"></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field v-model="last_name" label="Last Name"></v-text-field>
-                      </v-col>
-                      <v-responsive width="100%"></v-responsive>
-                      <v-col>
-                        <v-text-field v-model="email" label="Email"></v-text-field>
-                      </v-col>
-                      <v-responsive width="100%"></v-responsive>
-                      <v-col>
-                        <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-                      </v-col>
-                      <v-col>
-                        <v-text-field v-model="confirm_password" label="Confirm Password" type="password"></v-text-field>
-                      </v-col>
-                  </v-row>
-                    <!-- <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
+      <div class="text-center">
+        <v-dialog v-model="dialogIn" activator="#loginActivator" width="auto">
+          <v-card>
+            <v-card-text>
+              <h1 class="mb-3">Sign In</h1>
+              <v-sheet class="mx-auto" width="300">
+                <v-form fast-fail @submit.prevent>
+                  <v-text-field v-model="email" :rules="emailValidation" label="E-Mail"></v-text-field>
+                  <v-text-field v-model="password" label="Password" type="password"></v-text-field>
+                  <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
+                    @click="mySignInHandler({ username: email, password: password })">Submit
+                  </v-btn>
+                </v-form>
+              </v-sheet>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
+      <v-dialog v-model="dialogRe" activator="#regisActivator" width="auto">
+        <v-card>
+          <v-card-text>
+            <h1>Register</h1>
+            <v-sheet class="mx-auto" width="600">
+              <v-form @submit.prevent>
+                <v-row>
+                  <v-col>
+                    <v-text-field v-model="first_name" label="First Name"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field v-model="last_name" label="Last Name"></v-text-field>
+                  </v-col>
+                  <v-responsive width="100%"></v-responsive>
+                  <v-col>
+                    <v-text-field :rules="emailValidation" v-model="emailReg" label="Email"></v-text-field>
+                  </v-col>
+                  <v-responsive width="100%"></v-responsive>
+                  <v-col>
+                    <v-text-field v-model="passwordReg" label="Password" type="password"></v-text-field>
+                  </v-col>
+                  <v-col>
+                    <v-text-field v-model="passwordRegConfirm" label="Confirm Password" type="password"></v-text-field>
+                  </v-col>
+                </v-row>
+                <!-- <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
                            @click="signIn('credentials', { email: email, password: password, callbackUrl: '/' })">Submit -->
-                    <v-btn block class="mt-2 bg-blue-darken-1">
-                      Submit
-                    </v-btn>
-                  </v-form>
-                </v-sheet>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn block color="primary" @click="dialogRe = false">Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                <v-btn block class="mt-2 bg-blue-darken-1">
+                  Submit
+                </v-btn>
+              </v-form>
+            </v-sheet>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn block color="primary" @click="dialogRe = false">Cancel</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <!-- </v-main> -->
-      
-      <slot/>
+
+      <slot />
     </v-layout>
   </v-card>
 </template>

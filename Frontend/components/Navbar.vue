@@ -10,27 +10,31 @@ const {
 <script lang="ts">
 export default {
   data: () => ({
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
-    dialog: false,
+    confirm_password: '',
+    dialogIn: false,
+    dialogRe: false,
     drawer: false,
     group: null,
     items: [
       {
-        title: 'Koo',
-        value: 'koo',
+        title: 'Home',
+        value: 'home',
       },
       {
-        title: 'Bar',
-        value: 'bar',
+        title: 'Booking',
+        value: 'booking',
       },
       {
-        title: 'Fizz',
-        value: 'fizz',
+        title: 'Status',
+        value: 'status',
       },
       {
-        title: 'Buzz',
-        value: 'buzz',
+        title: 'Setting',
+        value: 'setting',
       },
     ],
   }),
@@ -47,7 +51,7 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
-        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation Service</a></v-toolbar-title>
 

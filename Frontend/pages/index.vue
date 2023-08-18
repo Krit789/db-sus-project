@@ -101,12 +101,12 @@ const {
     
     
     <v-footer class="d-flex flex-column">
-      <strong>About Us</strong>
+      <strong>Contact Us</strong>
       <v-card>
         <template v-slot:subtitle>
           
-        <v-avatar image="https://cdn.vuetifyjs.com/images/lists/3.jpg"></v-avatar>
-          <span class="font-weight-bold">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?
+        <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
+          <span class="font-weight-bold">  Contact number</span> &mdash; Some contact infomation idk
         </template>
       </v-card>
     </v-footer>

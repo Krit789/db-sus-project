@@ -9,6 +9,6 @@ const {
 <template>
   <Navbar>
 
-
+    <Credit/>
   </Navbar>
 </template>

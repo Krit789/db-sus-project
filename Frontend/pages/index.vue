@@ -98,18 +98,7 @@ const {
       </v-card>
     </div>
     </v-parallax>
-    
-    
-    <v-footer class="d-flex flex-column">
-      <strong>Contact Us</strong>
-      <v-card>
-        <template v-slot:subtitle>
-          
-        <v-avatar image="https://cdn-icons-png.flaticon.com/512/46/46854.png"></v-avatar>
-          <span class="font-weight-bold">  Contact number</span> &mdash; Some contact infomation idk
-        </template>
-      </v-card>
-    </v-footer>
+    <Credit/>
   </v-main>
   </Navbar>
 </template>

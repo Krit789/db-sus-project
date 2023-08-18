@@ -19,5 +19,6 @@ const {
       </v-btn>
       
     </v-main>
+    <Credit/>
   </Navbar>
 </template>

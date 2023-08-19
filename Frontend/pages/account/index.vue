@@ -17,7 +17,7 @@ const {
       <v-btn v-on:click="() => $router.push({ name: 'index' })">
         Back to Index
       </v-btn>
-      
+
     </v-main>
     <Credit/>
   </Navbar>

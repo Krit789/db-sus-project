@@ -1,8 +1,8 @@
 <!--bro where's the template of pages?-->
 <script lang="ts" setup>
 const {
-    status,
-     data
+  status,
+  data
 } = useAuth()
 </script>
 

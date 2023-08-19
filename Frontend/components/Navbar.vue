@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { emit } from 'process';
 
 const {
   status,
@@ -8,14 +7,14 @@ const {
   signOut,
 } = useAuth()
 
-const mySignInHandler = async ({ username, password }: { username: string, password: string }) => {
-  const { error, url } = await signIn('credentials', { username, password, redirect: false, callbackUrl: '/' })
+const mySignInHandler = async ({username, password}: { username: string, password: string }) => {
+  const {error, url} = await signIn('credentials', {username, password, redirect: false, callbackUrl: '/'})
   if (error) {
     // Do your custom error handling here
     alert('You have made a terrible mistake while entering your credentials')
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, { external: true })
+    return navigateTo(url, {external: true})
   }
 }
 
@@ -24,10 +23,10 @@ const mySignInHandler = async ({ username, password }: { username: string, passw
 <script lang="ts">
 const validateEmail = (email) => {
   return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+      .toLowerCase()
+      .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
 };
 
 export default {
@@ -83,10 +82,10 @@ export default {
     <v-layout>
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
         <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text"
-          @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                            @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title><a v-on:click="() => $router.push({ name: 'index' })">Seatify | Seat Reservation
-            Service</a></v-toolbar-title>
+          Service</a></v-toolbar-title>
 
         <v-spacer></v-spacer>
         <!-- 
@@ -96,8 +95,8 @@ export default {
 
         <v-btn icon="mdi-dots-vertical" variant="text"></v-btn> -->
         <div v-if="status == 'unauthenticated'">
-          <v-btn color="blue" variant="text" id="regisActivator">Register</v-btn>
-          <v-btn background-color="#D9D9D9" id="loginActivator">Login</v-btn>
+          <v-btn id="regisActivator" color="blue" variant="text">Register</v-btn>
+          <v-btn id="loginActivator" background-color="#D9D9D9">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated'">
           <v-btn variant="text">
@@ -122,7 +121,7 @@ export default {
                   <v-text-field v-model="email" :rules="emailValidation" label="E-Mail"></v-text-field>
                   <v-text-field v-model="password" label="Password" type="password"></v-text-field>
                   <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
-                    @click="mySignInHandler({ username: email, password: password })">Submit
+                         @click="mySignInHandler({ username: email, password: password })">Submit
                   </v-btn>
                 </v-form>
               </v-sheet>
@@ -148,7 +147,7 @@ export default {
                   </v-col>
                   <v-responsive width="100%"></v-responsive>
                   <v-col>
-                    <v-text-field :rules="emailValidation" v-model="emailReg" label="Email"></v-text-field>
+                    <v-text-field v-model="emailReg" :rules="emailValidation" label="Email"></v-text-field>
                   </v-col>
                   <v-responsive width="100%"></v-responsive>
                   <v-col>
@@ -173,7 +172,7 @@ export default {
       </v-dialog>
       <!-- </v-main> -->
 
-      <slot />
+      <slot/>
     </v-layout>
   </v-card>
 </template>

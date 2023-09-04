@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
         $data = json_decode(file_get_contents("php://input"));
         $id = htmlentities($data->user_id);
 
-        $obj->select('reservations', "*", null, "user_id={'$id'}", 'res_id DESC', null);
+        $obj->select('reservations', "*", null, "user_id='{$id}'", 'res_id DESC', null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

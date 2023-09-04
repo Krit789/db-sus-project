@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
         $data = json_decode(file_get_contents("php://input"));
         $id = htmlentities($data->res_id);
 
-        $obj->select('orders', "*", "menus using (menu_id)", "res_id={'$id'}", "category_id", null);
+        $obj->select('orders', "*", "menus using (menu_id)", "res_id='{$id}'", "category_id", null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

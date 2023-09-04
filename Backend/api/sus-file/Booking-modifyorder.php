@@ -11,12 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     $data = json_decode(file_get_contents("php://input"));
 
-    $id = $data->id;
-    $res_id = $data->res_id;
+    $id = $data->res_id;
+    $arrival = $data->arrival;
 
     if ($data->menu[0] != null){
         $menu = $data->menu;
-        $obj->delete('orders', "res_id='{$res_id}'");
+        $obj->delete('orders', "res_id='{$id}'");
         $result = $obj->getResult();
         if ($result[0] == 1) {
             
@@ -41,6 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         }
     }
 
+    $obj->update('reservations', ['arrival'=>$arrival], "res_id='{$id}'");
+    $result = $obj->getResult(); #อยากเช็คอันนี้ด้วย
     #เพิ่มเวลานัดอีก+++++++++
 
 } else {

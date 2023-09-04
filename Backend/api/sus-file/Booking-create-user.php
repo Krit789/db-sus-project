@@ -20,8 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         $user_id = $user_data->data->id;
         $table_id = $data->table_id;
+        $arrival = $data->arrival;
 
-        $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user_id, 'status' => 3]);
+        $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user_id, 'arrival' => $arrival, 'status' => 3]);
         $result = $obj->getResult();
         if ($result[0] == 1) {
 

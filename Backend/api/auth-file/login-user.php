@@ -56,9 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     #การดึงข้อมูล
-    $secret_key = "Hilal ahmad khan";
-    $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
-    $data = $user_data->data;
+    // $secret_key = "Hilal ahmad khan";
+    // $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
+    // $data = $user_data->data;
     // echo $data->fn;
 
 } else {

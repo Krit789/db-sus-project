@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                 $resutl = $obj->getResult();
                 // if ($resutl[0] == 1){
-                    # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม
+                    # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม ไม่ใช้
                 // }
             }
 

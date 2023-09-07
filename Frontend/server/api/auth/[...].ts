@@ -1,5 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import {NuxtAuthHandler} from "#auth";
+import { stringify } from "querystring";
 
 export default NuxtAuthHandler({
     secret: "asdasdasd", // process.env.AUTH_SECRET,

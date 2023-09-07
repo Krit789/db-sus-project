@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-
+import { useDisplay } from 'vuetify'
+const { mobile } = useDisplay()
 const {
   status,
   data,
   signIn,
   signOut,
 } = useAuth()
+const route = useRoute()
 
-const mySignInHandler = async ({username, password}: { username: string, password: string }) => {
-  const {error, url} = await signIn('credentials', {username, password, redirect: false, callbackUrl: '/'})
+const mySignInHandler = async ({email, password}: { email: string, password: string }) => {
+  const {error, url} = await signIn('credentials', {email, password, redirect: false, callbackUrl: route.path})
   if (error) {
     // Do your custom error handling here
-    alert('You have made a terrible mistake while entering your credentials')
+    alert(error)
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
     return navigateTo(url, {external: true})
@@ -21,27 +23,15 @@ const mySignInHandler = async ({username, password}: { username: string, passwor
 </script>
 
 <script lang="ts">
-const validateEmail = (email) => {
-  return String(email)
-      .toLowerCase()
-      .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-};
+
 
 export default {
   data: () => ({
     first_name: '',
     last_name: '',
+    phone: '',
     email: '',
     emailReg: '',
-    emailValidation: [
-      value => {
-        if (validateEmail(value)) return true
-
-        return 'E-Mail must be in correct format.'
-      },
-    ],
     password: '',
     passwordReg: '',
     passwordRegConfirm: '',
@@ -68,7 +58,30 @@ export default {
       },
     ],
   }),
+  methods: {
+    passwordValidation(value) {
+      if (this.passwordReg === value) return true;
+      return 'Both passwords must be similar.';
+    },
+    emailValidation(value) {
+      if (String(value)
+      .toLowerCase()
+      .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )) return true
 
+      return 'E-Mail must be in correct format.'
+    },
+  }, 
+  computed: {
+    isLoginValid(){
+      return this.emailValidation(this.email) && this.password != "";
+    },
+    isRegisValid(){
+      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != "" && this.last_name != "" && this.phone != "";
+    }
+  }
+    ,
   watch: {
     group() {
       this.drawer = false
@@ -112,60 +125,67 @@ export default {
 
       <!-- <v-main color="#D9D9D9" style="height: 1100px;"> under construction-->
       <div class="text-center">
-        <v-dialog v-model="dialogIn" activator="#loginActivator" width="auto">
+        <v-dialog v-model="dialogIn" activator="#loginActivator" :fullscreen="mobile">
           <v-card>
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
-              <v-sheet class="mx-auto" width="300">
+              <v-sheet class="mx-auto" width="auto">
                 <v-form fast-fail @submit.prevent>
-                  <v-text-field v-model="email" :rules="emailValidation" label="E-Mail"></v-text-field>
+                  <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"></v-text-field>
                   <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-                  <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
-                         @click="mySignInHandler({ username: email, password: password })">Submit
+                                <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit"
+                         @click="mySignInHandler({ email: email, password: password })">Submit
                   </v-btn>
                 </v-form>
               </v-sheet>
             </v-card-text>
             <v-card-actions>
+
               <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog v-model="dialogRe" activator="#regisActivator" width="auto">
+      <v-dialog v-model="dialogRe" activator="#regisActivator" :fullscreen="mobile">
         <v-card>
           <v-card-text>
-            <h1>Register</h1>
-            <v-sheet class="mx-auto" width="600">
-              <v-form @submit.prevent>
+            <h1 class="mb-3">Register</h1>
+            <v-sheet class="mx-auto w-100" width="auto">
+              <v-form fast-fail @submit.prevent>
                 <v-row>
-                  <v-col>
+                  <v-col cols="12" sm="4">
                     <v-text-field v-model="first_name" label="First Name"></v-text-field>
                   </v-col>
-                  <v-col>
+                  <v-col cols="12" sm="4">
                     <v-text-field v-model="last_name" label="Last Name"></v-text-field>
                   </v-col>
-                  <v-responsive width="100%"></v-responsive>
-                  <v-col>
-                    <v-text-field v-model="emailReg" :rules="emailValidation" label="Email"></v-text-field>
+                </v-row>
+              <v-row>
+                  <v-col cols="12" sm="4">
+                    <v-text-field v-model="emailReg" :rules="[emailValidation]" label="E-Mail"></v-text-field>
                   </v-col>
-                  <v-responsive width="100%"></v-responsive>
-                  <v-col>
-                    <v-text-field v-model="passwordReg" label="Password" type="password"></v-text-field>
-                  </v-col>
-                  <v-col>
-                    <v-text-field v-model="passwordRegConfirm" label="Confirm Password" type="password"></v-text-field>
+                  <v-col cols="12" sm="4">
+                    <v-text-field v-model="phone" label="Phone Number"></v-text-field>
                   </v-col>
                 </v-row>
-                <!-- <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
-                           @click="signIn('credentials', { email: email, password: password, callbackUrl: '/' })">Submit -->
-                <v-btn block class="mt-2 bg-blue-darken-1">
+              <v-row>
+                  <v-col cols="12" sm="4">
+                    <v-text-field v-model="passwordReg" label="Password" type="password"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="4">
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]" label="Confirm Password" type="password"></v-text-field>
+                  </v-col>
+                </v-row>
+            <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
                   Submit
                 </v-btn>
+                <!-- <v-btn block class="mt-2 bg-blue-darken-1" type="submit"
+                           @click="signIn('credentials', { email: email, password: password, callbackUrl: '/' })">Submit -->
               </v-form>
             </v-sheet>
           </v-card-text>
           <v-card-actions>
+
             <v-btn block color="primary" @click="dialogRe = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>

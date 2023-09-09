@@ -52,7 +52,6 @@ class Database
     {
         if ($this->tableExist($table)) {
             $sql = "INSERT INTO $table ($table_column) VALUES $table_value";
-            echo $sql;
             // if ($this->mysqli->query($sql)) {
             //     array_push($this->result, true);
             //     return true;

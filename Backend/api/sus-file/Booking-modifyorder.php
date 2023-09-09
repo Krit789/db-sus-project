@@ -40,10 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             ]);
         }
     }
-
+    #เพิ่มเวลานัดอีก+++++++++
     $obj->update('reservations', ['arrival'=>$arrival], "res_id='{$id}'");
     $result = $obj->getResult(); #อยากเช็คอันนี้ด้วย
-    #เพิ่มเวลานัดอีก+++++++++
 
 } else {
     echo json_encode([

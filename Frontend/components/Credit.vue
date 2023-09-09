@@ -63,8 +63,11 @@
   </v-footer>
 </template>
 
-<style scoped>
+<style>
+.no-opacity {
+  opacity: 1 !important;
 
+}
 </style>
 
 <script lang="ts" setup>

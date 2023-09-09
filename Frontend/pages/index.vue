@@ -89,8 +89,6 @@ const {
                       Reserve
                     </v-btn>
                   </v-card>
-
-
                   <!-- Location card ends here -->
                 </v-slide-group-item>
               </v-slide-group>

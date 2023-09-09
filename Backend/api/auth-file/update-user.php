@@ -22,24 +22,32 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $id = $user_data->id;
     $fn = $data->fn;
     $ln = $data->ln;
+    $email = $data->email;
     $password = $data->password;
     $new_password = password_hash($password, PASSWORD_DEFAULT);
     $tele = $data->telephone;
-
-    $obj->update('users', ['first_name' => $fn, 'last_name' => $ln, 'telephone' => $tele, 'password_hash' => $new_password], "user_id='{$id}'");
-    $result = $obj->getResult();
-
-
-    if ($result[0] == 1) {
+    
+    $obj->select("users", "email", null, "email='{$email}'", null, null);
+    $is_email = $obj->getResult();
+    if (isset($is_email[0]['email']) == $email) {
         echo json_encode([
-            'status' => 1,
-            'message' => "Successfully",
+            'status' => 2,
+            'message' => 'Email already Exists',
         ]);
-    } else {
-        echo json_encode([
-            'status' => 0,
-            'message' => "Server Problem",
-        ]);
+    }else{
+        $obj->update('users', ['first_name' => $fn, 'last_name' => $ln, 'telephone' => $tele, 'password_hash' => $new_password], "user_id={$id}");
+        $result = $obj->getResult();
+        if ($result[0] == 1) {
+            echo json_encode([
+                'status' => 1,
+                'message' => "Successfully",
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 0,
+                'message' => "Server Problem",
+            ]);
+        }
     }
 } else {
     echo json_encode([

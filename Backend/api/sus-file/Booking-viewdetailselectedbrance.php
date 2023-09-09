@@ -10,9 +10,9 @@ $obj = new Database();
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     try {
         $data = json_decode(file_get_contents("php://input"));
-        $id = htmlentities($data->user_id);
+        $id = $data->location_id;
 
-        $obj->select('reservations', "*", null, "user_id='{$id}'", 'res_id DESC', null);
+        $obj->select('locations', "*", null, "location_id = '{$id}'", null, null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

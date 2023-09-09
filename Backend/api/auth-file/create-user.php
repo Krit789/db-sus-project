@@ -7,6 +7,7 @@ header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
+include '../random.php';
 
 $obj = new Database();
 
@@ -20,7 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $new_password = password_hash($password, PASSWORD_DEFAULT);
     $telephone = htmlentities($data->tele);
     $role = htmlentities($data->role);
+    $token = randomToken(32);
     // check user by email
+    
     $obj->select("users", "*", null, "email='{$email}'", null, null);
     $is_email = $obj->getResult();
     if (isset($is_email[0]['email']) == $email) {
@@ -29,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             'message' => 'Email already Exists',
         ]);
     } else {
-        $obj->insert('users', ['first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'password_hash' => $new_password, 'telephone' => $telephone, 'role' => $role]);
+        $obj->insert('users', ['first_name' => $first_name, 'last_name' => $last_name, 'email' => $email, 'password_hash' => $new_password, 'telephone' => $telephone, 'role' => $role, 'access_token' => $token]);
         $data = $obj->getResult();
         if ($data[0] == 1) {
             echo json_encode([

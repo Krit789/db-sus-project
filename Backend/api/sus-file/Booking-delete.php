@@ -4,15 +4,32 @@ header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
+include '../check.php';
+
+use \Firebase\JWT\JWT;
 
 $obj = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     $data = json_decode(file_get_contents("php://input"));
+    $allheaders = getallheaders();
+    $jwt = $allheaders['Authorization'];
+
+    $secret_key = "Hilal ahmad khan";
+    $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
+    $user_data = $user_data->data;
+
+    #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
     $id = $data->res_id;
-    $obj->delete("reservations", "res_id='{$id}'");
-    $result = $obj->getResult();
+
+    if (readReservation($user_data->id, $id)){
+        $obj->delete("reservations", "res_id={$id}");
+        $result = $obj->getResult();
+    }else{
+        $result[0] == 0;
+    }
+    
     if ($result[0] == 1) {
         echo json_encode([
             'status' => 1,

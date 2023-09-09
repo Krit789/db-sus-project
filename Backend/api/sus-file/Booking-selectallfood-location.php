@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
         $data = json_decode(file_get_contents("php://input"));
         $id = htmlentities($data->location_id);
 
-        $obj->select('menus', "*", null, "menu_id not in (select restricted_menu_id from restrictions where location_id = $location_id)", null, null);
+        $obj->select('menus', "*", null, "menu_id not in (select restricted_menu_id from restrictions where location_id = $id)", null, null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

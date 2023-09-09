@@ -5,14 +5,21 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
 
+use \Firebase\JWT\JWT;
+
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST"){
     try {
-        $data = json_decode(file_get_contents("php://input"));
-        $id = htmlentities($data->res_id);
+        $allheaders = getallheaders();
+        $jwt = $allheaders['Authorization'];
 
-        $obj->select('orders', "*", "menus using (menu_id)", "res_id='{$id}'", "category_id", null);
+        $secret_key = "Hilal ahmad khan";
+        $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
+        $user_data = $user_data->data;
+
+        $id = $user_data->id;
+        $obj->select('reservations', "*", null, "user_id='{$id}'", 'res_id DESC', null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

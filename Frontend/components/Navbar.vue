@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { useDisplay } from 'vuetify'
-const { mobile } = useDisplay()
+import {useDisplay} from 'vuetify'
+
+const {mobile} = useDisplay()
 const {
   status,
   data,
@@ -65,23 +66,23 @@ export default {
     },
     emailValidation(value) {
       if (String(value)
-      .toLowerCase()
-      .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )) return true
+          .toLowerCase()
+          .match(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )) return true
 
       return 'E-Mail must be in correct format.'
     },
-  }, 
+  },
   computed: {
-    isLoginValid(){
+    isLoginValid() {
       return this.emailValidation(this.email) && this.password != "";
     },
-    isRegisValid(){
+    isRegisValid() {
       return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != "" && this.last_name != "" && this.phone != "";
     }
   }
-    ,
+  ,
   watch: {
     group() {
       this.drawer = false
@@ -125,7 +126,7 @@ export default {
 
       <!-- <v-main color="#D9D9D9" style="height: 1100px;"> under construction-->
       <div class="text-center">
-        <v-dialog v-model="dialogIn" activator="#loginActivator" :fullscreen="mobile">
+        <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
           <v-card>
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
@@ -133,7 +134,7 @@ export default {
                 <v-form fast-fail @submit.prevent>
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"></v-text-field>
                   <v-text-field v-model="password" label="Password" type="password"></v-text-field>
-                                <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit"
+                  <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit"
                          @click="mySignInHandler({ email: email, password: password })">Submit
                   </v-btn>
                 </v-form>
@@ -146,7 +147,7 @@ export default {
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog v-model="dialogRe" activator="#regisActivator" :fullscreen="mobile">
+      <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
         <v-card>
           <v-card-text>
             <h1 class="mb-3">Register</h1>
@@ -160,7 +161,7 @@ export default {
                     <v-text-field v-model="last_name" label="Last Name"></v-text-field>
                   </v-col>
                 </v-row>
-              <v-row>
+                <v-row>
                   <v-col cols="12" sm="4">
                     <v-text-field v-model="emailReg" :rules="[emailValidation]" label="E-Mail"></v-text-field>
                   </v-col>
@@ -168,15 +169,16 @@ export default {
                     <v-text-field v-model="phone" label="Phone Number"></v-text-field>
                   </v-col>
                 </v-row>
-              <v-row>
+                <v-row>
                   <v-col cols="12" sm="4">
                     <v-text-field v-model="passwordReg" label="Password" type="password"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4">
-                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]" label="Confirm Password" type="password"></v-text-field>
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]" label="Confirm Password"
+                                  type="password"></v-text-field>
                   </v-col>
                 </v-row>
-            <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
+                <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
                   Submit
                 </v-btn>
                 <!-- <v-btn block class="mt-2 bg-blue-darken-1" type="submit"

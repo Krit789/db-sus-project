@@ -11,7 +11,7 @@
         </v-card>
       </v-col>
       <v-col>
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2">ƒ
           <template v-slot:subtitle>
             <v-avatar class="profile_img" image="/aboutus/28_Bess.webp"></v-avatar>
             <span class="font-weight-bold"> 65070028 นายคณิศร สมศรีอักษรแสง </span> &mdash; Some contact infomation idk

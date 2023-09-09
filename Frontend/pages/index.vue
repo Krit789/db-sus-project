@@ -23,17 +23,16 @@ const {
         <div class="text-center ma-16 mt-8">
           <v-divider :thickness="3" class="border-opacity-100" color="white"></v-divider>
         </div>
-        <div class="text-center ma-16 mt-8">
-
-          <v-card class="pa-10" text="">
-            <v-card-text class="text-h3 ma-5">Locations</v-card-text>
+        <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">
+          <v-card class="px-lg-10 px-sm-5 px-xs-0" text="">
+            <v-card-text class="text-h3 font-weight-bold my-6">Locations</v-card-text>
             <v-sheet
-                class="mx-auto"
+                class="mx-auto pb-5"
                 elevation="0"
                 max-width="1800"
                 rounded="lg"
             >
-              <v-slide-group>
+              <v-slide-group :show-arrows="true">
                 <v-slide-group-item
                     v-for="n in 15"
                     :key="n"
@@ -70,15 +69,6 @@ const {
                     </v-card-text>
 
                     <v-divider class="mx-4 mb-1"></v-divider>
-
-                    <!-- <v-card-title>Tonight's availability</v-card-title>
-
-                    <div class="mx-5">
-                      <v-chip-group>
-                        <v-chip>5:30PM</v-chip>
-                      </v-chip-group>
-                    </div> -->
-
                     <v-btn
                         v-if="status == 'authenticated'"
                         class="mb-2"

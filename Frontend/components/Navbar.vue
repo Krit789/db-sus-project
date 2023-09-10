@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay();
-const { status, data, signIn, signOut } = useAuth();
+const {mobile} = useDisplay();
+const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
 const mySignInHandler = async ({
-  email,
-  password,
-}: {
+                                 email,
+                                 password,
+                               }: {
   email: string;
   password: string;
 }) => {
-  const { error, url } = await signIn("credentials", {
+  const {error, url} = await signIn("credentials", {
     email,
     password,
     redirect: false,
@@ -22,7 +22,7 @@ const mySignInHandler = async ({
     alert(error);
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, { external: true });
+    return navigateTo(url, {external: true});
   }
 };
 </script>
@@ -47,22 +47,22 @@ export default {
         title: "Home",
         value: "home",
         props: {
-            prependIcon: 'mdi-home',
-          }
+          prependIcon: 'mdi-home',
+        }
       },
       {
         title: "Booking",
         value: "booking",
         props: {
-            prependIcon: 'mdi-book-plus-multiple',
-          }
+          prependIcon: 'mdi-book-plus-multiple',
+        }
       },
       {
         title: "Status",
         value: "status",
         props: {
-            prependIcon: 'mdi-list-status',
-          }
+          prependIcon: 'mdi-list-status',
+        }
       },
     ],
   }),
@@ -73,11 +73,11 @@ export default {
     },
     emailValidation(value: String) {
       if (
-        String(value)
-          .toLowerCase()
-          .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
+          String(value)
+              .toLowerCase()
+              .match(
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              )
       )
         return true;
 
@@ -90,11 +90,11 @@ export default {
     },
     isRegisValid() {
       return (
-        this.emailValidation(this.emailReg) &&
-        this.passwordValidation(this.passwordRegConfirm) &&
-        this.first_name != "" &&
-        this.last_name != "" &&
-        this.phone != ""
+          this.emailValidation(this.emailReg) &&
+          this.passwordValidation(this.passwordRegConfirm) &&
+          this.first_name != "" &&
+          this.last_name != "" &&
+          this.phone != ""
       );
     },
   },
@@ -111,9 +111,9 @@ export default {
     <v-layout>
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
         <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text"
-          @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                            @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title><p>Seatify | Seat Reservation
-            Service</p></v-toolbar-title>
+          Service</p></v-toolbar-title>
         <div v-if="status == 'unauthenticated'">
           <v-btn id="regisActivator" color="blue" variant="text">Register</v-btn>
           <v-btn id="loginActivator" background-color="#D9D9D9">Login</v-btn>
@@ -130,24 +130,25 @@ export default {
       <v-navigation-drawer v-if="status == 'authenticated'" v-model="drawer" location="left" temporary>
         <v-list>
           <v-list-item
-            :title="data.firstName + ' ' + data.lastName"
-            :subtitle="data.email"
+              :subtitle="data.email"
+              :title="data.firstName + ' ' + data.lastName"
           >
             <template v-slot:append>
               <v-btn
-                size="small"
-                variant="text"
-                icon="mdi-cog"
+                  icon="mdi-cog"
+                  size="small"
+                  variant="text"
               ></v-btn>
             </template>
           </v-list-item>
-          </v-list>
-          <v-divider></v-divider>
+        </v-list>
+        <v-divider></v-divider>
         <v-list :items="items"></v-list>
         <v-divider></v-divider>
         <v-list>
-          <v-list-item @click="signOut()" prepend-icon="mdi-logout" base-color="red" title="Sign Out" value="signout"></v-list-item>
-      </v-list>
+          <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
+                       @click="signOut()"></v-list-item>
+        </v-list>
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
@@ -156,10 +157,10 @@ export default {
               <h1 class="mb-3">Sign In</h1>
               <v-sheet class="mx-auto" width="auto">
                 <v-form fast-fail @submit.prevent>
-                  <v-text-field prepend-inner-icon="mdi-email" v-model="email" :rules="[emailValidation]"
-                    label="E-Mail"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-lock" v-model="password" label="Password"
-                    type="password"></v-text-field>
+                  <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
+                                prepend-inner-icon="mdi-email"></v-text-field>
+                  <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
                   <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit" @click="
                     mySignInHandler({ email: email, password: password })
                     ">Submit
@@ -189,21 +190,21 @@ export default {
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-email" v-model="emailReg" :rules="[emailValidation]"
-                      label="E-Mail"></v-text-field>
+                    <v-text-field v-model="emailReg" :rules="[emailValidation]" label="E-Mail"
+                                  prepend-inner-icon="mdi-email"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-phone" v-model="phone" label="Phone Number"></v-text-field>
+                    <v-text-field v-model="phone" label="Phone Number" prepend-inner-icon="mdi-phone"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-lock" v-model="passwordReg" label="Password"
-                      type="password"></v-text-field>
+                    <v-text-field v-model="passwordReg" label="Password" prepend-inner-icon="mdi-lock"
+                                  type="password"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-lock-check" v-model="passwordRegConfirm"
-                      :rules="[passwordValidation]" label="Confirm Password" type="password"></v-text-field>
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]"
+                                  label="Confirm Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
@@ -217,7 +218,7 @@ export default {
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <slot />
+      <slot/>
     </v-layout>
   </v-card>
 </template>

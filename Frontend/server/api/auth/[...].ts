@@ -1,6 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import {NuxtAuthHandler} from "#auth";
-import { stringify } from "querystring";
 
 export default NuxtAuthHandler({
     secret: "asdasdasd", // process.env.AUTH_SECRET,
@@ -15,6 +14,7 @@ export default NuxtAuthHandler({
                 token.firstName = user ? (user as any).name || '' : '';
                 token.lastName = user ? (user as any).lastName || '' : '';
                 token.tel = user ? (user as any).tel || '' : '';
+                token.email = user ? (user as any).email || '' : '';
             }
             return Promise.resolve(token);
         },
@@ -24,6 +24,7 @@ export default NuxtAuthHandler({
             (session as any).uid = token.id;
             (session as any).firstName = token.firstName;
             (session as any).lastName = token.lastName;
+            (session as any).email = token.email;
             (session as any).tel = token.tel;
             return Promise.resolve(session);
         },

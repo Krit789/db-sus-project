@@ -1,5 +1,6 @@
 <?php
-function randomToken($length) {
+function randomToken($length)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -9,7 +10,8 @@ function randomToken($length) {
     return $randomString;
 }
 
-function randomRescode($length) {
+function randomRescode($length)
+{
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -18,4 +20,5 @@ function randomRescode($length) {
     }
     return $randomString;
 }
+
 ?>

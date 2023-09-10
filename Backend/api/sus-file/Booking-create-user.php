@@ -8,7 +8,7 @@ include '../../vendor/autoload.php';
 include '../check.php';
 include '../random.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
@@ -31,19 +31,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $id, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomRescode(8)]);
         $result = $obj->getResult();
         if ($result[0] == 1) {
-            if ($user_data->token == readuser($user_data->id)){
+            if ($user_data->token == readuser($user_data->id)) {
 
-                if ($data->menu[0] != null){ #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
+                if ($data->menu[0] != null) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
                     $tmp = "";
                     $obj->select('reservations', 'res_id', null, "table=$table_id and user_id=$id", 'res_id desc', 1);
                     $resutl = $obj->getResult();
                     $res_id = $resutl[0]['res_id'];
 
-                    foreach ($data->menu as $menu){
+                    foreach ($data->menu as $menu) {
                         //[0] menu_id [1] จำนวน 
-                        if ($menu == $data->menu[sizeof($data->menu)-1]){
+                        if ($menu == $data->menu[sizeof($data->menu) - 1]) {
                             $tmp .= "($res_id, $menu[0], $menu[1])";
-                        }else{
+                        } else {
                             $tmp .= "($res_id, $menu[0], $menu[1]),";
                         }
                     }
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     $resutl = $obj->getResult();
                     // if ($resutl[0] == 1){
-                        # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม ไม่ใช้
+                    # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม ไม่ใช้
                     // }
                 }
 

@@ -7,7 +7,7 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == "POST"){
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     try {
         $data = json_decode(file_get_contents("php://input"));
         $id = $data->location_id;

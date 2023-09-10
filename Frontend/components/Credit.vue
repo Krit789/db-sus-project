@@ -14,8 +14,8 @@ export default {
     <h1>About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
-           min-width="100px"
            max-width="8%"
+           min-width="100px"
            src="/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
@@ -162,7 +162,7 @@ export default {
   font-size: small;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 960px) {
   .profile_row_card {
     flex-direction: row;
     flex-wrap: nowrap;
@@ -180,6 +180,16 @@ export default {
 
   .profile_contact {
     font-size: large;
+  }
+
+  .profile_text {
+    font-size: large;
+    text-wrap: normal;
+  }
+
+  .profile_contact {
+    font-weight: 200;
+    font-size: medium;
   }
 }
 </style>

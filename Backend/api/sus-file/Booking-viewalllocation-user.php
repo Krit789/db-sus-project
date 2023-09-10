@@ -7,7 +7,7 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == "POST"){
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     try {
         $obj->select('locations', "location_id, name, address, open_time, close_time, status", null, "status = 1", "status, location_id", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
         $res = $obj->getResult();

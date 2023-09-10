@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $password = $data->password;
     $new_password = password_hash($password, PASSWORD_DEFAULT);
     $tele = $data->telephone;
-    
+
     $obj->select("users", "email", null, "email='{$email}'", null, null);
     $is_email = $obj->getResult();
     if (isset($is_email[0]['email']) == $email) {
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             'status' => 2,
             'message' => 'Email already Exists',
         ]);
-    }else{
+    } else {
         $obj->update('users', ['first_name' => $fn, 'last_name' => $ln, 'telephone' => $tele, 'password_hash' => $new_password], "user_id={$id}");
         $result = $obj->getResult();
         if ($result[0] == 1) {

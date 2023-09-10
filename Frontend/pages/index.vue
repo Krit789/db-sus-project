@@ -118,9 +118,16 @@ body {
   font-family: "Sarabun", "Roboto", sans-serif !important;
   font-size: 95px !important;
   margin-bottom: 40px !important;
+  text-wrap: none !important;
 }
 
 .text-h5 {
   font-family: "Sarabun", "Roboto", sans-serif !important;
+}
+
+@media screen and (max-width: 430px) {
+  .text-h2 {
+    font-size: 70px !important;
+  }
 }
 </style>

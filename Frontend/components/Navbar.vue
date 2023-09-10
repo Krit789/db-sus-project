@@ -204,7 +204,8 @@ export default {
                   </v-col>
                   <v-col cols="12" sm="4">
                     <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]"
-                                  label="Confirm Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
+                                  label="Confirm Password" prepend-inner-icon="mdi-lock-check"
+                                  type="password"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">

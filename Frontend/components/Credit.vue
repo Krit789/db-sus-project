@@ -181,6 +181,16 @@ export default {
   .profile_contact {
     font-size: large;
   }
+
+  .profile_text {
+    font-size: large;
+    text-wrap: normal;
+  }
+
+  .profile_contact {
+    font-weight: 200;
+    font-size: medium;
+  }
 }
 
 </style>

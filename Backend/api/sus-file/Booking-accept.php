@@ -4,7 +4,6 @@ header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
-include '../check.php';
 
 use \Firebase\JWT\JWT;
 
@@ -20,25 +19,27 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
     $user_data = $user_data->data;
 
-    #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
+    $role = $user_data->role;
     $id = $data->res_id;
 
-    if (readReservation($user_data->id, $id)){
-        $obj->delete("reservations", "res_id={$id}");
+    if ($role == "MANAGER" || $role == "GOD"){
+        $obj->update('reservations', ['status' => 1], "res_id={$id}");
         $result = $obj->getResult();
+        if ($result[0] == 1) {
+            echo json_encode([
+                'status' => 1,
+                'message' => "Successfully",
+            ]);
+        } else {
+            echo json_encode([
+                'status' => 0,
+                'message' => "Server Problem",
+            ]);
+        }
     }else{
-        $result[0] == 0;
-    }
-    
-    if ($result[0] == 1) {
-        echo json_encode([
-            'status' => 1,
-            'message' => "Successfully",
-        ]);
-    } else {
         echo json_encode([
             'status' => 0,
-            'message' => "Server Problem",
+            'message' => "Wrong Role Denied",
         ]);
     }
 } else {

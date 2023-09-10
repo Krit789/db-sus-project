@@ -2,5 +2,9 @@
 include 'check.php';
 
 $test = readReservation(5, 1);
-echo $test;
+if ($test){
+    echo "1";
+}else{
+    echo "2";
+}
 ?>

@@ -12,6 +12,6 @@ function readReservation($id, $res){
     $obj = new Database();
     $obj->select('reservations', 'user_id', null, "res_id={$res}", null, null);
     $res = $obj->getResult();
-    return $res[0]['user_id'] == $id; #ยังไม่แน่ใจว่าได้ไหมเพราะยังไม่มี ข้อมูล ให้ทดสอบ
+    return isset($res[0]['user_id']) == $id; #ยังไม่แน่ใจว่าได้ไหมเพราะยังไม่มี ข้อมูล ให้ทดสอบ
 }
 ?>

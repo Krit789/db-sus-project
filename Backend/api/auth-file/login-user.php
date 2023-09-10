@@ -72,7 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // $secret_key = "Hilal ahmad khan";
         // $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
         // $data = $user_data->data;
-        // echo $data->fn;
+        // if ($data->role == "USER"){
+        //     echo "1";
+        // }
+        // echo $data->role;
     
     }else{
         echo json_encode([

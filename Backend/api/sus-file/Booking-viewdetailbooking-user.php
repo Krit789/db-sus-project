@@ -6,11 +6,11 @@ header('Content-Type:application/json');
 include '../database/Database.php';
 include '../check.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == "POST"){
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     try {
         $data = json_decode(file_get_contents("php://input"));
         $allheaders = getallheaders();
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
 
         $id = $user_data->id;
         $res_id = $data->res_id;
-        if (readReservation($id, $res_id)){
+        if (readReservation($id, $res_id)) {
             $obj->select('reservations', "*", null, "res_id='{$res_id}'", null, null);
             $res = $obj->getResult();
             if ($res) {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST"){
                     'message' => "server problem",
                 ]);
             }
-        }else{
+        } else {
             echo json_encode([
                 'status' => 0,
                 'message' => 'ID Customer not match',

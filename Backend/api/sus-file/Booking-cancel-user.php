@@ -6,7 +6,7 @@ header('Content-Type:application/json');
 include '../database/Database.php';
 include '../check.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
     $id = $data->res_id;
 
-    if (readReservation($user_data->id, $id)){
+    if (readReservation($user_data->id, $id)) {
         $obj->update('reservations', ['status' => 2], "res_id={$id}");
         $result = $obj->getResult();
 
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             'status' => 1,
             'message' => "Successfully",
         ]);
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => "Server Problem",

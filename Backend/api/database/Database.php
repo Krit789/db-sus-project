@@ -1,4 +1,5 @@
 <?php
+
 class Database
 {
     private $localhost = "49.228.131.109";
@@ -48,6 +49,23 @@ class Database
         }
     }
 
+    private function tableExist($table)
+    {
+        $sql = "SHOW TABLES FROM $this->database LIKE '{$table}'";
+        $tableInDb = $this->mysqli->query($sql);
+        if ($tableInDb) {
+            if ($tableInDb->num_rows == 1) {
+                return true;
+            } else {
+                array_push($this->result, $table . " Does not Exist");
+            }
+        } else {
+            return false;
+        }
+    }
+
+    // get data
+
     public function insertlagacy($table, $table_column, $table_value)
     {
         if ($this->tableExist($table)) {
@@ -64,7 +82,8 @@ class Database
         }
     }
 
-    // get data
+    // update data
+
     public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
     {
         if ($this->tableExist($table)) {
@@ -82,9 +101,9 @@ class Database
                 $sql .= " LIMIT $limit";
             }
             $query = $this->mysqli->query($sql);
-            
+
             //echo $sql; #ดูคำสั่ง sql ปิดๆ
-            
+
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);
                 return true;
@@ -96,7 +115,8 @@ class Database
         }
     }
 
-    // update data
+    // delete data
+
     public function update($table, $params = array(), $where = null)
     {
         if ($this->tableExist($table)) {
@@ -105,8 +125,8 @@ class Database
                 $arg[] = "$key = '{$val}'";
             }
             $sql = "UPDATE $table SET " . implode(', ', $arg);
-            if($where != null){
-                $sql .=" WHERE $where";
+            if ($where != null) {
+                $sql .= " WHERE $where";
             }
             if ($this->mysqli->query($sql)) {
                 array_push($this->result, true);
@@ -119,7 +139,9 @@ class Database
             return false;
         }
     }
-    // delete data
+
+    // table exist
+
     public function delete($table, $where = null)
     {
         if ($this->tableExist($table)) {
@@ -138,23 +160,9 @@ class Database
             return false;
         }
     }
-    // table exist
-    private function tableExist($table)
-    {
-        $sql = "SHOW TABLES FROM $this->database LIKE '{$table}'";
-        $tableInDb = $this->mysqli->query($sql);
-        if ($tableInDb) {
-            if ($tableInDb->num_rows  == 1) {
-                return true;
-            } else {
-                array_push($this->result, $table . " Does not Exist");
-            }
-        } else {
-            return false;
-        }
-    }
 
     // get result
+
     public function getResult()
     {
         $val = $this->result;

@@ -18,7 +18,7 @@ export default {
            src="/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -35,7 +35,7 @@ export default {
         </v-card>
       </v-col>
       <v-col :cols="credCols[1]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -53,7 +53,7 @@ export default {
       </v-col>
       <!-- <v-responsive width="100%"></v-responsive> -->
       <v-col :cols="credCols[2]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -70,7 +70,7 @@ export default {
         </v-card>
       </v-col>
       <v-col :cols="credCols[3]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -88,7 +88,7 @@ export default {
       </v-col>
       <!-- <v-responsive width="100%"></v-responsive> -->
       <v-col :cols="credCols[4]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -105,7 +105,7 @@ export default {
         </v-card>
       </v-col>
       <v-col :cols="credCols[5]">
-        <v-card class="ma-2 pa-2">
+        <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
             <v-row>
               <v-col class="profile_img_left" cols="12" md="6">
@@ -159,6 +159,10 @@ export default {
 
 .profile_contact {
   font-size: small;
+}
+
+.contact_card_box {
+  border: 1px #d9d9d9 solid;
 }
 </style>
 

@@ -126,11 +126,11 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar color="#F1F1F1" elevation="8" prominent>
-        <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text"
+        <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title><p>Seatify | Seat Reservation
           Service</p></v-toolbar-title>
-        <div v-if="status == 'unauthenticated'">
+        <div v-if="status == 'unauthenticated' && !mobile">
           <v-btn id="regisActivator" color="blue" variant="text">Register</v-btn>
           <v-btn id="loginActivator" background-color="#D9D9D9">Login</v-btn>
         </div>
@@ -143,7 +143,8 @@ export default {
           <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-if="status == 'authenticated'" v-model="drawer" location="left" temporary>
+      <v-navigation-drawer v-model="drawer" location="left" temporary>
+        <div v-if="status == 'authenticated'">
         <v-list>
           <v-list-item
               :subtitle="data.email"
@@ -172,6 +173,26 @@ export default {
           <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
                        @click="signOut()"></v-list-item>
         </v-list>
+      </div>
+      <div v-else>
+        <v-list>
+          <v-list-item
+              subtitle="Sign In to Continue"
+              title="Guest"
+          >
+          </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+        <v-list>
+          <v-list-item @click="" prepend-icon="mdi-login-variant">
+                  <v-list-item-title id="loginActivator">Login</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="" prepend-icon="mdi-account-plus">
+                  <v-list-item-title id="regisActivator">Register</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <v-divider></v-divider>
+      </div>
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">

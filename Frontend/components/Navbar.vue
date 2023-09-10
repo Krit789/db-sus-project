@@ -46,6 +46,7 @@ export default {
       {
         title: "Home",
         value: "home",
+        action: "u-home",
         props: {
             prependIcon: 'mdi-home',
           }
@@ -53,6 +54,7 @@ export default {
       {
         title: "Booking",
         value: "booking",
+        action: "u-booking",
         props: {
             prependIcon: 'mdi-book-plus-multiple',
           }
@@ -60,6 +62,7 @@ export default {
       {
         title: "Status",
         value: "status",
+        action: "u-status",
         props: {
             prependIcon: 'mdi-list-status',
           }
@@ -82,6 +85,19 @@ export default {
         return true;
 
       return "E-Mail must be in correct format.";
+    },
+    navActions(actions: String) {
+      switch (actions){
+        case "u-home":
+          this.$router.push("/");
+          break;
+        case "u-booking":
+        this.$router.push("/booking");
+          break;
+        case "u-status":
+        // this.$router.push("");
+          break;
+      }
     },
   },
   computed: {
@@ -120,7 +136,7 @@ export default {
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <v-btn variant="text">
-            <p v-on:click="() => $router.push({ name: 'account' })">
+            <p @click="() => $router.push({ name: 'account' })">
               {{ data.firstName }}
             </p>
           </v-btn>
@@ -137,13 +153,20 @@ export default {
               <v-btn
                 size="small"
                 variant="text"
+                color="grey"
                 icon="mdi-cog"
+                @click="() => $router.push({ name: 'account' })"
               ></v-btn>
             </template>
           </v-list-item>
           </v-list>
           <v-divider></v-divider>
-        <v-list :items="items"></v-list>
+        <v-list>
+          <v-list-item v-for="(item, index) in items"
+                  :key="index" @click="navActions(item.action)" :prepend-icon="item.props.prependIcon">
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+        </v-list>
         <v-divider></v-divider>
         <v-list>
           <v-list-item @click="signOut()" prepend-icon="mdi-logout" base-color="red" title="Sign Out" value="signout"></v-list-item>

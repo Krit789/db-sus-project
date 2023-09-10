@@ -64,7 +64,7 @@ export default {
               </v-col>
               <v-col cols="12" md="6">
                 <span class="font-weight-bold profile_text ">นายจารุกิตติ์ ศรีพาเพลิน<br>65070030</span>
-                <div class="pt-0 profile_text profile_contact">Backend Developer</div>
+                <div class="pt-0 profile_text profile_contact">Fullstack Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -182,8 +182,4 @@ export default {
     font-size: large;
   }
 }
-
 </style>
-
-<script lang="ts" setup>
-</script>

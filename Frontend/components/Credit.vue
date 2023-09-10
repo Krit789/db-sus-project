@@ -14,19 +14,20 @@ export default {
     <h1>About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
+           min-width="100px"
            max-width="8%"
            src="/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/05_Mark.webp"></v-avatar>
                 </div>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col class="profile_contact_container" cols="12" md="6">
                 <span class="font-weight-bold profile_text ">นายกนกพล โป้ยขำ<br>65070005</span>
                 <div class="pt-0 profile_text profile_contact">Backend Developer</div>
               </v-col>
@@ -37,7 +38,7 @@ export default {
       <v-col :cols="credCols[1]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/28_Bess.webp"></v-avatar>
@@ -55,7 +56,7 @@ export default {
       <v-col :cols="credCols[2]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/30_Krit.webp"></v-avatar>
@@ -72,7 +73,7 @@ export default {
       <v-col :cols="credCols[3]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/35_Jai.webp"></v-avatar>
@@ -90,7 +91,7 @@ export default {
       <v-col :cols="credCols[4]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/64_Japan.webp"></v-avatar>
@@ -107,7 +108,7 @@ export default {
       <v-col :cols="credCols[5]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/89_Tae.webp"></v-avatar>
@@ -161,9 +162,27 @@ export default {
   font-size: small;
 }
 
-.contact_card_box {
-  border: 1px #d9d9d9 solid;
+@media only screen and (max-width: 600px) {
+  .profile_row_card {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+  }
+
+  .profile_img_left {
+    min-width: 15vh;
+    height: 100px;
+  }
+
+  .profile_contact_container {
+    width: 50%;
+  }
+
+  .profile_contact {
+    font-size: large;
+  }
 }
+
 </style>
 
 <script lang="ts" setup>

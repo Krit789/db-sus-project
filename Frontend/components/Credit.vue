@@ -10,8 +10,12 @@ export default {
 </script>
 
 <template>
-  <v-footer class="d-flex flex-column">
+  <v-footer class="d-flex flex-column pt-5" style="background: #ecfef666">
     <h1>About Us</h1>
+    <v-img alt="Image Description" class="w-100 mt-1 mb-5"
+           height="auto"
+           max-width="8%"
+           src="/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
         <v-card class="ma-2 pa-2">
@@ -23,8 +27,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070005 นายกนกพล โป้ยขำ</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายกนกพล โป้ยขำ<br>65070005</span>
+                <div class="pt-0 profile_text profile_contact">Backend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -40,8 +44,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070028 นายคณิศร สมศรีอักษรแสง</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายคณิศร สมศรีอักษรแสง<br>65070028</span>
+                <div class="pt-0 profile_text profile_contact">Backend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -58,8 +62,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070030 นายจารุกิตติ์ ศรีพาเพลิน</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายจารุกิตติ์ ศรีพาเพลิน<br>65070030</span>
+                <div class="pt-0 profile_text profile_contact">Backend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -75,8 +79,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070035 นายจิรโชติ อินทรวงษ์โชติ</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายจิรโชติ อินทรวงษ์โชติ<br>65070035</span>
+                <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -93,8 +97,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070064 นายณภัทร เวชพันธุ์</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายณภัทร เวชพันธุ์<br>65070064</span>
+                <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -110,8 +114,8 @@ export default {
                 </div>
               </v-col>
               <v-col cols="12" md="6">
-                <span class="font-weight-bold profile_text ">65070085 นายธนกฤต ทรัพย์ประสิทธิ์์</span>
-                <div class="pt-0 profile_text profile_contact">Some contact infomation idk</div>
+                <span class="font-weight-bold profile_text ">นายธนกฤต ทรัพย์ประสิทธิ์<br>65070089</span>
+                <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -146,7 +150,7 @@ export default {
 }
 
 .profile_img_left {
-  max-width: 100px;
+  max-width: 120px;
 }
 
 .profile_text {

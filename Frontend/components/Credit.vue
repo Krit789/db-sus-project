@@ -162,7 +162,7 @@ export default {
   font-size: small;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 960px) {
   .profile_row_card {
     flex-direction: row;
     flex-wrap: nowrap;

@@ -90,3 +90,17 @@ const {
     </v-main>
   </Navbar>
 </template>
+
+<style>
+body {
+  font-family: "Sarabun", "Roboto", sans-serif;
+}
+
+.text-h2 {
+  font-family: "Sarabun", "Roboto", sans-serif !important;
+}
+
+.text-h5 {
+  font-family: "Sarabun", "Roboto", sans-serif !important;
+}
+</style>

@@ -64,7 +64,8 @@
   background-color: rgba(255, 255, 255);
   margin: 12px;
   padding: 12px 12px 0px 12px;
-//min-height: 100vh; //border: 1px black solid; border-radius: 32px; background-color: white; //min-width: 40vw; min-height: 500px;
+  border-radius: 32px;
+//min-height: 100vh; //border: 1px black solid;  background-color: white; //min-width: 40vw; min-height: 500px;
 }
 
 .title_header {

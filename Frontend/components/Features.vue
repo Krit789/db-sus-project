@@ -46,6 +46,7 @@
 
 .feature_header {
   font-size: 42px;
+  margin-top: 32px;
   margin-left: 12px;
 }
 

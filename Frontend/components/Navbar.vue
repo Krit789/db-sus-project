@@ -270,11 +270,9 @@ export default {
 
 <style>
 .blur-effect {
-  background: rgba(251, 251, 253, 0.8) !important;
-  backdrop-filter: blur(20px) saturate(85px);
+  background: rgba(245, 245, 247, 0.72) !important;
+  backdrop-filter: saturate(1.8) blur(20px);
   -webkit-backdrop-filter: blur(20px) saturate(85px);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-user-select: none;
@@ -288,7 +286,7 @@ export default {
 }
 
 .account_pane {
-  background: rgba(255, 255, 255, .9) !important;
+  background: rgba(255, 255, 255, .86) !important;
 }
 
 @media screen and (max-width: 600px) {

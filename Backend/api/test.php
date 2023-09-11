@@ -1,10 +1,6 @@
 <?php
-include 'check.php';
+// include 'check.php';
+include 'control.php';
 
-$test = readReservation(5, 1);
-if ($test){
-    echo "1";
-}else{
-    echo "2";
-}
+test();
 ?>

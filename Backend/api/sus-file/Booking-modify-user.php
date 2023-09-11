@@ -21,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $user_data = $user_data->data;
 
     #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
-    $id = $data->res_id;
+    $res_id = $data->res_id;
     $arrival = $data->arrival;
 
-    if (readReservation($user_data->id, $id)){
+    if (readReservation($user_data->id, $res_id)){
         if ($data->menu[0] != null){
             $menu = $data->menu;
-            $obj->delete('orders', "res_id='{$id}'");
+            $obj->delete('orders', "res_id='{$res_id}'");
             $result = $obj->getResult();
             if ($result[0] == 1) {
                 
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         }
 
         #เพิ่มเวลานัดอีก+++++++++
-        $obj->update('reservations', ['arrival'=>$arrival], "res_id='{$id}'");
+        $obj->update('reservations', ['arrival'=>$arrival], "res_id='{$res_id}'");
         $result = $obj->getResult(); #อยากเช็คอันนี้ด้วย
     
     }else{

@@ -24,13 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $res_id = $data->res_id;
     $arrival = $data->arrival;
 
-<<<<<<< HEAD
     if (readReservation($user_data->id, $res_id)){
         if ($data->menu[0] != null){
-=======
-    if (readReservation($user_data->id, $id)) {
-        if ($data->menu[0] != null) {
->>>>>>> cc2785d04bd0f1f4a8f9557eb911040ab2b89710
             $menu = $data->menu;
             $obj->delete('orders', "res_id='{$res_id}'");
             $result = $obj->getResult();
@@ -58,11 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         }
 
         #เพิ่มเวลานัดอีก+++++++++
-<<<<<<< HEAD
         $obj->update('reservations', ['arrival'=>$arrival], "res_id='{$res_id}'");
-=======
-        $obj->update('reservations', ['arrival' => $arrival], "res_id='{$id}'");
->>>>>>> cc2785d04bd0f1f4a8f9557eb911040ab2b89710
         $result = $obj->getResult(); #อยากเช็คอันนี้ด้วย
 
     } else {

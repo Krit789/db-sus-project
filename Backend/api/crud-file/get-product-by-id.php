@@ -7,7 +7,7 @@ header('Content-Type:application/json');
 include '../database/Database.php';
 include '../vendor/autoload.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
         $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
 
         $id = $user_data->data->id;
-        $obj->select('products',"*",null,"user_id='{$id}'",'id DESC',null);
+        $obj->select('products', "*", null, "user_id='{$id}'", 'id DESC', null);
         $products = $obj->getResult();
         if ($products) {
             echo json_encode([

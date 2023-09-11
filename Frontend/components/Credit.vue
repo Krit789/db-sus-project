@@ -10,23 +10,24 @@ export default {
 </script>
 
 <template>
-  <v-footer class="d-flex flex-column pt-5" style="background: #ecfef666">
+  <v-footer class="d-flex flex-column pt-5 credit_container" style="background: #ecfef666">
     <h1>About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
            max-width="8%"
+           min-width="100px"
            src="/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/05_Mark.webp"></v-avatar>
                 </div>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col class="profile_contact_container" cols="12" md="6">
                 <span class="font-weight-bold profile_text ">นายกนกพล โป้ยขำ<br>65070005</span>
                 <div class="pt-0 profile_text profile_contact">Backend Developer</div>
               </v-col>
@@ -37,7 +38,7 @@ export default {
       <v-col :cols="credCols[1]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/28_Bess.webp"></v-avatar>
@@ -55,7 +56,7 @@ export default {
       <v-col :cols="credCols[2]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/30_Krit.webp"></v-avatar>
@@ -63,7 +64,7 @@ export default {
               </v-col>
               <v-col cols="12" md="6">
                 <span class="font-weight-bold profile_text ">นายจารุกิตติ์ ศรีพาเพลิน<br>65070030</span>
-                <div class="pt-0 profile_text profile_contact">Backend Developer</div>
+                <div class="pt-0 profile_text profile_contact">Fullstack Developer</div>
               </v-col>
             </v-row>
           </template>
@@ -72,7 +73,7 @@ export default {
       <v-col :cols="credCols[3]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/35_Jai.webp"></v-avatar>
@@ -90,7 +91,7 @@ export default {
       <v-col :cols="credCols[4]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/64_Japan.webp"></v-avatar>
@@ -107,7 +108,7 @@ export default {
       <v-col :cols="credCols[5]">
         <v-card class="ma-2 pa-2 contact_card_box">
           <template v-slot:title>
-            <v-row>
+            <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
                   <v-avatar class="profile_img" image="/aboutus/89_Tae.webp"></v-avatar>
@@ -126,6 +127,15 @@ export default {
 </template>
 
 <style>
+
+.credit_container {
+  margin: 70px 30px !important;
+  padding: 40px 20px !important;
+  border-radius: 48px;
+  vertical-align: middle;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
 .no-opacity {
   opacity: 1 !important;
 }
@@ -142,11 +152,8 @@ export default {
   position: absolute !important;
   width: 100% !important;;
   height: 100% !important;;
-  object-fit: cover !important;;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  object-fit: cover !important;
+//left: 0; //right: 0; //top: 0; //bottom: 0;
 }
 
 .profile_img_left {
@@ -161,10 +168,44 @@ export default {
   font-size: small;
 }
 
-.contact_card_box {
-  border: 1px #d9d9d9 solid;
+@media only screen and (max-width: 960px) {
+  .credit_container {
+    margin: 10px 0px !important;
+    padding: 10px 0px !important;
+  }
+
+  .profile_row_card {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+  }
+
+  .profile_img_left {
+    min-width: 15vh;
+    height: 80px;
+  }
+
+  .profile_contact_container {
+    width: 50%;
+  }
+
+  .profile_contact {
+    font-size: large;
+  }
+
+  .profile_text {
+    font-size: large;
+    text-wrap: normal;
+  }
+
+  .profile_contact {
+    font-weight: 200;
+    font-size: medium;
+  }
+
+  .profile_img {
+    height: 86% !important;
+    width: 86% !important;
+  }
 }
 </style>
-
-<script lang="ts" setup>
-</script>

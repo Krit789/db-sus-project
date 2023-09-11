@@ -8,7 +8,7 @@ include '../database/Database.php';
 include '../../vendor/autoload.php';
 include '../random.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $obj->select('users', 'user_id', null, "email='{$email}'", null, null);
 
     $user_id = $obj->getResult();
-    if ($user_id != NULL){
+    if ($user_id != NULL) {
 
         $user_id = $user_id[0]['user_id'];
         $obj->update('users', ['access_token' => $token], "user_id={$user_id}");
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //     echo "1";
         // }
         // echo $data->role;
-    
-    }else{
+
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'No No User in Database',

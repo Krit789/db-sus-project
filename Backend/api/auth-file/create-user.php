@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $role = htmlentities($data->role);
     $token = randomToken(32);
     // check user by email
-    
+
     $obj->select("users", "*", null, "email='{$email}'", null, null);
     $is_email = $obj->getResult();
     if (isset($is_email[0]['email']) == $email) {

@@ -7,7 +7,7 @@ header('Content-Type:application/json');
 include '../database/Database.php';
 include '../vendor/autoload.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 $obj = new Database();
 

@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 
-const { mobile } = useDisplay();
-const { status, data, signIn, signOut } = useAuth();
+const {mobile} = useDisplay();
+const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
 const mySignInHandler = async ({
-  email,
-  password,
-}: {
+                                 email,
+                                 password,
+                               }: {
   email: string;
   password: string;
 }) => {
-  const { error, url } = await signIn("credentials", {
+  const {error, url} = await signIn("credentials", {
     email,
     password,
     redirect: false,
@@ -22,7 +22,7 @@ const mySignInHandler = async ({
     alert(error);
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, { external: true });
+    return navigateTo(url, {external: true});
   }
 };
 </script>
@@ -46,23 +46,26 @@ export default {
       {
         title: "Home",
         value: "home",
+        action: "u-home",
         props: {
-            prependIcon: 'mdi-home',
-          }
+          prependIcon: 'mdi-home',
+        }
       },
       {
         title: "Booking",
         value: "booking",
+        action: "u-booking",
         props: {
-            prependIcon: 'mdi-book-plus-multiple',
-          }
+          prependIcon: 'mdi-book-plus-multiple',
+        }
       },
       {
         title: "Status",
         value: "status",
+        action: "u-status",
         props: {
-            prependIcon: 'mdi-list-status',
-          }
+          prependIcon: 'mdi-list-status',
+        }
       },
     ],
   }),
@@ -73,15 +76,28 @@ export default {
     },
     emailValidation(value: String) {
       if (
-        String(value)
-          .toLowerCase()
-          .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
+          String(value)
+              .toLowerCase()
+              .match(
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              )
       )
         return true;
 
       return "E-Mail must be in correct format.";
+    },
+    navActions(actions: String) {
+      switch (actions) {
+        case "u-home":
+          this.$router.push("/");
+          break;
+        case "u-booking":
+          this.$router.push("/booking");
+          break;
+        case "u-status":
+          // this.$router.push("");
+          break;
+      }
     },
   },
   computed: {
@@ -90,11 +106,11 @@ export default {
     },
     isRegisValid() {
       return (
-        this.emailValidation(this.emailReg) &&
-        this.passwordValidation(this.passwordRegConfirm) &&
-        this.first_name != "" &&
-        this.last_name != "" &&
-        this.phone != ""
+          this.emailValidation(this.emailReg) &&
+          this.passwordValidation(this.passwordRegConfirm) &&
+          this.first_name != "" &&
+          this.last_name != "" &&
+          this.phone != ""
       );
     },
   },
@@ -109,57 +125,86 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar color="#F1F1F1" elevation="8" prominent>
-        <v-app-bar-nav-icon v-if="status == 'authenticated'" variant="text"
-          @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar class="blur-effect" elevation="8" prominent>
+        <v-app-bar-nav-icon variant="text"
+                            @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title><p>Seatify | Seat Reservation
-            Service</p></v-toolbar-title>
-        <div v-if="status == 'unauthenticated'">
-          <v-btn id="regisActivator" color="blue" variant="text">Register</v-btn>
-          <v-btn id="loginActivator" background-color="#D9D9D9">Login</v-btn>
+          Service</p></v-toolbar-title>
+        <div v-if="status == 'unauthenticated' && !mobile">
+          <v-btn @click.stop="dialogRe = true" color="blue" variant="text">Register</v-btn>
+          <v-btn @click.stop="dialogIn = true" background-color="#D9D9D9">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <v-btn variant="text">
-            <p v-on:click="() => $router.push({ name: 'account' })">
+            <p @click="() => $router.push({ name: 'account' })">
               {{ data.firstName }}
             </p>
           </v-btn>
           <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-if="status == 'authenticated'" v-model="drawer" location="left" temporary>
-        <v-list>
-          <v-list-item
-            :title="data.firstName + ' ' + data.lastName"
-            :subtitle="data.email"
-          >
-            <template v-slot:append>
-              <v-btn
-                size="small"
-                variant="text"
-                icon="mdi-cog"
-              ></v-btn>
-            </template>
-          </v-list-item>
+      <v-navigation-drawer v-model="drawer" location="left" temporary>
+        <div v-if="status == 'authenticated'">
+          <v-list>
+            <v-list-item
+                :subtitle="data.email"
+                :title="data.firstName + ' ' + data.lastName"
+            >
+              <template v-slot:append>
+                <v-btn
+                    color="grey"
+                    icon="mdi-cog"
+                    size="small"
+                    variant="text"
+                    @click="() => $router.push({ name: 'account' })"
+                ></v-btn>
+              </template>
+            </v-list-item>
           </v-list>
           <v-divider></v-divider>
-        <v-list :items="items"></v-list>
-        <v-divider></v-divider>
-        <v-list>
-          <v-list-item @click="signOut()" prepend-icon="mdi-logout" base-color="red" title="Sign Out" value="signout"></v-list-item>
-      </v-list>
+          <v-list>
+            <v-list-item v-for="(item, index) in items"
+                         :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+          <v-list>
+            <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
+                         @click="signOut()"></v-list-item>
+          </v-list>
+        </div>
+        <div v-else>
+          <v-list>
+            <v-list-item
+                subtitle="Sign In to Continue"
+                title="Guest"
+            >
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+          <v-list>
+            <v-list-item prepend-icon="mdi-login-variant" @click="">
+              <v-list-item-title id="loginActivator">Login</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-account-plus" @click="">
+              <v-list-item-title id="regisActivator">Register</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+        </div>
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
-          <v-card>
+          <v-card class="blur-effect account_pane">
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
-              <v-sheet class="mx-auto" width="auto">
+              <v-sheet class="mx-auto form_container" width="auto">
                 <v-form fast-fail @submit.prevent>
-                  <v-text-field prepend-inner-icon="mdi-email" v-model="email" :rules="[emailValidation]"
-                    label="E-Mail"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-lock" v-model="password" label="Password"
-                    type="password"></v-text-field>
+                  <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
+                                prepend-inner-icon="mdi-email"></v-text-field>
+                  <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
                   <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit" @click="
                     mySignInHandler({ email: email, password: password })
                     ">Submit
@@ -174,10 +219,10 @@ export default {
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
-        <v-card>
+        <v-card class="blur-effect account_pane">
           <v-card-text>
             <h1 class="mb-3">Register</h1>
-            <v-sheet class="mx-auto w-100" width="auto">
+            <v-sheet class="mx-auto w-100 form_container" width="auto">
               <v-form fast-fail @submit.prevent>
                 <v-row>
                   <v-col cols="12" sm="4">
@@ -189,21 +234,22 @@ export default {
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-email" v-model="emailReg" :rules="[emailValidation]"
-                      label="E-Mail"></v-text-field>
+                    <v-text-field v-model="emailReg" :rules="[emailValidation]" label="E-Mail"
+                                  prepend-inner-icon="mdi-email"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-phone" v-model="phone" label="Phone Number"></v-text-field>
+                    <v-text-field v-model="phone" label="Phone Number" prepend-inner-icon="mdi-phone"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-lock" v-model="passwordReg" label="Password"
-                      type="password"></v-text-field>
+                    <v-text-field v-model="passwordReg" label="Password" prepend-inner-icon="mdi-lock"
+                                  type="password"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="4">
-                    <v-text-field prepend-inner-icon="mdi-lock-check" v-model="passwordRegConfirm"
-                      :rules="[passwordValidation]" label="Confirm Password" type="password"></v-text-field>
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]"
+                                  label="Confirm Password" prepend-inner-icon="mdi-lock-check"
+                                  type="password"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
@@ -217,7 +263,39 @@ export default {
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <slot />
+      <slot/>
     </v-layout>
   </v-card>
 </template>
+
+<style>
+.blur-effect {
+  background: rgba(251, 251, 253, 0.8) !important;
+  backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.form_container {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.account_pane {
+  background: rgba(255, 255, 255, .9) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .account_pane {
+    background: rgba(242, 241, 244, 0.95) !important;
+
+  }
+}
+
+</style>

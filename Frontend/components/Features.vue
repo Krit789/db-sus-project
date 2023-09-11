@@ -4,7 +4,7 @@
 
 <template>
   <v-container class="feature_container" style="padding: 12px; margin-top: 12px;">
-    <h1 class="feature_header blue-text">Dinner is served!</h1>
+    <h1 class="feature_header blue-text text-center">Dinner is served!</h1>
     <v-row class="w-100 ma-0" justify="center">
       <v-col class="feature_rounded">
         <div class="title_header">

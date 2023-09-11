@@ -270,11 +270,11 @@ export default {
 
 <style>
 .blur-effect {
-  background: rgba(251, 251, 253, .75) !important;
-  backdrop-filter: blur(18px) saturate(85px);
-  -webkit-backdrop-filter: blur(18px) saturate(85px);
-  -webkit-backdrop-filter: blur(18px) saturate(86%);
-  backdrop-filter: blur(18px) saturate(86%);
+  background: rgba(251, 251, 253, 0.8) !important;
+  backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-user-select: none;

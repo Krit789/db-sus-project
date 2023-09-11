@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <v-footer class="d-flex flex-column pt-5" style="background: #ecfef666">
+  <v-footer class="d-flex flex-column pt-5 credit_container" style="background: #ecfef666">
     <h1>About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
@@ -127,6 +127,15 @@ export default {
 </template>
 
 <style>
+
+.credit_container {
+  margin: 70px 30px !important;
+  padding: 40px 20px !important;
+  border-radius: 48px;
+  vertical-align: middle;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
 .no-opacity {
   opacity: 1 !important;
 }

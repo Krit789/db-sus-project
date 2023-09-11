@@ -86,6 +86,7 @@ const {
           </v-card>
         </div>
       </v-parallax>
+      <Features/>
       <Credit/>
     </v-main>
   </Navbar>

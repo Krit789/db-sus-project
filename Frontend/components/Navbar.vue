@@ -288,7 +288,14 @@ export default {
 }
 
 .account_pane {
-  background: rgba(255, 255, 255, .8) !important;
+  background: rgba(255, 255, 255, .9) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .account_pane {
+    background: rgba(242, 241, 244, 0.95) !important;
+
+  }
 }
 
 </style>

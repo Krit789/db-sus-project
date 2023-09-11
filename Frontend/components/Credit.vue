@@ -169,6 +169,11 @@ export default {
 }
 
 @media only screen and (max-width: 960px) {
+  .credit_container {
+    margin: 10px 0px !important;
+    padding: 10px 0px !important;
+  }
+
   .profile_row_card {
     flex-direction: row;
     flex-wrap: nowrap;

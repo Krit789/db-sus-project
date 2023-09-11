@@ -8,8 +8,10 @@ const {
 <script lang="ts">
 export default {
   data: () => ({
-    DialogueEdt: false,
+    DialogueCP: false,
     editMode: false,
+    Old_password: "",
+    New_password: "",
   }),
   methods: {
 
@@ -64,7 +66,7 @@ export default {
               class="ma-2"
               color="deep-purple-lighten-2"
               variant="outlined"
-              @click="editMode = true">
+              @click="DialogueCP = true">
             Change Password
           </v-btn>
 
@@ -102,6 +104,29 @@ export default {
           <!-- ^^ only appear on edit mode ^^ -->
 
         </v-card>
+      <div class="text-center">
+        <v-dialog v-model="DialogueCP" :fullscreen="mobile" activator="#loginActivator">
+          <v-card class="blur-effect account_pane">
+            <v-card-text>
+              <h1 class="mb-3">Change Password</h1>
+              <v-sheet class="mx-auto form_container" width="auto">
+                <v-form fast-fail @submit.prevent>
+                  <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
+                  <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
+                  <v-btn block class="mt-2 bg-blue-darken-1" type="submit" @click="">
+                    Submit
+                  </v-btn>
+                </v-form>
+              </v-sheet>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn block color="primary" @click="DialogueCP = false">Cancel</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </div>
       </div>
       <!-- <v-btn v-on:click="() => $router.push({ name: 'index' })">
         Back to Index

@@ -196,10 +196,10 @@ export default {
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
-          <v-card>
+          <v-card class="blur-effect account_pane">
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
-              <v-sheet class="mx-auto" width="auto">
+              <v-sheet class="mx-auto form_container" width="auto">
                 <v-form fast-fail @submit.prevent>
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
@@ -219,10 +219,10 @@ export default {
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
-        <v-card>
+        <v-card class="blur-effect account_pane">
           <v-card-text>
             <h1 class="mb-3">Register</h1>
-            <v-sheet class="mx-auto w-100" width="auto">
+            <v-sheet class="mx-auto w-100 form_container" width="auto">
               <v-form fast-fail @submit.prevent>
                 <v-row>
                   <v-col cols="12" sm="4">
@@ -270,17 +270,25 @@ export default {
 
 <style>
 .blur-effect {
-  background: rgba(251, 251, 253, .45) !important;
-  backdrop-filter: blur(15px) saturate(85px);
-  -webkit-backdrop-filter: blur(15px) saturate(85px);
-  -webkit-backdrop-filter: blur(15px) saturate(86%);
-  backdrop-filter: blur(15px) saturate(86%);
+  background: rgba(251, 251, 253, .75) !important;
+  backdrop-filter: blur(18px) saturate(85px);
+  -webkit-backdrop-filter: blur(18px) saturate(85px);
+  -webkit-backdrop-filter: blur(18px) saturate(86%);
+  backdrop-filter: blur(18px) saturate(86%);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.form_container {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.account_pane {
+  background: rgba(255, 255, 255, .8) !important;
 }
 
 </style>

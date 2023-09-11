@@ -16,8 +16,7 @@ const {
         <div class="text-center ma-16 first-box">
           <h1 class="text-h2 font-weight-bold text-white">Seatify</h1>
           <p class="text-h5 ma-5  text-white">Satisfying your seaty needs.</p>
-          <v-btn class="blue_button">
-            Book Now!
+          <v-btn rounded = "xl" size = "x-large" class="blue_button" prepend-icon="mdi-login-variant">Book Now!
           </v-btn>
         </div>
         <!--        <div class="text-center ma-16 mt-8">-->

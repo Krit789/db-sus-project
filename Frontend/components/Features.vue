@@ -77,6 +77,7 @@
 
 .inner_text {
   padding-top: 5px;
+  text-align: justify;
 }
 
 .map_img {

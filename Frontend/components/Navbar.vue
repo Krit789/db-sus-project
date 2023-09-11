@@ -131,8 +131,8 @@ export default {
         <v-toolbar-title><p>Seatify | Seat Reservation
           Service</p></v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
-          <v-btn id="regisActivator" color="blue" variant="text">Register</v-btn>
-          <v-btn id="loginActivator" background-color="#D9D9D9">Login</v-btn>
+          <v-btn id="regisActivator" color="blue" variant="text" @click="">Register</v-btn>
+          <v-btn id="loginActivator" background-color="#D9D9D9" @click="">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <v-btn variant="text">

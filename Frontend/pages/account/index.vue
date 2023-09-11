@@ -35,7 +35,6 @@ export default {
   <Navbar>
     <v-main>
       <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8" sv-if="status == 'authenticated'">
-        <v-card>
           <div v-if="editMode == false">
             <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
             <v-text-field
@@ -103,7 +102,6 @@ export default {
           </v-btn>
           <!-- ^^ only appear on edit mode ^^ -->
 
-        </v-card>
       <div class="text-center">
         <v-dialog v-model="DialogueCP" :fullscreen="mobile" activator="#loginActivator">
           <v-card class="blur-effect account_pane">

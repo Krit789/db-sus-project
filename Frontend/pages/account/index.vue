@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import {useDisplay} from "vuetify";
 const {
   status,
   data
 } = useAuth()
+const {mobile} = useDisplay();
 
 </script>
 <script lang="ts">
@@ -12,9 +14,13 @@ export default {
     editMode: false,
     Old_password: "",
     New_password: "",
+    confirm_new_password: "",
   }),
   methods: {
-
+    passwordValidation(value: String) {
+      if (this.New_password === value) return true;
+      return "Both passwords must be similar.";
+    },
     emailValidation(value: String) {
       if (
           String(value)
@@ -34,31 +40,19 @@ export default {
 <template>
   <Navbar>
     <v-main>
-      <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8" sv-if="status == 'authenticated'">
-          <div v-if="editMode == false">
+      <div class="text-center my-8">
             <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
+            <div class="mx-md-16 mx-sm-8 mx-xs-8">
             <v-text-field
-                :model-value="data.firstName" class="my-3 mx-15" label="First Name" readonly
+                :model-value="data.firstName" label="First Name" :readonly="editMode"
                 variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.lastName" class="my-3 mx-15" label="Last Name" readonly
+            <v-text-field :model-value="data.lastName" label="Last Name" :readonly="editMode"
                           variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.tel" class="my-3 mx-15" label="Telephone Number" readonly
+            <v-text-field :model-value="data.tel" label="Telephone Number" :readonly="editMode"
                           variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.email" class="my-3 mx-15" label="Email" readonly
-                          variant="underlined"></v-text-field>
-          </div>
-          <div v-if="editMode == true">
-            <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
-            <v-text-field
-                :model-value="data.firstName" class="my-3 mx-15" label="First Name" variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.lastName" class="my-3 mx-15" label="Last Name"
-                          variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.tel" class="my-3 mx-15" label="Telephone Number"
-                          variant="underlined"></v-text-field>
-            <v-text-field :model-value="data.email" :rules="[emailValidation]" class="my-3 mx-15" label="Email"
+            <v-text-field :model-value="data.email" label="Email" :readonly="editMode"
                           variant="underlined"></v-text-field>
           </div>
-
 
           <v-btn
               v-if="editMode == true"
@@ -78,7 +72,7 @@ export default {
               class="ma-2"
               color="deep-purple-lighten-2"
               variant="outlined"
-              @click="editMode = true">
+              @click.stop="editMode = true">
             Edit
           </v-btn>
 
@@ -98,12 +92,12 @@ export default {
               color="deep-purple-lighten-2"
               variant="outlined"
               @click="editMode = false">
-            Cancle
+            Cancel
           </v-btn>
           <!-- ^^ only appear on edit mode ^^ -->
 
       <div class="text-center">
-        <v-dialog v-model="DialogueCP" :fullscreen="mobile" activator="#loginActivator">
+        <v-dialog v-model="DialogueCP" :fullscreen="mobile" >
           <v-card class="blur-effect account_pane">
             <v-card-text>
               <h1 class="mb-3">Change Password</h1>
@@ -112,6 +106,8 @@ export default {
                   <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
                   <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
+                  <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]" label="Confirm New Password" prepend-inner-icon="mdi-lock-check"
                                 type="password"></v-text-field>
                   <v-btn block class="mt-2 bg-blue-darken-1" type="submit" @click="">
                     Submit

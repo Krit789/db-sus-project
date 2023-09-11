@@ -128,7 +128,7 @@ export default {
       <v-app-bar class="blur-effect" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title><p>Seatify | Seat Reservation
+        <v-toolbar-title v-on:click="() => $router.push({ name: 'index' })"><p>Seatify | Seat Reservation
           Service</p></v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
           <v-btn color="blue" variant="text" @click.stop="dialogRe = true">Register</v-btn>

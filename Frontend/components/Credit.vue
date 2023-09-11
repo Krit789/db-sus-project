@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <v-footer class="d-flex flex-column pt-5 credit_container" style="background: #ecfef666">
+  <v-footer class="d-flex flex-column pt-5 credit_container">
     <h1>About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
@@ -129,11 +129,12 @@ export default {
 <style>
 
 .credit_container {
-  margin: 70px 30px !important;
+  margin: 3px 24px !important;
   padding: 40px 20px !important;
-  border-radius: 48px;
+  border-radius: 32px;
   vertical-align: middle;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+//box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; //background: linear-gradient(to bottom right, rgba(171, 206, 139, 0.71), #d6dec2); background: white; --tile-background-color: unset;
+
 }
 
 .no-opacity {
@@ -170,8 +171,9 @@ export default {
 
 @media only screen and (max-width: 960px) {
   .credit_container {
-    margin: 10px 0px !important;
-    padding: 10px 0px !important;
+    border-radius: 10px;
+    margin: 5px 5px 20px 5px !important;
+    padding: 25px 0px 5px 0px !important;
   }
 
   .profile_row_card {

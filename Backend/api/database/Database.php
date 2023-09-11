@@ -88,18 +88,15 @@ class Database
     {
         if ($this->tableExist($table)) {
             $sql = "SELECT $row FROM $table";
-            if ($join != null) {
+            if ($join != null)
                 $sql .= " JOIN $join";
-            }
-            if ($where != null) {
+            if ($where != null)
                 $sql .= " WHERE $where";
-            }
-            if ($order != null) {
+            if ($order != null)
                 $sql .= " ORDER BY $order";
-            }
-            if ($limit != null) {
+            if ($limit != null)
                 $sql .= " LIMIT $limit";
-            }
+
             $query = $this->mysqli->query($sql);
 
             //echo $sql; #ดูคำสั่ง sql ปิดๆ

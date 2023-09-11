@@ -16,8 +16,7 @@ const {
         <div class="text-center ma-16 first-box">
           <h1 class="text-h2 font-weight-bold text-white">Seatify</h1>
           <p class="text-h5 ma-5  text-white">Satisfying your seaty needs.</p>
-          <v-btn class="blue_button">
-            Book Now!
+          <v-btn class="blue_button" prepend-icon="mdi-login-variant" rounded="xl" size="x-large">Book Now!
           </v-btn>
         </div>
         <!--        <div class="text-center ma-16 mt-8">-->
@@ -86,8 +85,10 @@ const {
           </v-card>
         </div>
       </v-parallax>
-      <Features/>
-      <Credit/>
+      <div class="feature">
+        <Features/>
+        <Credit/>
+      </div>
     </v-main>
   </Navbar>
 </template>
@@ -124,6 +125,10 @@ body {
 
 .text-h5 {
   font-family: "Sarabun", "Roboto", sans-serif !important;
+}
+
+.feature {
+  background-color: #f5f5f7;
 }
 
 @media screen and (max-width: 430px) {

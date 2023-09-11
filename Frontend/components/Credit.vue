@@ -170,8 +170,9 @@ export default {
 
 @media only screen and (max-width: 960px) {
   .credit_container {
-    margin: 10px 0px !important;
-    padding: 10px 0px !important;
+    border-radius: 10px;
+    margin: 5px 5px 20px 5px !important;
+    padding: 25px 0px 5px 0px !important;
   }
 
   .profile_row_card {

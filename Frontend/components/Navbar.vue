@@ -131,8 +131,8 @@ export default {
         <v-toolbar-title v-on:click="() => $router.push({ name: 'index' })"><p>Seatify | Seat Reservation
           Service</p></v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
-          <v-btn color="blue" variant="text" @click.stop="dialogRe = true">Register</v-btn>
-          <v-btn background-color="#D9D9D9" @click.stop="dialogIn = true">Login</v-btn>
+          <v-btn color="blue" variant="text" @click="dialogRe = true">Register</v-btn>
+          <v-btn background-color="#D9D9D9" @click="dialogIn = true">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <v-btn variant="text">
@@ -184,11 +184,11 @@ export default {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item prepend-icon="mdi-login-variant" @click="">
-              <v-list-item-title id="loginActivator">Login</v-list-item-title>
+            <v-list-item id="loginActivator" prepend-icon="mdi-login-variant" @click="">
+              <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
-            <v-list-item prepend-icon="mdi-account-plus" @click="">
-              <v-list-item-title id="regisActivator">Register</v-list-item-title>
+            <v-list-item id="regisActivator" prepend-icon="mdi-account-plus" @click="">
+              <v-list-item-title >Register</v-list-item-title>
             </v-list-item>
           </v-list>
           <v-divider></v-divider>

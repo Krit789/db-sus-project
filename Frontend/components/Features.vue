@@ -63,8 +63,7 @@
   background-color: rgba(255, 255, 255);
   margin: 12px;
   padding: 12px 12px 0px 12px;
-  min-height: 100vh;
-//border: 1px black solid; border-radius: 32px; background-color: white; //min-width: 40vw; min-height: 500px;
+//min-height: 100vh; //border: 1px black solid; border-radius: 32px; background-color: white; //min-width: 40vw; min-height: 500px;
 }
 
 .title_header {
@@ -94,7 +93,7 @@
   margin: 0px 15px 0px 3%;
   font-size: 42px;
   z-index: 1;
-  line-height: 100%;
+  line-height: 130%;
 }
 
 .pin_location_body {
@@ -106,12 +105,11 @@
   height: 90%;
 }
 
-@media only screen and (max-width: 960px) {
-  .icon_img {
-    margin-top: -52px;
-    margin: 0px 20%;
-    height: 50px;
+@media only screen and (max-width: 600px) {
+  .pin_location_body {
+    flex-direction: row-reverse;
   }
+
 }
 </style>
 

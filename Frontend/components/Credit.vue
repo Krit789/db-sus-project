@@ -143,11 +143,8 @@ export default {
   position: absolute !important;
   width: 100% !important;;
   height: 100% !important;;
-  object-fit: cover !important;;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  object-fit: cover !important;
+//left: 0; //right: 0; //top: 0; //bottom: 0;
 }
 
 .profile_img_left {
@@ -171,7 +168,7 @@ export default {
 
   .profile_img_left {
     min-width: 15vh;
-    height: 100px;
+    height: 80px;
   }
 
   .profile_contact_container {
@@ -190,6 +187,11 @@ export default {
   .profile_contact {
     font-weight: 200;
     font-size: medium;
+  }
+
+  .profile_img {
+    height: 86% !important;
+    width: 86% !important;
   }
 }
 </style>

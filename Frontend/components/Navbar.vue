@@ -87,15 +87,15 @@ export default {
       return "E-Mail must be in correct format.";
     },
     navActions(actions: String) {
-      switch (actions){
+      switch (actions) {
         case "u-home":
           this.$router.push("/");
           break;
         case "u-booking":
-        this.$router.push("/booking");
+          this.$router.push("/booking");
           break;
         case "u-status":
-        // this.$router.push("");
+          // this.$router.push("");
           break;
       }
     },
@@ -125,7 +125,7 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar color="#F1F1F1" elevation="8" prominent>
+      <v-app-bar class="blur-effect" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title><p>Seatify | Seat Reservation
@@ -145,61 +145,61 @@ export default {
       </v-app-bar>
       <v-navigation-drawer v-model="drawer" location="left" temporary>
         <div v-if="status == 'authenticated'">
-        <v-list>
-          <v-list-item
-              :subtitle="data.email"
-              :title="data.firstName + ' ' + data.lastName"
-          >
-            <template v-slot:append>
-              <v-btn
-                size="small"
-                variant="text"
-                color="grey"
-                icon="mdi-cog"
-                @click="() => $router.push({ name: 'account' })"
-              ></v-btn>
-            </template>
-          </v-list-item>
+          <v-list>
+            <v-list-item
+                :subtitle="data.email"
+                :title="data.firstName + ' ' + data.lastName"
+            >
+              <template v-slot:append>
+                <v-btn
+                    color="grey"
+                    icon="mdi-cog"
+                    size="small"
+                    variant="text"
+                    @click="() => $router.push({ name: 'account' })"
+                ></v-btn>
+              </template>
+            </v-list-item>
           </v-list>
           <v-divider></v-divider>
-        <v-list>
-          <v-list-item v-for="(item, index) in items"
-                  :key="index" @click="navActions(item.action)" :prepend-icon="item.props.prependIcon">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list>
-          <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
-                       @click="signOut()"></v-list-item>
-        </v-list>
-      </div>
-      <div v-else>
-        <v-list>
-          <v-list-item
-              subtitle="Sign In to Continue"
-              title="Guest"
-          >
-          </v-list-item>
+          <v-list>
+            <v-list-item v-for="(item, index) in items"
+                         :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
           </v-list>
           <v-divider></v-divider>
-        <v-list>
-          <v-list-item @click="" prepend-icon="mdi-login-variant">
-                  <v-list-item-title id="loginActivator">Login</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="" prepend-icon="mdi-account-plus">
-                  <v-list-item-title id="regisActivator">Register</v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <v-divider></v-divider>
-      </div>
+          <v-list>
+            <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
+                         @click="signOut()"></v-list-item>
+          </v-list>
+        </div>
+        <div v-else>
+          <v-list>
+            <v-list-item
+                subtitle="Sign In to Continue"
+                title="Guest"
+            >
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+          <v-list>
+            <v-list-item prepend-icon="mdi-login-variant" @click="">
+              <v-list-item-title id="loginActivator">Login</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-account-plus" @click="">
+              <v-list-item-title id="regisActivator">Register</v-list-item-title>
+            </v-list-item>
+          </v-list>
+          <v-divider></v-divider>
+        </div>
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
-          <v-card>
+          <v-card class="blur-effect account_pane">
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
-              <v-sheet class="mx-auto" width="auto">
+              <v-sheet class="mx-auto form_container" width="auto">
                 <v-form fast-fail @submit.prevent>
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
@@ -219,10 +219,10 @@ export default {
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
-        <v-card>
+        <v-card class="blur-effect account_pane">
           <v-card-text>
             <h1 class="mb-3">Register</h1>
-            <v-sheet class="mx-auto w-100" width="auto">
+            <v-sheet class="mx-auto w-100 form_container" width="auto">
               <v-form fast-fail @submit.prevent>
                 <v-row>
                   <v-col cols="12" sm="4">
@@ -267,3 +267,28 @@ export default {
     </v-layout>
   </v-card>
 </template>
+
+<style>
+.blur-effect {
+  background: rgba(251, 251, 253, 0.8) !important;
+  backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.form_container {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.account_pane {
+  background: rgba(255, 255, 255, .8) !important;
+}
+
+</style>

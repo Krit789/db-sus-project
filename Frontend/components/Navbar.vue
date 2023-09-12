@@ -269,36 +269,7 @@ export default {
 </template>
 
 <style>
-.blur-effect {
-
-
-  background: rgba(245, 245, 247, .72) !important;
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(85px);
-  -webkit-backdrop-filter: blur(20px) saturate(85px);
-  -webkit-backdrop-filter: blur(15px) saturate(86%);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.form_container {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.account_pane {
-  background: rgba(255, 255, 255, .86) !important;
-}
-
-@media screen and (max-width: 600px) {
-  .account_pane {
-    background: rgba(242, 241, 244, 0.95) !important;
-
-  }
-}
+@import "@/components/stylesheets/navbar.css";
+@import "@/components/stylesheets/global.css";
 
 </style>

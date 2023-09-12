@@ -129,6 +129,7 @@ body {
 
 .feature {
   background-color: #f5f5f7;
+  margin-bottom: 32px;
 }
 
 @media screen and (max-width: 430px) {

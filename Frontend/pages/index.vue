@@ -113,18 +113,18 @@ const {
 
 
 body {
-  font-family: "Sarabun", "Roboto", sans-serif;
+  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
 .text-h2 {
-  font-family: "Sarabun", "Roboto", sans-serif !important;
+  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
   font-size: 95px !important;
   margin-bottom: 40px !important;
   text-wrap: none !important;
 }
 
 .text-h5 {
-  font-family: "Sarabun", "Roboto", sans-serif !important;
+  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
 .feature {

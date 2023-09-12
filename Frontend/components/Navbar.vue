@@ -209,12 +209,13 @@ export default {
                     mySignInHandler({ email: email, password: password })
                     ">Submit
                   </v-btn>
+                  <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
+
                 </v-form>
               </v-sheet>
             </v-card-text>
-            <v-card-actions>
-              <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
-            </v-card-actions>
+            <!--            <v-card-actions>-->
+            <!--            </v-card-actions>-->
           </v-card>
         </v-dialog>
       </div>

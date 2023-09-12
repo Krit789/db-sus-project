@@ -1,6 +1,6 @@
 .blur-effect {
     background: rgba(245, 245, 247, .72);
-    backdrop-filter: blur(20px) saturate(180px);
+    backdrop-filter: blur(20px) saturate(1.8);
     -webkit-backdrop-filter: blur(20px) saturate(180px);
     -webkit-backdrop-filter: blur(15px) saturate(86%);
     -webkit-backface-visibility: hidden;

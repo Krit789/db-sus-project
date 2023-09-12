@@ -16,5 +16,6 @@
 @media screen and (max-width: 600px) {
     .account_pane {
         background: rgba(242, 241, 244, 0.95) !important;
+        border-radius: 0px !important;
     }
 }

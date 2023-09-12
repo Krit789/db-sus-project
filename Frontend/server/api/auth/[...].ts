@@ -46,7 +46,7 @@ export default NuxtAuthHandler({
             },
             async authorize(credentials: any) {
                 const data: any = await $fetch(
-                    "http://localhost:3000/proxy/api/auth-file/login-user.php",
+                    "http://localhost:3000/proxy/api/account/login-user.php",
                     {
                         method: "POST",
                         body: {

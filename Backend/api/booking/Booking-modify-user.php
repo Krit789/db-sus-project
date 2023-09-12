@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     if (readReservation($user_data->id, $res_id)) {
         if ($data->menu[0] != null) {
+
             $menu = $data->menu;
             $obj->delete('orders', "res_id='{$res_id}'");
             $result = $obj->getResult();

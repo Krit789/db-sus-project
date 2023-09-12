@@ -128,18 +128,20 @@ export default {
       <v-app-bar class="blur-effect" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title v-on:click="() => $router.push({ name: 'index' })"><p>Seatify | Seat Reservation
-          Service</p></v-toolbar-title>
+        <v-toolbar-title><NuxtLink to="/" :custom="true">Seatify | Seat Reservation
+          Service</NuxtLink></v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
           <v-btn color="blue" variant="text" @click="dialogRe = true">Register</v-btn>
           <v-btn background-color="#D9D9D9" @click="dialogIn = true">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
+          <NuxtLink to="/account" :custom="true">
           <v-btn variant="text">
-            <p @click="() => $router.push({ name: 'account' })">
+            <p>
               {{ data.firstName }}
             </p>
           </v-btn>
+        </NuxtLink>
           <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
         </div>
       </v-app-bar>
@@ -156,7 +158,7 @@ export default {
                     icon="mdi-cog"
                     size="small"
                     variant="text"
-                    @click="() => $router.push({ name: 'account' })"
+                    @click="() => {$router.push('/account')}"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -268,10 +270,8 @@ export default {
   </v-card>
 </template>
 
-<style>
+<style scoped>
 .blur-effect {
-
-
   background: rgba(245, 245, 247, .72) !important;
   backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(85px);

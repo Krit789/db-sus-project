@@ -108,7 +108,7 @@ const {
   border-radius: 12px !important;
   box-shadow: none !important;
   text-transform: none;
-//padding: 10px;
+  padding: 10px;
 }
 
 

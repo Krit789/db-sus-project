@@ -5,7 +5,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include 'database/Database.php';
 
-use \Firebase\JWT\JWT;
+use Firebase\JWT\JWT;
 
 function readuser($id)
 {

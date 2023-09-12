@@ -122,6 +122,7 @@ class Database
                 $arg[] = "$key = '{$val}'";
             }
             $sql = "UPDATE $table SET " . implode(', ', $arg);
+            error_log(print_r($sql, TRUE)); 
             if ($where != null) {
                 $sql .= " WHERE $where";
             }

@@ -1,5 +1,5 @@
 .credit_container {
-    margin: 3px 24px !important;
+    margin: 0px auto;
     padding: 40px 20px !important;
     border-radius: 32px;
     vertical-align: middle;
@@ -7,6 +7,7 @@
     /*background: linear-gradient(to bottom right, rgba(171, 206, 139, 0.71), #d6dec2);*/
     background: white;
     --tile-background-color: unset;
+    max-width: 1256px;
 
 }
 

@@ -125,7 +125,7 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar class="blur-effect" elevation="8" prominent>
+      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title v-on:click="() => $router.push({ name: 'index' })"><p>Seatify | Seat Reservation
@@ -196,7 +196,7 @@ export default {
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile" activator="#loginActivator">
-          <v-card class="blur-effect account_pane">
+          <v-card class="account_pane blur-effect">
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
               <v-sheet class="mx-auto form_container" width="auto">
@@ -219,7 +219,7 @@ export default {
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
-        <v-card class="blur-effect account_pane">
+        <v-card class="account_pane blur-effect">
           <v-card-text>
             <h1 class="mb-3">Register</h1>
             <v-sheet class="mx-auto w-100 form_container" width="auto">

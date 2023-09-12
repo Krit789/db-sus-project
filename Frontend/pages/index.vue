@@ -94,47 +94,6 @@ const {
 </template>
 
 <style>
-
-.first-box {
-  background-color: transparent;
-  height: calc(100vh - 150px + 64px);
-  padding-top: 20vh;
-}
-
-.blue_button {
-  background-color: rgb(3, 115, 222) !important;
-  font-size: medium !important;
-  font-weight: bold;
-  border-radius: 12px !important;
-  box-shadow: none !important;
-  text-transform: none;
-//padding: 10px;
-}
-
-
-body {
-  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
-}
-
-.text-h2 {
-  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
-  font-size: 95px !important;
-  margin-bottom: 40px !important;
-  text-wrap: none !important;
-}
-
-.text-h5 {
-  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
-}
-
-.feature {
-  background-color: #f5f5f7;
-  margin-bottom: 32px;
-}
-
-@media screen and (max-width: 430px) {
-  .text-h2 {
-    font-size: 70px !important;
-  }
-}
+@import "components/stylesheets/global.css";
+@import "components/stylesheets/index.css";
 </style>

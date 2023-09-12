@@ -1,14 +1,25 @@
 .blur-effect {
-    background: rgba(245, 245, 247, .72) !important;
-    backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(85px);
-    -webkit-backdrop-filter: blur(20px) saturate(85px);
+    background: rgba(245, 245, 247, .72);
+    backdrop-filter: blur(20px) saturate(180px);
+    -webkit-backdrop-filter: blur(20px) saturate(180px);
     -webkit-backdrop-filter: blur(15px) saturate(86%);
-    backdrop-filter: blur(20px) saturate(1.8);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+
+    --colornav-backdrop-filter-opacity: 1;
+    --colornav-bg-alpha: 0.8;
+    opacity: 1;
+}
+
+.blue_button {
+    background-color: rgb(3, 115, 222) !important;
+    font-size: medium !important;
+    font-weight: bold;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    text-transform: none;
 }

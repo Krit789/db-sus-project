@@ -17,8 +17,9 @@
 
 
 .cancel_button {
-    background: transparent;
-    margin: 10px 42px 0 42px;
+    /*background: transparent;*/
+    margin: 2px auto;
+    width: 120px;
 }
 
 @media screen and (max-width: 600px) {

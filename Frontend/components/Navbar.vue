@@ -129,7 +129,7 @@ export default {
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>
-          <NuxtLink to="/" :custom="true">Seatify | Seat Reservation
+          <NuxtLink :custom="true" to="/">Seatify | Seat Reservation
             Service
           </NuxtLink>
         </v-toolbar-title>
@@ -138,7 +138,7 @@ export default {
           <v-btn background-color="#D9D9D9" @click="dialogIn = true">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
-          <NuxtLink to="/account" :custom="true">
+          <NuxtLink :custom="true" to="/account">
             <v-btn variant="text">
               <p>
                 {{ data.firstName }}
@@ -205,16 +205,23 @@ export default {
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
               <v-sheet class="mx-auto form_container" width="auto">
-                <v-form fast-fail @submit.prevent>
+                <v-form class="justify-center" fast-fail @submit.prevent>
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-                  <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1" type="submit" @click="
+                  <v-btn :disabled="!isLoginValid" block class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+                         rounded="lg" type="submit" @click="
                     mySignInHandler({ email: email, password: password })
                     ">Submit
                   </v-btn>
-                  <v-btn :variant="'plain'" color="primary" @click="dialogIn = false">Cancel</v-btn>
+                  <v-row class="pt-5" justify="center">
+                    <v-btn :variant="'plain'" class="cancel_button " color="primary" rounded="lg"
+                           @click="dialogIn = false">Cancel
+                    </v-btn>
+                  </v-row>
+
+
                 </v-form>
               </v-sheet>
             </v-card-text>
@@ -258,14 +265,18 @@ export default {
                                   type="password"></v-text-field>
                   </v-col>
                 </v-row>
-                <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1">
+                <v-btn :disabled="!isRegisValid" block class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50">
                   Submit
                 </v-btn>
+                <v-row class="pt-5" justify="center">
+                  <v-btn :variant="'plain'" class="cancel_button " color="primary" rounded="lg"
+                         @click="dialogRe = false">Cancel
+                  </v-btn>
+                </v-row>
               </v-form>
             </v-sheet>
           </v-card-text>
           <v-card-actions>
-            <v-btn block color="primary" @click="dialogRe = false">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -275,34 +286,7 @@ export default {
 </template>
 
 <style scoped>
-.blur-effect {
-  background: rgba(245, 245, 247, .72) !important;
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backdrop-filter: blur(20px) saturate(85px);
-  -webkit-backdrop-filter: blur(20px) saturate(85px);
-  -webkit-backdrop-filter: blur(15px) saturate(86%);
-  backdrop-filter: blur(20px) saturate(1.8);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.form_container {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.account_pane {
-  background: rgba(255, 255, 255, .86) !important;
-}
-
-@media screen and (max-width: 600px) {
-  .account_pane {
-    background: rgba(242, 241, 244, 0.95) !important;
-
-  }
-}
+@import "stylesheets/navbar.css";
+@import "stylesheets/global.css";
 
 </style>

@@ -34,13 +34,13 @@ export default defineNuxtConfig({
     },
     nitro: {
         routeRules: {
-            '/proxy/': {proxy: 'http://127.0.0.1:8000'},
+            '/proxy/**': {proxy: 'http://127.0.0.1:8000/**'},
         },
-        devProxy: {
-            '/proxy/': {
-                target: 'http://127.0.0.1:8000',
-                changeOrigin: true
-            }
-        }
+        // devProxy: {
+        //     '/proxy/': {
+        //         target: 'http://127.0.0.1:8000',
+        //         changeOrigin: true
+        //     }
+        // }
     }
 });

@@ -11,9 +11,21 @@
     background: rgba(255, 255, 255, .90) !important;
     width: 65vw;
     margin: auto;
+    border-radius: 20px !important;
+
+}
+
+
+.cancel_button {
+    background: transparent;
+    margin: 10px 42px 0 42px;
 }
 
 @media screen and (max-width: 600px) {
+
+}
+
+@media screen and (max-width: 1280px) {
     .account_pane {
         background: rgba(242, 241, 244, 0.95) !important;
         border-radius: 0px !important;

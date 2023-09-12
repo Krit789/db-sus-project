@@ -128,20 +128,23 @@ export default {
       <v-app-bar class="blur-effect" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title><NuxtLink to="/" :custom="true">Seatify | Seat Reservation
-          Service</NuxtLink></v-toolbar-title>
+        <v-toolbar-title>
+          <NuxtLink to="/" :custom="true">Seatify | Seat Reservation
+            Service
+          </NuxtLink>
+        </v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
           <v-btn color="blue" variant="text" @click="dialogRe = true">Register</v-btn>
           <v-btn background-color="#D9D9D9" @click="dialogIn = true">Login</v-btn>
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <NuxtLink to="/account" :custom="true">
-          <v-btn variant="text">
-            <p>
-              {{ data.firstName }}
-            </p>
-          </v-btn>
-        </NuxtLink>
+            <v-btn variant="text">
+              <p>
+                {{ data.firstName }}
+              </p>
+            </v-btn>
+          </NuxtLink>
           <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
         </div>
       </v-app-bar>
@@ -211,11 +214,12 @@ export default {
                     mySignInHandler({ email: email, password: password })
                     ">Submit
                   </v-btn>
+                  <v-btn :variant="'plain'" color="primary" @click="dialogIn = false">Cancel</v-btn>
                 </v-form>
               </v-sheet>
             </v-card-text>
             <v-card-actions>
-              <v-btn block color="primary" @click="dialogIn = false">Cancel</v-btn>
+
             </v-card-actions>
           </v-card>
         </v-dialog>

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <v-container class="feature_container" style="padding: 42px; margin-top: 12px;">
+  <v-container class="feature_container" style="padding: 12px; margin-top: 12px;">
     <h1 class="feature_header blue-text pl-12">Dinner is ready to served!</h1>
     <v-row class="feature_flex" justify="center">
       <v-col class="feature_rounded">

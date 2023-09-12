@@ -162,7 +162,7 @@ export default {
 }
 
 .profile_text {
-  font-family: "Sarabun", "Roboto", sans-serif;
+  font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
 .profile_contact {

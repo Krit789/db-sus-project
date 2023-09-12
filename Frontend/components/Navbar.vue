@@ -188,7 +188,7 @@ export default {
               <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
             <v-list-item id="regisActivator" prepend-icon="mdi-account-plus" @click="">
-              <v-list-item-title >Register</v-list-item-title>
+              <v-list-item-title>Register</v-list-item-title>
             </v-list-item>
           </v-list>
           <v-divider></v-divider>
@@ -270,9 +270,14 @@ export default {
 
 <style>
 .blur-effect {
-  background: rgba(245, 245, 247, 0.72) !important;
-  backdrop-filter: saturate(1.8) blur(20px);
+
+
+  background: rgba(245, 245, 247, .72) !important;
+  backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(20px) saturate(85px);
+  -webkit-backdrop-filter: blur(15px) saturate(86%);
+  backdrop-filter: blur(20px) saturate(1.8);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-user-select: none;

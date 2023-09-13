@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         $id = $data->res_id;
 
         #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
-        $obj->select('orders', "*", "menus using (menu_id)", "res_id={$id}", "category_id", null);
+        $obj->select('orders', "*", "menus using (menu_id)", "res_id={$id}", null, null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

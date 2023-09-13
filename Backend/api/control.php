@@ -17,15 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     // $secret_key = "Hilal ahmad khan";
     // $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
     // $user_data = $user_data->data;
+    
+    #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
     switch ($control){
-        case 1:
-            $json = array('res_id'=>$data->res_id, 'role'=>$user_data->role);
+        case 1: #Manager ยืนยันว่ามาตามที่จอง
+            $json = array('res_id'=>$data->res_id, 'role'=>$user_data->role, 'res_code'=>$data->res_code);
             $json = json_encode($json);
             header("location: bookingV2/booking-accept.php?json={$json}");
             break;
-        case 2:
-            $json = array('res_id'=>$data->res_id, 'role'=>$user_data->id);
+        case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
+            $json = array('res_id'=>$data->res_id, 'id'=>$user_data->id, 'role'=>$user_data->role);
             $json = json_encode($json);
             header("location: bookingV2/booking-cancel-user.php?json={$json}");
             break;

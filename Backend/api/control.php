@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
         case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
             $json = array('res_id'=>$data->res_id, 'id'=>$user_data->id, 'role'=>$user_data->role);
             $json = json_encode($json);
-            header("location: bookingV2/booking-cancel-user.php?json={$json}");
+            header("location: bookingV2/booking-cancel.php?json={$json}");
             break;
         case 3:
             $json = array('table_id'=>$data->table_id, 'id'=>$user_data->id, 'token'=>$user_data->token, 'arrival'=> $data->arrival, 'cus_count'=>$data->cus_count, 'menu'=>$data->menu);

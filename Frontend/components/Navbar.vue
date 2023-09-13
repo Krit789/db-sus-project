@@ -285,7 +285,7 @@ export default {
   </v-card>
 </template>
 <style scoped>
-@import "~/assets/stylesheets/navbar.css";
-@import "~/assets/stylesheets/global.css";
+@import "/assets/stylesheets/navbar.css";
+@import "/assets/stylesheets/global.css";
 
 </style>

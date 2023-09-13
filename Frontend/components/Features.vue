@@ -101,8 +101,8 @@ const {status, data, signIn, signOut} = useAuth();
 </template>
 
 <style scoped>
-@import "~/assets/stylesheets/features.css";
-@import "~/assets/stylesheets/global.css";
+@import "/assets/stylesheets/features.css";
+@import "/assets/stylesheets/global.css";
 
 </style>
 

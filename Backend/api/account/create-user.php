@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $new_password = password_hash($password, PASSWORD_DEFAULT);
     $telephone = htmlentities($data->tele);
     $role = htmlentities($data->role);
-    $token = randomToken(32);
+    $token = randomCode(32);
     // check user by email
 
     $obj->select("users", "*", null, "email='{$email}'", null, null);

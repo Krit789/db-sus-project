@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
                 'status' => 0,
                 'message' => "Code not match"
             ]);
-            
+
         }
     } else {
         echo json_encode([

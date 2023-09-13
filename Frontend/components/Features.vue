@@ -3,8 +3,10 @@
 </script>
 
 <template>
-  <v-container class="feature_container" style="padding: 12px; margin-top: 12px;">
+  <v-container class="justify-center feature_container" style="padding: 12px; margin-top: 12px;">
     <h1 class="feature_header blue-text pl-12">Dinner is ready to served!</h1>
+
+    <!-- Row 1 -->
     <v-row class="feature_flex" justify="center">
       <v-col class="feature_rounded">
         <div class="title_header">
@@ -36,9 +38,20 @@
     </v-row>
 
     <!--Row 2-->
-    <v-row class="feature_flex" justify="center">
-      <v-col class="feature_rounded row_two_container">
-        <div class="title_header"></div>
+    <v-row class="feature_rounded row_two_container" justify="center" no-gutters>
+      <v-col class="" col="">
+        <h2 class="blue-text ">Create Branches Report</h2>
+        <v-row align-content="center" class="h-100">
+          <p class="report_text">สรุปยอดรวมและดูรายงานของสาขาที่คุณต้องการ</p>
+        </v-row>
+      </v-col>
+
+      <v-col align-self="end">
+        <v-img
+            class="report_macbook"
+            src="Home/macbook_air_temp.webp"
+            width="670"
+        ></v-img>
       </v-col>
 
     </v-row>

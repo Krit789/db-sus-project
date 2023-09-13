@@ -1,5 +1,5 @@
 .nav_bar {
-    background: rgba(255, 255, 255, 0.8) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
 
 }
 
@@ -29,6 +29,6 @@
 @media screen and (max-width: 1280px) {
     .account_pane {
         background: rgba(242, 241, 244, 0.95) !important;
-        border-radius: 0px !important;
+        border-radius: 0 !important;
     }
 }

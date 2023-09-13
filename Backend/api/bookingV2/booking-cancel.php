@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
     $user = $data->id;
     $role = $data->role;
 
-    if (readReservation($user, $id) || ($role == "MANAGER" || $role == "GOD") ) {
+    if (readReservation($user, $id) || ($role == "MANAGER" || $role == "GOD")) {
         $obj->update('reservations', ['status' => 2], "res_id={$id}");
         $result = $obj->getResult();
 

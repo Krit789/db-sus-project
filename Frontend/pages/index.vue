@@ -9,8 +9,8 @@ const {
 </script>
 
 <script lang="ts">
-import "@/assets/stylesheets/global.css";
-import "@/assets/stylesheets/index.css";
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
 </script>
 
 <template>

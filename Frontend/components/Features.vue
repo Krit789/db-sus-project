@@ -4,8 +4,8 @@ const {status, data, signIn, signOut} = useAuth();
 </script>
 
 <script lang="ts">
-import "@/assets/stylesheets/features.css";
-import "@/assets/stylesheets/global.css";
+import "~/assets/stylesheets/features.css";
+import "~/assets/stylesheets/global.css";
 
 </script>
 

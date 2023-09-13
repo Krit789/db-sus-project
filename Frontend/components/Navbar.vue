@@ -28,8 +28,8 @@ const mySignInHandler = async ({
 </script>
 
 <script lang="ts">
-import "@/assets/stylesheets/navbar.css";
-import "@/assets/stylesheets/global.css";
+import "~/assets/stylesheets/navbar.css";
+import "~/assets/stylesheets/global.css";
 
 export default {
   data: () => ({

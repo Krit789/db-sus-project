@@ -2,12 +2,12 @@
 
 class Database
 {
-    private $localhost = "49.228.131.109";
-    private $username = "susproject";
-    private $password = "tIuc]@zwVzqQp)Cs";
+    private $localhost = "161.246.127.24";
+    private $username = "cllc3ljgr0005bsmnf65j9dfn";
+    private $password = "ZAE1ruy8bpMu7s7vCVIAgLPq";
     private $database = "susproject";
 
-    private $port = 3357;
+    private $port = 9062;
 
     private $mysqli = "";
     private $result = array();

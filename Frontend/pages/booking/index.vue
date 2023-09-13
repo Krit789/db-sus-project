@@ -29,7 +29,7 @@ async function test() {
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Bookings</h1>
       <v-sheet 
     rounded="lg"
-    class="ma-md-8 ma-xs-0 text-center">
+    class="mt-8 ma-md-8 ma-xs-1 text-center">
     <v-stepper :mobile="mobile" :items="['Select Branches', 'Choose Date', 'Choose Seat', 'Summary']">
   <template v-slot:item.1>
     <v-card title="Select Branches" flat>...</v-card>

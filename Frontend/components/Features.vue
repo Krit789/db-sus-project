@@ -64,7 +64,7 @@ const {status, data, signIn, signOut} = useAuth();
 
     <!--Row 3 Manage   -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-           class="mt-8" justify="center">
+           class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="blue-text ">Manage Branches</h2>
         <v-img

@@ -1,4 +1,7 @@
 <script lang="ts">
+import "@/assets/stylesheets/credit.css";
+import "@/assets/stylesheets/global.css";
+
 export default {
   computed: {
     "credCols": function () {
@@ -125,10 +128,3 @@ export default {
     </v-row>
   </v-footer>
 </template>
-
-
-<script lang="ts">
-import "@/assets/stylesheets/credit.css";
-import "@/assets/stylesheets/global.css";
-
-</script>

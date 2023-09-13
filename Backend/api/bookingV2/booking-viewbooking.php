@@ -1,25 +1,18 @@
 <?php
 header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Method:POST');
+header('Access-Control-Allow-Method:GET');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
 
-use Firebase\JWT\JWT;
-
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
     try {
-        $allheaders = getallheaders();
-        $jwt = $allheaders['Authorization'];
+        $data = json_decode($_GET['json']);
 
-        $secret_key = "Hilal ahmad khan";
-        $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
-        $user_data = $user_data->data;
-
-        $id = $user_data->id;
-        $obj->select('reservations', "*", null, "user_id='{$id}'", 'res_id DESC', null);
+        $id = $data->id;
+        $obj->select('reservations', "*", null, "user_id={$id}", 'res_id DESC', null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

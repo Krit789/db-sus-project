@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Method:POST');
+header('Access-Control-Allow-Method:GET');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
     $user = $data->id;
     $role = $data->role;
 
-    if (readReservation($user, $id) || ($role == "MANAGER" || $role == "GOD")) {
+    if (readReservation($user, $id) || $role == "MANAGER" || $role == "GOD") {
         $obj->update('reservations', ['status' => 2], "res_id={$id}");
         $result = $obj->getResult();
 

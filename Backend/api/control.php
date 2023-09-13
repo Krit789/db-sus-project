@@ -39,33 +39,45 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $json = json_encode($json);
             header("location: bookingV2/booking-modify-user.php?json={$json}");
             break;
-        case 5: #เรัียกดูอาหารของ location_id ที่ส่งมาทั้งหมด
+        case 5: #เรียกดูอาหารของ location_id ที่ส่งมา ทั้งหมด
             $json = array('location_id' => $data->location_id);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewallfood-location.php?json={$json}");
             break;
-        case 6: #
+        case 6: #เรียกดูอาหารการจองล่วงหน้าด้วย res_id
             $json = array('res_id' => $data->res_id);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewallfoodorder-user?json={$json}");
             break;
-        case 7:
-            header("location: bookingV2/booking-viewalllocation-user.php");
+        case 7: #เรียกดูสาขาทั้งหมด
+            header("location: bookingV2/booking-viewalllocation.php");
             break;
-        case 8:
+        case 8: #เรียกดูการจองทั้งหมดของคนที่ login
             $json = array('id' => $user_data->id);
             $json = json_encode($json);
-            header("location: bookingV2/booking-ViewBooking-user?json={$json}");
+            header("location: bookingV2/booking-viewbooking?json={$json}");
             break;
-        case 9:
-            $json = array('id' => $user_data->id, 'res_id' => $data->res_id);
+        case 9: #เรียกดูข้อมูลรายละเอียดการจองที่ เรา เลือก ต้องส่งข้อมูล res_id
+            $json = array('id' => $user_data->id, 'res_id' => $data->res_id, 'role' => $user_data->role);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewdetailbooking-user?json={$json}");
             break;
-        case 10:
+        case 10: #เรียกดูข้อมูลรายละเอียดสาขาที่ เรา เลือก ต้องส่งข้อมูล location_id
             $json = array('location_id' => $data->location_id);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewdetailselected-location?json={$json}");
+            break;
+
+
+        case 20: # Administrator เรียกดู user ทั้งหมด
+            $json = array('role' => $user_data->role);
+            $json = json_encode($json);
+            header("location: admin/view_users.php?json={$json}");
+            break;
+        case 21: # Administrator ลบ user ทิ้ง ต้องส่งข้อมูล user_id
+            $json = array('id' => $data->user_id);
+            $json = json_encode($json);
+            header("location: admin/view_users.php?json={$json}");
             break;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Method:POST');
+header('Access-Control-Allow-Method:GET');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../database/Database.php';
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
         $customer_count = $data->cus_count;
 
         #จะเกิดอะไรขึ้น ถ้า customer กดจองที่ location_id, table_id เหมือนกัน
-        $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $id, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomRescode(8)]);
+        $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $id, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8)]);
         $result = $obj->getResult();
         if ($result[0] == 1) {
             if ($token == readuser($user)) {

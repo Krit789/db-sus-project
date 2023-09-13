@@ -127,8 +127,8 @@ export default {
 </template>
 
 
-<style>
-@import "/assets/stylesheets/credit.css";
-@import "/assets/stylesheets/global.css";
+<script lang="ts">
+import "@/assets/stylesheets/credit.css";
+import "@/assets/stylesheets/global.css";
 
-</style>
+</script>

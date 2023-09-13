@@ -7,6 +7,12 @@ const {
   signOut,
 } = useAuth()
 </script>
+
+<script lang="ts">
+import "@/assets/stylesheets/global.css";
+import "@/assets/stylesheets/index.css";
+</script>
+
 <template>
   <Navbar>
     <v-main class="mt-n16">
@@ -90,7 +96,3 @@ const {
   </Navbar>
 </template>
 
-<style>
-@import "~/assets/stylesheets/global.css";
-@import "~/assets/stylesheets/index.css";
-</style>

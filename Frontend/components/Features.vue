@@ -3,6 +3,12 @@
 const {status, data, signIn, signOut} = useAuth();
 </script>
 
+<script lang="ts">
+import "@/assets/stylesheets/features.css";
+import "@/assets/stylesheets/global.css";
+
+</script>
+
 <template>
   <v-container class="justify-center feature_container" style="padding: 12px; margin-top: 12px;">
     <h1 class="feature_header blue-text pl-12">Dinner is ready to served!</h1>
@@ -100,10 +106,6 @@ const {status, data, signIn, signOut} = useAuth();
   </v-container>
 </template>
 
-<style scoped>
-@import "/assets/stylesheets/features.css";
-@import "/assets/stylesheets/global.css";
 
-</style>
 
 

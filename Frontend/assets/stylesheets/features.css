@@ -24,18 +24,19 @@
 
 .feature_rounded {
     background-color: rgba(255, 255, 255);
-    margin: 12px 12px 0 12px;
-    padding: 0 2px 0 2px;
+    margin: 0 12px 0 12px;
+    /*padding: 0 2px 0 2px;*/
     border-radius: 32px;
     /*min-height: 100 vh;*/
     /*border: 1 px black solid;*/
     background-color: white;
     /*min-width: 40 vw;*/
+    padding: 22px 32px 20px 32px;
     min-height: 500px;
 }
 
 .title_header {
-    padding: 30px 35px 12px 35px;
+    /*padding: 30px 35px 12px 35px;*/
 }
 
 .title_body {
@@ -79,8 +80,11 @@
     /*background: linear-gradient(135deg, rgba(26, 131, 144, 0.1), rgba(109, 255, 232, 0.4));*/
     /*background: #D2F4FE;*/
     /*margin: 0 12px;*/
-    margin-top: 22px;
+    /*margin-top: 20px;*/
     padding: 22px 32px 20px 32px;
+}
+
+.row_three_container {
 }
 
 .report_macbook {

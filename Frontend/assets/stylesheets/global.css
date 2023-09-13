@@ -19,9 +19,9 @@
 
 .blue_button {
     background-color: rgb(3, 115, 222) !important;
-    font-size: medium !important;
+    /*font-size: medium !important;*/
     font-weight: bold;
-    border-radius: 12px !important;
-    box-shadow: none !important;
-    text-transform: none;
+    border-radius: 12px;
+    /*box-shadow: none !important;*/
+    /*text-transform: none;*/
 }

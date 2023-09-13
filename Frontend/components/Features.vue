@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 const {status, data, signIn, signOut} = useAuth();
 </script>
 
@@ -38,11 +39,14 @@ const {status, data, signIn, signOut} = useAuth();
     </v-row>
 
     <!--Row 2-->
-    <v-row v-if="status == 'authenticated' && data.role == 'MANAGER'" class="feature_rounded row_two_container" justify="center" no-gutters>
+    <v-row v-if="status == 'authenticated' && data.role == 'USER'" class="feature_rounded row_two_container"
+           justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="blue-text ">Create Branches Report</h2>
-        <v-row align-content="center" class="h-100">
-          <p class="report_text">สรุปยอดรวมและดูรายงานของสาขาที่คุณต้องการ</p>
+        <v-row align-content="center" class="h-100 pb-10">
+          <h3 class="report_text report_header">สรุปยอดรวมและดูรายงานของสาขาที่คุณต้องการ</h3>
+          <p class="report_text report_body">คุณสามารถดูรายงานผลลัพธ์ของสาขาได้ที่ปุ่มสร้างรายงายในหน้า............</p>
+          <p></p>
         </v-row>
       </v-col>
 

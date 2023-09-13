@@ -8,8 +8,14 @@ include '../database/Database.php';
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    try {
-        $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+
+    $data = json_decode($_GET['json']);
+
+    $id = $data->manager_id;
+    $role = $data->role;
+
+    if ($role == "MANAGER") {
+        $obj->select('locations', "*", null, "manager_id={$id}", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([
@@ -22,16 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    } catch (Exception $e) {
+    }else{
         echo json_encode([
             'status' => 0,
-            'message' => $e->getMessage(),
+            'message' => 'Insuffient Permission'
         ]);
     }
+
 } else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied',
     ]);
 }
-?>

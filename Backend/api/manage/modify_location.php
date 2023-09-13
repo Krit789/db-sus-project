@@ -8,13 +8,24 @@ include '../database/Database.php';
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    try {
-        $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+
+    $data = json_decode($_GET['json']);
+
+    $role = $data->role;
+    $id = $data->location_id;
+    $name = $data->name;
+    $address = $data->address;
+    $ot = $data->open_time;
+    $ct = $data->close_time;
+    $status = $data->status;
+
+    if ($role == "MANAGER" || $role == "GOD") {
+        $obj->update("locations", ['name'=>$name, 'address'=>$address, 'open_time'=>$ot, 'close_time'=>$ct, 'status'=>$status], "location_id={$id}");
         $res = $obj->getResult();
-        if ($res) {
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
-                'message' => $res,
+                'message' => 'Update Info Location Successful',
             ]);
         } else {
             echo json_encode([
@@ -22,16 +33,16 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    } catch (Exception $e) {
+    }else{
         echo json_encode([
             'status' => 0,
-            'message' => $e->getMessage(),
+            'message' => 'Insuffient Permission'
         ]);
     }
+
 } else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied',
     ]);
 }
-?>

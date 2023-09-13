@@ -11,7 +11,7 @@ export default {
 
 <template>
   <v-footer class="d-flex flex-column pt-5 credit_container">
-    <h1>About Us</h1>
+    <h1 style="font-size: 42px;">About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5"
            height="auto"
            max-width="8%"

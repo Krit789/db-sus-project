@@ -88,11 +88,18 @@
 }
 
 .report_text {
+    padding: 22px;
+}
+
+.report_header {
     font-size: 42px;
     font-weight: 700;
-    text-wrap: none;
-    padding: 22px;
-    margin-bottom: 42px;
+}
+
+.report_body {
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: -22px;
 }
 
 @media only screen and (max-width: 600px) {

@@ -70,9 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 
         case 20: # Administrator เรียกดู user ทั้งหมด
-            $json = array('role' => 'GOD');//$user_data->role
+            $json = array('role' => $user_data->role);
             $json = json_encode($json);
-            header("location: admin/view_users?json={$json}");
+            header("location: admin/view_users.php?json={$json}");
+            break;
+        case 21: # Administrator ลบ user ทิ้ง ต้องส่งข้อมูล user_id
+            $json = array('id' => $data->user_id);
+            $json = json_encode($json);
+            header("location: admin/view_users.php?json={$json}");
             break;
     }
 }

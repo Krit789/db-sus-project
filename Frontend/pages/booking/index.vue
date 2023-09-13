@@ -4,6 +4,18 @@ const {
   status,
   data
 } = useAuth()
+async function test(){
+    const locations: any = await fetch(
+        "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
+    {
+        method: "POST",
+        body: {
+        },
+    }
+    ).catch((error) => error).then(() => {
+      
+    });
+}
 </script>
 
 <template>

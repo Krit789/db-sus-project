@@ -128,7 +128,7 @@ export default {
 
 
 <style>
-@import "@/components/stylesheets/credit.css";
-@import "@/components/stylesheets/global.css";
+@import "~/assets/stylesheets/credit.css";
+@import "~/assets/stylesheets/global.css";
 
 </style>

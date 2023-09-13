@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+const {status, data, signIn, signOut} = useAuth();
 </script>
 
 <template>
@@ -38,7 +38,7 @@
     </v-row>
 
     <!--Row 2-->
-    <v-row class="feature_rounded row_two_container" justify="center" no-gutters>
+    <v-row v-if="status == 'authenticated' && data.role == 'MANAGER'" class="feature_rounded row_two_container" justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="blue-text ">Create Branches Report</h2>
         <v-row align-content="center" class="h-100">
@@ -59,8 +59,8 @@
 </template>
 
 <style scoped>
-@import "@/components/stylesheets/features.css";
-@import "@/components/stylesheets/global.css";
+@import "~/assets/stylesheets/features.css";
+@import "~/assets/stylesheets/global.css";
 
 </style>
 

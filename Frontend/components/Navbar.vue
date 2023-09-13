@@ -286,7 +286,7 @@ export default {
 </template>
 
 <style scoped>
-@import "stylesheets/navbar.css";
-@import "stylesheets/global.css";
+@import "~/assets/stylesheets/navbar.css";
+@import "~/assets/stylesheets/global.css";
 
 </style>

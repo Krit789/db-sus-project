@@ -17,7 +17,7 @@ class Database
     public function __construct()
     {
         if (!$this->conn) {
-            $this->mysqli = new mysqli($this->localhost, $this->username, $this->password, $this->database, $this->port);
+            $this->mysqli = mysqli_connect($this->localhost, $this->username, $this->password, $this->database, $this->port);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {

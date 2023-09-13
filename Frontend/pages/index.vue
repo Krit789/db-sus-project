@@ -94,6 +94,6 @@ const {
 </template>
 
 <style>
-@import "components/stylesheets/global.css";
-@import "components/stylesheets/index.css";
+@import "~/assets/stylesheets/global.css";
+@import "~/assets/stylesheets/index.css";
 </style>

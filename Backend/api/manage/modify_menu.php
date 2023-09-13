@@ -8,13 +8,32 @@ include '../database/Database.php';
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    try {
-        $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+
+    $data = json_decode($_GET['json']);
+
+    $role = $data->role;
+    $id = $data->location_id;
+    $menu = $data->menu;
+
+    if ($role == "MANAGER" || $role == "GOD") {
+        $tmp = "";
+        $count = 0;
+        foreach ($menu as $menus){
+            if ($count != sizeof($menu)-1){
+                $tmp .= "({$id},{$menus}), ";
+            }else{
+                $tmp .= "({$id},{$menus})";
+            }
+            $count += 1;
+        }
+        $obj->delete('restrictions', "location_id={$id}");
+        $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
+
         $res = $obj->getResult();
-        if ($res) {
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
-                'message' => $res,
+                'message' => 'Modify Menus Successful',
             ]);
         } else {
             echo json_encode([
@@ -22,16 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    } catch (Exception $e) {
+
+    }else{
         echo json_encode([
             'status' => 0,
-            'message' => $e->getMessage(),
+            'message' => 'Insuffient Permission'
         ]);
     }
+
 } else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied',
     ]);
 }
-?>

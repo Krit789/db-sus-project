@@ -76,7 +76,7 @@ const {status, data, signIn, signOut} = useAuth();
         <h3 class="report_text report_header">จัดการสาขาที่คุณดูแลอยู่</h3>
         <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
         <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
-          <v-btn :variant="'elevated'" class="blue_button " rounded="lg">Manage Branches</v-btn>
+          <v-btn :variant="'outlined'" color="#0373DE" class="" rounded="lg">Manage Branches</v-btn>
         </v-row>
       </v-col>
 
@@ -91,7 +91,7 @@ const {status, data, signIn, signOut} = useAuth();
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
         <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
-          <v-btn :variant="'elevated'" class="blue_button " rounded="lg">Manage Menu</v-btn>
+          <v-btn :variant="'outlined'" color="#0373DE" class="" rounded="lg">Manage Menu</v-btn>
         </v-row>
       </v-col>
     </v-row>

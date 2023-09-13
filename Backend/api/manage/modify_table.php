@@ -8,13 +8,22 @@ include '../database/Database.php';
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    try {
-        $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+
+    $data = json_decode($_GET['json']);
+
+    $role = $data->role;
+    $id = $data->table_id;
+    $name = $data->name;
+    $capa = $data->capacity;
+
+    if ($role == "MANAGER" || $role == "GOD") {
+        $obj->update("tables", ['name'=> $name, 'capacity' => $capa], "table_id={$id}");
+
         $res = $obj->getResult();
-        if ($res) {
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
-                'message' => $res,
+                'message' => 'Modify Table Successful',
             ]);
         } else {
             echo json_encode([
@@ -22,16 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    } catch (Exception $e) {
+
+    }else{
         echo json_encode([
             'status' => 0,
-            'message' => $e->getMessage(),
+            'message' => 'Insuffient Permission'
         ]);
     }
+
 } else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied',
     ]);
 }
-?>

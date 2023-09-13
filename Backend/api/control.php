@@ -19,32 +19,32 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
     switch ($control) {
-        case 1: #Manager ยืนยันว่ามาตามที่จอง
+        case 1: #Manager ยืนยันว่ามาตามที่จอง ต้องส่งข้อมูล res_id, res_code
             $json = array('res_id' => $data->res_id, 'role' => $user_data->role, 'res_code' => $data->res_code);
             $json = json_encode($json);
             header("location: bookingV2/booking-accept.php?json={$json}");
             break;
-        case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
+        case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้ ต้องส่งข้อมูล res_id
             $json = array('res_id' => $data->res_id, 'id' => $user_data->id, 'role' => $user_data->role);
             $json = json_encode($json);
             header("location: bookingV2/booking-cancel.php?json={$json}");
             break;
-        case 3:
+        case 3: #Customer ทำการจอง ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
             $json = array('table_id' => $data->table_id, 'id' => $user_data->id, 'token' => $user_data->token, 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu);
             $json = json_encode($json);
             header("location: bookingV2/booking-create-user.php?json={$json}");
             break;
-        case 4:
+        case 4: #Customer ต้องการแก้ไขการจอง ต้องส่งข้อมูล res_id, arrival, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
             $json = array('id' => $user_data->id, 'res_id' => $data->res_id, 'arrival' => $data->arrival, 'menu' => $data->menu);
             $json = json_encode($json);
             header("location: bookingV2/booking-modify-user.php?json={$json}");
             break;
-        case 5:
+        case 5: #เรัียกดูอาหารของ location_id ที่ส่งมาทั้งหมด
             $json = array('location_id' => $data->location_id);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewallfood-location.php?json={$json}");
             break;
-        case 6:
+        case 6: #
             $json = array('res_id' => $data->res_id);
             $json = json_encode($json);
             header("location: bookingV2/booking-viewallfoodorder-user?json={$json}");

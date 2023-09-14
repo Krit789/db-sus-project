@@ -7,12 +7,12 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = json_decode($_GET['json']);
 
     $role = $data->role;
 
-    if ($role == "GOD"){
+    if ($role == "GOD") {
 
         $obj->select("users", "*", null, null, null, null);
         $result = $obj->getResult();
@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             'status' => 1,
             'message' => $result
         ]);
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insufficient Permission'

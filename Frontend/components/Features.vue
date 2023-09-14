@@ -11,7 +11,7 @@ import "~/assets/stylesheets/global.css";
     <h1 class="feature_header blue-text pl-4 mb-5">Dinner is ready to served!</h1>
 
     <!-- Row 1 -->
-    <v-row class="feature_flex" justify="center">
+    <v-row class="feature_flex mx-3" justify="center">
       <v-col class="feature_rounded">
         <div class="title_header">
           <h2 class="blue-text">Find your favorite restaurant</h2>
@@ -43,7 +43,7 @@ import "~/assets/stylesheets/global.css";
 
     <!--Row 2 Create Branches Report   -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-           class="feature_rounded row_two_container mt-8"
+           class="feature_rounded row_two_container mt-8 mx-3"
            justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="blue-text ">Create Branches Report</h2>

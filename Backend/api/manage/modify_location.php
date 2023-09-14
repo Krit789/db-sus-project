@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $status = $data->status;
 
     if ($role == "MANAGER" || $role == "GOD") {
-        $obj->update("locations", ['name'=>$name, 'address'=>$address, 'open_time'=>$ot, 'close_time'=>$ct, 'status'=>$status], "location_id={$id}");
+        $obj->update("locations", ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => $status], "location_id={$id}");
         $res = $obj->getResult();
         if ($res[0] == 1) {
             echo json_encode([
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

@@ -18,10 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     if ($role == "MANAGER" || $role == "GOD") {
         $tmp = "";
         $count = 0;
-        foreach ($menu as $menus){
-            if ($count != sizeof($menu)-1){
+        foreach ($menu as $menus) {
+            if ($count != sizeof($menu) - 1) {
                 $tmp .= "({$id},{$menus}), ";
-            }else{
+            } else {
                 $tmp .= "({$id},{$menus})";
             }
             $count += 1;
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             ]);
         }
 
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

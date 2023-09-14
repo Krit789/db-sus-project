@@ -207,7 +207,7 @@ export default {
           <v-card class="blur-effect account_pane">
             <v-card-text>
               <h1 class="mb-3">Sign In</h1>
-              <v-sheet class="mx-auto form_container" width="auto">
+              <v-sheet class="mx-auto form_container bg-transparent" width="auto">
                 <v-form class="justify-center" fast-fail @submit.prevent>
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
@@ -238,7 +238,7 @@ export default {
         <v-card class="blur-effect account_pane">
           <v-card-text>
             <h1 class="mb-3">Register</h1>
-            <v-sheet class="mx-auto w-100 form_container" width="auto">
+            <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
               <v-form fast-fail @submit.prevent>
                 <v-row>
                   <v-col cols="12" sm="4">

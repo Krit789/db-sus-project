@@ -9,12 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
     $control = $data->control;
 
-    // $allheaders = getallheaders();
-    // $jwt = $allheaders['Authorization'];
+    $allheaders = getallheaders();
+    $jwt = $allheaders['Authorization'];
 
-    // $secret_key = "Hilal ahmad khan";
-    // $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
-    // $user_data = $user_data->data;
+    $secret_key = "Hilal ahmad khan";
+    $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
+    $user_data = $user_data->data;
 
     #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 

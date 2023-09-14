@@ -7,28 +7,28 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = json_decode($_GET['json']);
 
     $role = $data->role;
     $name = $data->name;
 
-    if ($role == 'GOD'){
+    if ($role == 'GOD') {
 
-        $obj->insert('menu_category', ['name'=>$name]);
+        $obj->insert('menu_category', ['name' => $name]);
         $res = $obj->getResult();
-        if ($res[0] == 1){
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
                 'message' => 'Add Category Menu Successful'
             ]);
-        }else{
+        } else {
             echo json_encode([
                 'status' => 0,
                 'message' => 'Add Category Menu Failed Successful'
             ]);
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

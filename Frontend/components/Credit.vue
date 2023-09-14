@@ -1,6 +1,6 @@
 <script lang="ts">
-import "~/assets/stylesheets/credit.css";
-import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/credit.css"
+import "~/assets/stylesheets/global.css"
 
 export default {
   computed: {
@@ -19,7 +19,7 @@ export default {
            height="auto"
            max-width="8%"
            min-width="100px"
-           src="/rainbow-line.webp"></v-img>
+           src="images/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
         <v-card class="ma-2 pa-2 contact_card_box">
@@ -27,7 +27,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/05_Mark.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/05_Mark.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col class="profile_contact_container" cols="12" md="6">
@@ -44,7 +44,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/28_Bess.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/28_Bess.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -62,7 +62,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/30_Krit.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/30_Krit.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -79,7 +79,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/35_Jai.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/35_Jai.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -97,7 +97,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/64_Japan.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/64_Japan.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -114,7 +114,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="/aboutus/89_Tae.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="images/credit/89_Tae.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -128,8 +128,3 @@ export default {
     </v-row>
   </v-footer>
 </template>
-
-<style>
-@import "@/assets/stylesheets/credit.css";
-@import "@/assets/stylesheets/global.css";
-</style>

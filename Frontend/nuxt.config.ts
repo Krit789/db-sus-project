@@ -3,7 +3,7 @@ import vuetify from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
     devtools: {enabled: true},
-    css: ["vuetify/styles/main.sass", "~/assets/stylesheets/credit.css", "~/assets/stylesheets/features.css", "~/assets/stylesheets/global.css", "~/assets/stylesheets/index.css", "~/assets/stylesheets/navbar.css"],
+    css: ["vuetify/styles/main.sass"],
     build: {
         transpile: ["vuetify"],
     },

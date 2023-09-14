@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 
 const {status, data, signIn, signOut} = useAuth();
-
-import "~/assets/stylesheets/features.css";
-import "~/assets/stylesheets/global.css";
 </script>
 
 <template>
@@ -21,7 +18,7 @@ import "~/assets/stylesheets/global.css";
           <v-img
               class="map_img"
               height="640"
-              src="Home/PChang_Apple_Map.webp"
+              src="images/home/PChang_Apple_Map.webp"
           ></v-img>
         </div>
       </v-col>
@@ -34,7 +31,7 @@ import "~/assets/stylesheets/global.css";
           <v-img
               class="icon_img"
               max-height="350"
-              src="Home/Swensens.webp"
+              src="images/home/Swensens.webp"
           ></v-img>
           <h1 class="icon_text">สำรวจร้านอาหารชั้นเลิศรอบตัวคุณ!</h1>
         </div>
@@ -59,7 +56,7 @@ import "~/assets/stylesheets/global.css";
       <v-col align-self="end">
         <v-img
             class="report_macbook"
-            src="Home/macbook_air_temp.webp"
+            src="images/home/macbook_air_temp.webp"
             width="670"
         ></v-img>
       </v-col>
@@ -137,10 +134,10 @@ import "~/assets/stylesheets/global.css";
   </v-container>
 </template>
 
-<style>
-@import "@/assets/stylesheets/features.css";
-@import "@/assets/stylesheets/global.css";
+<script lang="ts">
+import "~/assets/stylesheets/features.css";
+import "~/assets/stylesheets/global.css";
 
-</style>
+</script>
 
 

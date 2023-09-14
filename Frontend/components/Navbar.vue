@@ -19,10 +19,10 @@ const mySignInHandler = async ({
   });
   if (error) {
     // Do your custom error handling here
-    alert(error);
+    return false;
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, {external: false});
+    return true;
   }
 };
 </script>
@@ -45,6 +45,11 @@ export default {
     dialogRe: false,
     drawer: false,
     group: null,
+    snackbar: false,
+    NotiText: '',
+    NotiColor: '',
+    NotiIcon: '',
+    timeout: 2000,
     items: [
       {
         title: "Home",
@@ -129,6 +134,17 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
+        <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      :color="NotiColor"
+    >
+    <v-icon
+          start
+          :icon="NotiIcon"
+        >
+      </v-icon>{{ NotiText }}
+    </v-snackbar>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>
@@ -159,13 +175,18 @@ export default {
                 :title="data.firstName + ' ' + data.lastName"
             >
               <template v-slot:append>
+                <v-tooltip text="Account Settings">
+                  <template v-slot:activator="{ props }">
                 <v-btn
                     color="grey"
                     icon="mdi-cog"
                     size="small"
                     variant="text"
+                    v-bind="props"
                     @click="() => {$router.push('/account')}"
                 ></v-btn>
+                  </template>
+                </v-tooltip>
               </template>
             </v-list-item>
           </v-list>
@@ -215,7 +236,7 @@ export default {
                                 type="password"></v-text-field>
                   <v-btn :disabled="!isLoginValid" block="" class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
                          rounded="lg" type="submit" @click="
-                    mySignInHandler({ email: email, password: password })
+                    mySignInHandler({ email: email, password: password }).then((val) => {if (val) {dialogIn = false; NotiText = 'Sign In Success!'; NotiColor = 'success'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;} else {NotiText = 'Sign In Failure!';NotiColor = 'error' ; NotiIcon = 'mdi-alert-circle'; snackbar = true}}) 
                     ">Submit
                   </v-btn>
                   <v-row class="pt-5" justify="center">
@@ -287,8 +308,3 @@ export default {
     </v-layout>
   </v-card>
 </template>
-
-<style>
-@import "@/assets/stylesheets/navbar.css";
-@import "@/assets/stylesheets/global.css";
-</style>

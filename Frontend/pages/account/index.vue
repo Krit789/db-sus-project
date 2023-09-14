@@ -58,7 +58,7 @@ function toTitleCase(str) {
               <v-img
                   class="mt-5 bg-white ma-2 user_image"
                   cover
-                  src="images/credit/89_Tae.webp"
+                  src="https://i.ytimg.com/vi/rjy53IOsC4U/hqdefault.jpg"
                   width="170"
               ></v-img>
             </div>

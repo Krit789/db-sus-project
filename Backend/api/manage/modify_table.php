@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     $capa = $data->capacity;
 
     if ($role == "MANAGER" || $role == "GOD") {
-        $obj->update("tables", ['name'=> $name, 'capacity' => $capa], "table_id={$id}");
+        $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id={$id}");
 
         $res = $obj->getResult();
         if ($res[0] == 1) {
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
             ]);
         }
 
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

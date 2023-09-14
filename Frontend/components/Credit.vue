@@ -128,3 +128,8 @@ export default {
     </v-row>
   </v-footer>
 </template>
+
+<style>
+@import "@/assets/stylesheets/credit.css";
+@import "@/assets/stylesheets/global.css";
+</style>

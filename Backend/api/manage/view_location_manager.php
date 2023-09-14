@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
             ]);
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');*/
+
+@import url("fonts.css");
 
 .blur-effect {
     background: rgba(245, 245, 247, .72);
     backdrop-filter: blur(20px) saturate(1.8);
-    -webkit-backdrop-filter: blur(20px) saturate(180px);
     -webkit-backdrop-filter: blur(15px) saturate(86%);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -25,3 +26,24 @@
     /*box-shadow: none !important;*/
     /*text-transform: none;*/
 }
+
+body {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+}
+
+.text-h2 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+    font-size: 95px !important;
+    margin-bottom: 40px !important;
+    text-wrap: none !important;
+}
+
+.text-h3 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+
+}
+
+.text-h5 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+}
+

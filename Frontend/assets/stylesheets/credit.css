@@ -42,7 +42,7 @@
 }
 
 .profile_img_left {
-    max-width: 120px;
+    max-width: 120px !important;
 }
 
 .profile_text {

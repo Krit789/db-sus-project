@@ -174,16 +174,17 @@ export default {
     <v-layout>
       <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
         <v-snackbar
-      v-model="snackbar"
-      :timeout="timeout"
-      :color="NotiColor"
-    >
-    <v-icon
-          start
-          :icon="NotiIcon"
+            v-model="snackbar"
+            :color="NotiColor"
+            :timeout="timeout"
         >
-      </v-icon>{{ NotiText }}
-    </v-snackbar>
+          <v-icon
+              :icon="NotiIcon"
+              start
+          >
+          </v-icon>
+          {{ NotiText }}
+        </v-snackbar>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>
@@ -203,7 +204,10 @@ export default {
               </p>
             </v-btn>
           </NuxtLink>
-          <v-btn color="blue" variant="text" @click="signOut({callbackUrl: '/', redirect: false}).then(() => { $router.push('/'); NotiText = 'You have been logged out'; NotiColor = 'info'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;})">Logout</v-btn>
+          <v-btn color="blue" variant="text"
+                 @click="signOut({callbackUrl: '/', redirect: false}).then(() => { $router.push('/'); NotiText = 'You have been logged out'; NotiColor = 'info'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;})">
+            Logout
+          </v-btn>
         </div>
       </v-app-bar>
       <v-navigation-drawer v-model="drawer">
@@ -216,14 +220,14 @@ export default {
               <template v-slot:append>
                 <v-tooltip text="Account Settings">
                   <template v-slot:activator="{ props }">
-                <v-btn
-                    color="grey"
-                    icon="mdi-cog"
-                    size="small"
-                    variant="text"
-                    v-bind="props"
-                    @click="() => {$router.push('/account')}"
-                ></v-btn>
+                    <v-btn
+                        color="grey"
+                        icon="mdi-cog"
+                        size="small"
+                        v-bind="props"
+                        variant="text"
+                        @click="() => {$router.push('/account')}"
+                    ></v-btn>
                   </template>
                 </v-tooltip>
               </template>
@@ -232,26 +236,26 @@ export default {
           <v-divider></v-divider>
           <v-list>
             <div v-for="(item, index) in items" :key="index">
-            <!-- Remember to remove debug condition -->
-            <v-list-item v-if="item.permitted.includes(data.role) || data.firstName == 'FirstName'"
-                          :prepend-icon="item.props.prependIcon" @click="navActions(item.action)"
-                         >
-              <v-list-item-title >{{ item.title }}</v-list-item-title>
-            </v-list-item>
+              <!-- Remember to remove debug condition -->
+              <v-list-item v-if="item.permitted.includes(data.role) || data.firstName == 'FirstName'"
+                           :prepend-icon="item.props.prependIcon" @click="navActions(item.action)"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
             </div>
             <!-- Remember to remove debug condition -->
             <v-menu v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
               <template v-slot:activator="{ props }">
                 <v-list-item
-                  color="primary"
-                  v-bind="props"
+                    color="primary"
+                    v-bind="props"
                 >
-                <v-list-item-title>Manage</v-list-item-title>
+                  <v-list-item-title>Manage</v-list-item-title>
                 </v-list-item>
               </template>
               <v-list>
                 <v-list-item v-for="(item, index) in management"
-                          :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
+                             :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>

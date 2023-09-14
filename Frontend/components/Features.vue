@@ -38,7 +38,7 @@ const {status, data, signIn, signOut} = useAuth();
     </v-row>
 
     <!--Row 2 Create Branches Report   -->
-            <!-- Remember to remove debug condition -->
+    <!-- Remember to remove debug condition -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
            class="feature_rounded row_two_container mx-5 mt-12"
            justify="center" no-gutters>
@@ -63,7 +63,7 @@ const {status, data, signIn, signOut} = useAuth();
     </v-row>
 
     <!--Row 3 Manage Branches and Manage Menu   -->
-            <!-- Remember to remove debug condition -->
+    <!-- Remember to remove debug condition -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
            class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">
@@ -98,7 +98,7 @@ const {status, data, signIn, signOut} = useAuth();
     </v-row>
 
     <!--Row 4 Manage   -->
-            <!-- Remember to remove debug condition -->
+    <!-- Remember to remove debug condition -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
            class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">

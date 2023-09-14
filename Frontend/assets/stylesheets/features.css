@@ -31,7 +31,7 @@
     /*border: 1 px black solid;*/
     background-color: white;
     /*min-width: 40 vw;*/
-    padding: 22px 32px 20px 32px;
+    padding: 22px 32px 20px 32px !important;
     min-height: 500px;
 }
 

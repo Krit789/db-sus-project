@@ -25,3 +25,24 @@
     /*box-shadow: none !important;*/
     /*text-transform: none;*/
 }
+
+body {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+}
+
+.text-h2 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+    font-size: 95px !important;
+    margin-bottom: 40px !important;
+    text-wrap: none !important;
+}
+
+.text-h3 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+
+}
+
+.text-h5 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+}
+

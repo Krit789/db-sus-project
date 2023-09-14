@@ -22,7 +22,7 @@ import "~/assets/stylesheets/index.css";
         <div class="text-center mt-16 first-box">
           <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
           <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>
-          <v-btn class="blue_button" prepend-icon="mdi-login-variant" rounded="xl" size="x-large">Book Now!
+          <v-btn class="blue_button" prepend-icon="mdi-login-variant" rounded="lg" size="x-large">Book Now!
           </v-btn>
         </div>
         <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">
@@ -96,3 +96,7 @@ import "~/assets/stylesheets/index.css";
   </Navbar>
 </template>
 
+<style>
+@import "@/assets/stylesheets/global.css";
+@import "@/assets/stylesheets/index.css";
+</style>

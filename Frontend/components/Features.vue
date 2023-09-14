@@ -1,17 +1,14 @@
 <script lang="ts" setup>
 
 const {status, data, signIn, signOut} = useAuth();
-</script>
 
-<script lang="ts">
 import "~/assets/stylesheets/features.css";
 import "~/assets/stylesheets/global.css";
-
 </script>
 
 <template>
   <v-container class="justify-center feature_container" style="padding: 12px; margin-top: 12px;">
-    <h1 class="feature_header blue-text pl-12">Dinner is ready to served!</h1>
+    <h1 class="feature_header blue-text pl-4 mb-5">Dinner is ready to served!</h1>
 
     <!-- Row 1 -->
     <v-row class="feature_flex" justify="center">
@@ -68,7 +65,7 @@ import "~/assets/stylesheets/global.css";
       </v-col>
     </v-row>
 
-    <!--Row 3 Manage   -->
+    <!--Row 3 Manage Branches and Manage Menu   -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
            class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">
@@ -82,7 +79,7 @@ import "~/assets/stylesheets/global.css";
         <h3 class="report_text report_header">จัดการสาขาที่คุณดูแลอยู่</h3>
         <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
         <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
-          <v-btn :variant="'outlined'" color="#0373DE" class="" rounded="lg">Manage Branches</v-btn>
+          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg">Manage Branches</v-btn>
         </v-row>
       </v-col>
 
@@ -97,7 +94,41 @@ import "~/assets/stylesheets/global.css";
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
         <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
-          <v-btn :variant="'outlined'" color="#0373DE" class="" rounded="lg">Manage Menu</v-btn>
+          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg">Manage Menu</v-btn>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <!--Row 4 Manage   -->
+    <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
+           class="mt-8 px-3" justify="center">
+      <v-col class="feature_rounded row_three_container">
+        <h2 class="blue-text ">Manage Branches</h2>
+        <v-img
+            class="report_macbook"
+            height="180"
+            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+            width="100%"
+        ></v-img>
+        <h3 class="report_text report_header">จัดการสาขาที่คุณดูแลอยู่</h3>
+        <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
+        <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
+          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg">Manage Branches</v-btn>
+        </v-row>
+      </v-col>
+
+      <v-col class="feature_rounded row_three_container">
+        <h2 class="blue-text ">Manage Menu</h2>
+        <v-img
+            class="report_macbook"
+            height="180"
+            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+            width="100%"
+        ></v-img>
+        <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
+        <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
+        <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
+          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg">Manage Menu</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -106,6 +137,10 @@ import "~/assets/stylesheets/global.css";
   </v-container>
 </template>
 
+<style>
+@import "@/assets/stylesheets/features.css";
+@import "@/assets/stylesheets/global.css";
 
+</style>
 
 

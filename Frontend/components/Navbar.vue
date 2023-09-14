@@ -128,7 +128,7 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar class="blur-effect" elevation="8" prominent>
+      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title>
@@ -288,3 +288,7 @@ export default {
   </v-card>
 </template>
 
+<style>
+@import "@/assets/stylesheets/navbar.css";
+@import "@/assets/stylesheets/global.css";
+</style>

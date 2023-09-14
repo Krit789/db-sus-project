@@ -34,18 +34,18 @@ async function test() {
           rounded="lg">
         <v-stepper :items="['Select Branches', 'Choose Date', 'Choose Seat', 'Summary']" :mobile="mobile">
           <template v-slot:item.1>
-            <v-card flat title="Select Branches">...</v-card>
+            <v-card flat="" title="Select Branches">...</v-card>
           </template>
 
           <template v-slot:item.2>
-            <v-card flat title="Choose Date">...</v-card>
+            <v-card flat="" title="Choose Date">...</v-card>
           </template>
 
           <template v-slot:item.3>
-            <v-card flat title="Choose Seat">...</v-card>
+            <v-card flat="" title="Choose Seat">...</v-card>
           </template>
           <template v-slot:item.4>
-            <v-card flat title="Summary">...</v-card>
+            <v-card flat="" title="Summary">...</v-card>
           </template>
         </v-stepper>
       </v-sheet>

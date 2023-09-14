@@ -50,12 +50,12 @@ import "~/assets/stylesheets/index.css";
                           :active="isActive"
                           color="deep-purple"
                           height="4"
-                          indeterminate
+                          indeterminate=""
                       ></v-progress-linear>
                     </template>
 
                     <v-img
-                        cover
+                        cover=""
                         height="250"
                         src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                     ></v-img>

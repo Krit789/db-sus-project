@@ -11,30 +11,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = json_decode($_GET['json']);
 
     $role = $data->role;
-    $table_id = $data->table_id;
+    $id = $data->menu_id;
 
-    if ($role == "MANAGER" || $role == "GOD") {
-        $tmp = "";
-        $count = 0;
-        foreach ($table_id as $id) {
-            if ($count == 0) {
-                $tmp .= "{$id}";
-            } else {
-                $tmp .= ", {$id}";
-            }
-            $count++;
-        }
-        $obj->delete("tables", "table_id in ($tmp)");
+    if ($role == "GOD") {
+
+        $obj->delete("menus", "menu_id={$id}");
         $result = $obj->getResult();
         if ($result[0] == 1) {
             echo json_encode([
                 'status' => 1,
-                'message' => "Delete Table Successful"
+                'message' => "Delete Menu Successful"
             ]);
         } else {
             echo json_encode([
                 'status' => 0,
-                'message' => "Delete Table Falied Successful"
+                'message' => "Delete Menu Falied Successful"
             ]);
         }
 

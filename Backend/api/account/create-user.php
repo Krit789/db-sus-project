@@ -19,7 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = htmlentities($data->email);
     $password = htmlentities($data->password);
     $new_password = password_hash($password, PASSWORD_DEFAULT);
-    $telephone = htmlentities($data->tele);
+    $telephone = null;
+    if (isset($data->tele)){
+        $telephone = htmlentities($data->tele);
+    }
     $role = htmlentities($data->role);
     $token = randomCode(32);
     // check user by email

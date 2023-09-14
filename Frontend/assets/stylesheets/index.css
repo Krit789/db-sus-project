@@ -11,8 +11,3 @@
     margin-bottom: 32px;
 }
 
-@media screen and (max-width: 430px) {
-    .text-h2 {
-        font-size: 70px !important;
-    }
-}

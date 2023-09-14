@@ -40,7 +40,7 @@ const {status, data, signIn, signOut} = useAuth();
     <!--Row 2 Create Branches Report   -->
             <!-- Remember to remove debug condition -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-           class="feature_rounded row_two_container mx-3"
+           class="feature_rounded row_two_container mx-5 mt-12"
            justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="blue-text ">Create Branches Report</h2>

@@ -53,6 +53,7 @@ export default {
     items: [
       {
         title: "Home",
+        permitted: "USER, MANAGER, GOD",
         value: "home",
         action: "u-home",
         props: {
@@ -61,6 +62,7 @@ export default {
       },
       {
         title: "Booking",
+        permitted: "USER",
         value: "booking",
         action: "u-booking",
         props: {
@@ -69,10 +71,38 @@ export default {
       },
       {
         title: "Status",
+        permitted: "USER",
         value: "status",
         action: "u-status",
         props: {
           prependIcon: 'mdi-list-status',
+        }
+      },
+      {
+        title: "Report",
+        permitted: "MANAGER, GOD",
+        value: "report",
+        action: "u-report",
+        props: {
+          prependIcon: '',
+        }
+      },
+    ],
+    management: [
+      {
+        title: "Manage Branch",
+        value: "mbranch",
+        action: "u-mbranch",
+        props: {
+          prependIcon: '',
+        }
+      },
+      {
+        title: "Mange Booking",
+        value: "mbooking",
+        action: "u-mbooking",
+        props: {
+          prependIcon: '',
         }
       },
     ],
@@ -104,6 +134,15 @@ export default {
           break;
         case "u-status":
           // this.$router.push("");
+          break;
+        case "u-report":
+          // this.$router.push("/");
+          break;
+        case "u-mbooking":
+          // this.$router.push("/");
+          break;
+        case "u-mbranch":
+          // this.$router.push("/");
           break;
       }
     },
@@ -192,10 +231,31 @@ export default {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item v-for="(item, index) in items"
-                         :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <div v-for="(item, index) in items" :key="index">
+            <!-- Remember to remove debug condition -->
+            <v-list-item v-if="item.permitted.includes(data.role) || data.firstName == 'FirstName'"
+                          :prepend-icon="item.props.prependIcon" @click="navActions(item.action)"
+                         >
+              <v-list-item-title >{{ item.title }}</v-list-item-title>
             </v-list-item>
+            </div>
+            <!-- Remember to remove debug condition -->
+            <v-menu v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  color="primary"
+                  v-bind="props"
+                >
+                <v-list-item-title>Manage</v-list-item-title>
+                </v-list-item>
+              </template>
+              <v-list>
+                <v-list-item v-for="(item, index) in management"
+                          :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-list>
           <v-divider></v-divider>
           <v-list>

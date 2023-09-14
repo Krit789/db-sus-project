@@ -4,9 +4,8 @@ const {status, data, signIn, signOut} = useAuth();
 </script>
 
 <template>
-  <v-container class="justify-center feature_container" style="padding: 12px; margin-top: 12px;">
+  <v-container class="justify-center feature_container pb-2 mb-8">
     <h1 class="feature_header blue-text pl-4 mb-5">Dinner is ready to served!</h1>
-
     <!-- Row 1 -->
     <v-row class="feature_flex mx-3" justify="center">
       <v-col class="feature_rounded">
@@ -40,7 +39,7 @@ const {status, data, signIn, signOut} = useAuth();
 
     <!--Row 2 Create Branches Report   -->
     <v-row v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-           class="feature_rounded row_two_container mt-8 mx-3"
+           class="feature_rounded row_two_container mx-3"
            justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="blue-text ">Create Branches Report</h2>

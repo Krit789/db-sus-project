@@ -160,19 +160,19 @@ export default {
           <NuxtLink :custom="true" to="/account">
             <v-btn variant="text">
               <p>
-                {{ data.firstName }}
+                {{ data?.firstName }}
               </p>
             </v-btn>
           </NuxtLink>
-          <v-btn color="blue" variant="text" @click="signOut()">Sign Out</v-btn>
+          <v-btn color="blue" variant="text" @click="signOut({callbackUrl: '/', redirect: false}).then(() => { $router.push('/'); NotiText = 'You have been logged out'; NotiColor = 'info'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;})">Logout</v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" location="left" temporary="">
+      <v-navigation-drawer v-model="drawer">
         <div v-if="status == 'authenticated'">
           <v-list>
             <v-list-item
-                :subtitle="data.email"
-                :title="data.firstName + ' ' + data.lastName"
+                :subtitle="data?.email"
+                :title="data?.firstName + ' ' + data?.lastName"
             >
               <template v-slot:append>
                 <v-tooltip text="Account Settings">
@@ -199,8 +199,8 @@ export default {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
-                         @click="signOut({callbackUrl: '/'})"></v-list-item>
+            <v-list-item base-color="red" prepend-icon="mdi-logout" title="Logout" value="signout"
+                         @click="signOut({callbackUrl: '/', redirect: false}).then(() => { $router.push('/'); NotiText = 'You have been logged out'; NotiColor = 'info'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;})"></v-list-item>
           </v-list>
         </div>
         <div v-else>
@@ -234,7 +234,7 @@ export default {
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-                  <v-btn :disabled="!isLoginValid" block="" class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+                  <v-btn :disabled="!isLoginValid" class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
                          rounded="lg" type="submit" @click="
                     mySignInHandler({ email: email, password: password }).then((val) => {if (val) {dialogIn = false; NotiText = 'Sign In Success!'; NotiColor = 'success'; NotiIcon = 'mdi-check-circle-outline'; snackbar = true;} else {NotiText = 'Sign In Failure!';NotiColor = 'error' ; NotiIcon = 'mdi-alert-circle'; snackbar = true}}) 
                     ">Submit
@@ -250,7 +250,6 @@ export default {
               </v-sheet>
             </v-card-text>
             <v-card-actions>
-
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -289,7 +288,7 @@ export default {
                                   type="password"></v-text-field>
                   </v-col>
                 </v-row>
-                <v-btn :disabled="!isRegisValid" block="" class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50">
+                <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50">
                   Submit
                 </v-btn>
                 <v-row class="pt-5" justify="center">

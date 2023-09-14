@@ -88,7 +88,7 @@ import "~/assets/stylesheets/index.css";
           </v-card>
         </div>
       </v-parallax>
-      <div class="feature">
+      <div class="bg-grey-lighten-4 mb-3">
         <Features/>
         <Credit/>
       </div>

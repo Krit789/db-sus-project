@@ -5,6 +5,8 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include 'database/Database.php';
 
+use Firebase\JWT\JWT;
+
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
     $control = $data->control;

@@ -3,7 +3,6 @@ header('Access-Control-Allow-Origin:*');
 header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
-include 'database/Database.php';
 
 use Firebase\JWT\JWT;
 

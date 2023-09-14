@@ -15,14 +15,14 @@ const mySignInHandler = async ({
     email,
     password,
     redirect: false,
-    callbackUrl: route.path,
+    callbackUrl: '/',
   });
   if (error) {
     // Do your custom error handling here
     alert(error);
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
-    return navigateTo(url, {external: true});
+    return navigateTo(url, {external: false});
   }
 };
 </script>
@@ -179,7 +179,7 @@ export default {
           <v-divider></v-divider>
           <v-list>
             <v-list-item base-color="red" prepend-icon="mdi-logout" title="Sign Out" value="signout"
-                         @click="signOut()"></v-list-item>
+                         @click="signOut({callbackUrl: '/'})"></v-list-item>
           </v-list>
         </div>
         <div v-else>

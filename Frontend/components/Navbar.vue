@@ -239,6 +239,7 @@ export default {
               <v-list-item-title >{{ item.title }}</v-list-item-title>
             </v-list-item>
             </div>
+            <!-- Remember to remove debug condition -->
             <v-menu v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
               <template v-slot:activator="{ props }">
                 <v-list-item

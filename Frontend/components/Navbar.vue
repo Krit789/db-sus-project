@@ -84,25 +84,25 @@ export default {
         value: "report",
         action: "u-report",
         props: {
-          prependIcon: '',
+          prependIcon: 'mdi-chart-line',
         }
       },
     ],
     management: [
       {
-        title: "Manage Branch",
+        title: "Branchs",
         value: "mbranch",
         action: "u-mbranch",
         props: {
-          prependIcon: '',
+          prependIcon: 'mdi-store-marker',
         }
       },
       {
-        title: "Mange Booking",
+        title: "Bookings",
         value: "mbooking",
         action: "u-mbooking",
         props: {
-          prependIcon: '',
+          prependIcon: 'mdi-book-multiple',
         }
       },
     ],
@@ -249,6 +249,7 @@ export default {
                 <v-list-item
                     color="primary"
                     v-bind="props"
+                    prepend-icon="mdi-tools"
                 >
                   <v-list-item-title>Management</v-list-item-title>
                 </v-list-item>

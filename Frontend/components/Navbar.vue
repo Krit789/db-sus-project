@@ -75,7 +75,7 @@ export default {
         value: "status",
         action: "u-status",
         props: {
-          prependIcon: 'mdi-list-status',
+          prependIcon: 'mdi-clipboard-text-clock',
         }
       },
       {
@@ -172,7 +172,7 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
+      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent >
         <v-snackbar
             v-model="snackbar"
             :color="NotiColor"

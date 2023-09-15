@@ -12,10 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $user = $data->id;
     $role = $data->role;
+    $status = $data->status;
 
     if ($role == "GOD") {
 
-        $obj->update("users",['status' => 2] , "user_id={$user}");
+        $obj->update("users",['status' => $status] , "user_id={$user}");
         $result = $obj->getResult();
 
         if ($result[0] == 1) {

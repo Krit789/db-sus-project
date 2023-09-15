@@ -71,10 +71,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $json = json_encode(array('role' => $user_data->role));
             header("location: admin/view_users.php?json={$json}");
             break;
-        case 21: # Administrator ลบ user ทิ้ง 
-            //ต้องส่งข้อมูล user_id
-            $json = json_encode(array('id' => $data->user_id, 'role' => $user_data->role));
-            header("location: admin/delete_user.php?json={$json}");
+        case 21: # Administrator แก้ไขสถานะ user
+            //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
+            $json = json_encode(array('id' => $data->user_id, 'role' => $user_data->role, 'status' => $data->status));
+            header("location: admin/modify_user.php?json={$json}");
             break;
         case 22: # Administrator reset password user ข้อมูล password จะอยู่ที่ message ตอนนี้
             //ต้องส่งข้อมูล user_id
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $json = json_encode(array('role' => $user_data->role, 'menu_id' => $data->menu_id));
             header("location: admin/delete_menu.php?json={$json}");
             break;
-        case 29: # Administrator เปลี่ยนสถานะของ user
+        case 29: # Administrator กำหนดหน้าที่ของ user
             //ต้องส่งข้อมูล user_id, role เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
             $json = json_encode(array('role' => $user_data->role, 'user_id' => $data->user_id, 'role_user' => $data->role));
             header("location: admin/change_role.php?json={$json}");

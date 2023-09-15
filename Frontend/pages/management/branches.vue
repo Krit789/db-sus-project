@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-  
+ 
 const {status, data, signIn, signOut} = useAuth();
 async function test() {
-  const locations: any = await fetch(
-      "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
+  const locations: any = await $fetch(
+      "http://localhost:3000/proxy/api/control.php",
       {
         method: "POST",
-        body: {},
+        body: {"type": 9,
+               "token": data?.token,
+        },
       }
-  ).catch((error) => error).then(() => {
-
+  ).catch((error) => error).then((data: any) => {
   });
 }
 </script>

@@ -3,8 +3,6 @@ definePageMeta({ auth: false })
 const {
   status,
   data,
-  signIn,
-  signOut,
 } = useAuth()
 </script>
 

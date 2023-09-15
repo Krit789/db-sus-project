@@ -8,13 +8,13 @@ export default NuxtAuthHandler({
         jwt: async ({token, user}) => {
             const isSignIn = user ? true : false;
             if (isSignIn) {
-                // token.jwt = user ? (user as any).access_token || '' : '';
                 token.id = user ? user.id || '' : '';
                 token.role = user ? (user as any).role || '' : '';
                 token.firstName = user ? (user as any).name || '' : '';
                 token.lastName = user ? (user as any).lastName || '' : '';
                 token.tel = user ? (user as any).tel || '' : '';
                 token.email = user ? (user as any).email || '' : '';
+                token.token = user ? (user as any).token || '' : '';
             }
             return Promise.resolve(token);
         },
@@ -26,6 +26,7 @@ export default NuxtAuthHandler({
             (session as any).lastName = token.lastName;
             (session as any).email = token.email;
             (session as any).tel = token.tel;
+            (session as any).token = token.token;
             return Promise.resolve(session);
         },
     },
@@ -68,6 +69,7 @@ export default NuxtAuthHandler({
                         lastName: decodedData?.data.ln,
                         tel: decodedData?.data.tele,
                         role: decodedData?.data.role,
+                        token: decodedData?.data.token
                     };
                     // console.log(u);
                     return u;

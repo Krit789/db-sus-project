@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $password = htmlentities($data->password);
     $new_password = password_hash($password, PASSWORD_DEFAULT);
     $telephone = null;
-    if (isset($data->tele)){
+    if (isset($data->tele)) {
         $telephone = htmlentities($data->tele);
     }
     $role = htmlentities($data->role);

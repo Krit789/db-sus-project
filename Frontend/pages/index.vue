@@ -17,10 +17,10 @@ import "~/assets/stylesheets/index.css";
   <Navbar>
     <v-main class="mt-n16">
       <v-parallax
-          src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/549e9b77-4c90-4c7f-8d0e-772a4ba70576/detu7o7-2822eeb6-d3ae-4744-a868-ade51aaae2f9.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzU0OWU5Yjc3LTRjOTAtNGM3Zi04ZDBlLTc3MmE0YmE3MDU3NlwvZGV0dTdvNy0yODIyZWViNi1kM2FlLTQ3NDQtYTg2OC1hZGU1MWFhYWUyZjkuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.ig5-A68gSqIF4RJn6AaIU-Z602hNKRIL1tK5NA-GQrc"
+          src="images/home/banner.webp"
       >
         <div class="text-center mt-16 first-box">
-          <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
+          <h1 class="text-h2 font-weight-bold text-white mt-16  ">Seatify</h1>
           <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>
           <v-btn class="blue_button" prepend-icon="mdi-login-variant" rounded="lg" size="x-large">Book Now!
           </v-btn>
@@ -88,7 +88,7 @@ import "~/assets/stylesheets/index.css";
           </v-card>
         </div>
       </v-parallax>
-      <div class="feature">
+      <div class="bg-grey-lighten-4 mb-3">
         <Features/>
         <Credit/>
       </div>

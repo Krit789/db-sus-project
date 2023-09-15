@@ -7,7 +7,7 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = json_decode($_GET['json']);
 
     $role = $data->role;
@@ -16,22 +16,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
     $ot = $data->open_time;
     $ct = $data->close_time;
 
-    if ($role == 'GOD'){
+    if ($role == 'GOD') {
 
-        $obj->insert('locations', ['name'=>$name, 'address'=>$address, 'open_time'=>$ot, 'close_time'=>$ct, 'status'=>3]);
+        $obj->insert('locations', ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3]);
         $res = $obj->getResult();
-        if ($res[0] == 1){
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
                 'message' => 'Add Location Successful'
             ]);
-        }else{
+        } else {
             echo json_encode([
                 'status' => 0,
                 'message' => 'Add Location Failed Successful'
             ]);
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

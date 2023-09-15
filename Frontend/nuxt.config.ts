@@ -2,7 +2,13 @@
 import vuetify from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
-    devtools: {enabled: true},
+    devtools: {
+        enabled: true,
+
+        timeline: {
+            enabled: true,
+        },
+    },
     css: ["vuetify/styles/main.sass"],
     build: {
         transpile: ["vuetify"],

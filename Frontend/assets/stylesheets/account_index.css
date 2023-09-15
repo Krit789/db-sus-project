@@ -1,0 +1,45 @@
+.your_account {
+    background: linear-gradient(0deg, rgba(26, 188, 250, .1), rgba(28, 125, 243, .1));
+}
+
+.user_image {
+    border-radius: 50%;
+    aspect-ratio: 1;
+}
+
+.user_details {
+    backdrop-filter: blur(15px) saturate(86%);
+    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
+}
+
+.user_rounded {
+    background-color: rgba(255, 255, 255);
+    margin: 0 12px 0 12px;
+    border-radius: 32px;
+    min-height: 500px;
+    padding: 22px 32px 20px 32px !important;
+    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
+
+}
+
+h2 {
+    font-size: 42px;
+}
+
+h3 {
+    font-size: 26px;
+    font-weight: 400;
+}
+
+h4 {
+    font-size: 22px;
+    font-weight: 300;
+}
+
+.main_container {
+    max-width: 1280px;
+}
+
+.windows_bg {
+    background: url(images/Wallpaper.webp);
+}

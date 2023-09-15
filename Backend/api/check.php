@@ -9,6 +9,14 @@ function readuser($id)
     return $res[0]['access_token'];
 }
 
+function readuserwithtoken($token)
+{
+    $obj = new Database();
+    $obj->select('users', '*', null, "access_token='{$token}'", null, null);
+    $res = $obj->getResult();
+    return $res[0];
+}
+
 function readReservation($id, $res)
 {
     $obj = new Database();

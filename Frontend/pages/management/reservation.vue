@@ -1,13 +1,17 @@
 <script lang="ts" setup>
+import {
+  VDataTable,
+  VDataTableServer
+} from "vuetify/labs/VDataTable";
 
-const {status, data, signIn, signOut} = useAuth();
+const { status, data, signIn, signOut } = useAuth();
 async function test() {
   const locations: any = await fetch(
-      "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
-      {
-        method: "POST",
-        body: {},
-      }
+    "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
+    {
+      method: "POST",
+      body: {},
+    }
   ).catch((error) => error).then(() => {
 
   });
@@ -16,6 +20,7 @@ async function test() {
 <script lang="ts">
 export default {
   data: () => ({
+    itemsPerPage: 10,
     testPlacement: [
       {
         id: 1,
@@ -25,7 +30,7 @@ export default {
         status: "INPROGRESS",
         cus_count: 5,
         table_id: 2,
-      },{
+      }, {
         id: 2,
         userID: 2,
         create_time: "YYYY-MM-DD HH:MI:SS",
@@ -33,7 +38,7 @@ export default {
         status: "INPROGRESS",
         cus_count: 15,
         table_id: 1,
-      },{
+      }, {
         id: 3,
         userID: 1,
         create_time: "YYYY-MM-DD HH:MI:SS",
@@ -59,10 +64,16 @@ export default {
 }
 </script>
 <template>
-    <Navbar>
-        <v-main class="">
-            <h1 class="text-h3 font-weight-bold text-Black my-5">Manage Reservation</h1>
-            <v-table
+  <Navbar>
+    <v-main class="">
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation Management</h1>
+      <template>
+        <template>
+          <v-data-table v-model:items-per-page="itemsPerPage" :headers="headers" :items="desserts" item-value="name"
+            class="elevation-1"></v-data-table>
+        </template>
+      </template>
+      <!-- <v-table
                 fixed-header
                 height="auto"
             >
@@ -115,7 +126,7 @@ export default {
                     </td>
                 </tr>
                 </tbody>
-            </v-table>
-        </v-main>
-    </Navbar>
+            </v-table> -->
+    </v-main>
+  </Navbar>
 </template>

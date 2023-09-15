@@ -90,7 +90,7 @@ export default {
     ],
     management: [
       {
-        title: "Branchs",
+        title: "Branches",
         value: "mbranch",
         action: "u-mbranch",
         props: {

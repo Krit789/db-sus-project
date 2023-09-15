@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+  
 const {status, data, signIn, signOut} = useAuth();
 async function test() {
   const locations: any = await fetch(

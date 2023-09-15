@@ -98,7 +98,7 @@ export default {
         }
       },
       {
-        title: "Bookings",
+        title: "Reservations",
         value: "mbooking",
         action: "u-mbooking",
         props: {
@@ -139,10 +139,10 @@ export default {
           // this.$router.push("/");
           break;
         case "u-mbooking":
-          // this.$router.push("/");
+          this.$router.push("/management/reservation");
           break;
         case "u-mbranch":
-          // this.$router.push("/");
+          this.$router.push("/management/branches");
           break;
       }
     },
@@ -187,7 +187,7 @@ export default {
         </v-snackbar>
         <v-app-bar-nav-icon variant="text"
                             @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>
+        <v-toolbar-title @click="() => {$router.push('/')}">
           <NuxtLink :custom="true" to="/">Seatify | Seat Reservation
             Service
           </NuxtLink>
@@ -198,7 +198,7 @@ export default {
         </div>
         <div v-else-if="status == 'authenticated' && !mobile">
           <NuxtLink :custom="true" to="/account">
-            <v-btn variant="text">
+            <v-btn variant="text" @click="() => {$router.push('/account')}">
               <p>
                 {{ data?.firstName }}
               </p>

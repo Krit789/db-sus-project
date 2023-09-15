@@ -244,22 +244,20 @@ export default {
               </v-list-item>
             </div>
             <!-- Remember to remove debug condition -->
-            <v-menu v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
+            <v-list-group v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
               <template v-slot:activator="{ props }">
                 <v-list-item
                     color="primary"
                     v-bind="props"
                 >
-                  <v-list-item-title>Manage</v-list-item-title>
+                  <v-list-item-title>Management</v-list-item-title>
                 </v-list-item>
               </template>
-              <v-list>
                 <v-list-item v-for="(item, index) in management"
                              :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
-              </v-list>
-            </v-menu>
+            </v-list-group>
           </v-list>
           <v-divider></v-divider>
           <v-list>

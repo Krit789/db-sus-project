@@ -110,38 +110,48 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $json = json_encode(array('role' => $user_data->role, 'menu_id' => $data->menu_id));
             header("location: admin/delete_menu.php?json={$json}");
             break;
+        case 29: # Administrator เปลี่ยนสถานะของ user
+            //ต้องส่งข้อมูล user_id, role เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
+            $json = json_encode(array('role' => $user_data->role, 'user_id' => $data->user_id, 'role_user' => $data->role));
+            header("location: admin/change_role.php?json={$json}");
+            break;
+        case 30: # Administrator กำหนดให้ manager ไปดูแล location
+            //ต้องส่งข้อมูล user_id, location_id
+            $json = json_encode(array('role' => $user_data->role, 'user_id' => $data->user_id, 'location_id' => $data->location_id));
+            header("location: admin/add_location_user.php?json={$json}");
+            break;
 
 
-        case 31: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก control ที่ 7
+        case 35: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก control ที่ 7
             $json = json_encode(array('manager_id' => $user_data->user_id, 'role' => $user_data->role));
             header("location: manage/view_location_manager.php?json={$json}");
             break;
-        case 32: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
-            //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time
+        case 36: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
+            //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
             $json = json_encode(array('location_id' => $data->location_id, 'name' => $data->name, 'address' => $data->address, 'open_time' => $data->ot, 'close_time' => $data->ct, 'status' => $data->status, 'role' => $user_data->role));
             header("location: manage/modify_location.php?json={$json}");
             break;
-        case 33: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
+        case 37: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
             //ต้องส่งข้อมูล location_id
             $json = json_encode(array('location_id' => $data->location_id, 'role' => $user_data->role));
             header("location: manage/view_menu.php?json={$json}");
             break;
-        case 34: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
+        case 38: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
             //ต้องส่งข้อมูล location_id, menu
             $json = json_encode(array('location_id' => $data->location_id, 'role' => $user_data->role, 'menu' => $data->menu));
             header("location: manage/modify_menu.php?json={$json}");
             break;
-        case 35: # Administrator, Manager เพิ่มโต๊ะ
+        case 39: # Administrator, Manager เพิ่มโต๊ะ
             //ต้องส่งข้อมูล location_id, name, capacity
             $json = json_encode(array('role' => $user_data->role, 'name' => $data->name, 'capacity' => $data->capacity, 'location_id' => $data->location_id));
             header("location: manage/add_table.php?json={$json}");
             break;
-        case 36: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
+        case 40: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
             //ต้องส่งข้อมูล table_id
             $json = json_encode(array('role' => $user_data->role, 'table_id' => $data->table_id));
             header("location: manage/delete_table.php?json={$json}");
             break;
-        case 37: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
+        case 41: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
             //ต้องส่งข้อมูล table_id, name, capacity
             $json = json_encode(array('role' => $user_data->role, 'table_id' => $data->table_id, 'name' => $data->name, 'capacity' => $data->capacity));
             header("location: manage/modify_table.php?json={$json}");

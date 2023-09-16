@@ -53,7 +53,7 @@ export default {
     items: [
       {
         title: "Home",
-        permitted: "USER, MANAGER, GOD",
+        permitted: ["USER, MANAGER, GOD"],
         value: "home",
         action: "u-home",
         props: {
@@ -62,7 +62,7 @@ export default {
       },
       {
         title: "Booking",
-        permitted: "USER",
+        permitted: ["USER"],
         value: "booking",
         action: "u-booking",
         props: {
@@ -71,7 +71,7 @@ export default {
       },
       {
         title: "Status",
-        permitted: "USER",
+        permitted: ["USER"],
         value: "status",
         action: "u-status",
         props: {
@@ -80,7 +80,7 @@ export default {
       },
       {
         title: "Report",
-        permitted: "MANAGER, GOD",
+        permitted: ["MANAGER", "GOD"],
         value: "report",
         action: "u-report",
         props: {
@@ -91,7 +91,7 @@ export default {
     management: [
       {
         title: "Branches",
-        permitted: "MANAGER, GOD",
+        permitted: ["MANAGER", "GOD"],
         value: "mbranch",
         action: "u-mbranch",
         props: {
@@ -100,7 +100,7 @@ export default {
       },
       {
         title: "Reservations",
-        permitted: "MANAGER, GOD",
+        permitted: ["MANAGER", "GOD"],
         value: "mbooking",
         action: "u-mbooking",
         props: {
@@ -109,7 +109,7 @@ export default {
       },
       {
         title: "Users",
-        permitted: "GOD",
+        permitted: ["GOD"],
         value: "muser",
         action: "u-muser",
         props: {
@@ -258,7 +258,7 @@ export default {
               </v-list-item>
             </div>
             <!-- Remember to remove debug condition -->
-            <v-list-group v-if="item.permitted.includes(data.role)  || data.firstName == 'FirstName'">
+            <v-list-group v-if="data.role == 'MANAGER' || data.role == 'GOD'|| data.firstName == 'FirstName'">
               <template v-slot:activator="{ props }">
                 <v-list-item
                     color="primary"
@@ -270,7 +270,7 @@ export default {
               </template>
               <v-list-item v-for="(item, index) in management"
                            :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title v-if="item.permitted.includes(data.role)">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list-group>
           </v-list>

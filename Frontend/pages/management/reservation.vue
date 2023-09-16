@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import {
-  VDataTable
-} from "vuetify/labs/VDataTable";
-const { status, data, signIn, signOut } = useAuth();
+import {VDataTable} from "vuetify/labs/VDataTable";
+
+const {status, data, signIn, signOut} = useAuth();
 </script>
 <script lang="ts">
 export default {
@@ -16,12 +15,12 @@ export default {
         sortable: false,
         key: 'id',
       },
-      { title: 'User ID', align: 'end', key: 'userID' },
-      { title: 'Reserved On', align: 'end', key: 'create_time' },
-      { title: 'Reserved For', align: 'end', key: 'arrival' },
-      { title: 'Status', align: 'end', key: 'status' },
-      { title: 'No. of Customer', align: 'end', key: 'cus_count' },
-      { title: 'Table ID', align: 'end', key: 'table_id' },
+      {title: 'User ID', align: 'end', key: 'userID'},
+      {title: 'Reserved On', align: 'end', key: 'create_time'},
+      {title: 'Reserved For', align: 'end', key: 'arrival'},
+      {title: 'Status', align: 'end', key: 'status'},
+      {title: 'No. of Customer', align: 'end', key: 'cus_count'},
+      {title: 'Table ID', align: 'end', key: 'table_id'},
     ],
     testPlacement: [
       {
@@ -55,17 +54,17 @@ export default {
       console.log(token)
       this.dtLoading = true;
       useFetch(
-        "http://localhost:3000/proxy/api/control.php",
-        {
-          method: "POST",
-          body: {
-            "type": 9,
-            "token": token
-          },
-          lazy: true,
-          server: true
-        }
-      ).catch((error) => error).then(({ status, message }) => {
+          "http://localhost:3000/proxy/api/control.php",
+          {
+            method: "POST",
+            body: {
+              "type": 9,
+              "token": token
+            },
+            lazy: true,
+            server: true
+          }
+      ).catch((error) => error).then(({status, message}) => {
         this.testPlacement = message;
         this.dtLoading = false;
       });
@@ -79,9 +78,10 @@ export default {
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation Management</h1>
       <v-btn text="Click Me to fetch data table" @click="reservations(data?.value.name)"></v-btn>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-        <v-data-table @click:row="(val, tabl) => { console.log(tabl.item.columns.id) }"
-          v-model:items-per-page="itemsPerPage" :headers="dtHeaders" :loading="dtLoading" :items="testPlacement" item-value="id"
-          class="elevation-1"></v-data-table>
+        <v-data-table v-model:items-per-page="itemsPerPage"
+                      :headers="dtHeaders" :items="testPlacement" :loading="dtLoading"
+                      class="elevation-1" item-value="id"
+                      @click:row="(val, tabl) => { console.log(tabl.item.columns.id) }"></v-data-table>
       </v-sheet>
       <!-- <v-table
                 fixed-header
@@ -138,4 +138,5 @@ export default {
                 </tbody>
             </v-table> -->
     </v-main>
-  </Navbar></template>
+  </Navbar>
+</template>

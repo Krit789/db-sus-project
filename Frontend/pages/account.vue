@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useDisplay } from "vuetify";
+import {useDisplay} from "vuetify";
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
 import "~/assets/stylesheets/account_index.css";
@@ -8,7 +8,7 @@ const {
   status,
   data
 } = useAuth()
-const { mobile } = useDisplay();
+const {mobile} = useDisplay();
 </script>
 
 
@@ -28,11 +28,11 @@ export default {
     },
     emailValidation(value: String) {
       if (
-        String(value)
-          .toLowerCase()
-          .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
+          String(value)
+              .toLowerCase()
+              .match(
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              )
       )
         return true;
 
@@ -56,7 +56,7 @@ function toTitleCase(str) {
           <v-col class="user_rounded user_details">
             <div class="justify-center">
               <v-img class="mt-5 bg-white ma-2 user_image" cover src="https://i.ytimg.com/vi/rjy53IOsC4U/hqdefault.jpg"
-                width="170"></v-img>
+                     width="170"></v-img>
             </div>
             <!--            <h2>Welcome Back!</h2>-->
             <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
@@ -71,17 +71,17 @@ function toTitleCase(str) {
           <v-card-text class="text-h3 font-weight-bold my-6  ">Your Account</v-card-text>
           <div class="mx-md-16 mx-sm-8 mx-xs-8">
             <v-text-field :model-value="data.firstName" :readonly="editMode" label="First Name"
-              variant="underlined"></v-text-field>
+                          variant="underlined"></v-text-field>
             <v-text-field :model-value="data.lastName" :readonly="editMode" label="Last Name"
-              variant="underlined"></v-text-field>
+                          variant="underlined"></v-text-field>
             <v-text-field :model-value="data.tel" :readonly="editMode" label="Telephone Number"
-              variant="underlined"></v-text-field>
+                          variant="underlined"></v-text-field>
             <v-text-field :model-value="data.email" :readonly="editMode" label="Email"
-              variant="underlined"></v-text-field>
+                          variant="underlined"></v-text-field>
           </div>
 
           <v-btn v-if="editMode == true" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
-            @click="DialogueCP = true">
+                 @click="DialogueCP = true">
             Change Password
           </v-btn>
 
@@ -90,7 +90,7 @@ function toTitleCase(str) {
 
 
           <v-btn v-if="editMode == false" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
-            @click.stop="editMode = true">
+                 @click.stop="editMode = true">
             Edit
           </v-btn>
 
@@ -100,7 +100,7 @@ function toTitleCase(str) {
           </v-btn>
 
           <v-btn v-if="editMode == true" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
-            @click.stop="editMode = false">
+                 @click.stop="editMode = false">
             Cancel
           </v-btn>
           <!-- ^^ only appear on edit mode ^^ -->
@@ -113,11 +113,12 @@ function toTitleCase(str) {
                   <v-sheet class="mx-auto form_container" width="auto">
                     <v-form fast-fail @submit.prevent>
                       <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock"
-                        type="password"></v-text-field>
+                                    type="password"></v-text-field>
                       <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock"
-                        type="password"></v-text-field>
+                                    type="password"></v-text-field>
                       <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]"
-                        label="Confirm New Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
+                                    label="Confirm New Password" prepend-inner-icon="mdi-lock-check"
+                                    type="password"></v-text-field>
                       <v-btn block class="mt-2 bg-blue-darken-1" type="submit" @click="">
                         Submit
                       </v-btn>
@@ -131,7 +132,7 @@ function toTitleCase(str) {
             </v-dialog>
           </div>
         </div>
-        <Credit class="user_rounded my-0 mx-4" />
+        <Credit class="user_rounded my-0 mx-4"/>
       </div>
     </v-main>
   </Navbar>

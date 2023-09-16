@@ -1,13 +1,15 @@
 <script lang="ts" setup>
- 
+
 const {status, data, signIn, signOut} = useAuth();
+
 async function test() {
   const locations: any = await $fetch(
       "http://localhost:3000/proxy/api/control.php",
       {
         method: "POST",
-        body: {"type": 9,
-               "token": data?.token,
+        body: {
+          "type": 9,
+          "token": data?.token,
         },
       }
   ).catch((error) => error).then((data: any) => {
@@ -59,51 +61,51 @@ export default {
 }
 </script>
 <template>
-    <Navbar>
-        <v-main class="">
-            <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
-            <v-table
-                fixed-header
-                height="auto"
-            >
-                <thead>
-                <tr>
-                    <th class="text-left">
-                    Name
-                    </th>
-                    <th class="text-left">
-                    Manager
-                    </th>
-                    <th class="text-left">
-                    Address
-                    </th>
-                    <th class="text-left">
-                    Status
-                    </th>
-                    <th class="text-left">
-                    Action
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                    v-for="item in testPlacement"
-                    :key="item.name"
-                >
-                    <td class="text-left">{{ item.name }}</td>
-                    <template v-for="manager in testManager">
-                        <td v-if="manager.id == item.managerID">{{ manager.first_name }} {{ manager.last_name}}</td>
-                    </template>
-                    <td class="text-left">{{ item.address }}</td>
-                    <td class="text-left">{{ item.status }}</td>
-                    <td>
-                        <v-btn variant="text">
-                            Manage
-                        </v-btn>
-                    </td>
-                </tr>
-                </tbody>
-            </v-table>
-        </v-main>
-    </Navbar>
+  <Navbar>
+    <v-main class="">
+      <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
+      <v-table
+          fixed-header
+          height="auto"
+      >
+        <thead>
+        <tr>
+          <th class="text-left">
+            Name
+          </th>
+          <th class="text-left">
+            Manager
+          </th>
+          <th class="text-left">
+            Address
+          </th>
+          <th class="text-left">
+            Status
+          </th>
+          <th class="text-left">
+            Action
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="item in testPlacement"
+            :key="item.name"
+        >
+          <td class="text-left">{{ item.name }}</td>
+          <template v-for="manager in testManager">
+            <td v-if="manager.id == item.managerID">{{ manager.first_name }} {{ manager.last_name }}</td>
+          </template>
+          <td class="text-left">{{ item.address }}</td>
+          <td class="text-left">{{ item.status }}</td>
+          <td>
+            <v-btn variant="text">
+              Manage
+            </v-btn>
+          </td>
+        </tr>
+        </tbody>
+      </v-table>
+    </v-main>
+  </Navbar>
 </template>

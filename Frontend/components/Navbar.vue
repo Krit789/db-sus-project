@@ -186,7 +186,7 @@ export default {
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent >
+      <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
         <v-snackbar
             v-model="snackbar"
             :color="NotiColor"
@@ -262,16 +262,16 @@ export default {
               <template v-slot:activator="{ props }">
                 <v-list-item
                     color="primary"
-                    v-bind="props"
                     prepend-icon="mdi-tools"
+                    v-bind="props"
                 >
                   <v-list-item-title>Management</v-list-item-title>
                 </v-list-item>
               </template>
-                <v-list-item v-for="(item, index) in management"
-                             :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
+              <v-list-item v-for="(item, index) in management"
+                           :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
             </v-list-group>
           </v-list>
           <v-divider></v-divider>

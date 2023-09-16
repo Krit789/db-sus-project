@@ -7,29 +7,29 @@ include '../database/Database.php';
 
 $obj = new Database();
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $data = json_decode($_GET['json']);
 
     $role = $data->role;
     $loca_id = $data->location_id;
     $id = $data->user_id;
 
-    if ($role == 'GOD'){
+    if ($role == 'GOD') {
 
         $obj->update('locations', ['manager_id' => $id], "location_id={$loca_id}");
         $res = $obj->getResult();
-        if ($res[0] == 1){
+        if ($res[0] == 1) {
             echo json_encode([
                 'status' => 1,
                 'message' => 'Add Manager to Location Successful'
             ]);
-        }else{
+        } else {
             echo json_encode([
                 'status' => 0,
                 'message' => 'Add Manager to Location Failed Successful'
             ]);
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 0,
             'message' => 'Insuffient Permission'

@@ -91,7 +91,7 @@ const {status, data, signIn, signOut} = useAuth();
         ></v-img>
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส</p>
-        <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;"> 
+        <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px;">
           <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg">Manage Menu</v-btn>
         </v-row>
       </v-col>

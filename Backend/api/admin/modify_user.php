@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if ($role == "GOD") {
 
-        $obj->update("users",['status' => $status] , "user_id={$user}");
+        $obj->update("users", ['status' => $status], "user_id={$user}");
         $result = $obj->getResult();
 
         if ($result[0] == 1) {

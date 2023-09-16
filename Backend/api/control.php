@@ -6,8 +6,6 @@ header('Content-Type:application/json');
 include 'check.php';
 $obj = new Database();
 
-use Firebase\JWT\JWT;
-
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
     $type = $data->type;
@@ -165,15 +163,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 header("location: manage/view_allreservation_location.php?json={$json}");
                 break;
         }
-    }else{
+    } else {
         echo json_encode([
             'status' => 999,
             'message' => 'Token Not Match' #ให้ออกจาระบบ แล้วไป login ใหม่
         ]);
     }
 }
-    // $allheaders = getallheaders();
-    // $jwt = $allheaders['Authorization'];
+// $allheaders = getallheaders();
+// $jwt = $allheaders['Authorization'];
 
-    // $secret_key = "Hilal ahmad khan";
-    // json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));
+// $secret_key = "Hilal ahmad khan";
+// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

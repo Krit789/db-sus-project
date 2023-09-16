@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-
+ 
 const {status, data, signIn, signOut} = useAuth();
 async function test() {
-  const locations: any = await fetch(
-      "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
+  const locations: any = await $fetch(
+      "http://localhost:3000/proxy/api/control.php",
       {
         method: "POST",
-        body: {},
+        body: {"type": 9,
+               "token": data?.token,
+        },
       }
-  ).catch((error) => error).then(() => {
-
+  ).catch((error) => error).then((data: any) => {
   });
 }
 </script>
@@ -60,7 +61,7 @@ export default {
 <template>
     <Navbar>
         <v-main class="">
-            <h1 class="text-h3 font-weight-bold text-Black my-5">Manage Branches</h1>
+            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Branches Management</h1>
             <v-table
                 fixed-header
                 height="auto"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+import {VDataTable} from "vuetify/labs/VDataTable";
 const {status, data, signIn, signOut} = useAuth();
 
 async function test() {
@@ -19,6 +19,20 @@ async function test() {
 <script lang="ts">
 export default {
   data: () => ({
+    itemsPerPage: 10,
+    dtLoading: false,
+    dtHeaders: [
+      {
+        title: 'Name',
+        align: 'start',
+        sortable: true,
+        key: 'name',
+      },
+      {title: 'Manager', align: 'end', key: 'managerID'},
+      {title: 'Address', align: 'end', key: 'address'},
+      {title: 'Status', align: 'end', key: 'status'},
+      {title: 'Action', align: 'end', key: ''},
+    ],
     testPlacement: [
       {
         name: "location1",
@@ -57,14 +71,56 @@ export default {
         last_name: "Twothpick",
       }
     ]
-  })
+  }), methods: {
+    reservations(token) {
+      console.log(token)
+      this.dtLoading = true;
+      useFetch(
+          "http://localhost:3000/proxy/api/control.php",
+          {
+            method: "POST",
+            body: {
+              "type": 7,
+              "token": token
+            },
+            lazy: true,
+            server: true
+          }
+      ).catch((error) => error).then(({status, message}) => {
+        this.testPlacement = message;
+        this.dtLoading = false;
+      });
+    }
+  }
 }
 </script>
 <template>
   <Navbar>
     <v-main class="">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
-      <v-table
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-data-table v-model:items-per-page="itemsPerPage"
+                      :headers="dtHeaders" :items="testPlacement" :loading="dtLoading"
+                      class="elevation-1" item-value="id"
+                      @click:row="(val, tabl) => { console.log(tabl.item.columns.id) }">
+                    <template v-slot:item="row">
+                      <tr>
+                        <td class="text-end">{{ row.item.selectable.name }}</td>
+                        <template v-for="manager in testManager">
+                          <td v-if="manager.id == row.item.selectable.managerID" class="text-end">{{ manager.first_name }} {{ manager.last_name }}</td>
+                        </template>
+                        <td class="text-end">{{ row.item.selectable.address }}</td>
+                        <td class="text-end">{{ row.item.selectable.status }}</td>
+                        <td class="text-end">
+                          <v-btn variant="text">
+                            Manage
+                          </v-btn>
+                        </td>
+                      </tr>
+                    </template>
+                    </v-data-table>
+      </v-sheet>
+      <!-- <v-table
           fixed-header
           height="auto"
       >
@@ -105,7 +161,7 @@ export default {
           </td>
         </tr>
         </tbody>
-      </v-table>
+      </v-table> -->
     </v-main>
   </Navbar>
 </template>

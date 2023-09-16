@@ -156,7 +156,7 @@ export default {
           this.$router.push("/management/branches");
           break;
         case "u-muser":
-          this.$router.push("/management/");
+          this.$router.push("/management/users");
           break;
       }
     },
@@ -270,7 +270,8 @@ export default {
               </template>
               <v-list-item v-for="(item, index) in management"
                            :key="index" :prepend-icon="item.props.prependIcon" @click="navActions(item.action)">
-                <v-list-item-title v-if="item.permitted.includes(data.role)">{{ item.title }}</v-list-item-title>
+                           <!-- Remember to remove debug condition -->
+                <v-list-item-title v-if="item.permitted.includes(data.role) || data.firstName == 'FirstName'">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list-group>
           </v-list>

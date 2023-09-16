@@ -5,173 +5,187 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include 'check.php';
 $obj = new Database();
+use Firebase\JWT\JWT;
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
     $type = $data->type;
     $access_token = $data->token;
     $user_data = readuserwithtoken($access_token);
-    // error_log(json_decode($user_data)->role);
+    error_log($user_data["role"]);
     #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
-    if (isset($user_data['user_id'])) {
-        $user_data = json_encode($user_data);
-        switch ($type) {
-            case 1: #Manager ยืนยันว่ามาตามที่จอง 
-                //ต้องส่งข้อมูล res_id, res_code
-                $json = json_encode(array('res_id' => $data->res_id, 'role' => json_decode($user_data)->role, 'res_code' => $data->res_code));
-                header("location: bookingV2/booking-accept.php?json={$json}");
+    switch ($type) {
+        case 1: #Manager ยืนยันว่ามาตามที่จอง 
+            //ต้องส่งข้อมูล res_id, res_code
+            $json = json_encode(array('res_id' => $data->res_id, 'role' => $user_data["role"], 'res_code' => $data->res_code));
+            header("location: bookingV2/booking-accept.php?json={$json}");
+            break;
+        case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้ 
+            //ต้องส่งข้อมูล res_id
+            $json = json_encode(array('res_id' => $data->res_id, 'id' => $user_data["user_id"], 'role' => $user_data["role"]));
+            header("location: bookingV2/booking-cancel.php?json={$json}");
+            break;
+        case 3: #Customer ทำการจอง 
+            //ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
+            $json = json_encode(array('table_id' => $data->table_id, 'id' => $user_data["user_id"], 'token' => $user_data["access_token"], 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu));
+            header("location: bookingV2/booking-create-user.php?json={$json}");
+            break;
+        case 4: #Customer ต้องการแก้ไขการจอง 
+            //ต้องส่งข้อมูล res_id, arrival, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
+            $json = json_encode(array('id' => $user_data["user_id"], 'res_id' => $data->res_id, 'arrival' => $data->arrival, 'menu' => $data->menu));
+            header("location: bookingV2/booking-modify-user.php?json={$json}");
+            break;
+        case 5: #เรียกดูอาหารของ location_id ที่ส่งมา ทั้งหมด
+            $json = json_encode(array('location_id' => $data->location_id));
+            header("location: bookingV2/booking-viewallfood-location.php?json={$json}");
+            break;
+        case 6: #เรียกดูอาหารการจองล่วงหน้าด้วย res_id
+            $json = json_encode(array('res_id' => $data->res_id));
+            header("location: bookingV2/booking-viewallfoodorder-user.php?json={$json}");
+            break;
+        case 7: # Customer, Administrator ต้องการเรียกดูสาขาทั้งหมด 
+            header("location: bookingV2/booking-viewalllocation.php");
+            break;
+        case 8: #เรียกดูการจองทั้งหมดของเจ้าของ Account
+            $json = json_encode(array('id' => $user_data["user_id"]));
+            header("location: bookingV2/booking-viewbooking.php?json={$json}");
+            break;
+        case 9: # เรียกดูการจองทั้งหมดของเจ้าของ Admin
+            if ($user_data["role"] != "GOD"){
+                echo json_encode([
+                    'status' => 0,
+                    'message' => "Insufficient Permission",
+                ]);
                 break;
-            case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้ 
-                //ต้องส่งข้อมูล res_id
-                $json = json_encode(array('res_id' => $data->res_id, 'id' => json_decode($user_data)->user_id, 'role' => json_decode($user_data)->role));
-                header("location: bookingV2/booking-cancel.php?json={$json}");
-                break;
-            case 3: #Customer ทำการจอง 
-                //ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
-                $json = json_encode(array('table_id' => $data->table_id, 'id' => json_decode($user_data)->user_id, 'token' => json_decode($user_data)->access_token, 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu));
-                header("location: bookingV2/booking-create-user.php?json={$json}");
-                break;
-            case 4: #Customer ต้องการแก้ไขการจอง 
-                //ต้องส่งข้อมูล res_id, arrival, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
-                $json = json_encode(array('id' => json_decode($user_data)->user_id, 'res_id' => $data->res_id, 'arrival' => $data->arrival, 'menu' => $data->menu));
-                header("location: bookingV2/booking-modify-user.php?json={$json}");
-                break;
-            case 5: #เรียกดูอาหารของ location_id ที่ส่งมา ทั้งหมด
-                $json = json_encode(array('location_id' => $data->location_id));
-                header("location: bookingV2/booking-viewallfood-location.php?json={$json}");
-                break;
-            case 6: #เรียกดูอาหารการจองล่วงหน้าด้วย res_id
-                $json = json_encode(array('res_id' => $data->res_id));
-                header("location: bookingV2/booking-viewallfoodorder-user.php?json={$json}");
-                break;
-            case 7: # Customer, Administrator ต้องการเรียกดูสาขาทั้งหมด 
-                header("location: bookingV2/booking-viewalllocation.php");
-                break;
-            case 8: #เรียกดูการจองทั้งหมดของเจ้าของ Account
-                $json = json_encode(array('id' => json_decode($user_data)->user_id));
-                header("location: bookingV2/booking-viewbooking.php?json={$json}");
-                break;
-            case 9: # Customer, Manger, Administrator เรียกดูข้อมูลรายละเอียดการจองที่ เรา เลือก 
-                //ต้องส่งข้อมูล res_id
-                $json = json_encode(array('id' => json_decode($user_data)->user_id, 'res_id' => $data->res_id, 'role' => json_decode($user_data)->role));
-                header("location: bookingV2/booking-viewdetailbooking-user.php?json={$json}");
-                break;
-            case 10: #เรียกดูข้อมูลรายละเอียดสาขาที่ เรา เลือก
-                //ต้องส่งข้อมูล location_id
-                $json = json_encode(array('location_id' => $data->location_id));
-                header("location: bookingV2/booking-viewdetailselected-location.php?json={$json}");
-                break;
+            }
+            try {
+                $obj->select('reservations', "*", null, null, 'res_id DESC', null);
+                $res = $obj->getResult();
+                if ($res) {
+                    echo json_encode([
+                        'status' => 1,
+                        'message' => $res,
+                    ]);
+                } else {
+                    echo json_encode([
+                        'status' => 0,
+                        'message' => "Server Problem",
+                    ]);
+                }
+            } catch (Exception $e) {
+                echo json_encode([
+                    'status' => 0,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+
+            break;
+        case 10: # Customer, Manger, Administrator เรียกดูข้อมูลรายละเอียดการจองที่ เรา เลือก 
+            //ต้องส่งข้อมูล res_id
+            $json = json_encode(array('id' => $user_data["user_id"], 'res_id' => $data->res_id, 'role' => $user_data["role"]));
+            header("location: bookingV2/booking-viewdetailbooking-user.php?json={$json}");
+            break;
+        case 11: #เรียกดูข้อมูลรายละเอียดสาขาที่ เรา เลือก
+            //ต้องส่งข้อมูล location_id
+            $json = json_encode(array('location_id' => $data->location_id));
+            header("location: bookingV2/booking-viewdetailselected-location.php?json={$json}");
+            break;
 
 
-            case 20: # Administrator เรียกดู user ทั้งหมด
-                $json = json_encode(array('role' => json_decode($user_data)->role));
-                header("location: admin/view_users.php?json={$json}");
-                break;
-            case 21: # Administrator แก้ไขสถานะ user
-                //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
-                $json = json_encode(array('id' => $data->user_id, 'role' => json_decode($user_data)->role, 'status' => $data->status));
-                header("location: admin/modify_user.php?json={$json}");
-                break;
-            case 22: # Administrator reset password user ข้อมูล password จะอยู่ที่ message ตอนนี้
-                //ต้องส่งข้อมูล user_id
-                $json = json_encode(array('id' => $data->user_id, 'role' => json_decode($user_data)->role));
-                header("location: admin/reset_password.php?json={$json}");
-                break;
-            case 23: # Administrator ต้องการเพิ่มสาขา
-                //ต้องส่งข้อมูล name, address, ot, ct #ot = open_time, ct = close_time
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'name' => $data->name, 'address' => $data->address, 'open_time' => $data->ot, 'close_time' => $data->ct));
-                header("location: admin/create_location.php?json={$json}");
-                break;
-            case 24: # Administrator เรียกดู menu ทั้งหมด
-                $json = json_encode(array('role' => json_decode($user_data)->role));
-                header("location: admin/view_allmenu.php?json={$json}");
-                break;
-            case 25: # Administrator ต้องการเพิ่มประเภทเมนู
-                //ต้องส่งข้อมูล name
-                $json = json_encode(array('name' => $data->name, 'role' => json_decode($user_data)->role));
-                header("location: admin/add_categorymenu.php?json={$json}");
-                break;
-            case 26: # Administrator ต้องการเพิ่มเมนู
-                //ต้องส่งข้อมูล name, price, (Optional)[desc, category_id, img_url];
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'm_name' => $data->name, 'm_desc' => $data->desc, 'm_category' => $data->category_id, 'price' => $data->price, 'img_url' => $data->img_url));
-                header("location: admin/add_menu.php?json={$json}");
-                break;
-            case 27: # Administrator ต้องการแก้ไขข้อมูลของเมนู
-                //ต้องส่งข้อมูล menu_id, name, price, desc, category_id, img_url;
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'menu_id' => $data->menu_id, 'm_name' => $data->name, 'm_desc' => $data->desc, 'm_category' => $data->category_id, 'price' => $data->price, 'img_url' => $data->img_url));
-                header("location: admin/modify_menu.php?json={$json}");
-                break;
-            case 28: # Administrator ต้องการลบเมนู
-                //ต้องส่งข้อมูล menu_id
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'menu_id' => $data->menu_id));
-                header("location: admin/delete_menu.php?json={$json}");
-                break;
-            case 29: # Administrator กำหนดหน้าที่ของ user
-                //ต้องส่งข้อมูล user_id, role เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'user_id' => $data->user_id, 'role_user' => $data->role));
-                header("location: admin/change_role.php?json={$json}");
-                break;
-            case 30: # Administrator กำหนดให้ manager ไปดูแล location
-                //ต้องส่งข้อมูล user_id, location_id
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'user_id' => $data->user_id, 'location_id' => $data->location_id));
-                header("location: admin/add_location_user.php?json={$json}");
-                break;
-            case 31: # Administrator เรียกดูการจองทั้งหมด
-                $json = json_encode(array('role' => json_decode($user_data)['role']));
-                header("location: admin/view_allreservation.php?json={$json}");
-                break;
+        case 20: # Administrator เรียกดู user ทั้งหมด
+            $json = json_encode(array('role' => $user_data["role"]));
+            header("location: admin/view_users.php?json={$json}");
+            break;
+        case 21: # Administrator แก้ไขสถานะ user
+            //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
+            $json = json_encode(array('id' => $data->user_id, 'role' => $user_data["role"], 'status' => $data->status));
+            header("location: admin/modify_user.php?json={$json}");
+            break;
+        case 22: # Administrator reset password user ข้อมูล password จะอยู่ที่ message ตอนนี้
+            //ต้องส่งข้อมูล user_id
+            $json = json_encode(array('id' => $data->user_id, 'role' => $user_data["role"]));
+            header("location: admin/reset_password.php?json={$json}");
+            break;
+        case 23: # Administrator ต้องการเพิ่มสาขา
+            //ต้องส่งข้อมูล name, address, ot, ct #ot = open_time, ct = close_time
+            $json = json_encode(array('role' => $user_data["role"], 'name' => $data->name, 'address' => $data->address, 'open_time' => $data->ot, 'close_time' => $data->ct));
+            header("location: admin/create_location.php?json={$json}");
+            break;
+        case 24: # Administrator เรียกดู menu ทั้งหมด
+            $json = json_encode(array('role' => $user_data["role"]));
+            header("location: admin/view_allmenu.php?json={$json}");
+            break;
+        case 25: # Administrator ต้องการเพิ่มประเภทเมนู
+            //ต้องส่งข้อมูล name
+            $json = json_encode(array('name' => $data->name, 'role' => $user_data["role"]));
+            header("location: admin/add_categorymenu.php?json={$json}");
+            break;
+        case 26: # Administrator ต้องการเพิ่มเมนู
+            //ต้องส่งข้อมูล name, price, (Optional)[desc, category_id, img_url];
+            $json = json_encode(array('role' => $user_data["role"], 'm_name' => $data->name, 'm_desc' => $data->desc, 'm_category' => $data->category_id, 'price' => $data->price, 'img_url' => $data->img_url));
+            header("location: admin/add_menu.php?json={$json}");
+            break;
+        case 27: # Administrator ต้องการแก้ไขข้อมูลของเมนู
+            //ต้องส่งข้อมูล menu_id, name, price, desc, category_id, img_url;
+            $json = json_encode(array('role' => $user_data["role"], 'menu_id' => $data->menu_id, 'm_name' => $data->name, 'm_desc' => $data->desc, 'm_category' => $data->category_id, 'price' => $data->price, 'img_url' => $data->img_url));
+            header("location: admin/modify_menu.php?json={$json}");
+            break;
+        case 28: # Administrator ต้องการลบเมนู
+            //ต้องส่งข้อมูล menu_id
+            $json = json_encode(array('role' => $user_data["role"], 'menu_id' => $data->menu_id));
+            header("location: admin/delete_menu.php?json={$json}");
+            break;
+        case 29: # Administrator กำหนดหน้าที่ของ user
+            //ต้องส่งข้อมูล user_id, role เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
+            $json = json_encode(array('role' => $user_data["role"], 'user_id' => $data->user_id, 'role_user' => $data->role));
+            header("location: admin/change_role.php?json={$json}");
+            break;
+        case 30: # Administrator กำหนดให้ manager ไปดูแล location
+            //ต้องส่งข้อมูล user_id, location_id
+            $json = json_encode(array('role' => $user_data["role"], 'user_id' => $data->user_id, 'location_id' => $data->location_id));
+            header("location: admin/add_location_user.php?json={$json}");
+            break;
 
 
-            case 35: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก control ที่ 7
-                $json = json_encode(array('manager_id' => json_decode($user_data)->user_id, 'role' => json_decode($user_data)->role));
-                header("location: manage/view_location_manager.php?json={$json}");
-                break;
-            case 36: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
-                //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
-                $json = json_encode(array('location_id' => $data->location_id, 'name' => $data->name, 'address' => $data->address, 'open_time' => $data->ot, 'close_time' => $data->ct, 'status' => $data->status, 'role' => json_decode($user_data)->role));
-                header("location: manage/modify_location.php?json={$json}");
-                break;
-            case 37: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
-                //ต้องส่งข้อมูล location_id
-                $json = json_encode(array('location_id' => $data->location_id, 'role' => json_decode($user_data)->role));
-                header("location: manage/view_menu.php?json={$json}");
-                break;
-            case 38: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
-                //ต้องส่งข้อมูล location_id, menu
-                $json = json_encode(array('location_id' => $data->location_id, 'role' => json_decode($user_data)->role, 'menu' => $data->menu));
-                header("location: manage/modify_menu.php?json={$json}");
-                break;
-            case 39: # Administrator, Manager เพิ่มโต๊ะ
-                //ต้องส่งข้อมูล location_id, name, capacity
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'name' => $data->name, 'capacity' => $data->capacity, 'location_id' => $data->location_id));
-                header("location: manage/add_table.php?json={$json}");
-                break;
-            case 40: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
-                //ต้องส่งข้อมูล table_id
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'table_id' => $data->table_id));
-                header("location: manage/delete_table.php?json={$json}");
-                break;
-            case 41: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
-                //ต้องส่งข้อมูล table_id, name, capacity
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'table_id' => $data->table_id, 'name' => $data->name, 'capacity' => $data->capacity));
-                header("location: manage/modify_table.php?json={$json}");
-                break;
-            case 42: # Administrator, Manager ดูการจองใน location ที่เลือก
-                //ต้องส่งข้อมูล location_id
-                $json = json_encode(array('role' => json_decode($user_data)->role, 'location_id' => $data->location_id));
-                header("location: manage/view_allreservation_location.php?json={$json}");
-                break;
-        }
-    } else {
-        echo json_encode([
-            'status' => 999,
-            'message' => 'Token Not Match' #ให้ออกจาระบบ แล้วไป login ใหม่
-        ]);
+        case 35: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก control ที่ 7
+            $json = json_encode(array('manager_id' => $user_data["user_id"], 'role' => $user_data["role"]));
+            header("location: manage/view_location_manager.php?json={$json}");
+            break;
+        case 36: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
+            //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
+            $json = json_encode(array('location_id' => $data->location_id, 'name' => $data->name, 'address' => $data->address, 'open_time' => $data->ot, 'close_time' => $data->ct, 'status' => $data->status, 'role' => $user_data["role"]));
+            header("location: manage/modify_location.php?json={$json}");
+            break;
+        case 37: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
+            //ต้องส่งข้อมูล location_id
+            $json = json_encode(array('location_id' => $data->location_id, 'role' => $user_data["role"]));
+            header("location: manage/view_menu.php?json={$json}");
+            break;
+        case 38: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
+            //ต้องส่งข้อมูล location_id, menu
+            $json = json_encode(array('location_id' => $data->location_id, 'role' => $user_data["role"], 'menu' => $data->menu));
+            header("location: manage/modify_menu.php?json={$json}");
+            break;
+        case 39: # Administrator, Manager เพิ่มโต๊ะ
+            //ต้องส่งข้อมูล location_id, name, capacity
+            $json = json_encode(array('role' => $user_data["role"], 'name' => $data->name, 'capacity' => $data->capacity, 'location_id' => $data->location_id));
+            header("location: manage/add_table.php?json={$json}");
+            break;
+        case 40: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
+            //ต้องส่งข้อมูล table_id
+            $json = json_encode(array('role' => $user_data["role"], 'table_id' => $data->table_id));
+            header("location: manage/delete_table.php?json={$json}");
+            break;
+        case 41: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
+            //ต้องส่งข้อมูล table_id, name, capacity
+            $json = json_encode(array('role' => $user_data["role"], 'table_id' => $data->table_id, 'name' => $data->name, 'capacity' => $data->capacity));
+            header("location: manage/modify_table.php?json={$json}");
+            break;
+        case 42: # Administrator, Manager ดูการจองใน location ที่เลือก
+            //ต้องส่งข้อมูล location_id
+            $json = json_encode(array('role' => $user_data->role, 'location_id' => $data->location_id));
+            header("location: manage/view_allreservation_location.php?json={$json}");
+            break;
     }
 }
-// $allheaders = getallheaders();
-// $jwt = $allheaders['Authorization'];
-
-// $secret_key = "Hilal ahmad khan";
-// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

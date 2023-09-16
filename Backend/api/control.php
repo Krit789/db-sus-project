@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 break;
             case 3: #Customer ทำการจอง 
                 //ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
-                $json = json_encode(array('table_id' => $data->table_id, 'id' => $user_data['user_id'], 'token' => json_decode($user_data)->access_token, 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu));
+                $json = json_encode(array('table_id' => $data->table_id, 'id' => $user_data['user_id'], 'token' => $user_data['access_token'], 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu));
                 header("location: bookingV2/booking-create-user.php?json={$json}");
                 break;
             case 4: #Customer ต้องการแก้ไขการจอง 

@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 header("location: admin/add_location_user.php?json={$json}");
                 break;
             case 31: # Administrator เรียกดูการจองทั้งหมด
-                $json = json_encode(array('role' => json_decode($user_data)['role']));
+                $json = json_encode(array('role' => $user_data['role']));
                 header("location: admin/view_allreservation.php?json={$json}");
                 break;
 

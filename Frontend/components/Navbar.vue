@@ -91,6 +91,7 @@ export default {
     management: [
       {
         title: "Branches",
+        permitted: "MANAGER, GOD",
         value: "mbranch",
         action: "u-mbranch",
         props: {
@@ -99,10 +100,20 @@ export default {
       },
       {
         title: "Reservations",
+        permitted: "MANAGER, GOD",
         value: "mbooking",
         action: "u-mbooking",
         props: {
           prependIcon: 'mdi-book-multiple',
+        }
+      },
+      {
+        title: "Users",
+        permitted: "GOD",
+        value: "muser",
+        action: "u-muser",
+        props: {
+          prependIcon: 'mdi-account',
         }
       },
     ],
@@ -143,6 +154,9 @@ export default {
           break;
         case "u-mbranch":
           this.$router.push("/management/branches");
+          break;
+        case "u-muser":
+          this.$router.push("/management/");
           break;
       }
     },
@@ -244,7 +258,7 @@ export default {
               </v-list-item>
             </div>
             <!-- Remember to remove debug condition -->
-            <v-list-group v-if="data.role == 'GOD' || data.role == 'MANAGER'  || data.firstName == 'FirstName'">
+            <v-list-group v-if="item.permitted.includes(data.role)  || data.firstName == 'FirstName'">
               <template v-slot:activator="{ props }">
                 <v-list-item
                     color="primary"

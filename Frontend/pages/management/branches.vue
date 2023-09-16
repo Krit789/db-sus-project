@@ -61,7 +61,7 @@ export default {
 <template>
     <Navbar>
         <v-main class="">
-            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Branches Management</h1>
+            <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
             <v-table
                 fixed-header
                 height="auto"

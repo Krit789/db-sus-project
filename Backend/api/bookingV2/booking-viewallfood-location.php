@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         $data = json_decode($_GET['json']);
         $id = $data->location_id;
 
-        $obj->select('menus', "*", null, "menu_id not in (select menu_id from restrictions where location_id = $id)", null, null);
+        $obj->select('menus', "*", null, "menu_id not in (select menu_id from restrictions where location_id = {$id})", null, null);
         $res = $obj->getResult();
         if ($res) {
             echo json_encode([

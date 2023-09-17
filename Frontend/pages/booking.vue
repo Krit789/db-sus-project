@@ -16,11 +16,10 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
-    
+
   }),
 }
 </script>
-<!-- route.query.location_id, -->
 <template>
   <Navbar>
     <v-main>

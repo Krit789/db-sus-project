@@ -2,19 +2,25 @@
 definePageMeta({ auth: false });
 const { status, data } = useAuth();
 useHead({
-  title:'Seatify: Seat Reservation Service',
+  title: "Seatify: Seat Reservation Service",
   meta: [
-    { name: 'Seatify: Seat Reservation Service', content: 'Seatify, The Seat Reservation Service that makes the difference.' }
+    {
+      name: "Seatify: Seat Reservation Service",
+      content:
+        "Seatify, The Seat Reservation Service that makes the difference.",
+    },
   ],
-})
+});
 useSeoMeta({
-  title: 'Seatify',
-  ogTitle: 'Seatify',
-  description: 'Seatify, The Seat Reservation Service that makes the difference.',
-  ogDescription: 'Seatify, The Seat Reservation Service that makes the difference.',
-  ogImage: '/og_image.jpg',
-  twitterCard: 'summary_large_image',
-})
+  title: "Seatify",
+  ogTitle: "Seatify",
+  description:
+    "Seatify, The Seat Reservation Service that makes the difference.",
+  ogDescription:
+    "Seatify, The Seat Reservation Service that makes the difference.",
+  ogImage: "/og_image.jpg",
+  twitterCard: "summary_large_image",
+});
 </script>
 
 <script lang="ts">
@@ -34,7 +40,7 @@ import "~/assets/stylesheets/index.css";
             prepend-icon="mdi-login-variant"
             rounded="lg"
             size="x-large"
-            @click="$router.push('/booking');"
+            @click="$router.push('/booking')"
             >Book Now!
           </v-btn>
         </div>
@@ -89,7 +95,12 @@ import "~/assets/stylesheets/index.css";
                       class="mb-2"
                       color="deep-purple-lighten-2"
                       variant="outlined"
-                      @click="$router.push({ path: '/booking', query: { location_id: n } })"
+                      @click="
+                        $router.push({
+                          path: '/booking',
+                          query: { location_id: n },
+                        })
+                      "
                     >
                       Reserve
                     </v-btn>
@@ -99,13 +110,13 @@ import "~/assets/stylesheets/index.css";
               </v-slide-group>
             </v-sheet>
             <v-btn
-            class="mb-3"
-            rounded="lg"
-            size="large"
-            variant="text"
-            @click="$router.push('/booking');"
-            >All Location
-          </v-btn>
+              class="mb-3"
+              rounded="lg"
+              size="large"
+              variant="text"
+              @click="$router.push('/booking')"
+              >All Location
+            </v-btn>
           </v-card>
         </div>
       </v-parallax>

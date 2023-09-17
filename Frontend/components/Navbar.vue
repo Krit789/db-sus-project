@@ -339,7 +339,7 @@ export default {
                   prepend-icon="mdi-tools"
                   v-bind="props"
                 >
-                  <v-list-item-title>Management</v-list-item-title>
+                  Management
                 </v-list-item>
               </template>
               <v-list-item

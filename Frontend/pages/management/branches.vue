@@ -61,13 +61,14 @@ export default {
     ],
   }),
   methods: {
-    loadData() {
+    async loadData() {
       this.dtLoading = true;
-      $fetch("/api/data", {
+      await $fetch("/api/data", {
         method: "POST",
         body: {
           type: 7,
         },
+        lazy: true,
       })
         .catch((error) => error.data)
         .then(({ status, message }) => {

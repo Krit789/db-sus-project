@@ -3,13 +3,10 @@ import { VDataTable } from "vuetify/labs/VDataTable";
 const { status, data, signIn, signOut } = useAuth();
 
 useHead({
-  title:'User Management - Seatify Admin',
-  meta: [
-    { name: 'Seatify App', content: 'My amazing site.' },
-  ],
-  link: [{ rel: 'icon', type: 'image/png', href: 'favicon.ico' }]
-})
-
+  title: "User Management - Seatify Admin",
+  meta: [{ name: "Seatify App", content: "My amazing site." }],
+  link: [{ rel: "icon", type: "image/png", href: "favicon.ico" }],
+});
 </script>
 <script lang="ts">
 export default {
@@ -34,13 +31,14 @@ export default {
     ],
   }),
   methods: {
-    loadData() {
+    async loadData() {
       this.dtLoading = true;
-      $fetch("/api/data", {
+      await $fetch("/api/data", {
         method: "POST",
         body: {
           type: 20,
         },
+        lazy: true,
       })
         .catch((error) => error.data)
         .then(({ status, message }) => {

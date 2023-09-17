@@ -4,9 +4,9 @@ import vuetify from "vite-plugin-vuetify";
 export default defineNuxtConfig({
   app: {
     head: {
-        link: [{ rel: 'icon', type: 'image/png', href: '/favicon.ico' }]
-    }
-},
+      link: [{ rel: "icon", type: "image/png", href: "/favicon.ico" }],
+    },
+  },
   devtools: {
     enabled: true,
 

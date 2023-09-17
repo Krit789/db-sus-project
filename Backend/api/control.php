@@ -7,7 +7,6 @@ include 'check.php';
 $obj = new Database();
 
 use Firebase\JWT\JWT;
-
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
 
@@ -167,18 +166,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $json = json_encode(array('role' => $user_data['role'], 'location_id' => $data->location_id));
                     header("location: manage/view_allreservation_location.php?json={$json}");
                     break;
+                
             }
+        exit; 
         } else {
             echo json_encode([
                 'status' => 999,
                 'message' => 'Provided Token was Not Found' #ให้ออกจาระบบ แล้วไป login ใหม่
             ]);
+            exit;
         }
     } else {
         echo json_encode([
             'status' => 998,
             'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
         ]);
+        exit;
     }
 }
     // $allheaders = getallheaders();

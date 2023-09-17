@@ -203,7 +203,9 @@ export default {
         this.emailValidation(this.emailReg) &&
         this.passwordValidation(this.passwordRegConfirm) &&
         this.first_name != "" &&
-        this.last_name != ""
+        this.last_name != "" &&
+        this.emailReg != "" &&
+        this.passwordRegConfirm != ""
       );
     },
   },

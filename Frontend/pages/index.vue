@@ -20,6 +20,7 @@ import "~/assets/stylesheets/index.css";
             prepend-icon="mdi-login-variant"
             rounded="lg"
             size="x-large"
+            @click="$router.push('/booking');"
             >Book Now!
           </v-btn>
         </div>
@@ -83,6 +84,14 @@ import "~/assets/stylesheets/index.css";
                 </v-slide-group-item>
               </v-slide-group>
             </v-sheet>
+            <v-btn
+            class="mb-3"
+            rounded="lg"
+            size="large"
+            variant="text"
+            @click="$router.push('/booking');"
+            >All Location
+          </v-btn>
           </v-card>
         </div>
       </v-parallax>

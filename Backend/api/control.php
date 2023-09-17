@@ -174,11 +174,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 'message' => 'Provided Token was Not Found' #ให้ออกจาระบบ แล้วไป login ใหม่
             ]);
         }
+    } else {
+        echo json_encode([
+            'status' => 998,
+            'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
+        ]);
     }
-    echo json_encode([
-        'status' => 998,
-        'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
-    ]);
 }
     // $allheaders = getallheaders();
     // $jwt = $allheaders['Authorization'];

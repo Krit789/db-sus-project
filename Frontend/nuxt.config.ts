@@ -51,6 +51,7 @@ export default defineNuxtConfig({
   },
   nitro: {
     routeRules: {
+      '/management/**': { ssr: false },
       "/proxy/**": { proxy: "https://api-seatify.iservkmitl.tech/**" },
     },
     // devProxy: {

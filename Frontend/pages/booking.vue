@@ -5,17 +5,13 @@ import { useDisplay } from "vuetify";
 const { mobile } = useDisplay();
 const { status, data } = useAuth();
 
-async function test() {
-  const locations: any = await fetch(
-    "http://localhost:3000/proxy/api/booking/Booking/Booking-viewalllocation-user.php",
-    {
-      method: "POST",
-      body: null,
-    },
-  )
-    .catch((error) => error)
-    .then(() => {});
-}
+useHead({
+  title:'Booking - Seatify',
+  meta: [
+    { name: 'Seatify App', content: 'My amazing site.' }
+  ],
+})
+
 </script>
 
 <script lang="ts"></script>

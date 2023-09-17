@@ -144,10 +144,10 @@ export default {
           this.$router.push("/booking");
           break;
         case "u-status":
-          // this.$router.push("");
+          this.$router.push("/status");
           break;
         case "u-report":
-          // this.$router.push("/");
+          this.$router.push("/report");
           break;
         case "u-mbooking":
           this.$router.push("/management/reservation");

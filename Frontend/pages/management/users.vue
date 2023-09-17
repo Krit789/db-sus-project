@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 import { VDataTable } from "vuetify/labs/VDataTable";
 const { status, data, signIn, signOut } = useAuth();
+
+useHead({
+  title:'User Management - Seatify Admin',
+  meta: [
+    { name: 'Seatify App', content: 'My amazing site.' }
+  ],
+})
+
 </script>
 <script lang="ts">
 export default {
@@ -81,7 +89,13 @@ export default {
         User Management
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-        <v-btn class="align-right" text="Refresh" prepend-icon="mdi-refresh" @click="loadData" :disabled="dtLoading"></v-btn>
+        <v-btn
+          class="align-right"
+          text="Refresh"
+          prepend-icon="mdi-refresh"
+          @click="loadData"
+          :disabled="dtLoading"
+        ></v-btn>
         <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="dtHeaders"

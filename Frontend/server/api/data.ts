@@ -14,8 +14,6 @@ export default defineEventHandler(async (event) => {
         },
       },
     ).catch((error) => error.data);
-    // console.log(`Session Token: ${JSON.stringify(session?.token)}`);
-    // console.log(`Data: ${JSON.stringify(reservations)}`);
     return reservations;
   }
   setResponseStatus(event, 418);

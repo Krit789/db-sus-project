@@ -9,6 +9,8 @@ header('Content-Type:application/json');
 include '../random.php';
 include '../check.php';
 
+$obj = new Database();
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $data = json_decode(file_get_contents("php://input", true));
 
@@ -17,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = htmlentities($data->email);
     $password = htmlentities($data->password);
     $new_password = password_hash($password, PASSWORD_DEFAULT);
-    if (isset($data->tele)) {
+    if ($data->tele != "") {
         $telephone = htmlentities($data->tele);
     }
     if (isset($data->token)) {

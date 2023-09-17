@@ -203,8 +203,7 @@ export default {
         this.emailValidation(this.emailReg) &&
         this.passwordValidation(this.passwordRegConfirm) &&
         this.first_name != "" &&
-        this.last_name != "" &&
-        this.phone != ""
+        this.last_name != ""
       );
     },
   },
@@ -501,13 +500,13 @@ export default {
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="first_name"
-                      label="First Name"
+                      label="First Name*"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="last_name"
-                      label="Last Name"
+                      label="Last Name*"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -516,7 +515,7 @@ export default {
                     <v-text-field
                       v-model="emailReg"
                       :rules="[emailValidation]"
-                      label="E-Mail"
+                      label="E-Mail*"
                       prepend-inner-icon="mdi-email"
                     ></v-text-field>
                   </v-col>
@@ -532,7 +531,7 @@ export default {
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="passwordReg"
-                      label="Password"
+                      label="Password*"
                       prepend-inner-icon="mdi-lock"
                       type="password"
                     ></v-text-field>
@@ -541,7 +540,7 @@ export default {
                     <v-text-field
                       v-model="passwordRegConfirm"
                       :rules="[passwordValidation]"
-                      label="Confirm Password"
+                      label="Confirm Password*"
                       prepend-inner-icon="mdi-lock-check"
                       type="password"
                     ></v-text-field>
@@ -552,11 +551,11 @@ export default {
           </v-card-text>
           <v-card-actions class="ml-3 mb-3">
             <v-btn
-              :disabled="!isLoginValid"
+              :disabled="!isRegisValid"
               class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
               rounded="lg"
               type="submit"
-              @click=""
+              @click="makeRegistration"
               >Submit
             </v-btn>
             <v-btn

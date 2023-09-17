@@ -53,7 +53,7 @@ export default {
     items: [
       {
         title: "Home",
-        permitted: ["USER, MANAGER, GOD"],
+        permitted: ["USER", "MANAGER", "GOD"],
         value: "home",
         action: "u-home",
         props: {
@@ -283,10 +283,10 @@ export default {
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                {{ data?.email }}
+                {{ data?.firstName + " " + data?.lastName }}
               </v-list-item-title>
               <v-list-item-subtitle class="pb-1">
-                {{ data?.firstName + " " + data?.lastName }}
+                {{ data?.email }}
               </v-list-item-subtitle>
               <template v-slot:append>
                 <v-tooltip text="Account Settings">

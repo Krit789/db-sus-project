@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = htmlentities($data->email);
     $password = htmlentities($data->password);
 
-    $token = randomCode(32);
+    // $token = randomCode(32);
 
     $obj->select('users', 'user_id', null, "email='{$email}'", null, null);
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user_id != NULL) {
 
         $user_id = $user_id[0]['user_id'];
-        $obj->update('users', ['access_token' => $token], "user_id={$user_id}");
+        // $obj->update('users', ['access_token' => $token], "user_id={$user_id}");
 
         $obj->select('users', '*', null, "email='{$email}'", null, null);
         $datas = $obj->getResult();

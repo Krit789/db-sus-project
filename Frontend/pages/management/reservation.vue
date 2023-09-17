@@ -7,9 +7,8 @@ const { status, data, signIn, signOut } = useAuth();
 export default {
   data: () => ({
     dtData: [],
-    dtLength: 0,
     itemsPerPage: 10,
-    dtLoading: true,
+    dtLoading: false,
     dtHeaders: [
       {
         title: "ID",
@@ -56,6 +55,7 @@ export default {
   }),
   methods: {
     loadData() {
+      this.dtLoading = true;
       $fetch("/api/data", {
         method: "POST",
         body: {
@@ -65,10 +65,12 @@ export default {
         .catch((error) => error.data)
         .then(({ status, message }) => {
           this.dtData = message;
-          this.dtLength = message.length;
           this.dtLoading = false;
         });
     },
+  },
+  beforeMount() {
+    this.loadData();
   },
 };
 </script>
@@ -78,8 +80,8 @@ export default {
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
         Reservation Management
       </h1>
-      <v-btn text="Click Me to fetch data table" @click=""></v-btn>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-btn class="align-right" text="Refresh" prepend-icon="mdi-refresh" @click="loadData"></v-btn>
         <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="dtHeaders"
@@ -87,10 +89,9 @@ export default {
           :loading="dtLoading"
           class="elevation-1"
           item-value="id"
-          @update:options="loadData"
           @click:row="
             (val, tabl) => {
-              console.log(tabl.item.columns.id);
+              console.log(tabl.item.columns.res_id);
             }
           "
         ></v-data-table>

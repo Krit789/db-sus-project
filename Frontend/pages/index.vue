@@ -75,7 +75,7 @@ import "~/assets/stylesheets/index.css";
                       class="mb-2"
                       color="deep-purple-lighten-2"
                       variant="outlined"
-                      @click=""
+                      @click="$router.push({ path: '/booking', query: { location_id: n } })"
                     >
                       Reserve
                     </v-btn>

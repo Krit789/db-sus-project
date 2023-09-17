@@ -110,48 +110,6 @@ export default {
         >
         </v-data-table>
       </v-sheet>
-      <!-- <v-table
-          fixed-header
-          height="auto"
-      >
-        <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Manager
-          </th>
-          <th class="text-left">
-            Address
-          </th>
-          <th class="text-left">
-            Status
-          </th>
-          <th class="text-left">
-            Action
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-            v-for="item in testPlacement"
-            :key="item.name"
-        >
-          <td class="text-left">{{ item.name }}</td>
-          <template v-for="manager in testManager">
-            <td v-if="manager.id == item.managerID">{{ manager.first_name }} {{ manager.last_name }}</td>
-          </template>
-          <td class="text-left">{{ item.address }}</td>
-          <td class="text-left">{{ item.status }}</td>
-          <td>
-            <v-btn variant="text">
-              Manage
-            </v-btn>
-          </td>
-        </tr>
-        </tbody>
-      </v-table> -->
     </v-main>
   </Navbar>
 </template>

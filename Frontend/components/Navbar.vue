@@ -160,6 +160,39 @@ export default {
           break;
       }
     },
+    makeRegistration() {
+      $fetch("/proxy/api/account/create-user.php", {
+        method: "POST",
+        body: {
+          fn: this.first_name,
+          ln: this.last_name,
+          email: this.emailReg,
+          password: this.passwordReg,
+          tele: this.phone,
+        },
+      })
+        .catch((error) => error.data)
+        .then(({ status, message }) => {
+          if (status == 1) {
+            this.NotiText =
+              "Registration Successful. Login with your account to begin!";
+            this.NotiColor = "success";
+            this.NotiIcon = "mdi-check-circle-outline";
+            this.snackbar = true;
+            this.dialogRe = false;
+          } else if (status == 2) {
+            this.NotiText = "Email already in use!";
+            this.NotiColor = "error";
+            this.NotiIcon = "mdi-alert";
+            this.snackbar = true;
+          } else {
+            this.NotiText = message;
+            this.NotiColor = "error";
+            this.NotiIcon = "mdi-alert";
+            this.snackbar = true;
+          }
+        });
+    },
   },
   computed: {
     isLoginValid() {
@@ -249,10 +282,13 @@ export default {
       <v-navigation-drawer v-model="drawer">
         <div v-if="status == 'authenticated'">
           <v-list>
-            <v-list-item
-              :subtitle="data?.email"
-              :title="data?.firstName + ' ' + data?.lastName"
-            >
+            <v-list-item>
+              <v-list-item-title>
+                {{ data?.email }}
+              </v-list-item-title>
+              <v-list-item-subtitle class="pb-1">
+                {{ data?.firstName + " " + data?.lastName }}
+              </v-list-item-subtitle>
               <template v-slot:append>
                 <v-tooltip text="Account Settings">
                   <template v-slot:activator="{ props }">
@@ -343,7 +379,11 @@ export default {
         </div>
         <div v-else>
           <v-list>
-            <v-list-item subtitle="Sign In to Continue" title="Guest">
+            <v-list-item>
+              <v-list-item-title> Guest </v-list-item-title>
+              <v-list-item-subtitle class="pb-1">
+                Sign In to Continue
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-divider></v-divider>
@@ -373,8 +413,13 @@ export default {
           activator="#loginActivator"
         >
           <v-card class="blur-effect account_pane">
+            <v-card-title class="mt-4 ml-4 pb-3"><h1>Login</h1></v-card-title>
+            <v-card-subtitle class="ml-4 pb-1"
+              ><h4>
+                The best reservation experience is just a click away!
+              </h4></v-card-subtitle
+            >
             <v-card-text>
-              <h1 class="mb-3">Sign In</h1>
               <v-sheet
                 class="mx-auto form_container bg-transparent"
                 width="auto"
@@ -392,46 +437,45 @@ export default {
                     prepend-inner-icon="mdi-lock"
                     type="password"
                   ></v-text-field>
-                  <v-btn
-                    :disabled="!isLoginValid"
-                    class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
-                    rounded="lg"
-                    type="submit"
-                    @click="
-                      mySignInHandler({
-                        email: email,
-                        password: password,
-                      }).then((val) => {
-                        if (val) {
-                          dialogIn = false;
-                          NotiText = 'Sign In Success!';
-                          NotiColor = 'success';
-                          NotiIcon = 'mdi-check-circle-outline';
-                          snackbar = true;
-                        } else {
-                          NotiText = 'Sign In Failure!';
-                          NotiColor = 'error';
-                          NotiIcon = 'mdi-alert-circle';
-                          snackbar = true;
-                        }
-                      })
-                    "
-                    >Submit
-                  </v-btn>
-                  <v-row class="pt-5" justify="center">
-                    <v-btn
-                      :variant="'plain'"
-                      class="cancel_button"
-                      color="primary"
-                      rounded="lg"
-                      @click="dialogIn = false"
-                      >Cancel
-                    </v-btn>
-                  </v-row>
                 </v-form>
               </v-sheet>
             </v-card-text>
-            <v-card-actions> </v-card-actions>
+            <v-card-actions class="ml-3 mb-3">
+              <v-btn
+                :disabled="!isLoginValid"
+                class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+                rounded="lg"
+                type="submit"
+                @click="
+                  mySignInHandler({
+                    email: email,
+                    password: password,
+                  }).then((val) => {
+                    if (val) {
+                      dialogIn = false;
+                      NotiText = 'Sign In Success!';
+                      NotiColor = 'success';
+                      NotiIcon = 'mdi-check-circle-outline';
+                      snackbar = true;
+                    } else {
+                      NotiText = 'Sign In Failure!';
+                      NotiColor = 'error';
+                      NotiIcon = 'mdi-alert-circle';
+                      snackbar = true;
+                    }
+                  })
+                "
+                >Submit
+              </v-btn>
+              <v-btn
+                :variant="'plain'"
+                class="mt-2 cancel_button"
+                color="primary"
+                rounded="lg"
+                @click="dialogIn = false"
+                >Cancel
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-dialog>
       </div>
@@ -441,21 +485,26 @@ export default {
         activator="#regisActivator"
       >
         <v-card class="blur-effect account_pane">
+          <v-card-title class="mt-4 ml-4 pb-3"><h1>Register</h1></v-card-title>
+          <v-card-subtitle class="ml-4 pb-1"
+            ><h4>
+              Get ready to enjoy the best reservation experience!
+            </h4></v-card-subtitle
+          >
           <v-card-text>
-            <h1 class="mb-3">Register</h1>
             <v-sheet
               class="mx-auto w-100 form_container bg-transparent"
               width="auto"
             >
               <v-form fast-fail @submit.prevent>
                 <v-row>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="first_name"
                       label="First Name"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="last_name"
                       label="Last Name"
@@ -463,7 +512,7 @@ export default {
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="emailReg"
                       :rules="[emailValidation]"
@@ -471,7 +520,7 @@ export default {
                       prepend-inner-icon="mdi-email"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="phone"
                       label="Phone Number"
@@ -480,7 +529,7 @@ export default {
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="passwordReg"
                       label="Password"
@@ -488,7 +537,7 @@ export default {
                       type="password"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="passwordRegConfirm"
                       :rules="[passwordValidation]"
@@ -498,26 +547,27 @@ export default {
                     ></v-text-field>
                   </v-col>
                 </v-row>
-                <v-btn
-                  :disabled="!isRegisValid"
-                  class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
-                >
-                  Submit
-                </v-btn>
-                <v-row class="pt-5" justify="center">
-                  <v-btn
-                    :variant="'plain'"
-                    class="cancel_button"
-                    color="primary"
-                    rounded="lg"
-                    @click="dialogRe = false"
-                    >Cancel
-                  </v-btn>
-                </v-row>
               </v-form>
             </v-sheet>
           </v-card-text>
-          <v-card-actions> </v-card-actions>
+          <v-card-actions class="ml-3 mb-3">
+            <v-btn
+              :disabled="!isLoginValid"
+              class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+              rounded="lg"
+              type="submit"
+              @click=""
+              >Submit
+            </v-btn>
+            <v-btn
+              :variant="'plain'"
+              class="mt-2 cancel_button"
+              color="primary"
+              rounded="lg"
+              @click="dialogRe = false"
+              >Cancel
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-dialog>
       <slot />

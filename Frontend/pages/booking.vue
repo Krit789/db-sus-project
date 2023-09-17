@@ -69,7 +69,6 @@ export default {
           </v-stepper>
         </template>
       </v-sheet>
-      <Credit />
     </v-main>
   </Navbar>
 </template>

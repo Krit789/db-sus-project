@@ -5,8 +5,9 @@ const { status, data, signIn, signOut } = useAuth();
 useHead({
   title:'User Management - Seatify Admin',
   meta: [
-    { name: 'Seatify App', content: 'My amazing site.' }
+    { name: 'Seatify App', content: 'My amazing site.' },
   ],
+  link: [{ rel: 'icon', type: 'image/png', href: 'favicon.ico' }]
 })
 
 </script>
@@ -30,35 +31,6 @@ export default {
       { title: "Role", align: "end", key: "role" },
       { title: "Created On", align: "end", key: "created_on" },
       { title: "Status", align: "end", key: "status" },
-    ],
-    testPlacement: [
-      {
-        id: 1,
-        first_name: "WatSone",
-        last_name: "Onederman",
-        email: "eeeeeeee",
-        telephone: "0000000000",
-        role: "USER",
-        created_on: "YYYY-MM-DD HH:MI:SS",
-      },
-      {
-        id: 2,
-        first_name: "WatStwo",
-        last_name: "twoderman",
-        email: "eeeeeeeeee",
-        telephone: "0000000000",
-        role: "USER",
-        created_on: "YYYY-MM-DD HH:MI:SS",
-      },
-      {
-        id: 3,
-        first_name: "WatSone",
-        last_name: "Onederman",
-        email: "ee",
-        telephone: "0000000000",
-        role: "USER",
-        created_on: "YYYY-MM-DD HH:MI:SS",
-      },
     ],
   }),
   methods: {

@@ -10,10 +10,14 @@ use Firebase\JWT\JWT;
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));
-    $type = $data->type;
-    $access_token = $data->token;
-    $user_data = readuserwithtoken($access_token);
-    // error_log($user_data['role']);
+
+    if (isset($data->type) && isset($data->token)) {
+        $type = $data->type;
+        $access_token = $data->token;
+        $user_data = readuserwithtoken($access_token);
+        error_log(json_encode($data));
+        error_log($user_data['user_id']);
+    
     #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
     if (isset($user_data['user_id'])) {
@@ -167,9 +171,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     }else{
         echo json_encode([
             'status' => 999,
-            'message' => 'Token Not Match' #ให้ออกจาระบบ แล้วไป login ใหม่
+            'message' => 'Provided Token was Not Found' #ให้ออกจาระบบ แล้วไป login ใหม่
         ]);
     }
+}         echo json_encode([
+    'status' => 998,
+    'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
+]);
 }
     // $allheaders = getallheaders();
     // $jwt = $allheaders['Authorization'];

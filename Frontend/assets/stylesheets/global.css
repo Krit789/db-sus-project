@@ -2,6 +2,11 @@
 
 @import 'fonts.css';
 
+v-btn {
+    color: #0373DE;
+    caret-color: #0373DE;
+}
+
 .blur-effect {
     background: rgba(245, 245, 247, .72);
     backdrop-filter: blur(20px) saturate(1.8);

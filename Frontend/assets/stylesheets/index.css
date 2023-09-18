@@ -5,3 +5,7 @@
     padding-top: 20vh;
 }
 
+.location_container {
+    background: rgba(255, 255, 255, .90);
+    border-radius: 22px !important;
+}

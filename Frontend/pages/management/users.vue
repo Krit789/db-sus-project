@@ -12,6 +12,8 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
+    dtErrorData: '',
+    dtIsError: false,
     dtData: [],
     itemsPerPage: 10,
     dtLoading: false,
@@ -42,10 +44,11 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => error.data)
+          .catch((error) => {this.dtIsError = true; this.dtErrorData = error.data})
           .then(({status, message}) => {
             this.dtData = message;
             this.dtLoading = false;
+            this.dtIsError = false;
           });
     },
   },
@@ -61,9 +64,10 @@ export default {
         User Management
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error">{{ dtErrorData }}</v-alert>
         <v-btn
             :disabled="dtLoading"
-            class="align-right"
+            class="align-right mb-3"
             prepend-icon="mdi-refresh"
             text="Refresh"
             @click="loadData"

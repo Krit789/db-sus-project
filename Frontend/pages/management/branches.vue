@@ -6,6 +6,8 @@ const {status, data, signIn, signOut} = useAuth();
 <script lang="ts">
 export default {
   data: () => ({
+    dtErrorData: '',
+    dtIsError: false,
     dtData: [],
     itemsPerPage: 10,
     dtLoading: false,
@@ -22,46 +24,7 @@ export default {
       {title: "Status", align: "end", key: "status"},
       {title: "Open", align: "end", key: "open_time"},
       {title: "Close", align: "end", key: "close_time"},
-    ],
-    testPlacement: [
-      {
-        name: "location1",
-        address: "1/1 onestead, onestreet, one, one, 11111",
-        status: "OPERATIONAL",
-        managerID: 1,
-      },
-      {
-        name: "location2",
-        address: "2/2 twostead, twostreet, two, two, 22222",
-        status: "MAINTENANCE",
-        managerID: 2,
-      },
-      {
-        name: "location3",
-        address: "3/3 tristead, tristreet, tri, tri, 33333",
-        status: "OUTOFORDER",
-        managerID: 1,
-      },
-      {
-        name: "location4",
-        address: "4/4 fourstead, fourstreet, four, four, 44444",
-        status: "OPERATIONAL",
-        managerID: 2,
-      },
-    ],
-    testManager: [
-      {
-        id: 1,
-        first_name: "WatSone",
-        last_name: "Onederman",
-      },
-      {
-        id: 2,
-        first_name: "Twoney",
-        last_name: "Twothpick",
-      },
-    ],
-  }),
+    ], }),
   methods: {
     async loadData() {
       this.dtLoading = true;
@@ -73,10 +36,11 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => error.data)
+          .catch((error) => {this.dtIsError = true; this.dtErrorData = error.data})
           .then(({status, message}) => {
             this.dtData = message;
             this.dtLoading = false;
+            this.dtIsError = false;
           });
     },
   },
@@ -92,9 +56,10 @@ export default {
         Branches Management
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error">{{ dtErrorData }}</v-alert>
         <v-btn
             :disabled="dtLoading"
-            class="align-right"
+            class="align-right mb-3"
             prepend-icon="mdi-refresh"
             text="Refresh"
             @click="loadData"

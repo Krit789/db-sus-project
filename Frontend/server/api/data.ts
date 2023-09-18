@@ -1,4 +1,4 @@
-import {getServerSession, getToken} from "#auth";
+import {getToken} from "#auth";
 
 export default defineEventHandler(async (event) => {
     const jwt = await getToken({ event });

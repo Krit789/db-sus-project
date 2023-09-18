@@ -102,7 +102,7 @@ class Database
 
             $query = $this->mysqli->query($sql);
 
-            echo $sql; #ดูคำสั่ง sql ปิดๆ
+            // echo $sql; #ดูคำสั่ง sql ปิดๆ
 
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);

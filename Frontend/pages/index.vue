@@ -41,7 +41,8 @@ import "~/assets/stylesheets/index.css";
             rounded="lg"
             size="x-large"
             @click="$router.push('/booking')"
-            >Reserve Now!
+            >
+            Reserve Now!
           </v-btn>
         </div>
         <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">

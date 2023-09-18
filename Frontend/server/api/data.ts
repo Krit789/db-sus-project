@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
     const jwt = await getToken({ event });
     const body = await readBody(event); // Read from POST body
     let url: string;
-    console.log(jwt.token)
 
     if (body.usage === "admin") {
         url = "http://localhost:3000/proxy/api/admin.php"

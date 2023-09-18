@@ -1,0 +1,263 @@
+<?php
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Method:POST');
+header("Access-Control-Allow-Headers: X-Requested-With");
+header('Content-Type:application/json');
+include 'check.php';
+$obj = new Database();
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    $data = json_decode(file_get_contents("php://input"));
+
+    if (isset($data->type) && isset($data->token)) {
+        $type = $data->type;
+        $access_token = $data->token;
+        $ispermission = false;
+        $user_data = readuserwithtoken($access_token);
+        // error_log(json_encode($data));
+        // error_log($user_data['user_id']);
+
+        #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
+
+        if (isset($user_data['user_id'])) {
+            switch ($type) {
+                case 1: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก user.php ที่ 7
+                    $id = $user_data['user_id'];
+                    $role = $user_data['role'];
+
+                    if ($role == "MANAGER") {
+                        $obj->select('locations', "*", null, "manager_id={$id}", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $res = $obj->getResult();
+                        if ($res) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $res,
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 2: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
+                    //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
+                    $role = $user_data['role'];
+                    $id = $data->location_id;
+                    $name = $data->name;
+                    $address = $data->address;
+                    $ot = $data->open_time;
+                    $ct = $data->close_time;
+                    $status = $data->status;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->update("locations", ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => $status], "location_id={$id}");
+                        $res = $obj->getResult();
+                        if ($res[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => 'Update Info Location Successful',
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 3: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
+                    //ต้องส่งข้อมูล location_id
+                    $role = $user_data['role'];
+                    $id = $data->location_id;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+
+                        $obj->select("menus", "*", null, null, null, null);
+                        $result = $obj->getResult();
+
+                        $obj->select("restrictions", "menu_id", null, "location_id={$id}", 'menu_id', null);
+                        $result2 = $obj->getResult();
+
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => [$result, $result2]
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 4: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
+                    //ต้องส่งข้อมูล location_id, menu
+                    $role = $user_data['role'];
+                    $id = $data->location_id;
+                    $menu = $data->menu;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $tmp = "";
+                        $count = 0;
+                        foreach ($menu as $menus) {
+                            if ($count != sizeof($menu) - 1) {
+                                $tmp .= "({$id},{$menus}), ";
+                            } else {
+                                $tmp .= "({$id},{$menus})";
+                            }
+                            $count += 1;
+                        }
+                        $obj->delete('restrictions', "location_id={$id}");
+                        $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
+
+                        $res = $obj->getResult();
+                        if ($res[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => 'Modify Menus Successful',
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 5: # Administrator, Manager เพิ่มโต๊ะ
+                    //ต้องส่งข้อมูล location_id, name, capacity
+                    $role = $user_data['role'];
+                    $id = $data->location_id;
+                    $name = $data->name;
+                    $capa = $data->capacity;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->insert("tables", ['name' => $name, 'capacity' => $capa, 'location_id' => $id]);
+                        $result = $obj->getResult();
+                        if ($result[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => "Add Table Successful"
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "Add Table Falied Successful"
+                            ]);
+                        }
+
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 6: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
+                    //ต้องส่งข้อมูล table_id
+                    $role = $user_data['role'];
+                    $table_id = $data->table_id;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $tmp = "";
+                        $count = 0;
+                        foreach ($table_id as $id) {
+                            if ($count == 0) {
+                                $tmp .= "{$id}";
+                            } else {
+                                $tmp .= ", {$id}";
+                            }
+                            $count++;
+                        }
+                        $obj->delete("tables", "table_id in ($tmp)");
+                        $result = $obj->getResult();
+                        if ($result[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => "Delete Table Successful"
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "Delete Table Falied Successful"
+                            ]);
+                        }
+
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 7: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
+                    //ต้องส่งข้อมูล table_id, name, capacity
+                    $role = $user_data['role'];
+                    $id = $data->table_id;
+                    $name = $data->name;
+                    $capa = $data->capacity;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id={$id}");
+
+                        $res = $obj->getResult();
+                        if ($res[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => 'Modify Table Successful',
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 8: # Administrator, Manager ดูการจองใน location ที่เลือก
+                    //ต้องส่งข้อมูล location_id
+                    $role = $user_data['role'];
+                    $id = $data->location_id;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->select("reservations", "*", null, "table_id in (select table_id from tables where location_id={$id})", "res_id desc", null);
+                        $result = $obj->getResult();
+
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+            }
+            if ($ispermission){
+                echo json_encode([
+                    'status' => 0,
+                    'message' => 'Insufficient Permission',
+                ]);
+            }
+            exit;
+        } else {
+            echo json_encode([
+                'status' => 999,
+                'message' => 'Provided Token was Not Found' #ให้ออกจาระบบ แล้วไป login ใหม่
+            ]);
+            exit;
+        }
+    } else {
+        echo json_encode([
+            'status' => 998,
+            'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
+        ]);
+        exit;
+    }
+}
+// $allheaders = getallheaders();
+// $jwt = $allheaders['Authorization'];
+
+// $secret_key = "Hilal ahmad khan";
+// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

@@ -12,6 +12,8 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
+    dtIsError: false,
+    dtErrorData: '',
     dtData: [],
     itemsPerPage: 10,
     dtLoading: false,
@@ -29,35 +31,6 @@ export default {
       {title: "No. of Customer", align: "end", key: "cus_count"},
       {title: "Table ID", align: "end", key: "table_id"},
     ],
-    testPlacement: [
-      {
-        id: 1,
-        userID: 1,
-        create_time: "YYYY-MM-DD HH:MI:SS",
-        arrival: "YYYY-MM-DD HH:MI:SS",
-        status: "INPROGRESS",
-        cus_count: 5,
-        table_id: 2,
-      },
-      {
-        id: 2,
-        userID: 2,
-        create_time: "YYYY-MM-DD HH:MI:SS",
-        arrival: "YYYY-MM-DD HH:MI:SS",
-        status: "INPROGRESS",
-        cus_count: 15,
-        table_id: 1,
-      },
-      {
-        id: 3,
-        userID: 1,
-        create_time: "YYYY-MM-DD HH:MI:SS",
-        arrival: "YYYY-MM-DD HH:MI:SS",
-        status: "INPROGRESS",
-        cus_count: 25,
-        table_id: 1,
-      },
-    ],
   }),
   methods: {
     async loadData() {
@@ -70,10 +43,11 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => error.data)
+          .catch((error) => {this.dtIsError = true; this.dtErrorData = error.data})
           .then(({status, message}) => {
             this.dtData = message;
             this.dtLoading = false;
+            this.dtIsError = false;
           });
     },
   },
@@ -88,10 +62,11 @@ export default {
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
         Reservation Management
       </h1>
-      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error">{{ dtErrorData }}</v-alert>
         <v-btn
             :disabled="dtLoading"
-            class="align-right"
+            class="align-right mb-3"
             prepend-icon="mdi-refresh"
             text="Refresh"
             @click="loadData"

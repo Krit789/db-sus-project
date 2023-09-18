@@ -43,6 +43,10 @@ body {
 
 }
 
+.text-h4 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+}
+
 .text-h5 {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }

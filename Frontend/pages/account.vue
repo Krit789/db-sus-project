@@ -54,7 +54,7 @@ function toTitleCase(str) {
               <v-img
                   class="mt-5 bg-white ma-2 user_image"
                   cover=""
-                  src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+                  src="ejudge_avatar280.png"
                   width="170"
               ></v-img>
             </div>

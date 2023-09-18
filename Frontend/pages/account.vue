@@ -27,7 +27,7 @@ export default {
           String(value)
               .toLowerCase()
               .match(
-                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
               )
       )
         return true;
@@ -53,8 +53,8 @@ function toTitleCase(str) {
             <div class="justify-center">
               <v-img
                   class="mt-5 bg-white ma-2 user_image"
-                  cover
-                  src="https://i.ytimg.com/vi/rjy53IOsC4U/hqdefault.jpg"
+                  cover=""
+                  src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
                   width="170"
               ></v-img>
             </div>
@@ -67,13 +67,10 @@ function toTitleCase(str) {
             May be user role and role benefits
           </v-col>
         </v-row>
-        <div
-            class="text-center my-10 ma-auto your_account user_rounded pa-4 mx-4"
-        >
-          <v-card-text class="text-h3 font-weight-bold my-6"
-          >Your Account
-          </v-card-text
-          >
+        <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
+          <v-card-text class="text-h3 font-weight-bold my-6">
+            Your Account
+          </v-card-text>
           <div class="mx-md-16 mx-sm-8 mx-xs-8">
             <v-text-field
                 :model-value="data.firstName"
@@ -101,25 +98,13 @@ function toTitleCase(str) {
             ></v-text-field>
           </div>
 
-          <v-btn
-              v-if="editMode == true"
-              class="ma-2"
-              color="deep-purple-lighten-2"
-              variant="outlined"
-              @click="DialogueCP = true"
-          >
+          <v-btn v-if="editMode == true" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
+                 @click="DialogueCP = true">
             Change Password
           </v-btn>
-
           <v-divider class="border-opacity-0"></v-divider>
-
-          <v-btn
-              v-if="editMode == false"
-              class="ma-2"
-              color="deep-purple-lighten-2"
-              variant="outlined"
-              @click.stop="editMode = true"
-          >
+          <v-btn v-if="editMode == false" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
+                 @click.stop="editMode = true">
             Edit
           </v-btn>
 
@@ -172,7 +157,7 @@ function toTitleCase(str) {
                           type="password"
                       ></v-text-field>
                       <v-btn
-                          block
+                          block=""
                           class="mt-2 bg-blue-darken-1"
                           type="submit"
                           @click=""
@@ -183,7 +168,7 @@ function toTitleCase(str) {
                   </v-sheet>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn block color="primary" @click="DialogueCP = false"
+                  <v-btn block="" color="primary" @click="DialogueCP = false"
                   >Cancel
                   </v-btn
                   >
@@ -192,7 +177,7 @@ function toTitleCase(str) {
             </v-dialog>
           </div>
         </div>
-        <Credit class="user_rounded my-0 mx-4"/>
+        <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect"/>
       </div>
     </v-main>
   </Navbar>

@@ -16,12 +16,12 @@ export default {
         sortable: true,
         key: "location_id",
       },
-      { title: "Name", align: "start", key: "name" },
-      { title: "Manager", align: "end", key: "managerID" },
-      { title: "Address", align: "end", key: "address" },
-      { title: "Status", align: "end", key: "status" },
-      { title: "Open", align: "end", key: "open_time" },
-      { title: "Close", align: "end", key: "close_time" },
+      {title: "Name", align: "start", key: "name"},
+      {title: "Manager", align: "end", key: "managerID"},
+      {title: "Address", align: "end", key: "address"},
+      {title: "Status", align: "end", key: "status"},
+      {title: "Open", align: "end", key: "open_time"},
+      {title: "Close", align: "end", key: "close_time"},
     ],
     testPlacement: [
       {

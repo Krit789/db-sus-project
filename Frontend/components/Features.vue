@@ -8,7 +8,7 @@ const {status, data, signIn, signOut} = useAuth();
       Dinner is ready to served!
     </h1>
     <!-- Row 1 -->
-    <v-row class="feature_flex mx-3" justify="center">
+    <v-row class="feature_flex mx-0" justify="center">
       <v-col class="feature_rounded">
         <div class="title_header">
           <h2 class="blue-text">Find your favorite restaurant</h2>
@@ -43,10 +43,10 @@ const {status, data, signIn, signOut} = useAuth();
 
     <!--Row 2 Create Branches Report   -->
     <v-row
-      v-if="status == 'authenticated' && data.role == 'MANAGER'"
-      class="feature_rounded row_two_container mx-5 mt-12"
-      justify="center"
-      no-gutters
+        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
+        class="feature_rounded row_two_container mx-3 mt-8"
+        justify="center"
+        no-gutters
     >
       <v-col class="" col="">
         <h2 class="blue-text">Create Branches Report</h2>
@@ -81,9 +81,9 @@ const {status, data, signIn, signOut} = useAuth();
 
     <!--Row 3 Manage Branches and Manage Menu   -->
     <v-row
-      v-if="status == 'authenticated' && data.role == 'MANAGER'"
-      class="mt-8 px-3"
-      justify="center"
+        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
+        class="mt-5 px-3"
+        justify="center"
     >
       <v-col class="feature_rounded row_three_container">
         <h2 class="blue-text">Manage Branches</h2>
@@ -136,9 +136,9 @@ const {status, data, signIn, signOut} = useAuth();
 
     <!--Row 4 Manage   -->
     <v-row
-      v-if="status == 'authenticated' && data.role == 'MANAGER'"
-      class="mt-8 px-3"
-      justify="center"
+        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
+        class="mt-8 px-3"
+        justify="center"
     >
       <v-col class="feature_rounded row_three_container">
         <h2 class="blue-text">Manage Branches</h2>

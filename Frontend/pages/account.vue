@@ -54,7 +54,7 @@ function toTitleCase(str) {
               <v-img
                   class="mt-5 bg-white ma-2 user_image"
                   cover=""
-                  src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+                  src="ejudge_avatar280.png"
                   width="170"
               ></v-img>
             </div>
@@ -63,11 +63,11 @@ function toTitleCase(str) {
             <h3>{{ data.email }}</h3>
             <h3 class="mt-12">{{ toTitleCase(data.role) }}</h3>
           </v-col>
-          <v-col class="user_rounded">
+          <v-col class="user_rounded user_details">
             May be user role and role benefits
           </v-col>
         </v-row>
-        <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
+        <div class="text-center mt-10 ma-auto your_account user_rounded user_details pa-4 mx-3">
           <v-card-text class="text-h3 font-weight-bold my-6">
             Your Account
           </v-card-text>
@@ -98,34 +98,23 @@ function toTitleCase(str) {
             ></v-text-field>
           </div>
 
-          <v-btn v-if="editMode == true" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
+          <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
                  @click="DialogueCP = true">
             Change Password
           </v-btn>
           <v-divider class="border-opacity-0"></v-divider>
-          <v-btn v-if="editMode == false" class="ma-2" color="deep-purple-lighten-2" variant="outlined"
+          <v-btn v-if="editMode == false" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
                  @click.stop="editMode = true">
             Edit
           </v-btn>
 
           <!-- vv only appear on edit mode vv -->
-          <v-btn
-              v-if="editMode == true"
-              class="ma-2"
-              color="deep-purple-lighten-2"
-              variant="outlined"
-              @click.stop=""
-          >
+          <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="">
             Save
           </v-btn>
 
-          <v-btn
-              v-if="editMode == true"
-              class="ma-2"
-              color="deep-purple-lighten-2"
-              variant="outlined"
-              @click.stop="editMode = false"
-          >
+          <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
+                 @click.stop="editMode = false">
             Cancel
           </v-btn>
           <!-- ^^ only appear on edit mode ^^ -->

@@ -17,7 +17,7 @@
     margin: 0 12px 0 12px;
     border-radius: 32px;
     min-height: 500px;
-    padding: 22px 32px 20px 32px !important;
+    padding: 22px 32px !important;
     background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
 
 }
@@ -38,8 +38,14 @@ h4 {
 
 .main_container {
     max-width: 1380px;
+    padding-bottom: 32px;
 }
 
 .windows_bg {
-    background: url(~/assets/images/Wallpaper.webp);
+    background: url(~/assets/images/cucamonga.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+
 }

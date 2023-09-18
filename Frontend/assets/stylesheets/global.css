@@ -2,6 +2,11 @@
 
 @import 'fonts.css';
 
+v-btn {
+    color: #0373DE;
+    caret-color: #0373DE;
+}
+
 .blur-effect {
     background: rgba(245, 245, 247, .72);
     backdrop-filter: blur(20px) saturate(1.8);
@@ -41,6 +46,10 @@ body {
 .text-h3 {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 
+}
+
+.text-h4 {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
 .text-h5 {

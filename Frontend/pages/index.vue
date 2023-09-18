@@ -45,14 +45,14 @@ import "~/assets/stylesheets/index.css";
             Reserve Now!
           </v-btn>
         </div>
-        <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">
-          <v-card class="px-lg-10 px-sm-5 px-xs-0" text="">
-            <v-card-text class="text-h3 font-weight-bold my-6"
+        <div class=" text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">
+          <v-card class="blur-effect location_container px-lg-10 px-sm-5 px-xs-0" text="">
+            <v-card-text class="text-h3 font-weight-bold my-6 bg-transparent"
             >Locations
             </v-card-text
             >
             <v-sheet
-                class="mx-auto pb-5"
+                class="mx-auto pb-5 bg-transparent"
                 elevation="0"
                 max-width="1800"
                 rounded="lg"
@@ -94,8 +94,9 @@ import "~/assets/stylesheets/index.css";
                     <v-divider class="mx-4 mb-1"></v-divider>
                     <v-btn
                         v-if="status == 'authenticated'"
-                        class="mb-2"
-                        color="deep-purple-lighten-2"
+                        class="my-3"
+                        rounded="lg"
+                        color="#0373DE"
                         variant="outlined"
                         @click="
                         $router.push({
@@ -115,6 +116,7 @@ import "~/assets/stylesheets/index.css";
                 class="mb-3"
                 rounded="lg"
                 size="large"
+                color="#0373DE"
                 variant="text"
                 @click="$router.push('/booking')"
             >All Location
@@ -123,7 +125,7 @@ import "~/assets/stylesheets/index.css";
         </div>
       </v-parallax>
       <div class="bg-grey-lighten-4 mb-3">
-        <Features/>
+        <Features class="mt-0"/>
         <Credit/>
       </div>
     </v-main>

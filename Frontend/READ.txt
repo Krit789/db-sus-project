@@ -1,3 +1,4 @@
 ----PNPM----
 npm i -g pnpm
 pnpm install
+pnpm dev

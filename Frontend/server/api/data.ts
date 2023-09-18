@@ -1,16 +1,16 @@
-import {getServerSession} from "#auth";
+import {getServerSession, getToken} from "#auth";
 
 export default defineEventHandler(async (event) => {
-    const session = await getServerSession(event); // Get user session
+    const jwt = await getToken({ event });
     const body = await readBody(event); // Read from POST body
-    if (session?.token) {
+    if (jwt?.token) {
         const reservations = await $fetch(
             "http://localhost:3000/proxy/api/control.php",
             {
                 method: "POST",
                 body: {
                     type: body.type,
-                    token: session?.token,
+                    token: jwt.token,
                 },
             },
         ).catch((error) => error.data);

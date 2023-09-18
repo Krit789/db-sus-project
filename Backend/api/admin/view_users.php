@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if ($role == "GOD") {
 
-        $obj->select("users", "*", null, null, null, null);
+        $obj->select("users", "id, first_name, last_name, email, telephone, role, created_on", null, null, null, null);
         $result = $obj->getResult();
 
         echo json_encode([

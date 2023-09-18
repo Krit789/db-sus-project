@@ -56,3 +56,7 @@ body {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
+.main_container {
+    max-width: 1380px;
+    padding-bottom: 32px;
+}

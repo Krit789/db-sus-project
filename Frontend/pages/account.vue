@@ -2,7 +2,7 @@
 import {useDisplay} from "vuetify";
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/account_index.css";
+import "~/assets/stylesheets/reservation.css";
 
 const {status, data} = useAuth();
 const {mobile} = useDisplay();
@@ -49,7 +49,7 @@ function toTitleCase(str) {
     <v-main class="bg-grey-lighten-4 justify-center windows_bg">
       <div class="main_container mx-auto">
         <v-row class="justify-center mt-8 px-3">
-          <v-col class="user_rounded user_details">
+          <v-col class="user_rounded">
             <div class="justify-center">
               <v-img
                   class="mt-5 bg-white ma-2 user_image"
@@ -63,11 +63,11 @@ function toTitleCase(str) {
             <h3>{{ data.email }}</h3>
             <h3 class="mt-12">{{ toTitleCase(data.role) }}</h3>
           </v-col>
-          <v-col class="user_rounded user_details">
+          <v-col class="user_rounded">
             May be user role and role benefits
           </v-col>
         </v-row>
-        <div class="text-center mt-10 ma-auto your_account user_rounded user_details pa-4 mx-3">
+        <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
           <v-card-text class="text-h3 font-weight-bold my-6">
             Your Account
           </v-card-text>
@@ -168,7 +168,7 @@ function toTitleCase(str) {
         </div>
 
       </div>
-      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>
+      <!--      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>-->
     </v-main>
   </Navbar>
 </template>

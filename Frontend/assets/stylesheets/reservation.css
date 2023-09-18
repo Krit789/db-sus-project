@@ -1,0 +1,13 @@
+.reservation_body {
+    background: url("~/assets/images/Wallpaper.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.main_container {
+    border-radius: 22px;
+}

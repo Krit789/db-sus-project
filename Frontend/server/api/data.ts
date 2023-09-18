@@ -1,7 +1,7 @@
 import {getToken} from "#auth";
 
 export default defineEventHandler(async (event) => {
-    const jwt = await getToken({ event });
+    const jwt = await getToken({event});
     const body = await readBody(event); // Read from POST body
     let url: string;
 

@@ -95,8 +95,8 @@ import "~/assets/stylesheets/index.css";
                     <v-btn
                         v-if="status == 'authenticated'"
                         class="my-3"
-                        rounded="lg"
                         color="#0373DE"
+                        rounded="lg"
                         variant="outlined"
                         @click="
                         $router.push({
@@ -114,9 +114,9 @@ import "~/assets/stylesheets/index.css";
             </v-sheet>
             <v-btn
                 class="mb-3"
+                color="#0373DE"
                 rounded="lg"
                 size="large"
-                color="#0373DE"
                 variant="text"
                 @click="$router.push('/booking')"
             >All Location

@@ -7,19 +7,19 @@
     aspect-ratio: 1;
 }
 
-.user_details {
-    backdrop-filter: blur(15px) saturate(86%);
-    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
-}
+/*. {*/
+/*    backdrop-filter: blur(15px) saturate(86%);*/
+/*    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;*/
+/*}*/
 
 .user_rounded {
+    backdrop-filter: blur(15px) saturate(86%) !important;
     background-color: rgba(255, 255, 255);
     margin: 0 12px 0 12px;
     border-radius: 32px;
     min-height: 500px;
     padding: 22px 32px !important;
     background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
-
 }
 
 h2 {
@@ -36,10 +36,6 @@ h4 {
     font-weight: 300;
 }
 
-.main_container {
-    max-width: 1380px;
-    padding-bottom: 32px;
-}
 
 .windows_bg {
     background: url(~/assets/images/cucamonga.webp);

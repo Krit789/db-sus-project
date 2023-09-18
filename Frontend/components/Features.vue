@@ -43,7 +43,7 @@ const { status, data, signIn, signOut } = useAuth();
 
     <!--Row 2 Create Branches Report   -->
     <v-row
-      v-if="(status == 'authenticated' && data.role == 'MANAGER')"
+      v-if="status == 'authenticated' && data.role == 'MANAGER'"
       class="feature_rounded row_two_container mx-5 mt-12"
       justify="center"
       no-gutters
@@ -80,7 +80,7 @@ const { status, data, signIn, signOut } = useAuth();
 
     <!--Row 3 Manage Branches and Manage Menu   -->
     <v-row
-      v-if="(status == 'authenticated' && data.role == 'MANAGER')"
+      v-if="status == 'authenticated' && data.role == 'MANAGER'"
       class="mt-8 px-3"
       justify="center"
     >
@@ -133,7 +133,7 @@ const { status, data, signIn, signOut } = useAuth();
 
     <!--Row 4 Manage   -->
     <v-row
-      v-if="(status == 'authenticated' && data.role == 'MANAGER')"
+      v-if="status == 'authenticated' && data.role == 'MANAGER'"
       class="mt-8 px-3"
       justify="center"
     >

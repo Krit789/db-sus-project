@@ -51,6 +51,7 @@ export default {
         </template>
         <template v-else>
           <v-stepper
+          :mandatory="true"
             :items="[
               'Select Branches',
               'Choose Date',

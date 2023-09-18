@@ -10,11 +10,12 @@ export default {
     dtLoading: false,
     dtHeaders: [
       {
-        title: "Name",
+        title: "Location ID",
         align: "start",
         sortable: true,
-        key: "name",
+        key: "location_id",
       },
+      { title: "Name", align: "start", key: "name" },
       { title: "Manager", align: "end", key: "managerID" },
       { title: "Address", align: "end", key: "address" },
       { title: "Status", align: "end", key: "status" },
@@ -105,7 +106,7 @@ export default {
           item-value="id"
           @click:row="
             (val, tabl) => {
-              console.log(tabl.item.columns.id);
+              console.log(tabl.item.columns.location_id);
             }
           "
         >

@@ -61,7 +61,7 @@ export default {
         },
       },
       {
-        title: "Booking",
+        title: "Reservation",
         permitted: ["USER"],
         value: "booking",
         action: "u-booking",
@@ -70,7 +70,7 @@ export default {
         },
       },
       {
-        title: "Status",
+        title: "My Reservation",
         permitted: ["USER"],
         value: "status",
         action: "u-status",
@@ -141,7 +141,7 @@ export default {
           this.$router.push("/");
           break;
         case "u-booking":
-          this.$router.push("/booking");
+          this.$router.push("/reservation");
           break;
         case "u-status":
           this.$router.push("/status");
@@ -241,10 +241,23 @@ export default {
           </NuxtLink>
         </v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
-          <v-btn color="blue" variant="text" @click="dialogRe = true"
+          <v-btn
+            color="blue"
+            variant="text"
+            @click="
+              () => {
+                dialogRe = true;
+              }
+            "
             >Register</v-btn
           >
-          <v-btn background-color="#D9D9D9" @click="dialogIn = true"
+          <v-btn
+            background-color="#D9D9D9"
+            @click="
+              () => {
+                dialogIn = true;
+              }
+            "
             >Login</v-btn
           >
         </div>
@@ -314,19 +327,14 @@ export default {
           <v-list>
             <div v-for="(item, index) in items" :key="index">
               <v-list-item
-                v-if="
-                  item.permitted.includes(data.role)"
+                v-if="item.permitted.includes(data.role)"
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
             </div>
-            <v-list-group
-              v-if="
-                data.role == 'MANAGER' ||
-                data.role == 'GOD'"
-            >
+            <v-list-group v-if="data.role == 'MANAGER' || data.role == 'GOD'">
               <template v-slot:activator="{ props }">
                 <v-list-item
                   color="primary"
@@ -342,11 +350,9 @@ export default {
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
               >
-                <v-list-item-title
-                  v-if="
-                    item.permitted.includes(data.role)"
-                  >{{ item.title }}</v-list-item-title
-                >
+                <v-list-item-title v-if="item.permitted.includes(data.role)">{{
+                  item.title
+                }}</v-list-item-title>
               </v-list-item>
             </v-list-group>
           </v-list>
@@ -381,16 +387,22 @@ export default {
           <v-divider></v-divider>
           <v-list>
             <v-list-item
-              id="loginActivator"
               prepend-icon="mdi-login-variant"
-              @click=""
+              @click="
+                () => {
+                  dialogIn = true;
+                }
+              "
             >
               <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
             <v-list-item
-              id="regisActivator"
               prepend-icon="mdi-account-plus"
-              @click=""
+              @click="
+                () => {
+                  dialogRe = true;
+                }
+              "
             >
               <v-list-item-title>Register</v-list-item-title>
             </v-list-item>
@@ -399,11 +411,7 @@ export default {
         </div>
       </v-navigation-drawer>
       <div class="text-center">
-        <v-dialog
-          v-model="dialogIn"
-          :fullscreen="mobile"
-          activator="#loginActivator"
-        >
+        <v-dialog v-model="dialogIn" :fullscreen="mobile">
           <v-card class="blur-effect account_pane">
             <v-card-title class="mt-4 ml-4 pb-3"><h1>Login</h1></v-card-title>
             <v-card-subtitle class="ml-4 pb-1"

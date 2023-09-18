@@ -69,6 +69,7 @@ export default {
         method: "POST",
         body: {
           type: 7,
+          usage: "user"
         },
         lazy: true,
       })

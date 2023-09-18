@@ -65,7 +65,8 @@ export default {
       await $fetch("/api/data", {
         method: "POST",
         body: {
-          type: 31,
+          type: 12,
+          usage: "admin"
         },
         lazy: true,
       })

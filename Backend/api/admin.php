@@ -26,13 +26,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on", null, null, null, null);
+                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on", null, null, "user_id", null);
                         $result = $obj->getResult();
 
-                        echo json_encode([
-                            'status' => 1,
-                            'message' => $result
-                        ]);
+                        if ($result){
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        }else{
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -127,10 +134,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("menus", "*", null, null, null, null);
                         $result = $obj->getResult();
 
-                        echo json_encode([
-                            'status' => 1,
-                            'message' => $result
-                        ]);
+                        if ($result){
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        }else{
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -307,17 +321,48 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("reservations", "*", 'tables using (table_id)', null, "res_id desc", null);
+                        $obj->select("reservations", "*", 'tables using (table_id) join users using (user_id) join locations using (location_id)', null, "res_id desc", null);
                         $result = $obj->getResult();
 
-                        echo json_encode([
-                            'status' => 1,
-                            'message' => $result
-                        ]);
+                        if ($result){
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        }else{
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
+
                     } else {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 13: # Administrator เรียกดูสาขาทั้งหมด และข้อมูลของผู้จัดการ
+                    //
+                    $role = $user_data['role'];
+
+                    if ($role == "GOD"){
+                        $obj->select("locations l", "location_id, name, address, open_time, close_time, l.status, creation_date, u.user_id, first_name, last_name, email, telephone, role, u.status", null, null, null, null, "left outer join users u on (l.manager_id = u.user_id)");
+                        $result = $obj->getResult();
+
+                        if ($result){
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        }else{
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
+
+                    }else{
+                        $ispermission = !$ispermission;
+                    }
             }
             if ($ispermission){
                 echo json_encode([
@@ -343,7 +388,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 } else {
     echo json_encode([
         'status' => 0,
-        'message' =>"Server Error"
+        'message' =>"Access Denied"
     ]);
 }
 // $allheaders = getallheaders();

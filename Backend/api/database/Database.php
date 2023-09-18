@@ -85,10 +85,12 @@ class Database
 
     // update data
 
-    public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null)
+    public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $free = null)
     {
         if ($this->tableExist($table)) {
             $sql = "SELECT $row FROM $table";
+            if ($free != null)
+                $sql .= " $free";
             if ($join != null)
                 $sql .= " JOIN $join";
             if ($where != null)
@@ -100,7 +102,7 @@ class Database
 
             $query = $this->mysqli->query($sql);
 
-            //echo $sql; #ดูคำสั่ง sql ปิดๆ
+            echo $sql; #ดูคำสั่ง sql ปิดๆ
 
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);

@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         if (isset($user_data['user_id'])) {
             switch ($type) {
-                case 1: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล ||||||| Administrator เรียก user.php ที่ 7
+                case 1: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล
                     $id = $user_data['user_id'];
                     $role = $user_data['role'];
 
@@ -124,7 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                             ]);
                         }
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -150,7 +149,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'message' => "Add Table Falied Successful"
                             ]);
                         }
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -184,7 +182,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'message' => "Delete Table Falied Successful"
                             ]);
                         }
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -211,7 +208,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                             ]);
                         }
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -222,19 +218,55 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $id = $data->location_id;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select("reservations", "*", null, "table_id in (select table_id from tables where location_id={$id})", "res_id desc", null);
+                        $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id={$id})", "res_id desc", null);
                         $result = $obj->getResult();
 
-                        echo json_encode([
-                            'status' => 1,
-                            'message' => $result
-                        ]);
+                        if ($result) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        }else{
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 9: #Manager เรียกดูการจองในสาขาที่ตัวเองดูแล
+                    $role = $user_data['role'];
+                    $role = "MANAGER";
+
+                    if ($role == "MANAGER") {
+                        $obj->select("locations", "manager_id", null, "manager_id=" . $user_data['user_id'], "manager_id", null);
+                        $result = $obj->getResult();
+                        $tmp = "";
+                        for ($i = 0; $i < sizeof($result); $i++) {
+                            if ($i == 0) {
+                                $tmp .= $result[$i]['manager_id'];
+                                continue;
+                            }
+                            $tmp .= ", " . $result[$i]['manager_id'];
+                        }
+                        $obj->select("reservations", "*", "tables using (table_id)", "location_id in ($tmp)");
+                        $result = $obj->getResult();
+                        if ($result) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => 'Server Problem'
+                            ]);
+                        }
+                    }
             }
-            if ($ispermission){
+            if ($ispermission) {
                 echo json_encode([
                     'status' => 0,
                     'message' => 'Insufficient Permission',
@@ -255,6 +287,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
+} else {
+    echo json_encode([
+        'status' => 0,
+        'message' => 'Access Denied'
+    ]);
 }
 // $allheaders = getallheaders();
 // $jwt = $allheaders['Authorization'];

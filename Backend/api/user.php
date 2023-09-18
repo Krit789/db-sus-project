@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     }
                     break;
-                case 7: # Customer, Administrator ต้องการเรียกดูสาขาทั้งหมด
+                case 7: # Customer ต้องการเรียกดูสาขาทั้งหมด
                     $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                     $res = $obj->getResult();
                     if ($res) {
@@ -300,6 +300,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
+}else{
+    echo json_encode([
+        'status' => 0,
+        'message' => 'Access Denied'
+    ]);
 }
 // $allheaders = getallheaders();
 // $jwt = $allheaders['Authorization'];

@@ -36,21 +36,13 @@ import "~/assets/stylesheets/index.css";
           <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
           <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>
           <v-btn
-<<<<<<< HEAD
             class="blue_button"
             prepend-icon="mdi-login-variant"
             rounded="lg"
             size="x-large"
             @click="$router.push('/booking')"
-            >Reserve Now!
-=======
-              class="blue_button"
-              prepend-icon="mdi-login-variant"
-              rounded="lg"
-              size="x-large"
-              @click="$router.push('/booking')"
-          >Book Now!
->>>>>>> 92b91d24eca1cda61d0a3af0593dce935092901c
+            >
+            Reserve Now!
           </v-btn>
         </div>
         <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">

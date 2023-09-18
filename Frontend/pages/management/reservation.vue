@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { VDataTable } from "vuetify/labs/VDataTable";
-const { status, data, signIn, signOut } = useAuth();
+import {VDataTable} from "vuetify/labs/VDataTable";
+
+const {status, data, signIn, signOut} = useAuth();
 
 useHead({
   title: "Reservation Management - Seatify Admin",
-  meta: [{ name: "Seatify App", content: "My amazing site." }],
+  meta: [{name: "Seatify App", content: "My amazing site."}],
 });
 </script>
 
@@ -21,12 +22,12 @@ export default {
         sortable: true,
         key: "res_id",
       },
-      { title: "User ID", align: "end", key: "user_id" },
-      { title: "Reserved On", align: "end", key: "create_time" },
-      { title: "Reserved For", align: "end", key: "arrival" },
-      { title: "Status", align: "end", key: "status" },
-      { title: "No. of Customer", align: "end", key: "cus_count" },
-      { title: "Table ID", align: "end", key: "table_id" },
+      {title: "User ID", align: "end", key: "user_id"},
+      {title: "Reserved On", align: "end", key: "create_time"},
+      {title: "Reserved For", align: "end", key: "arrival"},
+      {title: "Status", align: "end", key: "status"},
+      {title: "No. of Customer", align: "end", key: "cus_count"},
+      {title: "Table ID", align: "end", key: "table_id"},
     ],
     testPlacement: [
       {
@@ -68,11 +69,11 @@ export default {
         },
         lazy: true,
       })
-        .catch((error) => error.data)
-        .then(({ status, message }) => {
-          this.dtData = message;
-          this.dtLoading = false;
-        });
+          .catch((error) => error.data)
+          .then(({status, message}) => {
+            this.dtData = message;
+            this.dtLoading = false;
+          });
     },
   },
   beforeMount() {
@@ -88,20 +89,20 @@ export default {
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-btn
-          class="align-right"
-          text="Refresh"
-          prepend-icon="mdi-refresh"
-          @click="loadData"
-          :disabled="dtLoading"
+            :disabled="dtLoading"
+            class="align-right"
+            prepend-icon="mdi-refresh"
+            text="Refresh"
+            @click="loadData"
         ></v-btn>
         <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          class="elevation-1"
-          item-value="id"
-          @click:row="
+            v-model:items-per-page="itemsPerPage"
+            :headers="dtHeaders"
+            :items="dtData"
+            :loading="dtLoading"
+            class="elevation-1"
+            item-value="id"
+            @click:row="
             (val, tabl) => {
               console.log(tabl.item.columns.res_id);
             }

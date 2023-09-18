@@ -20,22 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         if (isset($user_data['user_id'])) {
             switch ($type) {
-                case 1: #Manager ยืนยันว่ามาตามที่จอง 
+                case 1: #Manager ยืนยันว่ามาตามที่จอง
                     //ต้องส่งข้อมูล res_id, res_code
                     $json = json_encode(array('res_id' => $data->res_id, 'role' => $user_data['role'], 'res_code' => $data->res_code));
                     header("location: bookingV2/booking-accept.php?json={$json}");
                     break;
-                case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้ 
+                case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
                     //ต้องส่งข้อมูล res_id
                     $json = json_encode(array('res_id' => $data->res_id, 'id' => $user_data['user_id'], 'role' => $user_data['role']));
                     header("location: bookingV2/booking-cancel.php?json={$json}");
                     break;
-                case 3: #Customer ทำการจอง 
+                case 3: #Customer ทำการจอง
                     //ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
                     $json = json_encode(array('table_id' => $data->table_id, 'id' => $user_data['user_id'], 'token' => $user_data['access_token'], 'arrival' => $data->arrival, 'cus_count' => $data->cus_count, 'menu' => $data->menu));
                     header("location: bookingV2/booking-create-user.php?json={$json}");
                     break;
-                case 4: #Customer ต้องการแก้ไขการจอง 
+                case 4: #Customer ต้องการแก้ไขการจอง
                     //ต้องส่งข้อมูล res_id, arrival, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
                     $json = json_encode(array('id' => $user_data['user_id'], 'res_id' => $data->res_id, 'arrival' => $data->arrival, 'menu' => $data->menu));
                     header("location: bookingV2/booking-modify-user.php?json={$json}");
@@ -48,14 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $json = json_encode(array('res_id' => $data->res_id));
                     header("location: bookingV2/booking-viewallfoodorder-user.php?json={$json}");
                     break;
-                case 7: # Customer, Administrator ต้องการเรียกดูสาขาทั้งหมด 
+                case 7: # Customer, Administrator ต้องการเรียกดูสาขาทั้งหมด
                     header("location: bookingV2/booking-viewalllocation.php");
                     break;
                 case 8: #เรียกดูการจองทั้งหมดของเจ้าของ Account
                     $json = json_encode(array('id' => $user_data['user_id']));
                     header("location: bookingV2/booking-viewbooking.php?json={$json}");
                     break;
-                case 9: # Customer, Manger, Administrator เรียกดูข้อมูลรายละเอียดการจองที่ เรา เลือก 
+                case 9: # Customer, Manger, Administrator เรียกดูข้อมูลรายละเอียดการจองที่ เรา เลือก
                     //ต้องส่งข้อมูล res_id
                     $json = json_encode(array('id' => $user_data['user_id'], 'res_id' => $data->res_id, 'role' => $user_data['role']));
                     header("location: bookingV2/booking-viewdetailbooking-user.php?json={$json}");

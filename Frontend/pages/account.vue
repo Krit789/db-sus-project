@@ -76,25 +76,25 @@ function toTitleCase(str) {
           <div class="mx-md-16 mx-sm-8 mx-xs-8">
             <v-text-field
               :model-value="data.firstName"
-              :readonly="editMode"
+              :readonly="!editMode"
               label="First Name"
               variant="underlined"
             ></v-text-field>
             <v-text-field
               :model-value="data.lastName"
-              :readonly="editMode"
+              :readonly="!editMode"
               label="Last Name"
               variant="underlined"
             ></v-text-field>
             <v-text-field
               :model-value="data.tel"
-              :readonly="editMode"
+              :readonly="!editMode"
               label="Telephone Number"
               variant="underlined"
             ></v-text-field>
             <v-text-field
               :model-value="data.email"
-              :readonly="editMode"
+              :readonly="!editMode"
               label="Email"
               variant="underlined"
             ></v-text-field>

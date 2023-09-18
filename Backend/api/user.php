@@ -20,12 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             switch ($type) {
                 case 1: #Manager ยืนยันว่ามาตามที่จอง
                     //ต้องส่งข้อมูล res_id, res_code
-                    $id = $data->res_id;
                     $role = $user_data['role'];
                     $res_code = $data->res_code;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select('reservations', "*", null, "res_id={$id} and res_code={$res_code}", null, null);
+                        $obj->select('reservations', "*", null, "res_code={$res_code}", null, null);
                         $result = $obj->getResult();
 
                         if ($result[0] == 1) {

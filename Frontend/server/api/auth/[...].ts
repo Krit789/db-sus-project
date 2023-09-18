@@ -2,7 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import {NuxtAuthHandler} from "#auth";
 
 export default NuxtAuthHandler({
-    secret: "asdasdasd", // process.env.AUTH_SECRET,
+    secret: process.env.AUTH_SECRET,
     callbacks: {
         // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
         jwt: async ({token, user}) => {
@@ -26,7 +26,7 @@ export default NuxtAuthHandler({
             (session as any).lastName = token.lastName;
             (session as any).email = token.email;
             (session as any).tel = token.tel;
-            (session as any).token = token.token;
+            // (session as any).token = token.token; // No need to send token back to user every callback
             return Promise.resolve(session);
         },
     },

@@ -2,7 +2,7 @@
 
 class Database
 {
-    private $localhost = "161.246.127.24";
+    private $hostname = "161.246.127.24";
     private $username = "cllc3ljgr0005bsmnf65j9dfn";
     private $password = "ZAE1ruy8bpMu7s7vCVIAgLPq";
     private $database = "susproject";
@@ -17,7 +17,7 @@ class Database
     public function __construct()
     {
         if (!$this->conn) {
-            $this->mysqli = mysqli_connect($this->localhost, $this->username, $this->password, $this->database, $this->port);
+            $this->mysqli = mysqli_connect($this->hostname, $this->username, $this->password, $this->database, $this->port);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {

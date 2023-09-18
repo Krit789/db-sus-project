@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("users", "id, first_name, last_name, email, telephone, role, created_on", null, null, null, null);
+                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on", null, null, null, null);
                         $result = $obj->getResult();
 
                         echo json_encode([
@@ -340,6 +340,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
+} else {
+    echo json_encode([
+        'status' => 0,
+        'message' =>"Server Error"
+    ]);
 }
 // $allheaders = getallheaders();
 // $jwt = $allheaders['Authorization'];

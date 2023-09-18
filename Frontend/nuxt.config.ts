@@ -54,10 +54,16 @@ export default defineNuxtConfig({
             addDefaultCallbackUrl: true,
         },
     },
-  },
-  nitro: {
-    routeRules: {
-      "/management/**": { ssr: false },
-      "/proxy/**": { proxy: "https://s.iservkmitl.tech/**" },
+    nitro: {
+        routeRules: {
+            "/management/**": {ssr: false},
+            "/proxy/**": {proxy: "https://s.iservkmitl.tech/**"},
+        },
+        // devProxy: {
+        //     '/proxy/': {
+        //         target: 'http://127.0.0.1:8000',
+        //         changeOrigin: true
+        //     }
+        // }
     },
 });

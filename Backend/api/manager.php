@@ -283,7 +283,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     } else {
         echo json_encode([
             'status' => 998,
-            'message' => 'Invalid Data Provieded' #ให้ออกจาระบบ แล้วไป login ใหม่
+            'message' => 'Invalid Data Provided' #ให้ออกจาระบบ แล้วไป login ใหม่
         ]);
         exit;
     }

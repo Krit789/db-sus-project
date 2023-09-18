@@ -313,25 +313,19 @@ export default {
           <v-divider></v-divider>
           <v-list>
             <div v-for="(item, index) in items" :key="index">
-              <!-- Remember to remove debug condition -->
               <v-list-item
                 v-if="
-                  item.permitted.includes(data.role) ||
-                  data.firstName == 'FirstName'
-                "
+                  item.permitted.includes(data.role)"
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
             </div>
-            <!-- Remember to remove debug condition -->
             <v-list-group
               v-if="
                 data.role == 'MANAGER' ||
-                data.role == 'GOD' ||
-                data.firstName == 'FirstName'
-              "
+                data.role == 'GOD'"
             >
               <template v-slot:activator="{ props }">
                 <v-list-item
@@ -348,12 +342,9 @@ export default {
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
               >
-                <!-- Remember to remove debug condition -->
                 <v-list-item-title
                   v-if="
-                    item.permitted.includes(data.role) ||
-                    data.firstName == 'FirstName'
-                  "
+                    item.permitted.includes(data.role)"
                   >{{ item.title }}</v-list-item-title
                 >
               </v-list-item>

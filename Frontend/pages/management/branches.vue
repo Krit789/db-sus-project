@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { VDataTable } from "vuetify/labs/VDataTable";
-const { status, data, signIn, signOut } = useAuth();
+import {VDataTable} from "vuetify/labs/VDataTable";
+
+const {status, data, signIn, signOut} = useAuth();
 </script>
 <script lang="ts">
 export default {
@@ -15,11 +16,11 @@ export default {
         sortable: true,
         key: "name",
       },
-      { title: "Manager", align: "end", key: "managerID" },
-      { title: "Address", align: "end", key: "address" },
-      { title: "Status", align: "end", key: "status" },
-      { title: "Open", align: "end", key: "open_time" },
-      { title: "Close", align: "end", key: "close_time" },
+      {title: "Manager", align: "end", key: "managerID"},
+      {title: "Address", align: "end", key: "address"},
+      {title: "Status", align: "end", key: "status"},
+      {title: "Open", align: "end", key: "open_time"},
+      {title: "Close", align: "end", key: "close_time"},
     ],
     testPlacement: [
       {
@@ -70,11 +71,11 @@ export default {
         },
         lazy: true,
       })
-        .catch((error) => error.data)
-        .then(({ status, message }) => {
-          this.dtData = message;
-          this.dtLoading = false;
-        });
+          .catch((error) => error.data)
+          .then(({status, message}) => {
+            this.dtData = message;
+            this.dtLoading = false;
+          });
     },
   },
   beforeMount() {
@@ -90,20 +91,20 @@ export default {
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-btn
-          class="align-right"
-          text="Refresh"
-          prepend-icon="mdi-refresh"
-          @click="loadData"
-          :disabled="dtLoading"
+            :disabled="dtLoading"
+            class="align-right"
+            prepend-icon="mdi-refresh"
+            text="Refresh"
+            @click="loadData"
         ></v-btn>
         <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          class="elevation-1"
-          item-value="id"
-          @click:row="
+            v-model:items-per-page="itemsPerPage"
+            :headers="dtHeaders"
+            :items="dtData"
+            :loading="dtLoading"
+            class="elevation-1"
+            item-value="id"
+            @click:row="
             (val, tabl) => {
               console.log(tabl.item.columns.id);
             }

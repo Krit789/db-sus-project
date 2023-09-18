@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { VStepper } from "vuetify/labs/VStepper";
-import { useDisplay } from "vuetify";
-const { mobile } = useDisplay();
-const { status, data } = useAuth();
+import {VStepper} from "vuetify/labs/VStepper";
+import {useDisplay} from "vuetify";
+
+const {mobile} = useDisplay();
+const {status, data} = useAuth();
 const route = useRoute();
 useHead({
   title: "Booking - Seatify",
-  meta: [{ name: "Seatify App", content: "My amazing site." }],
+  meta: [{name: "Seatify App", content: "My amazing site."}],
 });
 </script>
 
@@ -24,14 +25,14 @@ export default {
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <template v-if="route.query.location_id != null">
           <v-stepper
-            :items="[
+              :items="[
               'Select Branches',
               'Choose Date',
               'Choose Seat',
               'Summary',
             ]"
-            :mobile="mobile"
-            model-value="1"
+              :mobile="mobile"
+              model-value="1"
           >
             <template v-slot:item.1>
               <v-card title="Select Branches">...</v-card>
@@ -51,13 +52,13 @@ export default {
         </template>
         <template v-else>
           <v-stepper
-            :items="[
+              :items="[
               'Select Branches',
               'Choose Date',
               'Choose Seat',
               'Summary',
             ]"
-            :mobile="mobile"
+              :mobile="mobile"
           >
             <template v-slot:item.1>
               <v-card title="Select Branches">...</v-card>

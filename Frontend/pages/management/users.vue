@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { VDataTable } from "vuetify/labs/VDataTable";
-const { status, data, signIn, signOut } = useAuth();
+import {VDataTable} from "vuetify/labs/VDataTable";
+
+const {status, data, signIn, signOut} = useAuth();
 
 useHead({
   title: "User Management - Seatify Admin",
-  meta: [{ name: "Seatify App", content: "My amazing site." }],
-  link: [{ rel: "icon", type: "image/png", href: "favicon.ico" }],
+  meta: [{name: "Seatify App", content: "My amazing site."}],
+  link: [{rel: "icon", type: "image/png", href: "favicon.ico"}],
 });
 </script>
 <script lang="ts">
@@ -21,13 +22,13 @@ export default {
         sortable: true,
         key: "user_id",
       },
-      { title: "First Name", align: "end", key: "first_name" },
-      { title: "Last Name", align: "end", key: "last_name" },
-      { title: "Email", align: "end", key: "email" },
-      { title: "Telephone", align: "end", key: "telephone" },
-      { title: "Role", align: "end", key: "role" },
-      { title: "Created On", align: "end", key: "created_on" },
-      { title: "Status", align: "end", key: "status" },
+      {title: "First Name", align: "end", key: "first_name"},
+      {title: "Last Name", align: "end", key: "last_name"},
+      {title: "Email", align: "end", key: "email"},
+      {title: "Telephone", align: "end", key: "telephone"},
+      {title: "Role", align: "end", key: "role"},
+      {title: "Created On", align: "end", key: "created_on"},
+      {title: "Status", align: "end", key: "status"},
     ],
   }),
   methods: {
@@ -40,11 +41,11 @@ export default {
         },
         lazy: true,
       })
-        .catch((error) => error.data)
-        .then(({ status, message }) => {
-          this.dtData = message;
-          this.dtLoading = false;
-        });
+          .catch((error) => error.data)
+          .then(({status, message}) => {
+            this.dtData = message;
+            this.dtLoading = false;
+          });
     },
   },
   beforeMount() {
@@ -60,20 +61,20 @@ export default {
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-btn
-          class="align-right"
-          text="Refresh"
-          prepend-icon="mdi-refresh"
-          @click="loadData"
-          :disabled="dtLoading"
+            :disabled="dtLoading"
+            class="align-right"
+            prepend-icon="mdi-refresh"
+            text="Refresh"
+            @click="loadData"
         ></v-btn>
         <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          class="elevation-1"
-          item-value="id"
-          @click:row="
+            v-model:items-per-page="itemsPerPage"
+            :headers="dtHeaders"
+            :items="dtData"
+            :loading="dtLoading"
+            class="elevation-1"
+            item-value="id"
+            @click:row="
             (val, tabl) => {
               console.log(tabl.item.columns.user_id);
             }

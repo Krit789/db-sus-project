@@ -24,7 +24,8 @@ export default {
       {title: "Status", align: "end", key: "status"},
       {title: "Open", align: "end", key: "open_time"},
       {title: "Close", align: "end", key: "close_time"},
-    ], }),
+    ],
+  }),
   methods: {
     async loadData() {
       this.dtLoading = true;
@@ -36,7 +37,10 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => {this.dtIsError = true; this.dtErrorData = error.data})
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data
+          })
           .then(({status, message}) => {
             this.dtData = message;
             this.dtLoading = false;

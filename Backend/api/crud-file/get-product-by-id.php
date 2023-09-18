@@ -22,12 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'GET') {
         $id = $user_data->data->id;
         $obj->select('products', "*", null, "user_id='{$id}'", 'id DESC', null);
         $products = $obj->getResult();
-        if ($products) {
-            echo json_encode([
-                'status' => 1,
-                'message' => $products,
-            ]);
-        } else {
+        if ($products) echo json_encode([
+            'status' => 1,
+            'message' => $products,
+        ]); else {
             echo json_encode([
                 'status' => 0,
                 'message' => "server problem",

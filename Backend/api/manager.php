@@ -28,17 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($role == "MANAGER") {
                         $obj->select('locations', "*", null, "manager_id={$id}", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                         $res = $obj->getResult();
-                        if ($res) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $res,
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
-                            ]);
-                        }
+                        if ($res) echo json_encode([
+                            'status' => 1,
+                            'message' => $res,
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -56,17 +52,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($role == "MANAGER" || $role == "GOD") {
                         $obj->update("locations", ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => $status], "location_id={$id}");
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Update Info Location Successful',
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Update Info Location Successful',
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -113,17 +105,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
 
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Modify Menus Successful',
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Modify Menus Successful',
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -138,17 +126,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($role == "MANAGER" || $role == "GOD") {
                         $obj->insert("tables", ['name' => $name, 'capacity' => $capa, 'location_id' => $id]);
                         $result = $obj->getResult();
-                        if ($result[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => "Add Table Successful"
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "Add Table Falied Successful"
-                            ]);
-                        }
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "Add Table Successful"
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "Add Table Falied Successful"
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -171,17 +155,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         }
                         $obj->delete("tables", "table_id in ($tmp)");
                         $result = $obj->getResult();
-                        if ($result[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => "Delete Table Successful"
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "Delete Table Falied Successful"
-                            ]);
-                        }
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "Delete Table Successful"
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "Delete Table Falied Successful"
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -197,17 +177,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id={$id}");
 
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Modify Table Successful',
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Modify Table Successful',
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -221,17 +197,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id={$id})", "res_id desc", null);
                         $result = $obj->getResult();
 
-                        if ($result) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        }else{
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
-                            ]);
-                        }
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Server Problem'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -253,25 +225,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         }
                         $obj->select("reservations", "*", "tables using (table_id)", "location_id in ($tmp)");
                         $result = $obj->getResult();
-                        if ($result) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
-                            ]);
-                        }
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Server Problem'
+                        ]);
                     }
+                    break;
+                default:
+                    throw new \Exception('Unexpected value');
             }
-            if ($ispermission) {
-                echo json_encode([
-                    'status' => 0,
-                    'message' => 'Insufficient Permission',
-                ]);
-            }
+            if ($ispermission) echo json_encode([
+                'status' => 0,
+                'message' => 'Insufficient Permission',
+            ]);
             exit;
         } else {
             echo json_encode([
@@ -287,12 +256,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
-} else {
-    echo json_encode([
-        'status' => 0,
-        'message' => 'Access Denied'
-    ]);
-}
+} else echo json_encode([
+    'status' => 0,
+    'message' => 'Access Denied'
+]);
 // $allheaders = getallheaders();
 // $jwt = $allheaders['Authorization'];
 

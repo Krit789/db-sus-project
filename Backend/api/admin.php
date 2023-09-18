@@ -29,17 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on", null, null, "user_id", null);
                         $result = $obj->getResult();
 
-                        if ($result){
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        }else{
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
-                            ]);
-                        }
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Server Problem'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -55,17 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->update("users", ['status' => $status], "user_id={$user}");
                         $result = $obj->getResult();
 
-                        if ($result[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => "User Delete Successfully",
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "Server Problem",
-                            ]);
-                        }
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "User Delete Successfully",
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "Server Problem",
+                        ]);
 
                     } else {
                         $ispermission = !$ispermission;
@@ -83,17 +75,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->update("users", ['password' => $new_password], "user_id={$user}");
                         $result = $obj->getResult();
 
-                        if ($result[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $passowrd,
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "Server Problem",
-                            ]);
-                        }
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => $passowrd,
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "Server Problem",
+                        ]);
 
                     } else {
                         $ispermission = !$ispermission;
@@ -111,17 +99,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->insert('locations', ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3]);
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Add Location Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Add Location Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Add Location Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Add Location Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -134,17 +118,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("menus", "*", null, null, null, null);
                         $result = $obj->getResult();
 
-                        if ($result){
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        }else{
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
-                            ]);
-                        }
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Server Problem'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -158,17 +138,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->insert('menu_category', ['name' => $name]);
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Add Category Menu Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Add Category Menu Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Add Category Menu Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Add Category Menu Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -197,17 +173,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->insert('locations', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url]);
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Add Menu Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Add Menu Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Add Menu Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Add Menu Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -226,17 +198,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->update('menus', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url], "menu_id={$id}");
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Modify Menu Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Modify Menu Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Modify Menu Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Modify Menu Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -250,17 +218,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->delete("menus", "menu_id={$id}");
                         $result = $obj->getResult();
-                        if ($result[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => "Delete Menu Successful"
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => "Delete Menu Falied Successful"
-                            ]);
-                        }
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "Delete Menu Successful"
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => "Delete Menu Falied Successful"
+                        ]);
 
                     } else {
                         $ispermission = !$ispermission;
@@ -276,17 +240,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->update('users', ['role' => $role_user], "user_id={$id}");
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Change Role Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Change Role Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Change Role Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Change Role Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -301,17 +261,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->update('locations', ['manager_id' => $id], "location_id={$loca_id}");
                         $res = $obj->getResult();
-                        if ($res[0] == 1) {
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => 'Add Manager to Location Successful'
-                            ]);
-                        } else {
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Add Manager to Location Failed Successful'
-                            ]);
-                        }
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Add Manager to Location Successful'
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Add Manager to Location Failed Successful'
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -324,12 +280,30 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("reservations", "*", 'tables using (table_id) join users using (user_id) join locations using (location_id)', null, "res_id desc", null);
                         $result = $obj->getResult();
 
-                        if ($result){
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        }else{
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Server Problem'
+                        ]);
+
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 13: # Administrator เรียกดูสาขาทั้งหมด และข้อมูลของผู้จัดการ
+                    //
+                    $role = $user_data['role'];
+
+                    if ($role == "GOD") {
+                        $obj->select("locations l", "location_id, name, address, open_time, close_time, l.status, creation_date, u.user_id, first_name, last_name, email, telephone, role, u.status", null, null, null, null, "left outer join users u on (l.manager_id = u.user_id)");
+                        $result = $obj->getResult();
+
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]); else {
                             echo json_encode([
                                 'status' => 0,
                                 'message' => 'Server Problem'
@@ -340,36 +314,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
-                case 13: # Administrator เรียกดูสาขาทั้งหมด และข้อมูลของผู้จัดการ
-                    //
-                    $role = $user_data['role'];
-
-                    if ($role == "GOD"){
-                        $obj->select("locations l", "location_id, name, address, open_time, close_time, l.status, creation_date, u.user_id, first_name, last_name, email, telephone, role, u.status", null, null, null, null, "left outer join users u on (l.manager_id = u.user_id)");
-                        $result = $obj->getResult();
-
-                        if ($result){
-                            echo json_encode([
-                                'status' => 1,
-                                'message' => $result
-                            ]);
-                        }else{
-                            echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
-                            ]);
-                        }
-
-                    }else{
-                        $ispermission = !$ispermission;
-                    }
+                default:
+                    throw new \Exception('Unexpected value');
             }
-            if ($ispermission){
-                echo json_encode([
-                    'status' => 0,
-                    'message' => 'Insufficient Permission',
-                ]);
-            }
+            if ($ispermission) echo json_encode([
+                'status' => 0,
+                'message' => 'Insufficient Permission',
+            ]);
             exit;
         } else {
             echo json_encode([
@@ -385,12 +336,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
-} else {
-    echo json_encode([
-        'status' => 0,
-        'message' =>"Access Denied"
-    ]);
-}
+} else echo json_encode([
+    'status' => 0,
+    'message' => "Access Denied"
+]);
 // $allheaders = getallheaders();
 // $jwt = $allheaders['Authorization'];
 

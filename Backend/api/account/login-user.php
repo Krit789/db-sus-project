@@ -37,12 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $tele = $data['telephone'];
             $role = $data['role'];
             $token = $data['access_token'];
-            if (!password_verify($password, $data['password_hash'])) {
-                echo json_encode([
-                    'status' => 0,
-                    'message' => 'Invalid Credentials',
-                ]);
-            } else {
+            if (!password_verify($password, $data['password_hash'])) echo json_encode([
+                'status' => 0,
+                'message' => 'Invalid Credentials',
+            ]); else {
                 $payload = [
                     'iss' => "localhost",
                     'aud' => 'localhost',
@@ -77,16 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // }
         // echo $data->role;
 
-    } else {
-        echo json_encode([
-            'status' => 0,
-            'message' => 'No No User in Database',
-        ]);
-    }
-
-} else {
-    echo json_encode([
+    } else echo json_encode([
         'status' => 0,
-        'message' => 'Access Denied',
+        'message' => 'No No User in Database',
     ]);
-}
+
+} else echo json_encode([
+    'status' => 0,
+    'message' => 'Access Denied',
+]);

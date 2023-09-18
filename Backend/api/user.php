@@ -300,7 +300,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         ]);
         exit;
     }
-}else{
+} else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied'

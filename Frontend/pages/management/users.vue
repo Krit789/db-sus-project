@@ -44,7 +44,10 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => {this.dtIsError = true; this.dtErrorData = error.data})
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data
+          })
           .then(({status, message}) => {
             this.dtData = message;
             this.dtLoading = false;

@@ -126,7 +126,7 @@ import "~/assets/stylesheets/index.css";
       </v-parallax>
       <div class="bg-grey-lighten-4 mb-3">
         <Features class="mt-0"/>
-        <Credit/>
+        <Credit class="bg-transparent"/>
       </div>
     </v-main>
   </Navbar>

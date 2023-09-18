@@ -166,8 +166,9 @@ function toTitleCase(str) {
             </v-dialog>
           </div>
         </div>
-        <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect"/>
+
       </div>
+      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>
     </v-main>
   </Navbar>
 </template>

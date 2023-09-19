@@ -19,7 +19,6 @@ export default {
 };
 </script>
 <template>
-  <Navbar>
     <v-main class="justify-center reservation_body">
       <div class="main_container mx-auto blur-effect account_container mt-10 py-1 px-1 min-h-40">
         <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
@@ -82,5 +81,4 @@ export default {
         </v-sheet>
       </div>
     </v-main>
-  </Navbar>
 </template>

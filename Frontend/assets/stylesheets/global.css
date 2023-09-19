@@ -27,6 +27,7 @@ v-btn {
     background-color: #0373DE !important;
     /*font-size: medium !important;*/
     font-weight: bold;
+    color: white !important;
     border-radius: 12px;
     /*box-shadow: none !important;*/
     /*text-transform: none;*/

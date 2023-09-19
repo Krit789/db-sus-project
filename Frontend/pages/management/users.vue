@@ -61,13 +61,13 @@ export default {
 };
 </script>
 <template>
-  <Navbar>
     <v-main class="">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
         User Management
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-        <v-alert v-if="dtIsError" class="ma-3" color="error">{{ dtErrorData }}</v-alert>
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error"
+  title="Fetch Error">{{ dtErrorData }}</v-alert>
         <v-btn
             :disabled="dtLoading"
             class="align-right mb-3"
@@ -90,5 +90,4 @@ export default {
         ></v-data-table>
       </v-sheet>
     </v-main>
-  </Navbar>
 </template>

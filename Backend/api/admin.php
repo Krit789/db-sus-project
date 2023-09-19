@@ -32,9 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => 'Server Problem'
+                        ]);
+                        else echo json_encode([
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -54,11 +55,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => "User Delete Successfully",
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Server Problem",
                         ]);
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -78,11 +79,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => $passowrd,
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Server Problem",
                         ]);
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -102,7 +103,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Add Location Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Add Location Failed Successful'
                         ]);
@@ -121,9 +123,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => 'Server Problem'
+                        ]);
+                        else echo json_encode([
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -141,7 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Add Category Menu Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Add Category Menu Failed Successful'
                         ]);
@@ -176,7 +180,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Add Menu Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Add Menu Failed Successful'
                         ]);
@@ -201,7 +206,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Modify Menu Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Modify Menu Failed Successful'
                         ]);
@@ -221,11 +227,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => "Delete Menu Successful"
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Delete Menu Falied Successful"
                         ]);
-
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -243,7 +249,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Change Role Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Change Role Failed Successful'
                         ]);
@@ -264,7 +271,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Add Manager to Location Successful'
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => 'Add Manager to Location Failed Successful'
                         ]);
@@ -283,11 +291,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => 'Server Problem'
                         ]);
-
+                        else echo json_encode([
+                            'status' => 1,
+                            'message' => array()
+                        ]);
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -300,16 +308,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("locations l", "location_id, name, address, open_time, close_time, l.status, creation_date, u.user_id, first_name, last_name, email, telephone, role, u.status", null, null, null, null, "left outer join users u on (l.manager_id = u.user_id)");
                         $result = $obj->getResult();
 
-                        if ($result) echo json_encode([
-                            'status' => 1,
-                            'message' => $result
-                        ]); else {
+                        if ($result) 
                             echo json_encode([
-                                'status' => 0,
-                                'message' => 'Server Problem'
+                                'status' => 1,
+                                'message' => $result
                             ]);
-                        }
-
+                        else 
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array()
+                            ]);
                     } else {
                         $ispermission = !$ispermission;
                     }

@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-const {status, data, signIn, signOut} = useAuth();
+const {status, data} = useAuth();
 </script>
 
 <template>
   <v-container class="justify-center feature_container pb-2 mb-8">
-    <h1 class="feature_header blue-text pl-4 mb-5">
+    <h1 class="feature_header text-primary pl-4 mb-5">
       Dinner is ready to served!
     </h1>
     <!-- Row 1 -->
     <v-row class="feature_flex mx-0" justify="center">
       <v-col class="feature_rounded">
         <div class="title_header">
-          <h4 class="blue-text text-h4">Find your favorite restaurant</h4>
+          <h4 class="text-primary text-h4">Find your favorite restaurant</h4>
           <p class="inner_text">
             หาร้านอาหารร้านโปรดที่คุณชื่นชอบได้ในพริบตาเดียว
             เพียงแค่คุณค้นหาชื่อของร้านเท่านั้น
@@ -27,7 +27,7 @@ const {status, data, signIn, signOut} = useAuth();
       </v-col>
       <v-col class="feature_rounded">
         <div class="title_header">
-          <h2 class="blue-text text-h4">Just search what you are thinking</h2>
+          <h2 class="text-primary text-h4">Just search what you are thinking</h2>
         </div>
 
         <div class="title_body pin_location_body">
@@ -49,7 +49,7 @@ const {status, data, signIn, signOut} = useAuth();
         no-gutters
     >
       <v-col class="" col="">
-        <h2 class="blue-text text-h4">Create Branches Report</h2>
+        <h2 class="text-primary text-h4">Create Branches Report</h2>
         <v-row align-content="center" class="h-100 pb-10">
           <h3 class="report_text report_header">
             สรุปยอดรวมและดูรายงานของสาขาที่คุณต้องการ
@@ -62,7 +62,7 @@ const {status, data, signIn, signOut} = useAuth();
               cols="auto"
               style="padding-left: 22px"
           >
-            <v-btn :variant="'elevated'" class="blue_button" rounded="lg"
+            <v-btn :variant="'elevated'" class="font-weight-bold" rounded="lg"
             >Create Report
             </v-btn
             >
@@ -86,7 +86,7 @@ const {status, data, signIn, signOut} = useAuth();
         justify="center"
     >
       <v-col class="feature_rounded row_three_container">
-        <h2 class="blue-text text-h4">Manage Branches</h2>
+        <h2 class="text-primary text-h4">Manage Branches</h2>
         <v-img
             class="report_macbook"
             height="180"
@@ -102,7 +102,7 @@ const {status, data, signIn, signOut} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg"
+          <v-btn :variant="'outlined'" class=""  rounded="lg"
           >Manage Branches
           </v-btn
           >
@@ -110,7 +110,7 @@ const {status, data, signIn, signOut} = useAuth();
       </v-col>
 
       <v-col class="feature_rounded row_three_container">
-        <h2 class="blue-text text-h4">Manage Menu</h2>
+        <h2 class="text-primary text-h4">Manage Menu</h2>
         <v-img
             class="report_macbook"
             height="180"
@@ -126,7 +126,7 @@ const {status, data, signIn, signOut} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg"
+          <v-btn :variant="'outlined'" class=""  rounded="lg"
           >Manage Menu
           </v-btn
           >
@@ -141,7 +141,7 @@ const {status, data, signIn, signOut} = useAuth();
         justify="center"
     >
       <v-col class="feature_rounded row_three_container">
-        <h2 class="blue-text text-h4">Manage Branches</h2>
+        <h2 class="text-primary text-h4">Manage Branches</h2>
         <v-img
             class="report_macbook"
             height="180"
@@ -157,7 +157,7 @@ const {status, data, signIn, signOut} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg"
+          <v-btn :variant="'outlined'" class=""  rounded="lg"
           >Manage Branches
           </v-btn
           >
@@ -165,7 +165,7 @@ const {status, data, signIn, signOut} = useAuth();
       </v-col>
 
       <v-col class="feature_rounded row_three_container">
-        <h2 class="blue-text text-h4">Manage Menu</h2>
+        <h2 class="text-primary text-h4">Manage Menu</h2>
         <v-img
             class="report_macbook"
             height="180"
@@ -181,7 +181,7 @@ const {status, data, signIn, signOut} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class="" color="#0373DE" rounded="lg"
+          <v-btn :variant="'outlined'" class="" rounded="lg"
           >Manage Menu
           </v-btn
           >

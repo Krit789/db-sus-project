@@ -30,10 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res) echo json_encode([
                             'status' => 1,
-                            'message' => $res,
+                            'message' => $res
                         ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'status' => 1,
+                            'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -201,8 +201,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 1,
                             'message' => $result
                         ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => 'Server Problem'
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -229,8 +229,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 1,
                             'message' => $result
                         ]); else echo json_encode([
-                            'status' => 0,
-                            'message' => 'Server Problem'
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     }
                     break;

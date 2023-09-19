@@ -45,7 +45,6 @@ function toTitleCase(str) {
 </script>
 
 <template>
-  <Navbar>
     <v-main class="bg-grey-lighten-4 justify-center windows_bg">
       <div class="main_container mx-auto">
         <v-row class="justify-center mt-8 px-3">
@@ -61,7 +60,7 @@ function toTitleCase(str) {
             <!--            <h2>Welcome Back!</h2>-->
             <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
             <h3>{{ data.email }}</h3>
-            <h3 class="mt-12">{{ toTitleCase(data.role) }}</h3>
+            <h3 class="mt-12">You are {{ toTitleCase(data.role) }}</h3> 
           </v-col>
           <v-col class="user_rounded">
             May be user role and role benefits
@@ -170,5 +169,4 @@ function toTitleCase(str) {
       </div>
       <!--      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>-->
     </v-main>
-  </Navbar>
 </template>

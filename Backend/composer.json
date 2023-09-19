@@ -1,7 +1,8 @@
 {
   "require": {
     "firebase/php-jwt": "^5.5",
-    "ext-json": "*"
+    "ext-json": "*",
+    "vlucas/phpdotenv": "^5.5"
   },
   "autoload": {
     "psr-4": {

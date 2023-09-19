@@ -29,14 +29,12 @@ import "~/assets/stylesheets/index.css";
 </script>
 
 <template>
-  <Navbar>
     <v-main class="mt-n16">
       <v-parallax src="images/home/banner.webp">
         <div class="text-center mt-16 first-box">
           <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
           <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>
           <v-btn
-              class="blue_button"
               prepend-icon="mdi-login-variant"
               rounded="lg"
               size="x-large"
@@ -129,7 +127,6 @@ import "~/assets/stylesheets/index.css";
         <Credit class="bg-transparent"/>
       </div>
     </v-main>
-  </Navbar>
 </template>
 
 <style>

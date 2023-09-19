@@ -12,7 +12,7 @@ class Database
         $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
         $dotenv->safeload();
         if (!$this->conn) {
-            $this->mysqli = mysqli_connect($_ENV['DB_HOSTNAME'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
+            $this->mysqli = mysqli_connect($_SERVER['DB_HOSTNAME'], $_SERVER['DB_USERNAME'], $_SERVER['DB_PASSWORD'], $_SERVER['DB_DATABASE'], $_SERVER['DB_PORT']);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {
@@ -46,7 +46,7 @@ class Database
 
     private function tableExist($table)
     {
-        $sql = "SHOW TABLES FROM " . $_ENV['DB_DATABASE'] . " LIKE '{$table}'";
+        $sql = "SHOW TABLES FROM " . $_SERVER['DB_DATABASE'] . " LIKE '{$table}'";
         error_log($sql);
         $tableInDb = $this->mysqli->query($sql);
         if ($tableInDb) {

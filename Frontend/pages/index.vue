@@ -98,7 +98,7 @@ import "~/assets/stylesheets/index.css";
                         variant="outlined"
                         @click="
                         $router.push({
-                          path: '/booking',
+                          path: '/reservation',
                           query: { location_id: n },
                         })
                       "

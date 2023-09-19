@@ -64,7 +64,7 @@ export default {
 <template>
     <v-main>
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
-        My dashboard
+        My Dashboard
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error"

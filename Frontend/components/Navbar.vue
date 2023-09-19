@@ -333,6 +333,7 @@ export default {
                 v-if="item.permitted.includes(data.role)"
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
+                rounded="xl"
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
@@ -343,6 +344,7 @@ export default {
                   color="primary"
                   prepend-icon="mdi-tools"
                   v-bind="props"
+                  rounded="xl"
                 >
                   Management
                 </v-list-item>
@@ -352,6 +354,7 @@ export default {
                 :key="index"
                 :prepend-icon="item.props.prependIcon"
                 @click="navActions(item.action)"
+                rounded="xl"
               >
                 <v-list-item-title v-if="item.permitted.includes(data.role)"
                   >{{ item.title }}
@@ -366,6 +369,7 @@ export default {
               prepend-icon="mdi-logout"
               title="Logout"
               value="signout"
+              rounded="xl"
               @click="
                 signOut({ callbackUrl: '/', redirect: false }).then(() => {
                   $router.push('/');

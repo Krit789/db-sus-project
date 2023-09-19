@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $role = $user_data['role'];
 
                     if ($role == "MANAGER") {
-                        $obj->select('locations', "*", null, "manager_id={$id}", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $obj->select('locations', "*", null, "manager_id=$id", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                         $res = $obj->getResult();
                         if ($res) echo json_encode([
                             'status' => 1,
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("menus", "*", null, null, null, null);
                         $result = $obj->getResult();
 
-                        $obj->select("restrictions", "menu_id", null, "location_id={$id}", 'menu_id', null);
+                        $obj->select("restrictions", "menu_id", null, "location_id=$id", 'menu_id', null);
                         $result2 = $obj->getResult();
 
                         echo json_encode([
@@ -95,13 +95,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $count = 0;
                         foreach ($menu as $menus) {
                             if ($count != sizeof($menu) - 1) {
-                                $tmp .= "({$id},{$menus}), ";
+                                $tmp .= "($id,$menus), ";
                             } else {
-                                $tmp .= "({$id},{$menus})";
+                                $tmp .= "($id,$menus)";
                             }
                             $count += 1;
                         }
-                        $obj->delete('restrictions', "location_id={$id}");
+                        $obj->delete('restrictions', "location_id=$id");
                         $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
 
                         $res = $obj->getResult();
@@ -147,9 +147,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $count = 0;
                         foreach ($table_id as $id) {
                             if ($count == 0) {
-                                $tmp .= "{$id}";
+                                $tmp .= "$id";
                             } else {
-                                $tmp .= ", {$id}";
+                                $tmp .= ", $id";
                             }
                             $count++;
                         }
@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $capa = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id={$id}");
+                        $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id=$id");
 
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
@@ -194,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $id = $data->location_id;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id={$id})", "res_id desc", null);
+                        $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id=$id)", "res_id desc");
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -213,7 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $role = "MANAGER";
 
                     if ($role == "MANAGER") {
-                        $obj->select("locations", "manager_id", null, "manager_id=" . $user_data['user_id'], "manager_id", null);
+                        $obj->select("locations", "manager_id", null, "manager_id=" . $user_data['user_id'], "manager_id");
                         $result = $obj->getResult();
                         $tmp = "";
                         for ($i = 0; $i < sizeof($result); $i++) {
@@ -235,7 +235,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 default:
-                    throw new \Exception('Unexpected value');
+                    throw new Exception('Unexpected value');
             }
             if ($ispermission) echo json_encode([
                 'status' => 0,

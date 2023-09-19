@@ -418,7 +418,7 @@ export default {
           <v-card class="blur-effect account_pane">
             <v-card-title class="mt-4 ml-4 pb-3"><h1>Login</h1></v-card-title>
             <v-card-subtitle class="ml-4 pb-1"
-            ><h4>
+            ><h4 class="font-weight-medium">
               The best reservation experience is just a click away!
             </h4></v-card-subtitle
             >
@@ -490,7 +490,7 @@ export default {
         <v-card class="blur-effect account_pane">
           <v-card-title class="mt-4 ml-4 pb-3"><h1>Register</h1></v-card-title>
           <v-card-subtitle class="ml-4 pb-1"
-          ><h4>
+          ><h4 class="font-weight-medium">
             Get ready to enjoy the best reservation experience!
           </h4></v-card-subtitle
           >

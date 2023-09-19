@@ -9,8 +9,8 @@ class Database
     //connect database using consturcted method
     public function __construct()
     {
-        $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
-        $dotenv->load();
+        // $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
+        // $dotenv->load();
         if (!$this->conn) {
             $this->mysqli = mysqli_connect($_ENV['DB_HOSTNAME'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
             $this->conn = true;

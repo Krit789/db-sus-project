@@ -184,8 +184,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     } else {
                         echo json_encode([
-                            'status' => 0,
-                            'message' => "server problem",
+                            'status' => 1,
+                            'message' => array(),
                         ]);
                     }
                     break;

@@ -56,6 +56,7 @@ export default defineNuxtConfig({
     },
     nitro: {
         routeRules: {
+            '/': { prerender: true },
             "/management/**": {ssr: false},
             "/proxy/**": {proxy: "https://s.iservkmitl.tech/**"},
         },

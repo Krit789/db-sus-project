@@ -46,7 +46,7 @@ class Database
 
     private function tableExist($table)
     {
-        $sql = "SHOW TABLES FROM {getenv('DB_DATABASE')} LIKE '{$table}'";
+        $sql = "SHOW TABLES FROM " . getenv('DB_DATABASE') . " LIKE '{$table}'";
         error_log($sql);
         $tableInDb = $this->mysqli->query($sql);
         if ($tableInDb) {

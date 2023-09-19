@@ -43,13 +43,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                     'message' => "Server Problem",
                                 ]);
                             }
-
                         } else {
                             echo json_encode([
                                 'status' => 0,
                                 'message' => "Code not match"
                             ]);
-
                         }
                     } else {
                         echo json_encode([
@@ -75,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     } else {
                         echo json_encode([
                             'status' => 0,
-                            'message' => "Server Problem",
+                            'message' => "Wrong ID or Role",
                         ]);
                     }
                     break;
@@ -119,7 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 1,
                             'message' => "Booking Add Successfully",
                         ]);
-
                     } else {
                         echo json_encode([
                             'status' => 0,
@@ -203,8 +200,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     } else {
                         echo json_encode([
-                            'status' => 0,
-                            'message' => "server problem",
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     }
                     break;
@@ -218,8 +215,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     } else {
                         echo json_encode([
-                            'status' => 0,
-                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'status' => 1,
+                            'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     }
                     break;
@@ -255,8 +252,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             ]);
                         } else {
                             echo json_encode([
-                                'status' => 0,
-                                'message' => "server problem",
+                                'status' => 1,
+                                'message' => array()
                             ]);
                         }
                     } else {
@@ -279,8 +276,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     } else {
                         echo json_encode([
-                            'status' => 0,
-                            'message' => "server problem",
+                            'status' => 1,
+                            'message' => array()
                         ]);
                     }
                     break;

@@ -61,7 +61,7 @@ function toTitleCase(str) {
             <!--            <h2>Welcome Back!</h2>-->
             <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
             <h3>{{ data.email }}</h3>
-            <h3 class="mt-12">{{ toTitleCase(data.role) }}</h3>
+            <h3 class="mt-12">You are {{ toTitleCase(data.role) }}</h3> 
           </v-col>
           <v-col class="user_rounded">
             May be user role and role benefits

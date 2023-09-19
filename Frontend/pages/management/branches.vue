@@ -60,7 +60,8 @@ export default {
         Branches Management
       </h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-        <v-alert v-if="dtIsError" class="ma-3" color="error">{{ dtErrorData }}</v-alert>
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error"
+  title="Fetch Error">{{ dtErrorData }}</v-alert>
         <v-btn
             :disabled="dtLoading"
             class="align-right mb-3"

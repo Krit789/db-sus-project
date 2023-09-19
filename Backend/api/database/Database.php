@@ -1,14 +1,7 @@
 <?php
-
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 class Database
 {
-    private $hostname = "161.246.127.24";
-    private $username = "cllc3ljgr0005bsmnf65j9dfn";
-    private $password = "ZAE1ruy8bpMu7s7vCVIAgLPq";
-    private $database = "susproject";
-
-    private $port = 9062;
-
     private $mysqli = "";
     private $result = array();
     private $conn = false;
@@ -16,12 +9,14 @@ class Database
     //connect database using consturcted method
     public function __construct()
     {
+        $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
+        $dotenv->load();
         if (!$this->conn) {
-            $this->mysqli = mysqli_connect($this->hostname, $this->username, $this->password, $this->database, $this->port);
+            $this->mysqli = mysqli_connect($_ENV['DB_HOSTNAME'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE'], $_ENV['DB_PORT']);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {
-                array_push($this->result, $this->mysqli_connection_error);
+                array_push($this->result, $this);
                 return false;
             }
         } else {
@@ -51,7 +46,8 @@ class Database
 
     private function tableExist($table)
     {
-        $sql = "SHOW TABLES FROM $this->database LIKE '{$table}'";
+        $sql = "SHOW TABLES FROM {$_ENV['DB_DATABASE']} LIKE '{$table}'";
+        error_log($sql);
         $tableInDb = $this->mysqli->query($sql);
         if ($tableInDb) {
             if ($tableInDb->num_rows == 1) {

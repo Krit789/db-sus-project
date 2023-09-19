@@ -54,7 +54,6 @@ export default {
 };
 </script>
 <template>
-  <Navbar>
     <v-main class="">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">
         Branches Management
@@ -85,5 +84,4 @@ export default {
         </v-data-table>
       </v-sheet>
     </v-main>
-  </Navbar>
 </template>

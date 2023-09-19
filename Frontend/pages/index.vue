@@ -29,7 +29,6 @@ import "~/assets/stylesheets/index.css";
 </script>
 
 <template>
-  <Navbar>
     <v-main class="mt-n16">
       <v-parallax src="images/home/banner.webp">
         <div class="text-center mt-16 first-box">
@@ -129,7 +128,6 @@ import "~/assets/stylesheets/index.css";
         <Credit class="bg-transparent"/>
       </div>
     </v-main>
-  </Navbar>
 </template>
 
 <style>

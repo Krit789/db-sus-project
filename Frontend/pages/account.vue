@@ -45,7 +45,6 @@ function toTitleCase(str) {
 </script>
 
 <template>
-  <Navbar>
     <v-main class="bg-grey-lighten-4 justify-center windows_bg">
       <div class="main_container mx-auto">
         <v-row class="justify-center mt-8 px-3">
@@ -170,5 +169,4 @@ function toTitleCase(str) {
       </div>
       <!--      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>-->
     </v-main>
-  </Navbar>
 </template>

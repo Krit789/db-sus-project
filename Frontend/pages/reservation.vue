@@ -25,7 +25,7 @@ export default {
         <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
           Reservation {{ $route.query.location_id }}
         </h1>
-        <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
+        <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
           <template v-if="route.query.location_id != null">
             <v-stepper
                 :items="[

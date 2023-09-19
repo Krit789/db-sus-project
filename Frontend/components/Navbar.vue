@@ -279,7 +279,7 @@ export default {
             </v-btn>
           </NuxtLink>
           <v-btn
-              color="blue"
+              color="primary"
               variant="text"
               @click="
               signOut({ callbackUrl: '/', redirect: false }).then(() => {
@@ -446,7 +446,7 @@ export default {
             <v-card-actions class="ml-3 mb-3">
               <v-btn
                   :disabled="!isLoginValid"
-                  class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+                  class="mt-2 bg-blue-darken-1 h-[22px] mw-50"
                   rounded="lg"
                   type="submit"
                   @click="
@@ -556,7 +556,7 @@ export default {
           <v-card-actions class="ml-3 mb-3">
             <v-btn
                 :disabled="!isRegisValid"
-                class="mt-2 bg-blue-darken-1 blue_button h-[22px] mw-50"
+                class="mt-2 bg-blue-darken-1 h-[22px] mw-50"
                 rounded="lg"
                 type="submit"
                 @click="makeRegistration"

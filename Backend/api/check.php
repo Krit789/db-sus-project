@@ -1,5 +1,5 @@
 <?php
-include 'database/Database.php';
+include 'database/DatabaseLocal.php';
 
 function readuser($id)
 {

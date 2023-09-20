@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->update('reservations', ['status' => 2], "res_id={$id}");
                         $result = $obj->getResult();
 
-                        if ($result[0] == 1)echo json_encode([
+                        if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => "Successfully",
                         ]);
@@ -74,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => "Failed Successful",
                         ]);
-                        
                     } else {
                         echo json_encode([
                             'status' => 0,
@@ -188,18 +187,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             }
                             $obj->update('reservations', ['arrival' => $arrival, 'table_id' => $table_id, 'cus_count' => $customer_count], "res_id='{$res_id}'");
                             $result = $obj->getResult();
-                            if ($result[0] == 1){
+                            if ($result[0] == 1) {
                                 echo json_encode([
                                     'status' => 1,
                                     'message' => 'Modify Reservation Successful'
                                 ]);
-                            }else{
+                            } else {
                                 echo json_encode([
                                     'status' => 0,
                                     'message' => 'Modify Reservation Failed Successful'
                                 ]);
                             }
-
                         } else {
                             echo json_encode([
                                 'status' => 0,
@@ -326,6 +324,41 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     }
                     break;
+                case 11: #Customer เรียกดู Table ทั้งหมดของ location ที่เลือก
+                    //ต้องส่งข้อมูล arrival, location_id
+                    $arrival = $data->arrival;
+                    $location_id = $data->location_id;
+
+                    $date = date_create(substr($arrival, 0, 19));
+                    date_add($date, date_interval_create_from_date_string("-1 hours"));
+                    $date = date_format($date, "Y-m-d h:m:s");
+
+                    $date2 = date_create(substr($arrival, 0, 19));
+                    date_add($date2, date_interval_create_from_date_string("1 hours"));
+                    $date2 = date_format($date2, "Y-m-d h:m:s");
+
+                    $obj->select('reservations', 'reservations.table_id', 'tables using (table_id) join locations using (location_id)', "location_id={$location_id} and status = 3 and arrival between '{$date}' and '{$date2}'");
+                    $result = $obj->getResult();
+                    $tmp = "";
+                    $count = 0;
+                    for ($i = 0; $i < sizeof($result); $i++) {
+                        if ($count == 0) {
+                            $tmp .= "{$result[$i]['table_id']}";
+                        } else {
+                            $tmp .= ", {$result[$i]['table_id']}";
+                        }
+                        $count++;
+                    }
+                    $obj->select('tables', '*', null, "table_id not in ({$tmp}) and table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');
+                    $result = $obj->getResult();
+                    if ($result) echo json_encode([
+                        'status' => 1,
+                        'message' => $result
+                    ]);
+                    else echo json_encode([
+                        'status' => 0,
+                        'message' => "Don't have any tables or No Tables Available in Time"
+                    ]);
             }
             exit;
         } else {

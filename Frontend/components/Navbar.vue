@@ -422,7 +422,7 @@ export default {
           <v-card class="blur-effect account_pane" :loading="isCardLoading ? 'blue': null" color="">
             <v-card-title class="mt-4 ml-4 pb-3"><h1>Login</h1></v-card-title>
             <v-card-subtitle class="ml-4 pb-1"
-              ><h4>
+              ><h4 class="font-weight-medium">
                 The best reservation experience is just a click away!
               </h4></v-card-subtitle
             >
@@ -498,7 +498,7 @@ export default {
         <v-card class="blur-effect account_pane" :loading="isCardLoading ? 'blue': null">
           <v-card-title class="mt-4 ml-4 pb-3"><h1>Register</h1></v-card-title>
           <v-card-subtitle class="ml-4 pb-1"
-            ><h4>
+            ><h4 class="font-weight-medium">
               Get ready to enjoy the best reservation experience!
             </h4></v-card-subtitle
           >
@@ -512,13 +512,13 @@ export default {
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="first_name"
-                      label="First Name*"
+                      label="First Name *"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="last_name"
-                      label="Last Name*"
+                      label="Last Name *"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -527,7 +527,7 @@ export default {
                     <v-text-field
                       v-model="emailReg"
                       :rules="[emailValidation]"
-                      label="E-Mail*"
+                      label="E-Mail *"
                       prepend-inner-icon="mdi-email"
                     ></v-text-field>
                   </v-col>
@@ -543,7 +543,7 @@ export default {
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="passwordReg"
-                      label="Password*"
+                      label="Password *"
                       prepend-inner-icon="mdi-lock"
                       type="password"
                     ></v-text-field>
@@ -552,7 +552,7 @@ export default {
                     <v-text-field
                       v-model="passwordRegConfirm"
                       :rules="[passwordValidation]"
-                      label="Confirm Password*"
+                      label="Confirm Password *"
                       prepend-inner-icon="mdi-lock-check"
                       type="password"
                     ></v-text-field>

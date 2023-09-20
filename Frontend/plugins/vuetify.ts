@@ -5,12 +5,12 @@ import "@mdi/font/css/materialdesignicons.css";
 const myCustomLightTheme = {
     dark: false,
     colors: {
-      background: '#FFFFFF',
-      surface: '#FFFFFF',
-      primary: '#0373DE',
-      secondary: '#C8E4FE',
+        background: '#FFFFFF',
+        surface: '#FFFFFF',
+        primary: '#0373DE',
+        secondary: '#C8E4FE',
     },
-  }
+}
 
 export default defineNuxtPlugin((nuxt) => {
     const vuetify = createVuetify({
@@ -19,9 +19,9 @@ export default defineNuxtPlugin((nuxt) => {
         theme: {
             defaultTheme: 'myCustomLightTheme',
             themes: {
-              myCustomLightTheme,
+                myCustomLightTheme,
             },
-          },
+        },
     });
     nuxt.vueApp.use(vuetify);
 });

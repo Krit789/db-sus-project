@@ -31,12 +31,12 @@ export default defineEventHandler(async (event) => {
             },
         ).catch((error) => error.data);
         return reservations;
-    } else  {
+    } else {
         setResponseStatus(event, 418);
         return {
             status: 0,
             message: "Invalid Session Token",
-        };  
+        };
     }
 
 });

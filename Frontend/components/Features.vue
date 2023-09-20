@@ -102,7 +102,7 @@ const {status, data} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class=""  rounded="lg"
+          <v-btn :variant="'outlined'" class="" rounded="lg"
           >Manage Branches
           </v-btn
           >
@@ -126,7 +126,7 @@ const {status, data} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class=""  rounded="lg"
+          <v-btn :variant="'outlined'" class="" rounded="lg"
           >Manage Menu
           </v-btn
           >
@@ -157,7 +157,7 @@ const {status, data} = useAuth();
             cols="auto"
             style="padding-left: 22px"
         >
-          <v-btn :variant="'outlined'" class=""  rounded="lg"
+          <v-btn :variant="'outlined'" class="" rounded="lg"
           >Manage Branches
           </v-btn
           >

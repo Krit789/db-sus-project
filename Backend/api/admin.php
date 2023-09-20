@@ -308,12 +308,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("locations l", "location_id, name, address, open_time, close_time, l.status, creation_date, u.user_id, first_name, last_name, email, telephone, role, u.status", null, null, null, null, "left outer join users u on (l.manager_id = u.user_id)");
                         $result = $obj->getResult();
 
-                        if ($result) 
+                        if ($result)
                             echo json_encode([
                                 'status' => 1,
                                 'message' => $result
                             ]);
-                        else 
+                        else
                             echo json_encode([
                                 'status' => 1,
                                 'message' => array()

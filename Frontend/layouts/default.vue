@@ -2,4 +2,4 @@
     <Navbar>
         <slot />
     </Navbar>
-  </template>
+</template>

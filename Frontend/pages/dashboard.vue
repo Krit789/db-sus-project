@@ -2,28 +2,34 @@
     import { VDataTable } from "vuetify/labs/VDataTable";
 
     const { status, data, signIn, signOut } = useAuth();
+
+    useHead({
+        title: "My Reservation - Seatify",
+        meta: [{ name: "Seatify App", content: "My amazing site." }],
+    });
 </script>
+
 <script lang="ts">
     export default {
         data: () => ({
-            dtErrorData: "",
             dtIsError: false,
+            dtErrorData: "",
             dtData: [],
             itemsPerPage: 10,
             dtLoading: false,
             dtHeaders: [
                 {
-                    title: "Location ID",
+                    title: "ID",
                     align: "start",
                     sortable: true,
-                    key: "location_id",
+                    key: "res_id",
                 },
-                { title: "Name", align: "start", key: "name" },
-                { title: "Manager", align: "end", key: "managerID" },
-                { title: "Address", align: "end", key: "address" },
+                // {title: "User ID", align: "end", key: "user_id"},
+                { title: "Reserved On", align: "end", key: "create_time" },
+                { title: "Reserved For", align: "end", key: "arrival" },
                 { title: "Status", align: "end", key: "status" },
-                { title: "Open", align: "end", key: "open_time" },
-                { title: "Close", align: "end", key: "close_time" },
+                { title: "No. of Customer", align: "end", key: "cus_count" },
+                { title: "Table ID", align: "end", key: "table_id" },
             ],
         }),
         methods: {
@@ -32,7 +38,7 @@
                 await $fetch("/api/data", {
                     method: "POST",
                     body: {
-                        type: 7,
+                        type: 8,
                         usage: "user",
                     },
                     lazy: true,
@@ -53,12 +59,13 @@
         },
     };
 </script>
+
 <template>
-    <v-main class="">
-        <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">
-            Branches Management
+    <v-main>
+        <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
+            My Dashboard
         </h1>
-        <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
             <v-alert
                 v-if="dtIsError"
                 class="ma-3"
@@ -81,13 +88,13 @@
                 :loading="dtLoading"
                 class="elevation-1"
                 item-value="id"
+                loading-text="We're looking for your reservation, Hang tight!"
                 @click:row="
                     (val, tabl) => {
-                        console.log(tabl.item.columns.location_id);
+                        console.log(tabl.item.columns.res_id);
                     }
                 "
-            >
-            </v-data-table>
+            ></v-data-table>
         </v-sheet>
     </v-main>
 </template>

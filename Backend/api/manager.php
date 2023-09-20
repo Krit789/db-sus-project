@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'message' => 'Update Info Location Successful',
                         ]); else echo json_encode([
                             'status' => 0,
-                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'message' => "Update Info Location Failed", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'message' => 'Modify Table Successful',
                         ]); else echo json_encode([
                             'status' => 0,
-                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'message' => "Modify Table Failed", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     } else {
                         $ispermission = !$ispermission;

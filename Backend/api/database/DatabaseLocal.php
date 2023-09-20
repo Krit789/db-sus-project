@@ -1,7 +1,14 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
+
 class Database
 {
+    private $hostname = "161.246.127.24";
+    private $username = "cllc3ljgr0005bsmnf65j9dfn";
+    private $password = "ZAE1ruy8bpMu7s7vCVIAgLPq";
+    private $database = "susproject";
+
+    private $port = 9062;
+
     private $mysqli = "";
     private $result = array();
     private $conn = false;
@@ -9,14 +16,12 @@ class Database
     //connect database using consturcted method
     public function __construct()
     {
-        $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
-        $dotenv->safeload();
         if (!$this->conn) {
-            $this->mysqli = mysqli_connect($_SERVER['DB_HOSTNAME'], $_SERVER['DB_USERNAME'], $_SERVER['DB_PASSWORD'], $_SERVER['DB_DATABASE'], $_SERVER['DB_PORT']);
+            $this->mysqli = mysqli_connect($this->hostname, $this->username, $this->password, $this->database, $this->port);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {
-                array_push($this->result, $this);
+                array_push($this->result, $this->mysqli_connection_error);
                 return false;
             }
         } else {
@@ -46,8 +51,7 @@ class Database
 
     private function tableExist($table)
     {
-        $sql = "SHOW TABLES FROM " . $_SERVER['DB_DATABASE'] . " LIKE '{$table}'";
-        error_log($sql);
+        $sql = "SHOW TABLES FROM $this->database LIKE '{$table}'";
         $tableInDb = $this->mysqli->query($sql);
         if ($tableInDb) {
             if ($tableInDb->num_rows == 1) {
@@ -67,13 +71,13 @@ class Database
         if ($this->tableExist($table)) {
             $sql = "INSERT INTO $table ($table_column) VALUES $table_value";
             // echo $sql;
-            if ($this->mysqli->query($sql)) {
-                array_push($this->result, true);
-                return true;
-            } else {
-                array_push($this->result, false);
-                return false;
-            }
+            // if ($this->mysqli->query($sql)) {
+            //     array_push($this->result, true);
+            //     return true;
+            // } else {
+            //     array_push($this->result, false);
+            //     return false;
+            // }
         } else {
             return false;
         }

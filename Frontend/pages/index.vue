@@ -70,17 +70,7 @@
                             >
                                 <!-- Put Location card here -->
                                 <v-card class="ma-2" max-width="350">
-                                    <template v-slot:loader="{ isActive }">
-                                        <v-progress-linear
-                                            :active="isActive"
-                                            color="deep-purple"
-                                            height="4"
-                                            indeterminate=""
-                                        ></v-progress-linear>
-                                    </template>
-
                                     <v-img
-                                        cover=""
                                         height="250"
                                         src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
                                     ></v-img>
@@ -100,23 +90,25 @@
                                             adipiscing elit.
                                         </div>
                                     </v-card-text>
-
-                                    <v-divider class="mx-4 mb-1"></v-divider>
-                                    <v-btn
-                                        v-if="status == 'authenticated'"
-                                        class="my-3"
-                                        color="#0373DE"
-                                        rounded="lg"
-                                        variant="outlined"
-                                        @click="
-                                            $router.push({
-                                                path: '/reservation',
-                                                query: { location_id: n },
-                                            })
-                                        "
-                                    >
-                                        Reserve
-                                    </v-btn>
+                                    <div v-if="status == 'authenticated'">
+                                        <v-divider
+                                            class="mx-4 mb-1"
+                                        ></v-divider>
+                                        <v-btn
+                                            class="my-3"
+                                            color="#0373DE"
+                                            rounded="lg"
+                                            variant="outlined"
+                                            @click="
+                                                $router.push({
+                                                    path: '/reservation',
+                                                    query: { location_id: n },
+                                                })
+                                            "
+                                        >
+                                            Reserve
+                                        </v-btn>
+                                    </div>
                                 </v-card>
                                 <!-- Location card ends here -->
                             </v-slide-group-item>

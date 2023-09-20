@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const {status, data} = useAuth();
+  const { status, data } = useAuth();
 </script>
 
 <template>
@@ -19,22 +19,24 @@ const {status, data} = useAuth();
         </div>
         <div class="title_body">
           <v-img
-              class="map_img"
-              height="640"
-              src="images/home/PChang_Apple_Map.webp"
+            class="map_img"
+            height="640"
+            src="images/home/PChang_Apple_Map.webp"
           ></v-img>
         </div>
       </v-col>
       <v-col class="feature_rounded">
         <div class="title_header">
-          <h2 class="text-primary text-h4">Just search what you are thinking</h2>
+          <h2 class="text-primary text-h4">
+            Just search what you are thinking
+          </h2>
         </div>
 
         <div class="title_body pin_location_body">
           <v-img
-              class="icon_img"
-              max-height="350"
-              src="images/home/Swensens.webp"
+            class="icon_img"
+            max-height="350"
+            src="images/home/Swensens.webp"
           ></v-img>
           <h1 class="icon_text">สำรวจร้านอาหารชั้นเลิศรอบตัวคุณ!</h1>
         </div>
@@ -43,10 +45,10 @@ const {status, data} = useAuth();
 
     <!--Row 2 Create Branches Report   -->
     <v-row
-        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-        class="feature_rounded row_two_container mx-3 mt-8"
-        justify="center"
-        no-gutters
+      v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
+      class="feature_rounded row_two_container mx-3 mt-8"
+      justify="center"
+      no-gutters
     >
       <v-col class="" col="">
         <h2 class="text-primary text-h4">Create Branches Report</h2>
@@ -58,133 +60,128 @@ const {status, data} = useAuth();
             คุณสามารถดูรายงานผลลัพธ์ของสาขาได้ที่ปุ่มสร้างรายงายในหน้าสร้างรายงาน
           </p>
           <v-col
-              class="w-100 justify-center"
-              cols="auto"
-              style="padding-left: 22px"
+            class="w-100 justify-center"
+            cols="auto"
+            style="padding-left: 22px"
           >
             <v-btn :variant="'elevated'" class="font-weight-bold" rounded="lg"
-            >Create Report
-            </v-btn
-            >
+              >Create Report
+            </v-btn>
           </v-col>
           <p></p>
         </v-row>
       </v-col>
       <v-col align-self="end">
         <v-img
-            class="report_macbook"
-            src="images/home/macbook_air_temp.webp"
-            width="670"
+          class="report_macbook"
+          src="images/home/macbook_air_temp.webp"
+          width="670"
         ></v-img>
       </v-col>
     </v-row>
 
     <!--Row 3 Manage Branches and Manage Menu   -->
     <v-row
-        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-        class="mt-5 px-3"
-        justify="center"
+      v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
+      class="mt-5 px-3"
+      justify="center"
     >
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Branches</h2>
         <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
+          class="report_macbook"
+          height="180"
+          src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+          width="100%"
         ></v-img>
         <h3 class="report_text report_header">จัดการสาขาที่คุณดูแลอยู่</h3>
         <p class="report_text report_body mt--3">
           คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
         </p>
         <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
+          class="min-w-100 justify-center mt-0"
+          cols="auto"
+          style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Branches
-          </v-btn
-          >
+            >Manage Branches
+          </v-btn>
         </v-row>
       </v-col>
 
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Menu</h2>
         <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
+          class="report_macbook"
+          height="180"
+          src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+          width="100%"
         ></v-img>
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">
           คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
         </p>
         <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
+          class="min-w-100 justify-center mt-0"
+          cols="auto"
+          style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Menu
-          </v-btn
-          >
+            >Manage Menu
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
 
     <!--Row 4 Manage   -->
     <v-row
-        v-if="status == 'authenticated' && data.role == 'MANAGER' || 1"
-        class="mt-8 px-3"
-        justify="center"
+      v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
+      class="mt-8 px-3"
+      justify="center"
     >
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Branches</h2>
         <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
+          class="report_macbook"
+          height="180"
+          src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+          width="100%"
         ></v-img>
         <h3 class="report_text report_header">จัดการสาขาที่คุณดูแลอยู่</h3>
         <p class="report_text report_body mt--3">
           คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
         </p>
         <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
+          class="min-w-100 justify-center mt-0"
+          cols="auto"
+          style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Branches
-          </v-btn
-          >
+            >Manage Branches
+          </v-btn>
         </v-row>
       </v-col>
 
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Menu</h2>
         <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
+          class="report_macbook"
+          height="180"
+          src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+          width="100%"
         ></v-img>
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">
           คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
         </p>
         <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
+          class="min-w-100 justify-center mt-0"
+          cols="auto"
+          style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Menu
-          </v-btn
-          >
+            >Manage Menu
+          </v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -192,6 +189,6 @@ const {status, data} = useAuth();
 </template>
 
 <script lang="ts">
-import "~/assets/stylesheets/features.css";
-import "~/assets/stylesheets/global.css";
+  import "~/assets/stylesheets/features.css";
+  import "~/assets/stylesheets/global.css";
 </script>

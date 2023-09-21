@@ -73,7 +73,6 @@ const {status, data} = useAuth();
             >Create Report
             </v-btn>
           </v-col>
-          <p></p>
         </v-row>
       </v-col>
       <v-col align-self="end">

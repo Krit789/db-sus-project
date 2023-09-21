@@ -1,5 +1,5 @@
-import { createVuetify } from "vuetify";
-import { md3 } from "vuetify/blueprints";
+import {createVuetify} from "vuetify";
+import {md3} from "vuetify/blueprints";
 import "@mdi/font/css/materialdesignicons.css";
 
 const myCustomLightTheme = {

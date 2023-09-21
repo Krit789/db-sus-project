@@ -434,7 +434,7 @@
             <div class="text-center">
                 <v-dialog v-model="dialogIn" :fullscreen="mobile">
                     <v-card
-                        :loading="isCardLoading ? 'blue' : null"
+                        :loading="isCardLoading ? 'blue' : undefined"
                         class="blur-effect account_pane"
                         color=""
                     >
@@ -522,7 +522,7 @@
                 activator="#regisActivator"
             >
                 <v-card
-                    :loading="isCardLoading ? 'blue' : null"
+                    :loading="isCardLoading ? 'blue' : undefined"
                     class="blur-effect account_pane"
                 >
                     <v-card-title class="mt-4 ml-4 pb-3"

@@ -103,7 +103,7 @@ const {status, data} = useAuth();
           จัดการสาขาที่คุณดูแลอยู่
         </h3>
         <p class="report_text report_body mt--3">
-          คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
+          คุณสามารถดูแลการจองและจัดการร้านได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"
@@ -126,7 +126,7 @@ const {status, data} = useAuth();
         ></v-img>
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">
-          คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
+          คุณสามารถจัดการเมนูอาหารภายในร้านของคุณได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"
@@ -140,9 +140,9 @@ const {status, data} = useAuth();
       </v-col>
     </v-row>
 
-    <!--Row 4 Manage   -->
+    <!--Row 4 Manage Don't forget to remove Debug -->
     <v-row
-        v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
+        v-if="(status == 'authenticated' && data.role == 'GOD') || 1"
         class="mt-8 px-3"
         justify="center"
     >
@@ -155,10 +155,10 @@ const {status, data} = useAuth();
             width="100%"
         ></v-img>
         <h3 class="report_text report_header">
-          จัดการสาขาที่คุณดูแลอยู่
+          จัดการร้านที่ต้องการ
         </h3>
         <p class="report_text report_body mt--3">
-          คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
+          คุณสามารถแก้ไขข้อมูลหรือจัดการร้านที่คุณต้องการได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"
@@ -179,9 +179,9 @@ const {status, data} = useAuth();
             src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
             width="100%"
         ></v-img>
-        <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
+        <h3 class="report_text report_header">จัดการเมนูของแฟรนไชส์</h3>
         <p class="report_text report_body mt--3">
-          คกด้่หเหกด้เ่า้หกด่าเ้หกด่าเ้าก่หด้เาหกด่้เ่าสหกด้าส
+          คุณสามารถแก้ไขข้อมูลเมนูอาหารได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"

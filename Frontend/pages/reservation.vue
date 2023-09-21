@@ -1,17 +1,24 @@
 <script lang="ts" setup>
-import {VStepper, VStepperHeader, VStepperItem, VStepperWindow, VStepperWindowItem,} from "vuetify/labs/VStepper";
-import {VDataTable} from "vuetify/labs/VDataTable";
-import {useDisplay} from "vuetify";
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
+    import {
+        VStepper,
+        VStepperHeader,
+        VStepperItem,
+        VStepperWindow,
+        VStepperWindowItem,
+    } from "vuetify/labs/VStepper";
+    import { DateTime, Interval } from "luxon";
+    import { VDataTable } from "vuetify/labs/VDataTable";
+    import { useDisplay } from "vuetify";
+    import "~/assets/stylesheets/global.css";
+    import "~/assets/stylesheets/index.css";
 
-const {mobile} = useDisplay();
-const {status, data} = useAuth();
-const route = useRoute();
-useHead({
-  title: "Booking - Seatify",
-  meta: [{name: "Seatify App", content: "My amazing site."}],
-});
+    const { mobile } = useDisplay();
+    const { status, data } = useAuth();
+    const route = useRoute();
+    useHead({
+        title: "Booking - Seatify",
+        meta: [{ name: "Seatify App", content: "My amazing site." }],
+    });
 </script>
 
 <script lang="ts">
@@ -197,111 +204,112 @@ useHead({
     };
 </script>
 <template>
-  <v-main class="justify-center reservation_body">
-    <div
-        class="main_container mx-auto blur-effect account_container mt-10 py-1 px-1 min-h-40"
-    >
-      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
-        Reservation
-      </h1>
-      <v-sheet
-          class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent"
-          rounded="0"
-      >
-        <v-stepper v-model="stepper1" :mobile="mobile">
-          <v-alert
-              v-if="isError"
-              class="ma-3"
-              color="error"
-              icon="$error"
-              title="Error"
-          >{{ errorData }}
-          </v-alert>
-          <v-stepper-header>
-            <v-stepper-item
-                :complete="hasLocation"
-                :disabled="hasLocation"
-                value="1"
+    <v-main class="justify-center reservation_body">
+        <div
+            class="main_container mx-auto blur-effect account_container mt-10 py-1 px-1 min-h-40"
+        >
+            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
+                Reservation
+            </h1>
+            <v-sheet
+                class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent"
+                rounded="0"
             >
-              <template v-slot:title>Select Branch</template>
-            </v-stepper-item>
+                <v-stepper :mobile="mobile" v-model="stepper1">
+                    <v-alert
+                        v-if="isError"
+                        class="ma-3"
+                        color="error"
+                        icon="$error"
+                        title="Error"
+                        >{{ errorData }}
+                    </v-alert>
+                    <v-stepper-header>
+                        <v-stepper-item
+                            value="1"
+                            :complete="hasLocation"
+                            :disabled="hasLocation"
+                        >
+                            <template v-slot:title>Select Branch</template>
+                        </v-stepper-item>
 
-            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-            <v-stepper-item value="2">
-              <template v-slot:title>Choose Time</template>
-            </v-stepper-item>
+                        <v-stepper-item value="2">
+                            <template v-slot:title>Choose Time</template>
+                        </v-stepper-item>
 
-            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-            <v-stepper-item value="3">
-              <template v-slot:title> Pick Your Seat</template>
-            </v-stepper-item>
+                        <v-stepper-item value="3">
+                            <template v-slot:title> Pick Your Seat </template>
+                        </v-stepper-item>
 
-            <v-divider></v-divider>
+                        <v-divider></v-divider>
 
-            <v-stepper-item value="4">
-              <template v-slot:title> Pre-Order Food</template>
+                        <v-stepper-item value="4">
+                            <template v-slot:title> Pre-Order Food </template>
 
-              <template v-slot:subtitle>Optional</template>
-            </v-stepper-item>
-            <v-divider></v-divider>
-            <v-stepper-item value="5">
-              <template v-slot:title> Summary</template>
-            </v-stepper-item>
-          </v-stepper-header>
+                            <template v-slot:subtitle>Optional</template>
+                        </v-stepper-item>
+                        <v-divider></v-divider>
+                        <v-stepper-item value="5">
+                            <template v-slot:title> Summary </template>
+                        </v-stepper-item>
+                    </v-stepper-header>
 
-          <v-stepper-window :touch="false">
-            <v-stepper-window-item
-                :disabled="hasLocation"
-                value="1"
-            >
-              <v-card title=""
-              >
-                <v-card-text
-                ><h3
-                    class="text-h4 font-weight-medium text-left"
-                >
-                  Select Branches
-                </h3></v-card-text
-                >
-                <v-btn
-                    :disabled="pageSpinner"
-                    class="align-right mb-3"
-                    prepend-icon="mdi-refresh"
-                    text="Refresh"
-                    @click="loadLocation"
-                ></v-btn>
-                <v-text-field
-                    v-model="dtSearch"
-                    placeholder="Search"
-                ></v-text-field>
-                <v-data-table
-                    :headers="dtHeaders"
-                    :items="locationList"
-                    :loading="pageSpinner"
-                    :search="dtSearch"
-                    class="elevation-1"
-                    v-on:click:row="
+                    <v-stepper-window :touch="false">
+                        <v-stepper-window-item
+                            value="1"
+                            :disabled="hasLocation"
+                        >
+                            <v-card title=""
+                                ><v-card-text
+                                    ><h3
+                                        class="text-h4 font-weight-medium text-left"
+                                    >
+                                        Select Branches
+                                    </h3></v-card-text
+                                >
+                                <v-btn
+                                    :disabled="pageSpinner"
+                                    class="align-right mb-3"
+                                    prepend-icon="mdi-refresh"
+                                    text="Refresh"
+                                    @click="loadLocation"
+                                ></v-btn>
+                                <v-text-field
+                                    v-model="dtSearch"
+                                    placeholder="Search"
+                                ></v-text-field>
+                                <v-data-table
+                                    :headers="dtHeaders"
+                                    :items="locationList"
+                                    :loading="pageSpinner"
+                                    class="elevation-1"
+                                    :search="dtSearch"
+                                    v-on:click:row="
                                         (val, tabl) => {
-                                            selectedLoc = tabl.item.columns;
+                                            selectedLoc = loadLocationByID(
+                                                tabl.item.columns.location_id,
+                                            );
                                             selectedLocID =
                                                 tabl.item.columns.location_id;
                                             stepper1++;
                                         }
                                     "
-                ></v-data-table>
-              </v-card>
-            </v-stepper-window-item>
-            <v-stepper-window-item value="2">
-              <v-card>
-                <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
-                    Choose Time
-                  </h3>
-                </v-card-text>
+                                ></v-data-table>
+                            </v-card>
+                        </v-stepper-window-item>
+                        <v-stepper-window-item value="2">
+                            <v-card>
+                                <v-card-text>
+                                    <h3
+                                        class="text-h4 font-weight-medium text-left"
+                                    >
+                                        Choose Reservation Time
+                                    </h3>
+                                </v-card-text>
 
                                 <v-container>
                                     <v-row justify="space-around">
@@ -322,23 +330,22 @@ useHead({
                                     </v-row>
                                 </v-container>
 
-                <div class="ma-3">
-                  <v-btn
-                      v-if="!hasLocation"
-                      class="mr-5"
-                      @click="
+                                <div class="ma-3">
+                                    <v-btn
+                                        class="mr-5"
+                                        v-if="!hasLocation"
+                                        @click="
                                             () => {
                                                 stepper1--;
                                             }
                                         "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      :disabled="!isDateTimeInRange()"
-                      @click="
+                                        >Back</v-btn
+                                    >
+                                    <v-btn
+                                        @click="
                                             () => {
                                                 stepper1++;
+                                                findSeatforSelectedDT();
                                             }
                                         "
                                         :disabled="
@@ -427,89 +434,80 @@ useHead({
                                                 stepper1++;
                                             }
                                         "
-                  >Next
-                  </v-btn
-                  >
-                </div>
-              </v-card
-              >
-            </v-stepper-window-item>
-            <v-stepper-window-item value="4">
-              <v-card>
-                <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
-                    Pre-Order Food
-                  </h3>
-                </v-card-text>
-                <div class="ma-3">
-                  <v-btn
-                      class="mr-5"
-                      @click="
+                                        >Next</v-btn
+                                    >
+                                </div></v-card
+                            >
+                        </v-stepper-window-item>
+                        <v-stepper-window-item value="4">
+                            <v-card>
+                                <v-card-text>
+                                    <h3
+                                        class="text-h4 font-weight-medium text-left"
+                                    >
+                                        Pre-Order Food
+                                    </h3>
+                                </v-card-text>
+                                <div class="ma-3">
+                                    <v-btn
+                                        class="mr-5"
+                                        @click="
                                             () => {
                                                 stepper1--;
                                             }
                                         "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      @click="
+                                        >Back</v-btn
+                                    >
+                                    <v-btn
+                                        @click="
                                             () => {
                                                 stepper1++;
                                             }
                                         "
-                  >Next
-                  </v-btn
-                  >
-                </div>
-              </v-card
-              >
-            </v-stepper-window-item>
-            <v-stepper-window-item value="5">
-              <v-card>
-                <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
-                    Summary
-                  </h3>
-                  <h3>Location</h3>
-                  <p>{{ selectedLoc?.name }}</p>
-                  <h3>Date and Time</h3>
-                  <p>{{ selectedTime }}</p>
-                  <h3>Seat</h3>
-                  <p>{{ selectedSeat }}</p>
-                </v-card-text>
-                <div class="ma-3">
-                  <v-btn
-                      class="mr-5"
-                      @click="
+                                        >Next</v-btn
+                                    >
+                                </div></v-card
+                            >
+                        </v-stepper-window-item>
+                        <v-stepper-window-item value="5">
+                            <v-card>
+                                <v-card-text>
+                                    <h3
+                                        class="text-h4 font-weight-medium text-left"
+                                    >
+                                        Summary
+                                    </h3>
+                                    <h3>Location</h3>
+                                    <p>{{ selectedLoc?.name }}</p>
+                                    <h3>Date and Time</h3>
+                                    <p>{{ selectedTime }}</p>
+                                    <h3>Seat</h3>
+                                    <p>{{ selectedSeat }}</p>
+                                </v-card-text>
+                                <div class="ma-3">
+                                    <v-btn
+                                        class="mr-5"
+                                        @click="
                                             () => {
                                                 stepper1--;
                                             }
                                         "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      @click="
+                                        >Back</v-btn
+                                    >
+                                    <v-btn
+                                        @click="
                                             () => {
                                                 console.log('Confirm');
                                             }
                                         "
-                  >Confirm
-                  </v-btn
-                  >
-                </div>
-              </v-card
-              >
-            </v-stepper-window-item>
-          </v-stepper-window>
-        </v-stepper>
-      </v-sheet>
-    </div>
-  </v-main>
+                                        >Confirm</v-btn
+                                    >
+                                </div></v-card
+                            >
+                        </v-stepper-window-item>
+                    </v-stepper-window>
+                </v-stepper>
+            </v-sheet>
+        </div>
+    </v-main>
 </template>
-

@@ -78,7 +78,7 @@ const {status, data} = useAuth();
       <v-col align-self="end">
         <v-img
             class="report_macbook"
-            src="images/home/macbook_air_temp.webp"
+            src="https://cdn-icons-png.flaticon.com/512/2830/2830510.png"
             width="670"
         ></v-img>
       </v-col>
@@ -86,7 +86,7 @@ const {status, data} = useAuth();
 
     <!--Row 3 Manage Branches and Manage Menu   -->
     <v-row
-        v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
+        v-if="(status == 'authenticated' && (data.role == 'MANAGER' || data.role == 'GOD')) || 1"
         class="mt-5 px-3"
         justify="center"
     >
@@ -95,7 +95,7 @@ const {status, data} = useAuth();
         <v-img
             class="report_macbook"
             height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+            src="https://cdn-icons-png.flaticon.com/512/2727/2727399.png"
             width="100%"
         ></v-img>
         <h3 class="report_text report_header">
@@ -120,67 +120,12 @@ const {status, data} = useAuth();
         <v-img
             class="report_macbook"
             height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
+            src="https://cdn-icons-png.flaticon.com/512/1046/1046849.png"
             width="100%"
         ></v-img>
         <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
         <p class="report_text report_body mt--3">
           คุณสามารถจัดการเมนูอาหารภายในร้านของคุณได้ตรงนี้
-        </p>
-        <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
-        >
-          <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Menu
-          </v-btn>
-        </v-row>
-      </v-col>
-    </v-row>
-
-    <!--Row 4 Manage Don't forget to remove Debug -->
-    <v-row
-        v-if="(status == 'authenticated' && data.role == 'GOD') || 1"
-        class="mt-8 px-3"
-        justify="center"
-    >
-      <v-col class="feature_rounded row_three_container">
-        <h2 class="text-primary text-h4">Manage Branches</h2>
-        <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
-        ></v-img>
-        <h3 class="report_text report_header">
-          จัดการร้านที่ต้องการ
-        </h3>
-        <p class="report_text report_body mt--3">
-          คุณสามารถแก้ไขข้อมูลหรือจัดการร้านที่คุณต้องการได้ตรงนี้
-        </p>
-        <v-row
-            class="min-w-100 justify-center mt-0"
-            cols="auto"
-            style="padding-left: 22px"
-        >
-          <v-btn :variant="'outlined'" class="" rounded="lg"
-          >Manage Branches
-          </v-btn>
-        </v-row>
-      </v-col>
-
-      <v-col class="feature_rounded row_three_container">
-        <h2 class="text-primary text-h4">Manage Menu</h2>
-        <v-img
-            class="report_macbook"
-            height="180"
-            src="https://ejudge.it.kmitl.ac.th/assets/img/avatar280.png"
-            width="100%"
-        ></v-img>
-        <h3 class="report_text report_header">จัดการเมนูของแฟรนไชส์</h3>
-        <p class="report_text report_body mt--3">
-          คุณสามารถแก้ไขข้อมูลเมนูอาหารได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"

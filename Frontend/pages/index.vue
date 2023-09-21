@@ -78,8 +78,7 @@ import "~/assets/stylesheets/index.css";
                   <v-card-item>
                     <v-card-title
                     >Restaurant Name
-                    </v-card-title
-                    >
+                    </v-card-title>
                   </v-card-item>
                   <v-card-text>
                     <div class="my-4 text-subtitle-1">
@@ -100,14 +99,8 @@ import "~/assets/stylesheets/index.css";
                         color="#0373DE"
                         rounded="lg"
                         variant="outlined"
-                        @click="
-                                                $router.push({
-                                                    path: '/reservation',
-                                                    query: { location_id: n },
-                                                })
-                                            "
-                    >
-                      Reserve
+                        @click="$router.push({path: '/reservation',query: { location_id: n },})"
+                    >Reserve
                     </v-btn>
                   </div>
                 </v-card>

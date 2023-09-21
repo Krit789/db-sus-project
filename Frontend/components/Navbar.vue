@@ -296,9 +296,9 @@ export default {
         </div>
       </v-app-bar>
       <v-navigation-drawer
+          v-model="drawer"
           :disable-resize-watcher="true"
-          :disable-route-watcher="true"
-          v-model="drawer">
+          :disable-route-watcher="true">
         <div v-if="status == 'authenticated'">
           <v-list>
             <v-list-item>

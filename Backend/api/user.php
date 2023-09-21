@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     //ต้องส่งข้อมูล location_id
                     $id = $data->location_id;
 
-                    $obj->select('menus', "*", null, "menu_id not in (select menu_id from restrictions where location_id = {$id})", null, null);
+                    $obj->select('menus m', "*", "menu_category mc on (m.category_id = mc.mc_id)", "menu_id not in (select menu_id from restrictions where location_id = {$id})", null, null);
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

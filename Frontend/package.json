@@ -18,6 +18,8 @@
     },
     "dependencies": {
         "@mdi/font": "^7.2.96",
+        "@types/luxon": "^3.3.2",
+        "luxon": "^3.4.3",
         "next-auth": "4.21.1",
         "prettier": "^3.0.3",
         "sass": "^1.66.1",

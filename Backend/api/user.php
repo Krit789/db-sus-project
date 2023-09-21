@@ -357,7 +357,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     ]);
                     else echo json_encode([
                         'status' => 0,
-                        'message' => "Don't have any tables or No Tables Available in Time"
+                        'message' => "No table available on location or no tables available on selected time"
                     ]);
             }
             exit;
@@ -381,8 +381,3 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         'message' => 'Access Denied'
     ]);
 }
-// $allheaders = getallheaders();
-// $jwt = $allheaders['Authorization'];
-
-// $secret_key = "Hilal ahmad khan";
-// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

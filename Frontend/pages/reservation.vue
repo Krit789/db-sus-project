@@ -6,6 +6,7 @@
         VStepperWindow,
         VStepperWindowItem,
     } from "vuetify/labs/VStepper";
+    import { DateTime, Interval } from "luxon";
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
@@ -24,6 +25,7 @@
     export default {
         data: () => ({
             isError: false,
+            isTimeValid: false,
             errorData: "",
             stepper1: 0,
             pageSpinner: false,
@@ -38,11 +40,11 @@
             selectedSeat: "",
             foodPreOrderList: [],
             dtSearch: "",
+            resDateTime: "",
             dtHeaders: [
                 {
                     title: "ID",
                     align: "start",
-                    // sortable: true,
                     key: "location_id",
                 },
                 { title: "Name", align: "start", key: "name" },
@@ -93,8 +95,20 @@
                         this.isError = false;
                     });
             },
+            isDateTimeValidRule() {
+                if (this.isDateTimeInRange()) return true;
+                return "Reservation date must be > 2 hours and < 14 days into the future";
+            },
+            isDateTimeInRange() {
+                const time = DateTime.fromISO(this.resDateTime);
+                const start = DateTime.now().plus({ hours: 2 });
+                const end = DateTime.now().plus({ days: 14 });
+                const interval = Interval.fromDateTimes(start, end);
+                return interval.contains(time);
+            },
         },
 
+        computed: {},
         beforeMount() {
             if (this.$route.query.location_id != null) {
                 this.hasLocation = true;
@@ -163,7 +177,7 @@
                         </v-stepper-item>
                     </v-stepper-header>
 
-                    <v-stepper-window>
+                    <v-stepper-window :touch="false">
                         <v-stepper-window-item
                             value="1"
                             :disabled="hasLocation"
@@ -213,6 +227,25 @@
                                         Choose Time
                                     </h3>
                                 </v-card-text>
+
+                                <v-container>
+                                    <v-row justify="space-around">
+                                        <v-col cols="12" sm="6">
+                                            <h3
+                                                class="text-left font-weight-medium"
+                                            >
+                                                Date
+                                            </h3>
+                                            <v-text-field
+                                                type="datetime-local"
+                                                v-model="resDateTime"
+                                                :rules="[isDateTimeValidRule]"
+                                                required
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+
                                 <div class="ma-3">
                                     <v-btn
                                         class="mr-5"
@@ -230,6 +263,7 @@
                                                 stepper1++;
                                             }
                                         "
+                                        :disabled="!isDateTimeInRange()"
                                         >Next</v-btn
                                     >
                                 </div></v-card

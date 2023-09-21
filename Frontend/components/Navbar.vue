@@ -136,7 +136,8 @@ export default {
 
       return "E-Mail must be in correct format.";
     },
-    navActions(actions: String) {
+    navActions: function (actions: String) {
+      this.drawer = false;
       switch (actions) {
         case "u-home":
           this.$router.push("/");
@@ -160,8 +161,9 @@ export default {
           this.$router.push("/management/users");
           break;
       }
+      this.drawer = false;
     },
-    async makeRegistration() {
+    makeRegistration: async function () {
       this.isCardLoading = true;
       await $fetch("/proxy/api/account/create-user.php", {
         method: "POST",
@@ -174,31 +176,33 @@ export default {
         },
       })
           .catch((error) => error.data)
-          .then(({status, message}) => {
-            if (status == 1) {
-              this.NotiText =
-                  "Registration Successful. Login with your account to begin!";
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check-circle-outline";
-              this.snackbar = true;
-              this.dialogRe = false;
-            } else if (status == 2) {
-              this.NotiText = "Email already in use!";
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
-              this.snackbar = true;
-            } else {
-              this.NotiText = message;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
-              this.snackbar = true;
-            }
-            this.isCardLoading = false;
-          });
+          .then(get_status);
+
+      function get_status({status: status, message: message}) {
+        if (status == 1) {
+          this.NotiText =
+              "Registration Successful. Login with your account to begin!";
+          this.NotiColor = "success";
+          this.NotiIcon = "mdi-check-circle-outline";
+          this.snackbar = true;
+          this.dialogRe = false;
+        } else if (status == 2) {
+          this.NotiText = "Email already in use!";
+          this.NotiColor = "error";
+          this.NotiIcon = "mdi-alert";
+          this.snackbar = true;
+        } else {
+          this.NotiText = message;
+          this.NotiColor = "error";
+          this.NotiIcon = "mdi-alert";
+          this.snackbar = true;
+        }
+        this.isCardLoading = false;
+      }
     },
   },
   computed: {
-    isLoginValid() {
+    "isLoginValid": function () {
       return this.emailValidation(this.email) && this.password != "";
     },
     isRegisValid() {
@@ -224,6 +228,7 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
+
         <v-snackbar
             v-model="snackbar"
             :color="NotiColor"
@@ -237,11 +242,7 @@ export default {
             @click.stop="drawer = !drawer"
         ></v-app-bar-nav-icon>
         <v-toolbar-title
-            @click="
-                        () => {
-                            $router.push('/');
-                        }
-                    "
+            @click="() => {$router.push('/');}"
         >
           <NuxtLink :custom="true" to="/"
           >Seatify | Seat Reservation Service
@@ -251,20 +252,12 @@ export default {
           <v-btn
               color="blue"
               variant="text"
-              @click="
-                            () => {
-                                dialogRe = true;
-                            }
-                        "
+              @click="() => {dialogRe = true;}"
           >Register
           </v-btn>
           <v-btn
               background-color="#D9D9D9"
-              @click="
-                            () => {
-                                dialogIn = true;
-                            }
-                        "
+              @click="() => {dialogIn = true;}"
           >Login
           </v-btn>
         </div>
@@ -302,7 +295,10 @@ export default {
           </v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer">
+      <v-navigation-drawer
+          :disable-resize-watcher="true"
+          :disable-route-watcher="true"
+          v-model="drawer">
         <div v-if="status == 'authenticated'">
           <v-list>
             <v-list-item>
@@ -408,24 +404,10 @@ export default {
           </v-list>
           <v-divider></v-divider>
           <v-list>
-            <v-list-item
-                prepend-icon="mdi-login-variant"
-                @click="
-                                () => {
-                                    dialogIn = true;
-                                }
-                            "
-            >
+            <v-list-item prepend-icon="mdi-login-variant" @click="() => {dialogIn = true;}">
               <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
-            <v-list-item
-                prepend-icon="mdi-account-plus"
-                @click="
-                                () => {
-                                    dialogRe = true;
-                                }
-                            "
-            >
+            <v-list-item prepend-icon="mdi-account-plus" @click="() => {dialogRe = true;}">
               <v-list-item-title>Register</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -434,42 +416,23 @@ export default {
       </v-navigation-drawer>
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile">
-          <v-card
-              :loading="isCardLoading ? 'blue' : undefined"
-              class="blur-effect account_pane"
-              color=""
-          >
-            <v-card-title class="mt-4 ml-4 pb-3"
-            ><h1>Login</h1></v-card-title
-            >
-            <v-card-subtitle class="ml-4 pb-1"
-            ><h4 class="font-weight-medium">
-              The best reservation experience is just a click
-              away!
-            </h4></v-card-subtitle
-            >
+          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" color="">
+            <v-card-title class="mt-4 ml-4 pb-3">
+              <h1>Login</h1>
+            </v-card-title>
+            <v-card-subtitle class="ml-4 pb-1">
+              <h4 class="font-weight-medium">
+                The best reservation experience is just a click
+                away!
+              </h4>
+            </v-card-subtitle>
             <v-card-text>
-              <v-sheet
-                  class="mx-auto form_container bg-transparent"
-                  width="auto"
-              >
-                <v-form
-                    class="justify-center"
-                    fast-fail
-                    @submit.prevent
-                >
-                  <v-text-field
-                      v-model="email"
-                      :rules="[emailValidation]"
-                      label="E-Mail"
-                      prepend-inner-icon="mdi-email"
-                  ></v-text-field>
-                  <v-text-field
-                      v-model="password"
-                      label="Password"
-                      prepend-inner-icon="mdi-lock"
-                      type="password"
-                  ></v-text-field>
+              <v-sheet class="mx-auto form_container bg-transparent" width="auto">
+                <v-form class="justify-center" fast-fail @submit.prevent>
+                  <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
+                                prepend-inner-icon="mdi-email"></v-text-field>
+                  <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
+                                type="password"></v-text-field>
                 </v-form>
               </v-sheet>
             </v-card-text>
@@ -479,30 +442,26 @@ export default {
                   class="mt-2 bg-blue-darken-1 h-[22px] mw-50"
                   rounded="lg"
                   type="submit"
-                  @click="
-                                    () => {
-                                        isCardLoading = true;
-                                        mySignInHandler({
-                                            email: email,
-                                            password: password,
-                                        }).then((val) => {
-                                            if (val) {
-                                                dialogIn = false;
-                                                NotiText = 'Sign In Success!';
-                                                NotiColor = 'success';
-                                                NotiIcon =
-                                                    'mdi-check-circle-outline';
-                                                snackbar = true;
-                                            } else {
-                                                NotiText = 'Sign In Failure!';
-                                                NotiColor = 'error';
-                                                NotiIcon = 'mdi-alert-circle';
-                                                snackbar = true;
-                                            }
-                                            isCardLoading = false;
-                                        });
-                                    }
-                                "
+                  @click=" () => {
+                      isCardLoading = true;
+                      mySignInHandler({
+                          email: email,
+                          password: password,
+                      }).then((val) => {
+                          if (val) {
+                              dialogIn = false;
+                              NotiText = 'Sign In Success!';
+                              NotiColor = 'success';
+                              NotiIcon =
+                                  'mdi-check-circle-outline';
+                              snackbar = true;
+                          } else {
+                              NotiText = 'Sign In Failure!';
+                              NotiColor = 'error';
+                              NotiIcon = 'mdi-alert-circle';
+                              snackbar = true;
+                          }
+                          isCardLoading = false;});}"
               >Submit
               </v-btn>
               <v-btn
@@ -517,23 +476,16 @@ export default {
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog
-          v-model="dialogRe"
-          :fullscreen="mobile"
-          activator="#regisActivator"
-      >
-        <v-card
-            :loading="isCardLoading ? 'blue' : undefined"
-            class="blur-effect account_pane"
-        >
-          <v-card-title class="mt-4 ml-4 pb-3"
-          ><h1>Register</h1></v-card-title
-          >
-          <v-card-subtitle class="ml-4 pb-1"
-          ><h4 class="font-weight-medium">
-            Get ready to enjoy the best reservation experience!
-          </h4></v-card-subtitle
-          >
+      <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
+        <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
+          <v-card-title class="mt-4 ml-4 pb-3">
+            <h1>Register</h1>
+          </v-card-title>
+          <v-card-subtitle class="ml-4 pb-1">
+            <h4 class="font-weight-medium">
+              Get ready to enjoy the best reservation experience!
+            </h4>
+          </v-card-subtitle>
           <v-card-text>
             <v-sheet
                 class="mx-auto w-100 form_container bg-transparent"

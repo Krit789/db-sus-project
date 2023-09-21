@@ -96,7 +96,7 @@ class Database
                 $sql .= " ORDER BY $order";
             if ($limit != null)
                 $sql .= " LIMIT $limit";
-
+            error_log($sql);
             $query = $this->mysqli->query($sql);
 
             // echo $sql; #ดูคำสั่ง sql ปิดๆ

@@ -41,6 +41,7 @@
             foodPreOrderList: [],
             dtSearch: "",
             resDateTime: "",
+            resGuest: 1,
             dtHeaders: [
                 {
                     title: "ID",
@@ -54,6 +55,9 @@
             ],
         }),
         methods: {
+            findSeatforSelectedDT(){
+                this.loadAvailableTable(this.selectedLocID, DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"));
+            },
             async loadLocation() {
                 this.pageSpinner = true;
                 await $fetch("/api/data", {
@@ -91,6 +95,28 @@
                     })
                     .then(({ status, message }) => {
                         this.selectedLoc = message[0];
+                        this.pageSpinner = false;
+                        this.isError = false;
+                    });
+            },
+            async loadAvailableTable(locID: Number, arriavalTime: string) {
+                this.pageSpinner = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 11,
+                        usage: "user",
+                        // location_id: locID,
+                        // arrival: arriavalTime,
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.isError = true;
+                        this.errorData = error.data;
+                    })
+                    .then(({ status, message }) => {
+                        this.seatList = message;
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -209,7 +235,9 @@
                                     :search="dtSearch"
                                     v-on:click:row="
                                         (val, tabl) => {
-                                            selectedLoc = tabl.item.columns;
+                                            selectedLoc = loadLocationByID(
+                                                tabl.item.columns.location_id,
+                                            );
                                             selectedLocID =
                                                 tabl.item.columns.location_id;
                                             stepper1++;
@@ -224,7 +252,7 @@
                                     <h3
                                         class="text-h4 font-weight-medium text-left"
                                     >
-                                        Choose Time
+                                        Choose Reservation Time
                                     </h3>
                                 </v-card-text>
 
@@ -234,7 +262,7 @@
                                             <h3
                                                 class="text-left font-weight-medium"
                                             >
-                                                Date
+                                                Date & Time
                                             </h3>
                                             <v-text-field
                                                 type="datetime-local"
@@ -261,6 +289,7 @@
                                         @click="
                                             () => {
                                                 stepper1++;
+                                                findSeatforSelectedDT();
                                             }
                                         "
                                         :disabled="!isDateTimeInRange()"
@@ -275,9 +304,49 @@
                                     <h3
                                         class="text-h4 font-weight-medium text-left"
                                     >
-                                        Pick Your Seat
+                                        Guest & Seating
                                     </h3>
                                 </v-card-text>
+                                <v-container class="align-self-center">
+                                    <v-row
+                                        ><v-col>
+                                            <h3
+                                                class="text-left font-weight-medium"
+                                            >
+                                                Seat Layout
+                                            </h3>
+                                            <v-img
+                                                class=""
+                                                :src="
+                                                    selectedLoc.layout_img_url
+                                                "
+                                                width="600"
+                                            ></v-img>
+                                        </v-col>
+                                        <v-col>
+                                            <h3
+                                                class="text-left font-weight-medium"
+                                            >
+                                                How many guests are coming?
+                                            </h3>
+                                            <v-text-field
+                                                type="number"
+                                                v-model="resGuest"
+                                                :rules="[isDateTimeValidRule]"
+                                                required
+                                            ></v-text-field>
+                                            <h3
+                                                class="text-left font-weight-medium"
+                                            >
+                                                Pick Your Seat
+                                            </h3>
+                                            <v-select
+                                                :items="seatList"
+                                                label="Table Name"
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                                 <div class="ma-3">
                                     <v-btn
                                         class="mr-5"

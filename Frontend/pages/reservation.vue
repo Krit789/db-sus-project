@@ -22,6 +22,10 @@
 </script>
 
 <script lang="ts">
+    function renameKey(obj, oldKey, newKey) {
+        obj[newKey] = obj[oldKey];
+        delete obj[oldKey];
+    }
     export default {
         data: () => ({
             isError: false,
@@ -33,10 +37,12 @@
             locationList: [],
             menuList: [],
             seatList: [],
+            filterSeatList: [],
+            filterSeatCount: 0,
             branchLayout: "",
             selectedLocID: 0,
             selectedLoc: {},
-            selectedTime: "",
+            selectedTime: null,
             selectedSeat: "",
             foodPreOrderList: [],
             dtSearch: "",
@@ -55,8 +61,14 @@
             ],
         }),
         methods: {
-            findSeatforSelectedDT(){
-                this.loadAvailableTable(this.selectedLocID, DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"));
+            findSeatforSelectedDT() {
+                this.selectedTime = DateTime.fromISO(this.resDateTime);
+                this.loadAvailableTable(
+                    this.selectedLocID,
+                    DateTime.fromISO(this.resDateTime).toFormat(
+                        "yyyy-LL-dd TT",
+                    ),
+                );
             },
             async loadLocation() {
                 this.pageSpinner = true;
@@ -106,8 +118,8 @@
                     body: {
                         type: 11,
                         usage: "user",
-                        // location_id: locID,
-                        // arrival: arriavalTime,
+                        location_id: locID,
+                        arrival: arriavalTime,
                     },
                     lazy: true,
                 })
@@ -121,20 +133,63 @@
                         this.isError = false;
                     });
             },
+            seatRule() {
+                if (this.filterSeatCount >= 1) return true;
+                return "No seat with specified condition available";
+            },
             isDateTimeValidRule() {
-                if (this.isDateTimeInRange()) return true;
-                return "Reservation date must be > 2 hours and < 14 days into the future";
+                if (this.isDateTimeInRange() && this.isDateTimeInOperation())
+                    return true;
+                if (!this.isDateTimeInOperation())
+                    return "Reservation must be in operational time";
+                if (!this.isDateTimeInRange())
+                    return "Reservation date must be > 2 hours and < 14 days into the future";
+                return "Reservation date must be > 2 hours and < 14 days into the future and must be in operational time";
             },
             isDateTimeInRange() {
                 const time = DateTime.fromISO(this.resDateTime);
                 const start = DateTime.now().plus({ hours: 2 });
                 const end = DateTime.now().plus({ days: 14 });
                 const interval = Interval.fromDateTimes(start, end);
+
                 return interval.contains(time);
+            },
+            isDateTimeInOperation() {
+                const time = DateTime.fromISO(this.resDateTime);
+                const openTime = DateTime.fromSQL(this.selectedLoc.open_time);
+                const closeTime = DateTime.fromSQL(
+                    this.selectedLoc.close_time,
+                ).minus({ minutes: 30 });
+
+                const timeHours = time.hour;
+                const timeMinutes = time.minute;
+                const startHours = openTime.hour;
+                const startMinutes = openTime.minute;
+                const endHours = closeTime.hour;
+                const endMinutes = closeTime.minute;
+
+                return (
+                    (timeHours > startHours ||
+                        (timeHours === startHours &&
+                            timeMinutes >= startMinutes)) &&
+                    (timeHours < endHours ||
+                        (timeHours === endHours && timeMinutes <= endMinutes))
+                );
             },
         },
 
-        computed: {},
+        computed: {
+            filteredSeatListCompute() {
+                this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
+                // this.filterSeatList.forEach( obj => renameKey( obj, 'name', 'title' ) );
+                this.filterSeatCount = this.filterSeatList.filter(
+                    (item) => Number(item.capacity) >= this.resGuest,
+                ).length;
+                return this.filterSeatList.filter(
+                    (item) => Number(item.capacity) >= this.resGuest,
+                );
+            },
+        },
         beforeMount() {
             if (this.$route.query.location_id != null) {
                 this.hasLocation = true;
@@ -265,6 +320,7 @@
                                                 Date & Time
                                             </h3>
                                             <v-text-field
+                                                prepend-inner-icon="mdi-calendar-multiselect-outline"
                                                 type="datetime-local"
                                                 v-model="resDateTime"
                                                 :rules="[isDateTimeValidRule]"
@@ -292,7 +348,12 @@
                                                 findSeatforSelectedDT();
                                             }
                                         "
-                                        :disabled="!isDateTimeInRange()"
+                                        :disabled="
+                                            !(
+                                                isDateTimeInRange() &&
+                                                isDateTimeInOperation()
+                                            )
+                                        "
                                         >Next</v-btn
                                     >
                                 </div></v-card
@@ -330,6 +391,9 @@
                                                 How many guests are coming?
                                             </h3>
                                             <v-text-field
+                                                prepend-inner-icon="mdi-account-multiple"
+                                                min="1"
+                                                oninput="validity.valid||(value=1);"
                                                 type="number"
                                                 v-model="resGuest"
                                                 :rules="[isDateTimeValidRule]"
@@ -341,8 +405,14 @@
                                                 Pick Your Seat
                                             </h3>
                                             <v-select
-                                                :items="seatList"
+                                                prepend-inner-icon="mdi-sofa-single-outline"
+                                                :items="filteredSeatListCompute"
+                                                :rules="[seatRule]"
                                                 label="Table Name"
+                                                v-model="selectedSeat"
+                                                item-title="name"
+                                                item-value="table_id"
+                                                :disabled="filterSeatCount == 0"
                                             ></v-select>
                                         </v-col>
                                     </v-row>
@@ -358,6 +428,7 @@
                                         >Back</v-btn
                                     >
                                     <v-btn
+                                    :disabled="!seatRule"
                                         @click="
                                             () => {
                                                 stepper1++;

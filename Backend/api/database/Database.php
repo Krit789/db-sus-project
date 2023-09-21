@@ -1,7 +1,8 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-class Database {
+class Database
+{
     private $mysqli = "";
     private $result = array();
     private $conn = false;

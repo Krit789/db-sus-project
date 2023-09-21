@@ -1,8 +1,7 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-class Database
-{
+class Database {
     private $mysqli = "";
     private $result = array();
     private $conn = false;
@@ -100,7 +99,6 @@ class Database
             // echo $sql; #ดูคำสั่ง sql ปิดๆ
             $query = $this->mysqli->query($sql);
 
-            
 
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);

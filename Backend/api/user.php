@@ -348,7 +348,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             }
                             $count++;
                         }
-                        if ($tmp != ""){
+                        if ($tmp != "") {
                             $tmp = "table_id not in ({$tmp}) and ";
                         }
                         $obj->select('tables', '*', null, "{$tmp} table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');

@@ -1,0 +1,18 @@
+.dashboard_body {
+    background: url("~/assets/images/desert.webp");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: brightness(105%);
+    overflow: clip;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.dashboard_container {
+    background: rgba(245, 245, 247, .8) !important;
+}
+
+.main_container {
+    border-radius: 22px;
+}

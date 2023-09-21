@@ -117,16 +117,11 @@ export default {
 </script>
 <template>
   <v-main class="justify-center reservation_body">
-    <div
-        class="main_container mx-auto blur-effect account_container mt-10 py-1 px-1 min-h-40"
-    >
+    <div class="main_container mx-auto blur-effect account_container mt-10 py-1 px-1 min-h-40">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">
         Reservation
       </h1>
-      <v-sheet
-          class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent"
-          rounded="0"
-      >
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
         <v-stepper v-model="stepper1" :mobile="mobile">
           <v-alert
               v-if="isError"
@@ -171,19 +166,12 @@ export default {
           </v-stepper-header>
 
           <v-stepper-window :touch="false">
-            <v-stepper-window-item
-                :disabled="hasLocation"
-                value="1"
-            >
-              <v-card title=""
-              >
-                <v-card-text
-                ><h3
-                    class="text-h4 font-weight-medium text-left"
-                >
-                  Select Branches
-                </h3></v-card-text
-                >
+            <v-stepper-window-item :disabled="hasLocation" value="1">
+              <v-card title="">
+                <v-card-text>
+                  <h3 class="text-h4 font-weight-medium text-left">
+                    Select Branches
+                  </h3></v-card-text>
                 <v-btn
                     :disabled="pageSpinner"
                     class="align-right mb-3"
@@ -201,23 +189,17 @@ export default {
                     :loading="pageSpinner"
                     :search="dtSearch"
                     class="elevation-1"
-                    v-on:click:row="
-                                        (val, tabl) => {
-                                            selectedLoc = tabl.item.columns;
-                                            selectedLocID =
-                                                tabl.item.columns.location_id;
-                                            stepper1++;
-                                        }
-                                    "
+                    v-on:click:row="(val, tabl) => {
+                      selectedLoc = tabl.item.columns;
+                      selectedLocID = tabl.item.columns.location_id;
+                      stepper1++;}"
                 ></v-data-table>
               </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="2">
               <v-card>
                 <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
+                  <h3 class="text-h4 font-weight-medium text-left">
                     Choose Time
                   </h3>
                 </v-card-text>
@@ -225,9 +207,7 @@ export default {
                 <v-container>
                   <v-row justify="space-around">
                     <v-col cols="12" sm="6">
-                      <h3
-                          class="text-left font-weight-medium"
-                      >
+                      <h3 class="text-left font-weight-medium">
                         Date
                       </h3>
                       <v-text-field
@@ -244,103 +224,58 @@ export default {
                   <v-btn
                       v-if="!hasLocation"
                       class="mr-5"
-                      @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      :disabled="!isDateTimeInRange()"
-                      @click="
-                                            () => {
-                                                stepper1++;
-                                            }
-                                        "
-                  >Next
-                  </v-btn
-                  >
+                      @click="() => {stepper1--;}">
+                    Back
+                  </v-btn>
+                  <v-btn :disabled="!isDateTimeInRange()" @click="() => {stepper1++;}">
+                    Next
+                  </v-btn>
                 </div>
-              </v-card
-              >
+              </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="3">
               <v-card>
                 <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
+                  <h3 class="text-h4 font-weight-medium text-left">
                     Pick Your Seat
                   </h3>
                 </v-card-text>
                 <div class="ma-3">
-                  <v-btn
-                      class="mr-5"
-                      @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      @click="
-                                            () => {
-                                                stepper1++;
-                                            }
-                                        "
-                  >Next
-                  </v-btn
-                  >
+                  <v-btn class="mr-5" @click="() => {stepper1--;}">
+                    Back
+                  </v-btn>
+                  <v-btn @click="() => {stepper1++;}">
+                    Next
+                  </v-btn>
                 </div>
-              </v-card
-              >
+              </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="4">
               <v-card>
                 <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
+                  <h3 class="text-h4 font-weight-medium text-left">
                     Pre-Order Food
                   </h3>
                 </v-card-text>
                 <div class="ma-3">
-                  <v-btn
-                      class="mr-5"
-                      @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      @click="
-                                            () => {
-                                                stepper1++;
-                                            }
-                                        "
-                  >Next
-                  </v-btn
-                  >
+                  <v-btn class="mr-5" @click="() => {stepper1--;}">
+                    Back
+                  </v-btn>
+                  <v-btn @click=" () => { stepper1++;}">
+                    Next
+                  </v-btn>
                 </div>
-              </v-card
-              >
+              </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="5">
               <v-card>
                 <v-card-text>
-                  <h3
-                      class="text-h4 font-weight-medium text-left"
-                  >
+                  <h3 class="text-h4 font-weight-medium text-left">
                     Summary
                   </h3>
-                  <h3>Location</h3>
+                  <h3>
+                    Location
+                  </h3>
                   <p>{{ selectedLoc?.name }}</p>
                   <h3>Date and Time</h3>
                   <p>{{ selectedTime }}</p>
@@ -350,26 +285,14 @@ export default {
                 <div class="ma-3">
                   <v-btn
                       class="mr-5"
-                      @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                  >Back
-                  </v-btn
-                  >
-                  <v-btn
-                      @click="
-                                            () => {
-                                                console.log('Confirm');
-                                            }
-                                        "
-                  >Confirm
-                  </v-btn
-                  >
+                      @click="() => {stepper1--;}">
+                    Back
+                  </v-btn>
+                  <v-btn @click="() => { console.log('Confirm');}">
+                    Confirm
+                  </v-btn>
                 </div>
-              </v-card
-              >
+              </v-card>
             </v-stepper-window-item>
           </v-stepper-window>
         </v-stepper>

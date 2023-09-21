@@ -43,5 +43,6 @@ h4 {
     background-position: center;
     background-size: cover;
     overflow: clip;
+    min-height: 100vh;
 
 }

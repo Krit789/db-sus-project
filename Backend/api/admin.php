@@ -323,7 +323,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 default:
-                    throw new \Exception('Unexpected value');
+                    throw new Exception('Unexpected value');
             }
             if ($ispermission) echo json_encode([
                 'status' => 0,

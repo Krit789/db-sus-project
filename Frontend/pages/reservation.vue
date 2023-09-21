@@ -209,7 +209,7 @@ export default {
           class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent"
           rounded="0"
       >
-        <v-stepper :mobile="mobile" v-model="stepper1">
+        <v-stepper v-model="stepper1" :mobile="mobile">
           <v-alert
               v-if="isError"
               class="ma-3"
@@ -220,9 +220,9 @@ export default {
           </v-alert>
           <v-stepper-header>
             <v-stepper-item
-                value="1"
                 :complete="hasLocation"
                 :disabled="hasLocation"
+                value="1"
             >
               <template v-slot:title>Select Branch</template>
             </v-stepper-item>
@@ -254,8 +254,8 @@ export default {
 
           <v-stepper-window :touch="false">
             <v-stepper-window-item
-                value="1"
                 :disabled="hasLocation"
+                value="1"
             >
               <v-card title=""
               >
@@ -281,8 +281,8 @@ export default {
                     :headers="dtHeaders"
                     :items="locationList"
                     :loading="pageSpinner"
-                    class="elevation-1"
                     :search="dtSearch"
+                    class="elevation-1"
                     v-on:click:row="
                                         (val, tabl) => {
                                             selectedLoc = loadLocationByID(
@@ -315,11 +315,11 @@ export default {
                         Date & Time
                       </h3>
                       <v-text-field
-                          prepend-inner-icon="mdi-calendar-multiselect-outline"
-                          type="datetime-local"
                           v-model="resDateTime"
                           :rules="[isDateTimeValidRule]"
+                          prepend-inner-icon="mdi-calendar-multiselect-outline"
                           required
+                          type="datetime-local"
                       ></v-text-field>
                     </v-col>
                   </v-row>
@@ -327,8 +327,8 @@ export default {
 
                 <div class="ma-3">
                   <v-btn
-                      class="mr-5"
                       v-if="!hasLocation"
+                      class="mr-5"
                       @click="
                                             () => {
                                                 stepper1--;
@@ -338,17 +338,17 @@ export default {
                   </v-btn
                   >
                   <v-btn
-                      @click="
-                                            () => {
-                                                stepper1++;
-                                                findSeatforSelectedDT();
-                                            }
-                                        "
                       :disabled="
                                             !(
                                                 isDateTimeInRange() &&
                                                 isDateTimeInOperation()
                                             )
+                                        "
+                      @click="
+                                            () => {
+                                                stepper1++;
+                                                findSeatforSelectedDT();
+                                            }
                                         "
                   >Next
                   </v-btn
@@ -376,10 +376,10 @@ export default {
                         Seat Layout
                       </h3>
                       <v-img
-                          class=""
                           :src="
                                                     selectedLoc.layout_img_url
                                                 "
+                          class=""
                           width="600"
                       ></v-img>
                     </v-col>
@@ -390,13 +390,13 @@ export default {
                         How many guests are coming?
                       </h3>
                       <v-text-field
-                          prepend-inner-icon="mdi-account-multiple"
-                          min="1"
-                          oninput="validity.valid||(value=1);"
-                          type="number"
                           v-model="resGuest"
                           :rules="[isDateTimeValidRule]"
+                          min="1"
+                          oninput="validity.valid||(value=1);"
+                          prepend-inner-icon="mdi-account-multiple"
                           required
+                          type="number"
                       ></v-text-field>
                       <h3
                           class="text-left font-weight-medium"
@@ -404,14 +404,14 @@ export default {
                         Pick Your Seat
                       </h3>
                       <v-select
-                          prepend-inner-icon="mdi-sofa-single-outline"
+                          v-model="selectedSeat"
+                          :disabled="filterSeatCount == 0"
                           :items="filteredSeatListCompute"
                           :rules="[seatRule]"
-                          label="Table Name"
-                          v-model="selectedSeat"
                           item-title="name"
                           item-value="table_id"
-                          :disabled="filterSeatCount == 0"
+                          label="Table Name"
+                          prepend-inner-icon="mdi-sofa-single-outline"
                       ></v-select>
                     </v-col>
                   </v-row>

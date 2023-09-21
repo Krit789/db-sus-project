@@ -6,6 +6,7 @@
         VStepperWindow,
         VStepperWindowItem,
     } from "vuetify/labs/VStepper";
+    import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
     import { DateTime, Interval } from "luxon";
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";

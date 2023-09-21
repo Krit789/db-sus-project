@@ -563,6 +563,52 @@
                                 </v-card-text>
                                 <v-container>
                                     <v-row>
+                                        <v-col 
+                                            cols="12"
+                                            sm="3"
+                                            md="4"
+                                            v-for="food in menuList"
+                                            :key="food.id"
+                                            @click="() => { console.log(food.id) }"
+                                        >
+                                            <v-img v-ripple
+                                                :src="(food.img_url) ?food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
+                                                cover
+                                                height="300"
+                                            >
+                                                <template v-slot:error>
+                                                    <v-img
+                                                        class="mx-auto"
+                                                        height="300"
+                                                        max-width="500"
+                                                        src="https://picsum.photos/500/300?image=232"
+                                                    ></v-img> </template
+                                            ></v-img>
+                                            <v-card v-ripple>
+                                                <v-card-title>{{
+                                                    food.item_name
+                                                }}</v-card-title>
+                                                <v-card-subtitle
+                                                    ><v-chip color="warning">{{
+                                                        food.mc_name
+                                                    }}</v-chip>
+                                                    <v-chip color="info"
+                                                        >{{
+                                                            food.price
+                                                        }}฿</v-chip
+                                                    ></v-card-subtitle
+                                                >
+                                                <v-card-text>{{
+                                                    food.item_desc
+                                                }}</v-card-text>
+
+                                                <!-- <p>{{ food.item_name }}</p> -->
+                                            </v-card>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                                <v-container>
+                                    <v-row>
                                         <v-col>
                                             <v-btn
                                                 prepend-icon="mdi-arrow-left"

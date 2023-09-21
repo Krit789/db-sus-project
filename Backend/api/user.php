@@ -348,7 +348,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             }
                             $count++;
                         }
-                        $obj->select('tables', '*', null, "table_id not in ({$tmp}) and table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');
+                        $obj->select('tables', '*', "locations using (location_id)", "table_id not in ({$tmp}) and table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');
                         $result = $obj->getResult();
                         if ($result) echo json_encode([
                             'status' => 1,

@@ -13,7 +13,8 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
-    selected: [],
+    selectedDT: [],
+    dtSearch: '',
     dtErrorData: "",
     dtIsError: false,
     dtData: [],
@@ -82,19 +83,27 @@ export default {
           @click="loadData"
       ></v-btn>
       <v-data-table
-          v-model="selected"
+          v-model="selectedDT"
           :headers="dtHeaders"
           :items="dtData"
           :loading="dtLoading"
           class="elevation-1"
-          item-value="id"
+          item-value="location_id"
           show-select
+          :search="dtSearch"
           @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.location_id);
                     }
                 "
       >
+      <template v-slot:top>
+                                        <v-text-field
+                                        prepend-inner-icon="mdi-store-search"
+                                            v-model="dtSearch"
+                                            placeholder="Search"
+                                        ></v-text-field>
+                                    </template>
       </v-data-table>
       <v-btn
           :disabled="dtLoading"

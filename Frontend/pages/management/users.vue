@@ -13,6 +13,7 @@ useHead({
 export default {
   data: () => ({
     dtErrorData: "",
+    dtSearch: '',
     dtIsError: false,
     dtData: [],
     itemsPerPage: 10,
@@ -88,12 +89,19 @@ export default {
           :loading="dtLoading"
           class="elevation-1"
           item-value="id"
+          :search="dtSearch"
           @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.user_id);
                     }
                 "
-      ></v-data-table>
+      >                                    <template v-slot:top>
+                                        <v-text-field
+                                        prepend-inner-icon="mdi-account-search"
+                                            v-model="dtSearch"
+                                            placeholder="Search"
+                                        ></v-text-field>
+                                    </template></v-data-table>
     </v-sheet>
   </v-main>
 </template>

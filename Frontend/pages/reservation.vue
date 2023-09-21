@@ -6,7 +6,7 @@
         VStepperWindow,
         VStepperWindowItem,
     } from "vuetify/labs/VStepper";
-    import { DateTime, Interval } from 'luxon';
+    import { DateTime, Interval } from "luxon";
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
@@ -29,6 +29,7 @@
 
     export default {
         data: () => ({
+            expanded: [],
             isError: false,
             isTimeValid: false,
             errorData: "",
@@ -44,21 +45,22 @@
             selectedLocID: 0,
             selectedLoc: {},
             selectedTime: null,
-            selectedSeat: "",
+            selectedSeat: null,
             foodPreOrderList: [],
             dtSearch: "",
             resDateTime: "",
             resGuest: 1,
             dtHeaders: [
-                {
-                    title: "ID",
-                    align: "start",
-                    key: "location_id",
-                },
+                // {
+                //     title: "ID",
+                //     align: "start",
+                //     key: "location_id",
+                // },
                 { title: "Name", align: "start", key: "name" },
-                { title: "Address", align: "end", key: "address" },
-                { title: "Open", align: "end", key: "open_time" },
+                // { title: "Address", align: "end", key: "address" },
+                // { title: "Open", align: "end", key: "open_time" },
                 { title: "Close", align: "end", key: "close_time" },
+                { title: "", key: "data-table-expand" },
             ],
         }),
         methods: {
@@ -87,6 +89,27 @@
                     })
                     .then(({ status, message }) => {
                         this.locationList = message;
+                        this.pageSpinner = false;
+                        this.isError = false;
+                    });
+            },
+            async loadMenusFromLocation(locID: Number) {
+                this.pageSpinner = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 5,
+                        usage: "user",
+                        location_id: locID,
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.isError = true;
+                        this.errorData = error.data;
+                    })
+                    .then(({ status, message }) => {
+                        this.menuList = message;
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -279,27 +302,79 @@
                                     text="Refresh"
                                     @click="loadLocation"
                                 ></v-btn>
-                                <v-text-field
-                                    v-model="dtSearch"
-                                    placeholder="Search"
-                                ></v-text-field>
+                                <!-- <v-btn
+                                    :disabled="pageSpinner"
+                                    color="green"
+                                    class="align-right ml-5 mb-3"
+                                    prepend-icon="mdi-console"
+                                    text="Debug"
+                                    @click="() => {console.log(expanded)}"
+                                ></v-btn> -->
+
                                 <v-data-table
+                                    v-model:expanded="expanded"
                                     :headers="dtHeaders"
                                     :items="locationList"
                                     :loading="pageSpinner"
                                     class="elevation-1"
                                     :search="dtSearch"
+                                    item-value="location_id"
+                                    show-expand
                                     v-on:click:row="
                                         (val, tabl) => {
                                             selectedLoc = loadLocationByID(
-                                                tabl.item.columns.location_id,
+                                                tabl.item.raw.location_id,
                                             );
                                             selectedLocID =
-                                                tabl.item.columns.location_id;
+                                                tabl.item.raw.location_id;
                                             stepper1++;
                                         }
                                     "
-                                ></v-data-table>
+                                >
+                                    <template v-slot:top>
+                                        <v-text-field
+                                            prepend-inner-icon="mdi-text-search"
+                                            v-model="dtSearch"
+                                            placeholder="Search"
+                                        ></v-text-field>
+                                    </template>
+                                    <template
+                                        v-slot:expanded-row="{ columns, item }"
+                                    >
+                                        <tr>
+                                            <td
+                                                :colspan="columns.length"
+                                                class="text-left"
+                                            >
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-col col="12" sm="6">
+                                                            <b
+                                                                >Operating
+                                                                Hours</b
+                                                            ><br />
+                                                            {{
+                                                                item.raw
+                                                                    .open_time
+                                                            }}
+                                                            -
+                                                            {{
+                                                                item.raw
+                                                                    .close_time
+                                                            }}<br />
+                                                        </v-col>
+                                                        <v-col col="12" sm="6">
+                                                            <b>Address</b><br />
+                                                            {{
+                                                                item.raw.address
+                                                            }}
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </td>
+                                        </tr>
+                                    </template></v-data-table
+                                >
                             </v-card>
                         </v-stepper-window-item>
                         <v-stepper-window-item value="2">
@@ -311,7 +386,13 @@
                                         Choose Reservation Time
                                     </h3>
                                 </v-card-text>
-
+                                <p
+                                    class="text-left font-weight-medium pb-1 ml-4"
+                                >
+                                    <b>{{ selectedLoc.name }}</b> is operating
+                                    from {{ selectedLoc.open_time }} till
+                                    {{ selectedLoc.close_time }}
+                                </p>
                                 <v-container>
                                     <v-row justify="space-around">
                                         <v-col cols="12" sm="6">
@@ -331,33 +412,43 @@
                                     </v-row>
                                 </v-container>
 
-                                <div class="ma-3">
-                                    <v-btn
-                                        class="mr-5"
-                                        v-if="!hasLocation"
-                                        @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                                        >Back
-                                    </v-btn>
-                                    <v-btn
-                                        @click="
-                                            () => {
-                                                stepper1++;
-                                                findSeatforSelectedDT();
-                                            }
-                                        "
-                                        :disabled="
-                                            !(
-                                                isDateTimeInRange() &&
-                                                isDateTimeInOperation()
-                                            )
-                                        "
-                                        >Next
-                                    </v-btn>
-                                </div>
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-left"
+                                                variant="tonal"
+                                                v-if="!hasLocation"
+                                                @click="
+                                                    () => {
+                                                        resDateTime = null;
+                                                        stepper1--;
+                                                    }
+                                                "
+                                                >Back
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col>
+                                            <v-btn
+                                                class="text-right"
+                                                prepend-icon="mdi-arrow-right"
+                                                @click="
+                                                    () => {
+                                                        stepper1++;
+                                                        findSeatforSelectedDT();
+                                                    }
+                                                "
+                                                :disabled="
+                                                    !(
+                                                        isDateTimeInRange() &&
+                                                        isDateTimeInOperation()
+                                                    )
+                                                "
+                                                >Next
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-card>
                         </v-stepper-window-item>
                         <v-stepper-window-item value="3">
@@ -383,6 +474,8 @@
                                                     selectedLoc.layout_img_url
                                                 "
                                                 width="600"
+                                                ><template v:slot:placeholder
+                                                    ><v-skeleton-loader></v-skeleton-loader></template
                                             ></v-img>
                                         </v-col>
                                         <v-col>
@@ -394,10 +487,15 @@
                                             <v-text-field
                                                 prepend-inner-icon="mdi-account-multiple"
                                                 min="1"
-                                                oninput="validity.valid||(value=1);"
+                                                oninput="validity.valid || (value=1);"
                                                 type="number"
+                                                :rules="[seatRule]"
                                                 v-model="resGuest"
-                                                :rules="[isDateTimeValidRule]"
+                                                :on-update:model-value="
+                                                    () => {
+                                                        selectedSeat = null;
+                                                    }
+                                                "
                                                 required
                                             ></v-text-field>
                                             <h3
@@ -418,26 +516,40 @@
                                         </v-col>
                                     </v-row>
                                 </v-container>
-                                <div class="ma-3">
-                                    <v-btn
-                                        class="mr-5"
-                                        @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                                        >Back
-                                    </v-btn>
-                                    <v-btn
-                                        :disabled="!seatRule"
-                                        @click="
-                                            () => {
-                                                stepper1++;
-                                            }
-                                        "
-                                        >Next
-                                    </v-btn>
-                                </div>
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-left"
+                                                variant="tonal"
+                                                @click="
+                                                    () => {
+                                                        selectedSeat = null;
+                                                        stepper1--;
+                                                    }
+                                                "
+                                                >Back
+                                            </v-btn> </v-col
+                                        ><v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-right"
+                                                :disabled="
+                                                    filterSeatCount == 0 ||
+                                                    selectedSeat == null
+                                                "
+                                                @click="
+                                                    () => {
+                                                        loadMenusFromLocation(
+                                                            selectedLocID,
+                                                        );
+                                                        stepper1++;
+                                                    }
+                                                "
+                                                >Next
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-card>
                         </v-stepper-window-item>
                         <v-stepper-window-item value="4">
@@ -449,25 +561,33 @@
                                         Pre-Order Food
                                     </h3>
                                 </v-card-text>
-                                <div class="ma-3">
-                                    <v-btn
-                                        class="mr-5"
-                                        @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                                        >Back
-                                    </v-btn>
-                                    <v-btn
-                                        @click="
-                                            () => {
-                                                stepper1++;
-                                            }
-                                        "
-                                        >Next
-                                    </v-btn>
-                                </div>
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-left"
+                                                variant="tonal"
+                                                @click="
+                                                    () => {
+                                                        stepper1--;
+                                                    }
+                                                "
+                                                >Back
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-right"
+                                                @click="
+                                                    () => {
+                                                        stepper1++;
+                                                    }
+                                                "
+                                                >Next
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-card>
                         </v-stepper-window-item>
                         <v-stepper-window-item value="5">
@@ -485,25 +605,33 @@
                                     <h3>Seat</h3>
                                     <p>{{ selectedSeat }}</p>
                                 </v-card-text>
-                                <div class="ma-3">
-                                    <v-btn
-                                        class="mr-5"
-                                        @click="
-                                            () => {
-                                                stepper1--;
-                                            }
-                                        "
-                                        >Back
-                                    </v-btn>
-                                    <v-btn
-                                        @click="
-                                            () => {
-                                                console.log('Confirm');
-                                            }
-                                        "
-                                        >Confirm
-                                    </v-btn>
-                                </div>
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-left"
+                                                variant="tonal"
+                                                @click="
+                                                    () => {
+                                                        stepper1--;
+                                                    }
+                                                "
+                                                >Back
+                                            </v-btn> </v-col
+                                        ><v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-check"
+                                                color="success"
+                                                @click="
+                                                    () => {
+                                                        console.log('Confirm');
+                                                    }
+                                                "
+                                                >Confirm
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-card>
                         </v-stepper-window-item>
                     </v-stepper-window>

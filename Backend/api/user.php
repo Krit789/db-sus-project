@@ -336,7 +336,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         date_add($date2, date_interval_create_from_date_string("1 hours"));
                         $date2 = date_format($date2, "Y-m-d H:i:s");
 
-                        $obj->select('reservations', 'reservations.table_id', 'tables using (table_id) join locations using (location_id)', "location_id={$location_id} and status = 3 and arrival between '{$date}' and '{$date2}'");
+                        $obj->select('reservations', 'reservations.table_id', 'tables using (table_id) join locations using (location_id)', "location_id={$location_id} and reservations.status = 3 and arrival between '{$date}' and '{$date2}'");
                         $result = $obj->getResult();
                         $tmp = "";
                         $count = 0;
@@ -348,7 +348,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             }
                             $count++;
                         }
-                        $obj->select('tables', '*', null, "table_id not in ({$tmp}) and table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');
+                        if ($tmp != ""){
+                            $tmp = "table_id not in ({$tmp}) and ";
+                        }
+                        $obj->select('tables', '*', null, "{$tmp} table_id in (select table_id from tables where location_id = {$location_id})", 'table_id');
                         $result = $obj->getResult();
                         if ($result) echo json_encode([
                             'status' => 1,

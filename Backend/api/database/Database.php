@@ -96,10 +96,11 @@ class Database
                 $sql .= " ORDER BY $order";
             if ($limit != null)
                 $sql .= " LIMIT $limit";
-            error_log($sql);
+            // error_log($sql); #ดูคำสั่ง sql ปิดๆ
+            // echo $sql; #ดูคำสั่ง sql ปิดๆ
             $query = $this->mysqli->query($sql);
 
-            // echo $sql; #ดูคำสั่ง sql ปิดๆ
+            
 
             if ($query) {
                 $this->result = $query->fetch_all(MYSQLI_ASSOC);

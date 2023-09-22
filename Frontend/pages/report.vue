@@ -53,7 +53,7 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({status, message}) => {
+          .then(({message}) => {
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -69,7 +69,7 @@ export default {
 <template>
   <v-main class="">
     <v-parallax src="/images/background/ban_thap_chang.webp">
-      <div class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container">
+      <div class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
         <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report</h1>
         <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
           <v-alert
@@ -80,13 +80,7 @@ export default {
               title="Fetch Error"
           >{{ dtErrorData }}
           </v-alert>
-          <v-btn
-              :disabled="dtLoading"
-              class="align-right mb-3"
-              prepend-icon="mdi-refresh"
-              text="Refresh"
-              @click="loadData"
-          ></v-btn>
+
           <v-data-table
               v-model="selectedDT"
               :headers="dtHeaders"
@@ -118,6 +112,17 @@ export default {
               @click=""
           ></v-btn>
         </v-sheet>
+        <div class="w-100 justify-center align-center">
+          <v-btn
+              :disabled="dtLoading"
+              :variant="'outlined'"
+              class="align-right mb-3 w-100 mx-auto"
+              prepend-icon="mdi-refresh"
+              rounded="lg"
+              text="Refresh"
+              @click="loadData"
+          ></v-btn>
+        </div>
       </div>
     </v-parallax>
     <!--    <Credit/> // AGAIN????? -->

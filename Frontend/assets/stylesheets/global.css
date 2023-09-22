@@ -7,6 +7,21 @@ v-btn {
     caret-color: #0373DE;
 }
 
+
+.main_container {
+    max-width: 1380px;
+    padding-bottom: 32px;
+    border-radius: 32px;
+}
+
+img_background {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+    min-height: 100vh;
+}
+
 .blur-effect {
     background: rgba(245, 245, 247, .72);
     backdrop-filter: blur(20px) saturate(1.8);
@@ -33,6 +48,7 @@ v-btn {
     /*text-transform: none;*/
 }
 
+
 body {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
@@ -57,7 +73,3 @@ body {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
 }
 
-.main_container {
-    max-width: 1380px;
-    padding-bottom: 32px;
-}

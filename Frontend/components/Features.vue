@@ -48,7 +48,7 @@ const {status, data} = useAuth();
     <!--Row 2 Create Branches Report   -->
     <v-row
         v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
-        class="feature_rounded row_two_container mx-3 mt-8"
+        class="feature_rounded mx-3 mt-8 px-5 py-8"
         justify="center"
         no-gutters
     >
@@ -64,8 +64,7 @@ const {status, data} = useAuth();
           <v-col
               class="w-100 justify-center"
               cols="auto"
-              style="padding-left: 22px"
-          >
+              style="padding-left: 22px">
             <v-btn
                 :variant="'elevated'"
                 class="font-weight-bold"
@@ -78,7 +77,7 @@ const {status, data} = useAuth();
       <v-col align-self="end">
         <v-img
             class="report_macbook"
-            src="https://cdn-icons-png.flaticon.com/512/2830/2830510.png"
+            src="images/home/macbook_air_temp.webp"
             width="670"
         ></v-img>
       </v-col>

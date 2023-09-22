@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
 import {VDataTable} from "vuetify/labs/VDataTable";
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/report.css";
+
 const {mobile} = useDisplay();
 const {status, data} = useAuth();
 
@@ -64,55 +67,59 @@ export default {
 </script>
 
 <template>
-  <v-main>
-    <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report</h1>
-    <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-      <v-alert
-          v-if="dtIsError"
-          class="ma-3"
-          color="error"
-          icon="$error"
-          title="Fetch Error"
-      >{{ dtErrorData }}
-      </v-alert>
-      <v-btn
-          :disabled="dtLoading"
-          class="align-right mb-3"
-          prepend-icon="mdi-refresh"
-          text="Refresh"
-          @click="loadData"
-      ></v-btn>
-      <v-data-table
-          v-model="selectedDT"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          class="elevation-1"
-          item-value="location_id"
-          show-select
-          :search="dtSearch"
-          @click:row="
+  <v-main class="">
+    <v-parallax src="/images/background/ban_thap_chang.webp">
+      <div class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container">
+        <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report</h1>
+        <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+          <v-alert
+              v-if="dtIsError"
+              class="ma-3"
+              color="error"
+              icon="$error"
+              title="Fetch Error"
+          >{{ dtErrorData }}
+          </v-alert>
+          <v-btn
+              :disabled="dtLoading"
+              class="align-right mb-3"
+              prepend-icon="mdi-refresh"
+              text="Refresh"
+              @click="loadData"
+          ></v-btn>
+          <v-data-table
+              v-model="selectedDT"
+              :headers="dtHeaders"
+              :items="dtData"
+              :loading="dtLoading"
+              :search="dtSearch"
+              class="elevation-1"
+              item-value="location_id"
+              show-select
+              @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.location_id);
                     }
                 "
-      >
-      <template v-slot:top>
-                                        <v-text-field
-                                        prepend-inner-icon="mdi-store-search"
-                                            v-model="dtSearch"
-                                            placeholder="Search"
-                                        ></v-text-field>
-                                    </template>
-      </v-data-table>
-      <v-btn
-          :disabled="dtLoading"
-          class="align-right my-3"
-          prepend-icon=""
-          text="Get Report"
-          @click=""
-      ></v-btn>
-    </v-sheet>
-    <Credit/>
+          >
+            <template v-slot:top>
+              <v-text-field
+                  v-model="dtSearch"
+                  placeholder="Search"
+                  prepend-inner-icon="mdi-store-search"
+              ></v-text-field>
+            </template>
+          </v-data-table>
+          <v-btn
+              :disabled="dtLoading"
+              class="align-right my-3"
+              prepend-icon=""
+              text="Get Report"
+              @click=""
+          ></v-btn>
+        </v-sheet>
+      </div>
+    </v-parallax>
+    <!--    <Credit/> // AGAIN????? -->
   </v-main>
 </template>

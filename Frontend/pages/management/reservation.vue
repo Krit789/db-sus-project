@@ -86,21 +86,23 @@ export default {
           :headers="dtHeaders"
           :items="dtData"
           :loading="dtLoading"
+          :search="dtSearch"
           class="elevation-1"
           item-value="id"
-          :search="dtSearch"
           @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.res_id);
                     }
                 "
-      >                                    <template v-slot:top>
-                                        <v-text-field
-                                        prepend-inner-icon="mdi-book-search"
-                                            v-model="dtSearch"
-                                            placeholder="Search"
-                                        ></v-text-field>
-                                    </template></v-data-table>
+      >
+        <template v-slot:top>
+          <v-text-field
+              v-model="dtSearch"
+              placeholder="Search"
+              prepend-inner-icon="mdi-book-search"
+          ></v-text-field>
+        </template>
+      </v-data-table>
     </v-sheet>
   </v-main>
 </template>

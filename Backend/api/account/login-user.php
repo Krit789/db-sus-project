@@ -4,7 +4,6 @@ header('Access-Control-Allow-Origin:*');
 header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
-include '../database/Database.php';
 include '../../vendor/autoload.php';
 include '../random.php';
 include '../check.php';
@@ -37,7 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $tele = $data['telephone'];
             $role = $data['role'];
             $token = $data['access_token'];
-            if (!password_verify($password, $data['password_hash']) || $data['status'] == "SUSPENDED") echo json_encode([
+            $status = $data['status'];
+            if (!password_verify($password, $data['password_hash']) || $status == 'SUSPENDED') echo json_encode([
                 'status' => 0,
                 'message' => 'Invalid Credentials',
             ]); else {

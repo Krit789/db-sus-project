@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $res_code = $data->res_code;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select('reservations', "*", null, "res_code={$res_code}", null, null);
+                        $obj->select('reservations', "table_id, user_id", null, "res_code={$res_code} and status = 3", null, null);
                         $result = $obj->getResult();
 
                         if ($result[0] == 1) {
@@ -143,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     date_add($date2, date_interval_create_from_date_string("1 hours"));
                     $date2 = date_format($date2, "Y-m-d h:m:s");
 
-                    $obj->select("reservations", "*", null, "table_id={$table_id} and status = 3 and arrival between '{$date}' and '{$date2}' and user_id != {$user}");
+                    $obj->select("reservations", "res_id", null, "table_id={$table_id} and status = 3 and arrival between '{$date}' and '{$date2}' and user_id != {$user}");
                     $result = $obj->getResult();
 
                     if (!isset($result[0])) {

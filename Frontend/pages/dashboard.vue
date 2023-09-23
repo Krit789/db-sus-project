@@ -19,7 +19,7 @@
             dtIsError: false,
             dtErrorData: "",
             isError: false,
-            errorData: '',
+            errorData: "",
             dtData: [],
             itemsPerPage: 10,
             dtLoading: false,
@@ -53,14 +53,14 @@
                         this.dtIsError = false;
                     });
             },
-            async cancelReservation(res_id: Number){
+            async cancelReservation(res_id: Number) {
                 this.dtLoading = true;
                 await $fetch("/api/data", {
                     method: "POST",
                     body: {
                         type: 2,
                         usage: "user",
-                        res_id: res_id
+                        res_id: res_id,
                     },
                     lazy: true,
                 })
@@ -71,11 +71,9 @@
                     .then(({ message }) => {
                         this.dtLoading = false;
                         this.dtIsError = false;
-                        this.loadData()
+                        this.loadData();
                     });
-            }
-
-            
+            },
         },
         beforeMount() {
             this.loadData();
@@ -84,28 +82,24 @@
 </script>
 
 <template>
-  <v-main class="justify-center dashboard_body">
-    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
-      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
-        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
-            dtErrorData
-          }}
-        </v-alert>
-        <v-no-ssr>
-          <v-data-table
-              v-model:items-per-page="itemsPerPage"
-              :expanded="expandedDT"
-              :headers="dtHeaders"
-              :items="dtData"
-              :loading="dtLoading"
-              class="elevation-0"
-              item-value="res_id"
-              loading-text="We're looking for your reservation, Hang tight!"
-              @click:row="
+    <v-main class="justify-center dashboard_body">
+        <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
+            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
+            <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+                <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
+                <v-no-ssr>
+                    <v-data-table
+                        v-model:items-per-page="itemsPerPage"
+                        :expanded="expandedDT"
+                        :headers="dtHeaders"
+                        :items="dtData"
+                        :loading="dtLoading"
+                        class="elevation-0"
+                        item-value="res_id"
+                        loading-text="We're looking for your reservation, Hang tight!"
+                        @click:row="
                             (val, tabl) => {
                                 reservationCode = tabl.item.raw.res_code;
-                                console.log(tabl.item.columns.res_id);
                                 codeDialog = !codeDialog;
                             }
                         "
@@ -131,7 +125,17 @@
                                                     </v-tooltip>
                                                     <v-tooltip>
                                                         <template v-slot:activator="{ props }">
-                                                            <v-icon v-bind="props" color="red" @click="() => { cancelReservation(item.raw.res_id); }">mdi-cancel</v-icon>
+                                                            <v-icon
+                                                                v-bind="props"
+                                                                color="red"
+                                                                @click="
+                                                                    () => {
+                                                                        cancelReservation(item.raw.res_id);
+                                                                    }
+                                                                "
+                                                            >
+                                                                mdi-cancel
+                                                            </v-icon>
                                                         </template>
                                                         <span>Cancel Reservation</span>
                                                     </v-tooltip>
@@ -149,8 +153,17 @@
             <v-dialog v-model="codeDialog" width="auto">
                 <v-card>
                     <v-card-title>Your Reservation Code</v-card-title>
+                    <v-card-subtitle>Show this code to staff to confirm your reservation</v-card-subtitle>
                     <v-card-text class="text-center">
-                        {{ reservationCode }}
+                        <v-text-field
+          label="Code"
+          readonly
+          variant="outlined"
+          rows="1"
+          row-height="15"
+          no-resize
+          v-model="reservationCode"
+        ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-btn color="primary" block @click="codeDialog = false">Done</v-btn>

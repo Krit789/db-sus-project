@@ -593,9 +593,9 @@ export default {
                       <v-card v-ripple>
                         <v-img
                             :src="food.img_url ? food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
-                            cover height="300">
+                            cover height="300" width="300">
                           <template v-slot:error>
-                            <v-img height="300" src="https://picsum.photos/500/300?image=232"></v-img>
+                            <v-img height="300" width="300" cover src="https://picsum.photos/500/300?image=232"></v-img>
                           </template>
                         </v-img>
                         <v-card-title>

@@ -103,6 +103,15 @@ export default {
         },
       },
       {
+        title: "Menus",
+        permitted: ["GOD"],
+        value: "mmenu",
+        action: "u-menu",
+        props: {
+          prependIcon: "mdi-food",
+        },
+      },
+      {
         title: "Users",
         permitted: ["GOD"],
         value: "muser",
@@ -151,6 +160,9 @@ export default {
           break;
         case "u-muser":
           this.$router.push("/management/users");
+          break;
+        case "u-menu":
+          this.$router.push("/management/menus");
           break;
       }
       this.drawer = false;

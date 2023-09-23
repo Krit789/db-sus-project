@@ -3,7 +3,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 class Database
 {
-    private $mysqli = "";
+    private $mysqli = null;
     private $result = array();
     private $conn = false;
 
@@ -13,7 +13,9 @@ class Database
         $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
         $dotenv->safeload();
         if (!$this->conn) {
+            
             $this->mysqli = mysqli_connect($_SERVER['DB_HOSTNAME'], $_SERVER['DB_USERNAME'], $_SERVER['DB_PASSWORD'], $_SERVER['DB_DATABASE'], $_SERVER['DB_PORT']);
+            $this->mysqli->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, TRUE);
             $this->conn = true;
 
             if ($this->mysqli->connect_error) {

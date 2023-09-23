@@ -36,24 +36,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 echo json_encode([
                                     'status' => 1,
                                     'message' => "Successfully",
-                                ]);
+                                ], JSON_NUMERIC_CHECK);
                             } else {
                                 echo json_encode([
                                     'status' => 0,
                                     'message' => "Server Problem",
-                                ]);
+                                ], JSON_NUMERIC_CHECK);
                             }
                         } else {
                             echo json_encode([
                                 'status' => 0,
                                 'message' => "Code not match"
-                            ]);
+                            ], JSON_NUMERIC_CHECK);
                         }
                     } else {
                         echo json_encode([
                             'status' => 0,
                             'message' => "Insufficient Permission",
-                        ]);
+                        ], JSON_NUMERIC_CHECK);
                     }
                     break;
                 case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
@@ -101,12 +101,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             foreach ($data->menu as $menu) {
                                 //[0] menu_id [1] จำนวน
                                 if ($menu == $data->menu[sizeof($data->menu) - 1]) {
-                                    $tmp .= "($res_id, $menu[0], $menu[1])";
+                                    $tmp .= "($res_id, $menu->id, $menu->amount)";
                                 } else {
-                                    $tmp .= "($res_id, $menu[0], $menu[1]),";
+                                    $tmp .= "($res_id, $menu->id, $menu->amount),";
                                 }
                             }
-
+                            // error_log($tmp);
                             $obj->insertlagacy('orders', 'res_id, menu_id, amount', $tmp);
                             # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
 
@@ -118,7 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         echo json_encode([
                             'status' => 1,
-                            'message' => "Booking Add Successfully",
+                            'message' => "Booking Added Successfully",
                         ]);
                     } else {
                         echo json_encode([
@@ -126,8 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'message' => "Server Problem",
                         ]);
                     }
-
-
                     break;
                 case 4: #Customer ต้องการแก้ไขการจอง
                     //ต้องส่งข้อมูล res_id, table_id, arrival, cus_count, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
@@ -356,17 +354,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]);
+                        ], JSON_NUMERIC_CHECK);
                         else echo json_encode([
                             'status' => 0,
                             'message' => "No table available on location or no tables available on selected time"
-                        ]);
+                        ], JSON_NUMERIC_CHECK);
 
                     } else {
                         echo json_encode([
                             'status' => 0,
                             'message' => "Unavailable Time"
-                        ]);
+                        ], JSON_NUMERIC_CHECK);
                     }
             }
             exit;
@@ -374,7 +372,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             echo json_encode([
                 'status' => 999,
                 'message' => 'Provided Token was Not Found' #ให้ออกจาระบบ แล้วไป login ใหม่
-            ]);
+            ], JSON_NUMERIC_CHECK);
             exit;
         }
     } else {
@@ -382,12 +380,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         echo json_encode([
             'status' => 998,
             'message' => 'Invalid Data Provided' #ให้ออกจาระบบ แล้วไป login ใหม่
-        ]);
+        ], JSON_NUMERIC_CHECK);
         exit;
     }
 } else {
     echo json_encode([
         'status' => 0,
         'message' => 'Access Denied'
-    ]);
+    ], JSON_NUMERIC_CHECK);
 }

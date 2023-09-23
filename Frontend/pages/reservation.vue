@@ -6,7 +6,7 @@
         VStepperWindow,
         VStepperWindowItem,
     } from "vuetify/labs/VStepper";
-    import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader'
+    import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
     import { DateTime, Interval } from "luxon";
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
@@ -564,16 +564,25 @@
                                 </v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col 
+                                        <v-col
                                             cols="12"
-                                            sm="3"
+                                            sm="6"
                                             md="4"
                                             v-for="food in menuList"
                                             :key="food.id"
-                                            @click="() => { console.log(food.id) }"
+                                            @click="
+                                                () => {
+                                                    console.log(food.id);
+                                                }
+                                            "
                                         >
-                                            <v-img v-ripple
-                                                :src="(food.img_url) ?food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
+                                            <v-card v-ripple>
+                                                <v-img
+                                                :src="
+                                                    food.img_url
+                                                        ? food.img_url
+                                                        : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'
+                                                "
                                                 cover
                                                 height="300"
                                             >
@@ -585,7 +594,6 @@
                                                         src="https://picsum.photos/500/300?image=232"
                                                     ></v-img> </template
                                             ></v-img>
-                                            <v-card v-ripple>
                                                 <v-card-title>{{
                                                     food.item_name
                                                 }}</v-card-title>
@@ -645,12 +653,30 @@
                                     >
                                         Summary
                                     </h3>
-                                    <h3>Location</h3>
-                                    <p>{{ selectedLoc?.name }}</p>
-                                    <h3>Date and Time</h3>
-                                    <p>{{ selectedTime }}</p>
-                                    <h3>Seat</h3>
-                                    <p>{{ selectedSeat }}</p>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col>
+                                                <v-card class="pa-3">
+                                                    <h3>Location</h3>
+                                                    <p>
+                                                        {{ selectedLoc?.name }}
+                                                    </p>
+                                                </v-card></v-col
+                                            ><v-col>
+                                                <v-card class="pa-3">
+                                                    <h3>Date and Time</h3>
+                                                    <p>
+                                                        {{ selectedTime }}
+                                                    </p>
+                                                </v-card></v-col
+                                            ><v-col>
+                                                <v-card class="pa-3">
+                                                    <h3>Seat</h3>
+                                                    <p>{{ selectedSeat }}</p>
+                                                </v-card>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
                                 </v-card-text>
                                 <v-container>
                                     <v-row>

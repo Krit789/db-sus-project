@@ -14,8 +14,15 @@
         data: () => ({
             DialogueCP: false,
             editMode: false,
+            dtIsError: false,
+            dtErrorData: "",
+            dtData: [],
+            inprogress: 0,
+            fufilled: 0,
+            cancelled: 0,
             Old_password: "",
             New_password: "",
+            dtLoading: false,
             confirm_new_password: "",
         }),
         methods: {
@@ -32,9 +39,31 @@
                     return true;
 
                 return "E-Mail must be in correct format.";
+            },async loadData() {
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 8,
+                        usage: "user",
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ message }) => {
+                        this.dtData = message;
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                    });
             },
         },
-    };
+        beforeMount() {
+            this.loadData();
+        },
+        }
 
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
@@ -44,32 +73,34 @@
 </script>
 
 <template>
-  <v-main class="bg-grey-lighten-4 justify-center account_main">
-    <div class="main_container mx-auto">
-      <v-row class="justify-center mt-8 px-3">
-        <v-col class="user_rounded">
-          <div class="justify-center">
-            <v-img class="mt-5 bg-white ma-2 user_image" cover="" src="ejudge_avatar280.png" width="170"></v-img>
-          </div>
-          <!--            <h2>Welcome Back!</h2>-->
-          <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
-          <h3>{{ data.email }}</h3>
-          <h3 class="mt-12">You are {{ toTitleCase(data.role) }}</h3>
-        </v-col>
-        <v-col class="user_rounded">May be user role and role benefits, you are {{ data.role }}</v-col>
-      </v-row>
-      <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
-        <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
-        <div class="mx-md-16 mx-sm-8 mx-xs-8">
-          <v-text-field :model-value="data.firstName" :readonly="!editMode" label="First Name"
-                        variant="underlined"></v-text-field>
-          <v-text-field :model-value="data.lastName" :readonly="!editMode" label="Last Name"
-                        variant="underlined"></v-text-field>
-          <v-text-field :model-value="data.tel" :readonly="!editMode" label="Telephone Number"
-                        variant="underlined"></v-text-field>
-          <v-text-field :model-value="data.email" :readonly="!editMode" label="Email"
-                        variant="underlined"></v-text-field>
-        </div>
+    <v-main class="bg-grey-lighten-4 justify-center">
+            <div class="main_container mx-auto">
+                <v-row class="justify-center mt-8 px-3">
+                    <v-col class="user_rounded">
+                        <div class="justify-center">
+                            <v-img class="mt-5 bg-white ma-2 user_image" cover="" src="ejudge_avatar280.png" width="170"></v-img>
+                        </div>
+                        <!--            <h2>Welcome Back!</h2>-->
+                        <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
+                        <h3>{{ data.email }}</h3>
+                        <h3 class="mt-12">You are our <template v-if="data.role == 'USER'">Customer</template><template v-else>{{ toTitleCase(data.role) }}</template></h3>
+                    </v-col>
+                    <v-col class="user_rounded">
+                        <v-row class="justify-center"><div class="font-weight-bold text-h3">Status</div></v-row>
+                        <v-row><div class="font-weight-bold text-h5">Total Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.length }} reservations</div></v-row>
+                        <v-row><div class="font-weight-bold text-h5">Fulfilled Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'FULFILLED').length }} reservations</div></v-row>
+                        <v-row><div class="font-weight-bold text-h5">Inprogress Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'INPROGRESS').length }} reservations</div></v-row>
+                        <v-row><div class="font-weight-bold text-h5">Cancelled Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'CANCELLED').length }} reservations</div></v-row>
+                    </v-col>
+                </v-row>
+                <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
+                    <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
+                    <div class="mx-md-16 mx-sm-8 mx-xs-8">
+                        <v-text-field :model-value="data.firstName" :readonly="!editMode" label="First Name" variant="underlined"></v-text-field>
+                        <v-text-field :model-value="data.lastName" :readonly="!editMode" label="Last Name" variant="underlined"></v-text-field>
+                        <v-text-field :model-value="data.tel" :readonly="!editMode" label="Telephone Number" variant="underlined"></v-text-field>
+                        <v-text-field :model-value="data.email" :readonly="!editMode" label="Email" variant="underlined"></v-text-field>
+                    </div>
 
                     <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click="DialogueCP = true">Change Password</v-btn>
                     <v-divider class="border-opacity-0"></v-divider>

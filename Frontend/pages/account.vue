@@ -1,46 +1,46 @@
 <script lang="ts" setup>
-import {useDisplay} from "vuetify";
+    import { useDisplay } from "vuetify";
 
-const {status, data} = useAuth();
-const {mobile} = useDisplay();
+    const { status, data } = useAuth();
+    const { mobile } = useDisplay();
 </script>
 
 <script lang="ts">
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/account_index.css";
+    import "~/assets/stylesheets/global.css";
+    import "~/assets/stylesheets/index.css";
+    import "~/assets/stylesheets/account_index.css";
 
-export default {
-  data: () => ({
-    DialogueCP: false,
-    editMode: false,
-    Old_password: "",
-    New_password: "",
-    confirm_new_password: "",
-  }),
-  methods: {
-    passwordValidation(value: String) {
-      if (this.New_password === value) return true;
-      return "Both passwords must be similar.";
-    },
-    emailValidation(value: String) {
-      if (
-          String(value)
-              .toLowerCase()
-              .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-      )
-        return true;
+    export default {
+        data: () => ({
+            DialogueCP: false,
+            editMode: false,
+            Old_password: "",
+            New_password: "",
+            confirm_new_password: "",
+        }),
+        methods: {
+            passwordValidation(value: String) {
+                if (this.New_password === value) return true;
+                return "Both passwords must be similar.";
+            },
+            emailValidation(value: String) {
+                if (
+                    String(value)
+                        .toLowerCase()
+                        .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+                )
+                    return true;
 
-      return "E-Mail must be in correct format.";
-    },
-  },
-};
+                return "E-Mail must be in correct format.";
+            },
+        },
+    };
 
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
 </script>
 
 <template>
@@ -71,50 +71,38 @@ function toTitleCase(str) {
                         variant="underlined"></v-text-field>
         </div>
 
-        <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
-               @click="DialogueCP = true">Change Password
-        </v-btn>
-        <v-divider class="border-opacity-0"></v-divider>
-        <v-btn v-if="editMode == false" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
-               @click.stop="editMode = true">Edit
-        </v-btn>
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click="DialogueCP = true">Change Password</v-btn>
+                    <v-divider class="border-opacity-0"></v-divider>
+                    <v-btn v-if="editMode == false" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = true">Edit</v-btn>
 
-        <!-- vv only appear on edit mode vv -->
-        <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="">
-          Save
-        </v-btn>
+                    <!-- vv only appear on edit mode vv -->
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="">Save</v-btn>
 
-        <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined"
-               @click.stop="editMode = false">Cancel
-        </v-btn>
-        <!-- ^^ only appear on edit mode ^^ -->
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = false">Cancel</v-btn>
+                    <!-- ^^ only appear on edit mode ^^ -->
 
-        <div class="text-center">
-          <v-dialog v-model="DialogueCP" :fullscreen="mobile">
-            <v-card class="blur-effect account_pane">
-              <v-card-text>
-                <h1 class="mb-3">Change Password</h1>
-                <v-sheet class="mx-auto form_container" width="auto">
-                  <v-form fast-fail @submit.prevent>
-                    <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock"
-                                  type="password"></v-text-field>
-                    <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock"
-                                  type="password"></v-text-field>
-                    <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]"
-                                  label="Confirm New Password" prepend-inner-icon="mdi-lock-check"
-                                  type="password"></v-text-field>
-                    <v-btn class="mt-2 bg-blue-darken-1" type="submit" @click="">Submit</v-btn>
-                  </v-form>
-                </v-sheet>
-              </v-card-text>
-              <v-card-actions>
-                <v-btn color="primary" @click="DialogueCP = false">Cancel</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </div>
-      </div>
-    </div>
-    <!--      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>-->
-  </v-main>
+                    <div class="text-center">
+                        <v-dialog v-model="DialogueCP" :fullscreen="mobile">
+                            <v-card class="blur-effect account_pane">
+                                <v-card-text>
+                                    <h1 class="mb-3">Change Password</h1>
+                                    <v-sheet class="mx-auto form_container" width="auto">
+                                        <v-form fast-fail @submit.prevent>
+                                            <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
+                                            <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
+                                            <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]" label="Confirm New Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
+                                            <v-btn class="mt-2 bg-blue-darken-1" type="submit" @click="">Submit</v-btn>
+                                        </v-form>
+                                    </v-sheet>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-btn color="primary" @click="DialogueCP = false">Cancel</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </div>
+                </div>
+            </div>
+        <!--      <Credit class="user_rounded mt-7 my-0 mx-3 blur-effect mb-5"/>-->
+    </v-main>
 </template>

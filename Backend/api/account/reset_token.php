@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = randomCode(32);
     $obj->update('users', ['access_token' => $token], "user_id={$user_data->id}");
     $result = $obj->getResult();
-    if ($result[0]==1)echo json_encode([
+    if ($result[0] == 1) echo json_encode([
         'status' => 1,
         'message' => 'Update Token Successful'
-    ]);else echo json_encode([
+    ]); else echo json_encode([
         'status' => 0,
         'message' => 'Update Token Failed'
     ]);

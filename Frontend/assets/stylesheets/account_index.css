@@ -37,11 +37,4 @@ h4 {
 }
 
 
-.windows_bg {
-    background: url(~/assets/images/cucamonga.webp);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    overflow: clip;
 
-}

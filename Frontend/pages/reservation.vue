@@ -235,7 +235,7 @@
                     .then(({ status }) => {
                         if (status == 1) {
                             alert("Booking Successful");
-                            $route.push('/')
+                            this.$router.push('/')
                         } else {
                             alert("Booking Failure")
                         }

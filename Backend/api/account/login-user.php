@@ -7,6 +7,7 @@ header('Content-Type:application/json');
 include '../database/Database.php';
 include '../../vendor/autoload.php';
 include '../random.php';
+include '../check.php';
 
 use Firebase\JWT\JWT;
 
@@ -25,9 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user_id != NULL) {
 
         $user_id = $user_id[0]['user_id'];
-        // $obj->update('users', ['access_token' => $token], "user_id={$user_id}");
 
-        $obj->select('users', '*', null, "email='{$email}'", null, 1);
+        $obj->select('users', '*', null, "email='{$email}'", null, null);
         $datas = $obj->getResult();
         foreach ($datas as $data) {
             $id = $data['user_id'];

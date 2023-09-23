@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("menus", "*", null, null, null, null);
+                        $obj->select("menus", "*", "menu_category ON (category_id = mc_id)", null, null, null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([

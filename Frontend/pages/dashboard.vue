@@ -21,15 +21,15 @@
             itemsPerPage: 10,
             dtLoading: false,
             dtHeaders: [
-                {
-                    title: "ID",
-                    align: "start",
-                    sortable: true,
-                    key: "res_id",
-                },
+                // {
+                //     title: "ID",
+                //     align: "start",
+                //     sortable: true,
+                //     key: "res_id",
+                // },
                 // {title: "User ID", align: "end", key: "user_id"},
-                { title: "Reserved On", align: "end", key: "create_time" },
-                { title: "Reserved For", align: "end", key: "arrival" },
+                // { title: "Reserved On", align: "start", key: "create_time" },
+                { title: "Reserved For", align: "start", key: "arrival" },
                 { title: "Status", align: "end", key: "status" },
                 { title: "No. of Customer", align: "end", key: "cus_count" },
                 { title: "Table ID", align: "end", key: "table_id" },

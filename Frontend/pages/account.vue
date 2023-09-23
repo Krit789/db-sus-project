@@ -73,7 +73,7 @@ function toTitleCase(str) {
 </script>
 
 <template>
-  <v-main class="bg-grey-lighten-4 justify-center">
+  <v-main class="bg-grey-lighten-4 justify-center account_main">
     <div class="main_container mx-auto">
       <v-row class="justify-center mt-8 px-3">
         <v-col class="user_rounded">
@@ -89,27 +89,27 @@ function toTitleCase(str) {
           </h3>
         </v-col>
         <v-col class="user_rounded">
-          <v-row class="justify-center">
+          <v-row class="justify-center mt-1">
             <div class="font-weight-bold text-h3">Status</div>
           </v-row>
           <v-row class="justify-center">
-            <v-card class="text-center ma-2" width="80%">
+            <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Total Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.length }} reservations</v-card-text>
             </v-card>
-            <v-card class="text-center ma-2" width="80%">
+            <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Fulfilled Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
                 {{ dtData.filter((item) => item.res_status == 'FULFILLED').length }} reservations
               </v-card-text>
             </v-card>
-            <v-card class="text-center ma-2" width="80%">
+            <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Inprogress Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
                 {{ dtData.filter((item) => item.res_status == 'INPROGRESS').length }} reservations
               </v-card-text>
             </v-card>
-            <v-card class="text-center ma-2" width="80%">
+            <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Cancelled Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
                 {{ dtData.filter((item) => item.res_status == 'CANCELLED').length }} reservations

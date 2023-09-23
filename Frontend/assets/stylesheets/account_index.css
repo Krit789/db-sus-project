@@ -8,7 +8,8 @@
 }
 
 .your_account {
-    background: linear-gradient(0deg, rgba(26, 188, 250, .1), rgba(28, 125, 243, .1));
+    /*background: linear-gradient(0deg, rgba(26, 188, 250, .3), rgba(28, 125, 243, .1));*/
+    background: rgba(245, 245, 247, .85) !important;
 }
 
 .user_image {
@@ -23,7 +24,13 @@
     border-radius: 32px;
     min-height: 500px;
     padding: 22px 32px !important;
-    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
+    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%);
+}
+
+.status_box {
+    background: rgba(255, 255, 255, .0);
+    border-radius: 22px !important;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
 }
 
 h2 {

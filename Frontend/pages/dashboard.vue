@@ -84,22 +84,25 @@
 </script>
 
 <template>
-    <v-main class="justify-center dashboard_body">
-        <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
-            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
-            <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
-                <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
-                <v-no-ssr>
-                    <v-data-table
-                        v-model:items-per-page="itemsPerPage"
-                        :headers="dtHeaders"
-                        :items="dtData"
-                        :loading="dtLoading"
-                        class="elevation-0"
-                        loading-text="We're looking for your reservation, Hang tight!"
-                        :expanded="expandedDT"
-                        item-value="res_id"
-                        @click:row="
+  <v-main class="justify-center dashboard_body">
+    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
+            dtErrorData
+          }}
+        </v-alert>
+        <v-no-ssr>
+          <v-data-table
+              v-model:items-per-page="itemsPerPage"
+              :expanded="expandedDT"
+              :headers="dtHeaders"
+              :items="dtData"
+              :loading="dtLoading"
+              class="elevation-0"
+              item-value="res_id"
+              loading-text="We're looking for your reservation, Hang tight!"
+              @click:row="
                             (val, tabl) => {
                                 reservationCode = tabl.item.raw.res_code;
                                 console.log(tabl.item.columns.res_id);

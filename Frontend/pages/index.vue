@@ -30,7 +30,7 @@ import "~/assets/stylesheets/index.css";
 
 <template>
   <v-main class="mt-n16">
-    <v-parallax src="images/home/banner.webp">
+    <v-parallax class="main_parallax" src="images/home/banner.webp">
       <div class="text-center mt-16 first-box">
         <h1 class="text-h2 font-weight-bold text-white mt-16">
           Seatify
@@ -99,7 +99,7 @@ import "~/assets/stylesheets/index.css";
                         color="#0373DE"
                         rounded="lg"
                         variant="outlined"
-                        @click="$router.push({path: '/reservation',query: { location_id: n },})"
+                        @click="$router.push({path: '/reservation',query: { location_id: n }})"
                     >Reserve
                     </v-btn>
                   </div>

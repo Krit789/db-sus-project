@@ -87,10 +87,24 @@
                     </v-col>
                     <v-col class="user_rounded">
                         <v-row class="justify-center"><div class="font-weight-bold text-h3">Status</div></v-row>
-                        <v-row><div class="font-weight-bold text-h5">Total Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.length }} reservations</div></v-row>
-                        <v-row><div class="font-weight-bold text-h5">Fulfilled Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'FULFILLED').length }} reservations</div></v-row>
-                        <v-row><div class="font-weight-bold text-h5">Inprogress Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'INPROGRESS').length }} reservations</div></v-row>
-                        <v-row><div class="font-weight-bold text-h5">Cancelled Reservation : </div><div class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'CANCELLED').length }} reservations</div></v-row>
+                        <v-row class="justify-center">
+                            <v-card class="text-center ma-2" width="80%">
+                                <v-card-title class="font-weight-bold text-h5">Total Reservation</v-card-title>
+                                <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.length }} reservations</v-card-text>
+                            </v-card>
+                            <v-card class="text-center ma-2" width="80%">
+                                <v-card-title class="font-weight-bold text-h5">Fulfilled Reservation</v-card-title>
+                                <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'FULFILLED').length }} reservations</v-card-text>
+                            </v-card>
+                            <v-card class="text-center ma-2" width="80%">
+                                <v-card-title class="font-weight-bold text-h5">Inprogress Reservation</v-card-title>
+                                <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'INPROGRESS').length }} reservations</v-card-text>
+                            </v-card>
+                            <v-card class="text-center ma-2" width="80%">
+                                <v-card-title class="font-weight-bold text-h5">Cancelled Reservation</v-card-title>
+                                <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.res_status == 'CANCELLED').length }} reservations</v-card-text>
+                            </v-card>
+                        </v-row>
                     </v-col>
                 </v-row>
                 <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">

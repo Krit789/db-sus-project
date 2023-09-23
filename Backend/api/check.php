@@ -1,5 +1,6 @@
 <?php
 include 'database/Database.php';
+include 'random.php';
 
 function readuser($id)
 {

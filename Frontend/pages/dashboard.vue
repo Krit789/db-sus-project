@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {VDataTable} from "vuetify/labs/VDataTable";
-import "~/assets/stylesheets/dashboard.css";
-import "~/assets/stylesheets/global.css";
+    import { VDataTable } from "vuetify/labs/VDataTable";
+    import "~/assets/stylesheets/dashboard.css";
+    import "~/assets/stylesheets/global.css";
 
-const {status, data, signIn, signOut} = useAuth();
+    const { status, data, signIn, signOut } = useAuth();
 
-useHead({
-  title: "My Reservation - Seatify",
-  meta: [{name: "Seatify App", content: "My amazing site."}],
-});
+    useHead({
+        title: "My Reservation - Seatify",
+        meta: [{ name: "Seatify App", content: "My amazing site." }],
+    });
 </script>
 <script lang="ts">
     export default {
@@ -18,17 +18,12 @@ useHead({
             reservationCode: null,
             dtIsError: false,
             dtErrorData: "",
+            isError: false,
+            errorData: '',
             dtData: [],
             itemsPerPage: 10,
             dtLoading: false,
             dtHeaders: [
-                // {
-                //     title: "ID",
-                //     align: "start",
-                //     sortable: true,
-                //     key: "res_id",
-                // },
-                // {title: "User ID", align: "end", key: "user_id"},
                 { title: "Status", align: "start", key: "res_status" },
                 { title: "Location Name", align: "start", key: "location_name" },
                 { title: "No. of Customer", align: "end", key: "cus_count" },
@@ -58,6 +53,29 @@ useHead({
                         this.dtIsError = false;
                     });
             },
+            async cancelReservation(res_id: Number){
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 2,
+                        usage: "user",
+                        res_id: res_id
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ message }) => {
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                        this.loadData()
+                    });
+            }
+
+            
         },
         beforeMount() {
             this.loadData();
@@ -101,9 +119,20 @@ useHead({
                                                 <br />
                                             </v-col>
                                             <v-col col="12" sm="6">
-                                                <b>Reserved For</b>
-                                                <br />
-                                                {{ item.raw.arrival }}
+                                                <div v-if="item.raw.res_status === 'INPROGRESS'">
+                                                    <v-tooltip>
+                                                        <template v-slot:activator="{ props }">
+                                                            <v-icon color="info" v-bind="props" class="mr-3" @click="">mdi-pencil</v-icon>
+                                                        </template>
+                                                        <span>Edit Reservation</span>
+                                                    </v-tooltip>
+                                                    <v-tooltip>
+                                                        <template v-slot:activator="{ props }">
+                                                            <v-icon v-bind="props" color="red" @click="() => { cancelReservation(item.raw.res_id); }">mdi-cancel</v-icon>
+                                                        </template>
+                                                        <span>Cancel Reservation</span>
+                                                    </v-tooltip>
+                                                </div>
                                             </v-col>
                                         </v-row>
                                     </v-container>

@@ -57,7 +57,7 @@
                         <h3>{{ data.email }}</h3>
                         <h3 class="mt-12">You are {{ toTitleCase(data.role) }}</h3>
                     </v-col>
-                    <v-col class="user_rounded">May be user role and role benefits</v-col>
+                    <v-col class="user_rounded">May be user role and role benefits, you are {{ data.role }}</v-col>
                 </v-row>
                 <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
                     <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
@@ -88,12 +88,12 @@
                                             <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
                                             <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
                                             <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]" label="Confirm New Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
-                                            <v-btn block="" class="mt-2 bg-blue-darken-1" type="submit" @click="">Submit</v-btn>
+                                            <v-btn class="mt-2 bg-blue-darken-1" type="submit" @click="">Submit</v-btn>
                                         </v-form>
                                     </v-sheet>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn block="" color="primary" @click="DialogueCP = false">Cancel</v-btn>
+                                    <v-btn color="primary" @click="DialogueCP = false">Cancel</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>

@@ -2,7 +2,7 @@
     import { VDataTable } from "vuetify/labs/VDataTable";
 
     const { status, data, signIn, signOut } = useAuth();
-
+    const route = useRouter()
     useHead({
         title: "User Management - Seatify Admin",
         meta: [{ name: "Seatify App", content: "My amazing site." }],
@@ -49,7 +49,7 @@
                         this.dtIsError = true;
                         this.dtErrorData = error.data;
                     })
-                    .then(({ status, message }) => {
+                    .then(({ message }) => {
                         this.dtData = message;
                         this.dtLoading = false;
                         this.dtIsError = false;

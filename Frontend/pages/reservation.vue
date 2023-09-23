@@ -6,6 +6,7 @@
     import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
     import "~/assets/stylesheets/reservation.css";
+    import { arrayBuffer } from "stream/consumers";
 
     const { mobile } = useDisplay();
     const { status, data } = useAuth();
@@ -17,6 +18,37 @@
 </script>
 
 <script lang="ts">
+    interface MenuObject {
+        id: number;
+        item_name: string;
+        amount: number;
+        price: number;
+        // Add more properties as needed
+    }
+    interface MenuListObject {
+        id: number;
+        item_name: string;
+        item_desc: string;
+        mc_id: number;
+        price: number;
+        img_url: string;
+        mc_name: string;
+        // Add more properties as needed
+    }
+    interface LocationObject {
+        location_id: number;
+        name: string;
+        address: string;
+        open_time: string;
+        close_time: string;
+        status: string;
+        creation_date: string;
+        layout_img_url: string;
+        manager_id: number;
+
+        // Add more properties as needed
+    }
+
     function renameKey(obj, oldKey, newKey) {
         obj[newKey] = obj[oldKey];
         delete obj[oldKey];
@@ -32,7 +64,7 @@
             pageSpinner: false,
             hasLocation: false,
             locationList: [],
-            menuList: [],
+            menuList: [] as MenuListObject[],
             seatList: [],
             filterSeatList: [],
             filterSeatCount: 0,
@@ -41,7 +73,7 @@
             selectedLoc: {},
             selectedTime: null,
             selectedSeat: null,
-            foodPreOrderList: [],
+            foodPreOrderList: [] as MenuObject[],
             dtSearch: "",
             resDateTime: "",
             resGuest: 1,
@@ -59,6 +91,20 @@
             ],
         }),
         methods: {
+            addMenu(obj: MenuObject): void {
+                this.foodPreOrderList.push(obj);
+            },
+            removeMenuById(id: number): void {
+                this.foodPreOrderList = this.foodPreOrderList.filter((item) => item.id !== id);
+            },
+            updateJSONById(id: number, updatedData: Partial<MenuObject>): void {
+                for (let i = 0; i < this.foodPreOrderList.length; i++) {
+                    if (this.foodPreOrderList[i].id === id) {
+                        this.foodPreOrderList[i] = { ...this.foodPreOrderList[i], ...updatedData };
+                        break;
+                    }
+                }
+            },
             findSeatforSelectedDT() {
                 this.selectedTime = DateTime.fromISO(this.resDateTime);
                 this.loadAvailableTable(this.selectedLocID, DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"));
@@ -249,57 +295,50 @@
                                         <h3 class="text-h4 font-weight-medium text-left">Select Branches</h3>
                                     </v-card-text>
                                     <v-btn :disabled="pageSpinner" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh" @click="loadLocation"></v-btn>
-                                    <!-- <v-btn
-                      :disabled="pageSpinner"
-                      color="green"
-                      class="align-right ml-5 mb-3"
-                      prepend-icon="mdi-console"
-                      text="Debug"
-                      @click="() => {console.log(expanded)}"
-                  ></v-btn> -->
-
-                                    <v-data-table
-                                        v-model:expanded="expanded"
-                                        :headers="dtHeaders"
-                                        :items="locationList"
-                                        :loading="pageSpinner"
-                                        :search="dtSearch"
-                                        class="elevation-1"
-                                        item-value="location_id"
-                                        show-expand
-                                        v-on:click:row="
-                                            (val, tabl) => {
-                                                selectedLoc = loadLocationByID(tabl.item.raw.location_id);
-                                                selectedLocID = tabl.item.raw.location_id;
-                                                stepper1++;
-                                            }
-                                        "
-                                    >
-                                        <template v-slot:top>
-                                            <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-text-search"></v-text-field>
-                                        </template>
-                                        <template v-slot:expanded-row="{ columns, item }">
-                                            <tr>
-                                                <td :colspan="columns.length" class="text-left">
-                                                    <v-container>
-                                                        <v-row>
-                                                            <v-col col="12" sm="6">
-                                                                <b>Operating Hours</b>
-                                                                <br />
-                                                                {{ item.raw.open_time }} - {{ item.raw.close_time }}
-                                                                <br />
-                                                            </v-col>
-                                                            <v-col col="12" sm="6">
-                                                                <b>Address</b>
-                                                                <br />
-                                                                {{ item.raw.address }}
-                                                            </v-col>
-                                                        </v-row>
-                                                    </v-container>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </v-data-table>
+                                    <v-no-ssr>
+                                        <v-data-table
+                                            v-model:expanded="expanded"
+                                            :headers="dtHeaders"
+                                            :items="locationList"
+                                            :loading="pageSpinner"
+                                            :search="dtSearch"
+                                            class="elevation-1"
+                                            item-value="location_id"
+                                            show-expand
+                                            v-on:click:row="
+                                                (val, tabl) => {
+                                                    selectedLoc = loadLocationByID(tabl.item.raw.location_id);
+                                                    selectedLocID = tabl.item.raw.location_id;
+                                                    stepper1++;
+                                                }
+                                            "
+                                        >
+                                            <template v-slot:top>
+                                                <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-text-search"></v-text-field>
+                                            </template>
+                                            <template v-slot:expanded-row="{ columns, item }">
+                                                <tr>
+                                                    <td :colspan="columns.length" class="text-left">
+                                                        <v-container>
+                                                            <v-row>
+                                                                <v-col col="12" sm="6">
+                                                                    <b>Operating Hours</b>
+                                                                    <br />
+                                                                    {{ item.raw.open_time }} - {{ item.raw.close_time }}
+                                                                    <br />
+                                                                </v-col>
+                                                                <v-col col="12" sm="6">
+                                                                    <b>Address</b>
+                                                                    <br />
+                                                                    {{ item.raw.address }}
+                                                                </v-col>
+                                                            </v-row>
+                                                        </v-container>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </v-data-table>
+                                    </v-no-ssr>
                                 </v-card>
                             </v-stepper-window-item>
                             <v-stepper-window-item value="2">
@@ -366,7 +405,7 @@
                                         <v-row>
                                             <v-col>
                                                 <h3 class="text-left font-weight-medium">Seat Layout</h3>
-                                                <v-img :src="selectedLoc.layout_img_url" class="" width="600">
+                                                <v-img :src="selectedLoc.layout_img_url" width="600">
                                                     <template v:slot:placeholder>
                                                         <v-skeleton-loader></v-skeleton-loader>
                                                     </template>
@@ -428,10 +467,29 @@
                                 </v-card>
                             </v-stepper-window-item>
                             <v-stepper-window-item value="4">
-                                <v-card>
-                                    <v-card-text>
-                                        <h3 class="text-h4 font-weight-medium text-left">Pre-Order Food</h3>
-                                    </v-card-text>
+                                <v-card-text>
+                                    <h3 class="text-h4 font-weight-medium text-left">Pre-Order Food</h3>
+                                </v-card-text>
+                                <v-card elevation="0">
+                                    <h3 class="text-left font-weight-medium">Your Order</h3>
+                                    <v-table fixed-header height="300px">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Name</th>
+                                                <th class="text-left">Amount</th>
+                                                <th class="text-left">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="item in foodPreOrderList" :key="item.name">
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.calories }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </v-table>
+                                </v-card>
+                                <h3 class="text-left font-weight-medium">Menus</h3>
+                                <v-card height="525" class="overflow-auto" elevation="0">
                                     <v-container>
                                         <v-row>
                                             <v-col
@@ -469,36 +527,36 @@
                                             </v-col>
                                         </v-row>
                                     </v-container>
-                                    <v-container>
-                                        <v-row>
-                                            <v-col>
-                                                <v-btn
-                                                    prepend-icon="mdi-arrow-left"
-                                                    variant="tonal"
-                                                    @click="
-                                                        () => {
-                                                            stepper1--;
-                                                        }
-                                                    "
-                                                >
-                                                    Back
-                                                </v-btn>
-                                            </v-col>
-                                            <v-col>
-                                                <v-btn
-                                                    prepend-icon="mdi-arrow-right"
-                                                    @click="
-                                                        () => {
-                                                            stepper1++;
-                                                        }
-                                                    "
-                                                >
-                                                    Next
-                                                </v-btn>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
                                 </v-card>
+                                <v-container>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-left"
+                                                variant="tonal"
+                                                @click="
+                                                    () => {
+                                                        stepper1--;
+                                                    }
+                                                "
+                                            >
+                                                Back
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col>
+                                            <v-btn
+                                                prepend-icon="mdi-arrow-right"
+                                                @click="
+                                                    () => {
+                                                        stepper1++;
+                                                    }
+                                                "
+                                            >
+                                                Next
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
                             </v-stepper-window-item>
                             <v-stepper-window-item value="5">
                                 <v-card>

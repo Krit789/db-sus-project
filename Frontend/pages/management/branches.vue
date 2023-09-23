@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { VDataTable } from "vuetify/labs/VDataTable";
-
     const { status, data, signIn, signOut } = useAuth();
+    const route = useRouter()
 </script>
 <script lang="ts">
     export default {

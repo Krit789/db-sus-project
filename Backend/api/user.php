@@ -4,6 +4,7 @@ header('Access-Control-Allow-Method:POST');
 header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include 'check.php';
+include 'random.php';
 $obj = new Database();
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
@@ -92,9 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $result = $obj->getResult();
                     if ($result[0] == 1) {
 
-                        if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
+                        if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]] 
                             $tmp = "";
-                            $obj->select('reservations', 'res_id', null, "table=$table_id and user_id=$user", 'res_id desc', 1);
+                            $obj->select('reservations', 'res_id', null, "table_id=$table_id and user_id=$user", 'res_id desc', 1);
                             $resutl = $obj->getResult();
                             $res_id = $resutl[0]['res_id'];
 
@@ -378,6 +379,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             exit;
         }
     } else {
+        // error_log($data);
         echo json_encode([
             'status' => 998,
             'message' => 'Invalid Data Provided' #ให้ออกจาระบบ แล้วไป login ใหม่

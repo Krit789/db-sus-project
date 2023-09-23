@@ -3,7 +3,9 @@
 @import 'fonts.css';
 
 .main_parallax {
-    min-height: calc(100vh - 64px);
+    /*min-height: calc(100vh - 64px);*/
+    /*min-height: 400px;*/
+    /*background: transparent;*/
 }
 
 

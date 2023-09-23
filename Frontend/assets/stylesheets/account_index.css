@@ -1,3 +1,12 @@
+.account_main {
+    background: url(~/assets/images/background/cucamonga.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+    min-height: 100vh;
+}
+
 .your_account {
     background: linear-gradient(0deg, rgba(26, 188, 250, .1), rgba(28, 125, 243, .1));
 }
@@ -6,11 +15,6 @@
     border-radius: 50%;
     aspect-ratio: 1;
 }
-
-/*. {*/
-/*    backdrop-filter: blur(15px) saturate(86%);*/
-/*    background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;*/
-/*}*/
 
 .user_rounded {
     backdrop-filter: blur(15px) saturate(86%) !important;

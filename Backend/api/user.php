@@ -229,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 7: # Customer ต้องการเรียกดูสาขาทั้งหมด
-                    $obj->select('locations', "*", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([
@@ -290,7 +290,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     //ต้องส่งข้อมูล location_id
                     $id = $data->location_id;
 
-                    $obj->select('locations', "*", null, "location_id = {$id}", null, null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, "location_id = {$id}", null, null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

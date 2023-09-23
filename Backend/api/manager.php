@@ -188,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
-                case 8: # Administrator, Manager ดูการจองใน location ที่เลือก
+                case 8: # Administrator, Manager ดูการจองทั้งหมดใน location_id(สาขา) ที่เลือก
                     //ต้องส่งข้อมูล location_id
                     $role = $user_data['role'];
                     $id = $data->location_id;

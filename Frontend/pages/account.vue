@@ -57,10 +57,10 @@
                         <h3>{{ data.email }}</h3>
                         <h3 class="mt-12">You are {{ toTitleCase(data.role) }}</h3>
                     </v-col>
-                    <v-col class="user_rounded"> May be user role and role benefits </v-col>
+                    <v-col class="user_rounded">May be user role and role benefits</v-col>
                 </v-row>
                 <div class="text-center mt-10 ma-auto your_account user_rounded pa-4 mx-3">
-                    <v-card-text class="text-h3 font-weight-bold my-6"> Your Account </v-card-text>
+                    <v-card-text class="text-h3 font-weight-bold my-6">Your Account</v-card-text>
                     <div class="mx-md-16 mx-sm-8 mx-xs-8">
                         <v-text-field :model-value="data.firstName" :readonly="!editMode" label="First Name" variant="underlined"></v-text-field>
                         <v-text-field :model-value="data.lastName" :readonly="!editMode" label="Last Name" variant="underlined"></v-text-field>
@@ -68,14 +68,14 @@
                         <v-text-field :model-value="data.email" :readonly="!editMode" label="Email" variant="underlined"></v-text-field>
                     </div>
 
-                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click="DialogueCP = true"> Change Password </v-btn>
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click="DialogueCP = true">Change Password</v-btn>
                     <v-divider class="border-opacity-0"></v-divider>
-                    <v-btn v-if="editMode == false" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = true"> Edit </v-btn>
+                    <v-btn v-if="editMode == false" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = true">Edit</v-btn>
 
                     <!-- vv only appear on edit mode vv -->
-                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop=""> Save </v-btn>
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="">Save</v-btn>
 
-                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = false"> Cancel </v-btn>
+                    <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="outlined" @click.stop="editMode = false">Cancel</v-btn>
                     <!-- ^^ only appear on edit mode ^^ -->
 
                     <div class="text-center">
@@ -88,12 +88,12 @@
                                             <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
                                             <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
                                             <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]" label="Confirm New Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
-                                            <v-btn block="" class="mt-2 bg-blue-darken-1" type="submit" @click=""> Submit </v-btn>
+                                            <v-btn block="" class="mt-2 bg-blue-darken-1" type="submit" @click="">Submit</v-btn>
                                         </v-form>
                                     </v-sheet>
                                 </v-card-text>
                                 <v-card-actions>
-                                    <v-btn block="" color="primary" @click="DialogueCP = false">Cancel </v-btn>
+                                    <v-btn block="" color="primary" @click="DialogueCP = false">Cancel</v-btn>
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>

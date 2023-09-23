@@ -47,7 +47,8 @@
                                     $router.push('/report');
                                 }
                             "
-                            >Create Report
+                        >
+                            Create Report
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -74,7 +75,8 @@
                                 $router.push('/management/branches');
                             }
                         "
-                        >Manage Branches
+                    >
+                        Manage Branches
                     </v-btn>
                 </v-row>
             </v-col>
@@ -94,7 +96,8 @@
                                 $router.push('/management/reservation');
                             }
                         "
-                        >Manage Menu
+                    >
+                        Manage Menu
                     </v-btn>
                 </v-row>
             </v-col>

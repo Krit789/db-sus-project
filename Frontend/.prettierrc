@@ -1,7 +1,7 @@
 {
   "tabWidth": 4,
   "useTabs": false,
-  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "htmlWhitespaceSensitivity": "ignore",
   "vueIndentScriptAndStyle": true,
   "printWidth": 300
 }

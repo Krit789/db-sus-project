@@ -5,7 +5,7 @@
     const { status, data, signIn, signOut } = useAuth();
     const route = useRoute();
     const mySignInHandler = async ({ email, password }: { email: string; password: string }) => {
-        const { error, url } = await signIn("credentials", {
+        const { error } = await signIn("credentials", {
             email,
             password,
             redirect: false,
@@ -224,7 +224,7 @@
                         }
                     "
                 >
-                    <NuxtLink :custom="true" to="/">Seatify | Seat Reservation Service </NuxtLink>
+                    <NuxtLink :custom="true" to="/">Seatify | Seat Reservation Service</NuxtLink>
                 </v-toolbar-title>
                 <div v-if="status == 'unauthenticated' && !mobile">
                     <v-btn
@@ -235,7 +235,8 @@
                                 dialogRe = true;
                             }
                         "
-                        >Register
+                    >
+                        Register
                     </v-btn>
                     <v-btn
                         background-color="#D9D9D9"
@@ -244,7 +245,8 @@
                                 dialogIn = true;
                             }
                         "
-                        >Login
+                    >
+                        Login
                     </v-btn>
                 </div>
                 <div v-else-if="status == 'authenticated' && !mobile">
@@ -313,15 +315,15 @@
                     <v-list>
                         <div v-for="(item, index) in items" :key="index">
                             <v-list-item v-if="item.permitted.includes(data.role)" :prepend-icon="item.props.prependIcon" rounded="xl" @click="navActions(item.action)">
-                                <v-list-item-title>{{ item.title }} </v-list-item-title>
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
                             </v-list-item>
                         </div>
                         <v-list-group v-if="data.role == 'MANAGER' || data.role == 'GOD'">
                             <template v-slot:activator="{ props }">
-                                <v-list-item color="primary" prepend-icon="mdi-tools" rounded="xl" v-bind="props"> Management </v-list-item>
+                                <v-list-item color="primary" prepend-icon="mdi-tools" rounded="xl" v-bind="props">Management</v-list-item>
                             </template>
                             <v-list-item v-for="(item, index) in management" :key="index" :prepend-icon="item.props.prependIcon" rounded="xl" @click="navActions(item.action)">
-                                <v-list-item-title v-if="item.permitted.includes(data.role)">{{ item.title }} </v-list-item-title>
+                                <v-list-item-title v-if="item.permitted.includes(data.role)">{{ item.title }}</v-list-item-title>
                             </v-list-item>
                         </v-list-group>
                     </v-list>
@@ -351,8 +353,8 @@
                 <div v-else>
                     <v-list>
                         <v-list-item>
-                            <v-list-item-title> Guest</v-list-item-title>
-                            <v-list-item-subtitle class="pb-1"> Sign In to Continue </v-list-item-subtitle>
+                            <v-list-item-title>Guest</v-list-item-title>
+                            <v-list-item-subtitle class="pb-1">Sign In to Continue</v-list-item-subtitle>
                         </v-list-item>
                     </v-list>
                     <v-divider></v-divider>
@@ -427,9 +429,10 @@
                                         });
                                     }
                                 "
-                                >Submit
+                            >
+                                Submit
                             </v-btn>
-                            <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg" @click="dialogIn = false">Cancel </v-btn>
+                            <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg" @click="dialogIn = false">Cancel</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -473,8 +476,8 @@
                         </v-sheet>
                     </v-card-text>
                     <v-card-actions class="ml-3 mb-3">
-                        <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit" @click="makeRegistration">Submit </v-btn>
-                        <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg" @click="dialogRe = false">Cancel </v-btn>
+                        <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit" @click="makeRegistration">Submit</v-btn>
+                        <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg" @click="dialogRe = false">Cancel</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>

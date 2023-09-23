@@ -27,7 +27,11 @@
                                 </div>
                             </v-col>
                             <v-col class="profile_contact_container" cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายกนกพล โป้ยขำ<br />65070005</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายกนกพล โป้ยขำ
+                                    <br />
+                                    65070005
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Backend Developer</div>
                             </v-col>
                         </v-row>
@@ -44,7 +48,11 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายคณิศร สมศรีอักษรแสง<br />65070028</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายคณิศร สมศรีอักษรแสง
+                                    <br />
+                                    65070028
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Backend Developer</div>
                             </v-col>
                         </v-row>
@@ -62,7 +70,11 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายจารุกิตติ์ ศรีพาเพลิน<br />65070030</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายจารุกิตติ์ ศรีพาเพลิน
+                                    <br />
+                                    65070030
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Fullstack Developer</div>
                             </v-col>
                         </v-row>
@@ -79,7 +91,11 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายจิรโชติ อินทรวงษ์โชติ<br />65070035</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายจิรโชติ อินทรวงษ์โชติ
+                                    <br />
+                                    65070035
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
                             </v-col>
                         </v-row>
@@ -97,7 +113,11 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายณภัทร เวชพันธุ์<br />65070064</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายณภัทร เวชพันธุ์
+                                    <br />
+                                    65070064
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
                             </v-col>
                         </v-row>
@@ -114,7 +134,11 @@
                                 </div>
                             </v-col>
                             <v-col cols="12" md="6">
-                                <span class="font-weight-bold profile_text">นายธนกฤต ทรัพย์ประสิทธิ์<br />65070089</span>
+                                <span class="font-weight-bold profile_text">
+                                    นายธนกฤต ทรัพย์ประสิทธิ์
+                                    <br />
+                                    65070089
+                                </span>
                                 <div class="pt-0 profile_text profile_contact">Frontend Developer</div>
                             </v-col>
                         </v-row>

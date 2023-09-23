@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { VStepper, VStepperHeader, VStepperItem, VStepperWindow, VStepperWindowItem } from "vuetify/labs/VStepper";
     import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
-    import { DateTime, Interval } from 'luxon';
+    import { DateTime, Interval } from "luxon";
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
@@ -238,7 +238,7 @@
                             <v-divider></v-divider>
 
                             <v-stepper-item value="5">
-                                <template v-slot:title> Summary</template>
+                                <template v-slot:title>Summary</template>
                             </v-stepper-item>
                         </v-stepper-header>
 
@@ -284,10 +284,16 @@
                                                     <v-container>
                                                         <v-row>
                                                             <v-col col="12" sm="6">
-                                                                <b>Operating Hours</b><br />
-                                                                {{ item.raw.open_time }} - {{ item.raw.close_time }}<br />
+                                                                <b>Operating Hours</b>
+                                                                <br />
+                                                                {{ item.raw.open_time }} - {{ item.raw.close_time }}
+                                                                <br />
                                                             </v-col>
-                                                            <v-col col="12" sm="6"> <b>Address</b><br />{{ item.raw.address }} </v-col>
+                                                            <v-col col="12" sm="6">
+                                                                <b>Address</b>
+                                                                <br />
+                                                                {{ item.raw.address }}
+                                                            </v-col>
                                                         </v-row>
                                                     </v-container>
                                                 </td>
@@ -302,7 +308,8 @@
                                         <h3 class="text-h4 font-weight-medium text-left">Choose Reservation Time</h3>
                                     </v-card-text>
                                     <p class="text-left font-weight-medium pb-1 ml-4">
-                                        <b>{{ selectedLoc.name }}</b> is operating from {{ selectedLoc.open_time }} till
+                                        <b>{{ selectedLoc.name }}</b>
+                                        is operating from {{ selectedLoc.open_time }} till
                                         {{ selectedLoc.close_time }}
                                     </p>
                                     <v-container>
@@ -452,7 +459,7 @@
                                                         <v-chip color="warning">
                                                             {{ food.mc_name }}
                                                         </v-chip>
-                                                        <v-chip color="info"> {{ food.price }}฿ </v-chip>
+                                                        <v-chip color="info">{{ food.price }}฿</v-chip>
                                                     </v-card-subtitle>
                                                     <v-card-text>
                                                         {{ food.item_desc }}

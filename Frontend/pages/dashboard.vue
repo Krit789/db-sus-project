@@ -13,6 +13,8 @@
 <script lang="ts">
     export default {
         data: () => ({
+            codeDialog: false,
+            reservationCode: null,
             dtIsError: false,
             dtErrorData: "",
             dtData: [],
@@ -78,13 +80,29 @@
                     loading-text="We're looking for your reservation, Hang tight!"
                     @click:row="
                         (val, tabl) => {
+                            reservationCode = tabl.item.raw.res_code;
                             console.log(tabl.item.columns.res_id);
+                            codeDialog = !codeDialog;
                         }
                     "
                 ></v-data-table>
                 </v-no-ssr>
                 <v-btn :disabled="dtLoading" :elevation="0" class="align-right my-6" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" variant="outlined" @click="loadData"></v-btn>
             </v-sheet>
+            <v-dialog
+            v-model="codeDialog"
+            width="auto"
+            >
+                <v-card>
+                    <v-card-title>Your Reservation Code</v-card-title>
+                    <v-card-text class="text-center">
+                    {{ reservationCode }}
+                    </v-card-text>
+                    <v-card-actions>
+                    <v-btn color="primary" block @click="codeDialog = false">Done</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </div>
     </v-main>
 </template>

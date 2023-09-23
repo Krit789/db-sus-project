@@ -99,23 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $resutl = $obj->getResult();
                             $res_id = $resutl[0]['res_id'];
 
-                        $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8)]);
-                        $result = $obj->getResult();
-                        if ($result[0] == 1) {
-
-                            if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
-                                $tmp = "";
-                                $obj->select('reservations', 'res_id', null, "table_id=$table_id and user_id=$user", 'res_id desc', 1);
-                                $resutl = $obj->getResult();
-                                $res_id = $resutl[0]['res_id'];
-
-                                foreach ($data->menu as $menu) {
-                                    //[0] menu_id [1] จำนวน
-                                    if ($menu == $data->menu[sizeof($data->menu) - 1]) {
-                                        $tmp .= "($res_id, $menu[0], $menu[1])";
-                                    } else {
-                                        $tmp .= "($res_id, $menu[0], $menu[1]),";
-                                    }
+                            foreach ($data->menu as $menu) {
+                                //[0] menu_id [1] จำนวน
+                                if ($menu == $data->menu[sizeof($data->menu) - 1]) {
+                                    $tmp .= "($res_id, $menu[0], $menu[1])";
+                                } else {
+                                    $tmp .= "($res_id, $menu[0], $menu[1]),";
                                 }
                             }
 

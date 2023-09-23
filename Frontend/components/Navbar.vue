@@ -390,29 +390,29 @@ export default {
         <v-dialog v-model="dialogIn" :fullscreen="mobile">
           <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" color="">
             <v-form class="justify-center" fast-fail @submit.prevent>
-            <v-card-title class="mt-4 ml-4 pb-3">
-              <h1>Login</h1>
-            </v-card-title>
-            <v-card-subtitle class="ml-4 pb-1">
-              <h4 class="font-weight-medium">The best reservation experience is just a click away!</h4>
-            </v-card-subtitle>
-            <v-card-text>
-              <v-sheet class="mx-auto form_container bg-transparent" width="auto">
-                
+              <v-card-title class="mt-4 ml-4 pb-3">
+                <h1>Login</h1>
+              </v-card-title>
+              <v-card-subtitle class="ml-4 pb-1">
+                <h4 class="font-weight-medium">The best reservation experience is just a click away!</h4>
+              </v-card-subtitle>
+              <v-card-text>
+                <v-sheet class="mx-auto form_container bg-transparent" width="auto">
+
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-                
-              </v-sheet>
-            </v-card-text>
-            <v-card-actions class="ml-3 mb-3">
-              <v-btn
-                  :disabled="!isLoginValid"
-                  class="mt-2 bg-blue-darken-1 h-[22px] mw-50"
-                  rounded="lg"
-                  type="submit"
-                  @click="
+
+                </v-sheet>
+              </v-card-text>
+              <v-card-actions class="ml-3 mb-3">
+                <v-btn
+                    :disabled="!isLoginValid"
+                    class="mt-2 bg-blue-darken-1 h-[22px] mw-50"
+                    rounded="lg"
+                    type="submit"
+                    @click="
                                     () => {
                                         isCardLoading = true;
                                         mySignInHandler({
@@ -435,29 +435,29 @@ export default {
                                         });
                                     }
                                 "
-              >
-                Submit
-              </v-btn>
-              <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
-                     @click="dialogIn = false">Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-form>
+                >
+                  Submit
+                </v-btn>
+                <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
+                       @click="dialogIn = false">Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
         <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
           <v-form fast-fail @submit.prevent>
-          <v-card-title class="mt-4 ml-4 pb-3">
-            <h1>Register</h1>
-          </v-card-title>
-          <v-card-subtitle class="ml-4 pb-1">
-            <h4 class="font-weight-medium">Get ready to enjoy the best reservation experience!</h4>
-          </v-card-subtitle>
-          <v-card-text>
-            <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
-              
+            <v-card-title class="mt-4 ml-4 pb-3">
+              <h1>Register</h1>
+            </v-card-title>
+            <v-card-subtitle class="ml-4 pb-1">
+              <h4 class="font-weight-medium">Get ready to enjoy the best reservation experience!</h4>
+            </v-card-subtitle>
+            <v-card-text>
+              <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
+
                 <v-row>
                   <v-col cols="12" sm="6">
                     <v-text-field v-model="first_name" label="First Name *"></v-text-field>
@@ -485,17 +485,18 @@ export default {
                                   prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
                   </v-col>
                 </v-row>
-            </v-sheet>
-          </v-card-text>
-          <v-card-actions class="ml-3 mb-3">
-            <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit"
-                   @click="makeRegistration">Submit
-            </v-btn>
-            <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg" @click="dialogRe = false">
-              Cancel
-            </v-btn>
-          </v-card-actions>
-        </v-form>
+              </v-sheet>
+            </v-card-text>
+            <v-card-actions class="ml-3 mb-3">
+              <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit"
+                     @click="makeRegistration">Submit
+              </v-btn>
+              <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
+                     @click="dialogRe = false">
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-dialog>
       <slot/>

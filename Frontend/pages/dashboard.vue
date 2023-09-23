@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-    import { VDataTable } from "vuetify/labs/VDataTable";
-    import "~/assets/stylesheets/dashboard.css";
-    import "~/assets/stylesheets/global.css";
+import {VDataTable} from "vuetify/labs/VDataTable";
+import "~/assets/stylesheets/dashboard.css";
+import "~/assets/stylesheets/global.css";
 
-    const { status, data, signIn, signOut } = useAuth();
+const {status, data, signIn, signOut} = useAuth();
 
-    useHead({
-        title: "My Reservation - Seatify",
-        meta: [{ name: "Seatify App", content: "My amazing site." }],
-    });
+useHead({
+  title: "My Reservation - Seatify",
+  meta: [{name: "Seatify App", content: "My amazing site."}],
+});
 </script>
 <script lang="ts">
     export default {

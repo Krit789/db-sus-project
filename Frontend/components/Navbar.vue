@@ -389,6 +389,7 @@ export default {
       <div class="text-center">
         <v-dialog v-model="dialogIn" :fullscreen="mobile">
           <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" color="">
+            <v-form class="justify-center" fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3">
               <h1>Login</h1>
             </v-card-title>
@@ -397,12 +398,12 @@ export default {
             </v-card-subtitle>
             <v-card-text>
               <v-sheet class="mx-auto form_container bg-transparent" width="auto">
-                <v-form class="justify-center" fast-fail @submit.prevent>
+                
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-                </v-form>
+                
               </v-sheet>
             </v-card-text>
             <v-card-actions class="ml-3 mb-3">
@@ -441,11 +442,13 @@ export default {
                      @click="dialogIn = false">Cancel
               </v-btn>
             </v-card-actions>
+          </v-form>
           </v-card>
         </v-dialog>
       </div>
       <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
         <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
+          <v-form fast-fail @submit.prevent>
           <v-card-title class="mt-4 ml-4 pb-3">
             <h1>Register</h1>
           </v-card-title>
@@ -454,7 +457,7 @@ export default {
           </v-card-subtitle>
           <v-card-text>
             <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
-              <v-form fast-fail @submit.prevent>
+              
                 <v-row>
                   <v-col cols="12" sm="6">
                     <v-text-field v-model="first_name" label="First Name *"></v-text-field>
@@ -482,7 +485,6 @@ export default {
                                   prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
                   </v-col>
                 </v-row>
-              </v-form>
             </v-sheet>
           </v-card-text>
           <v-card-actions class="ml-3 mb-3">
@@ -493,6 +495,7 @@ export default {
               Cancel
             </v-btn>
           </v-card-actions>
+        </v-form>
         </v-card>
       </v-dialog>
       <slot/>

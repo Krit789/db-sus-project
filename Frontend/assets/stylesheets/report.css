@@ -1,0 +1,9 @@
+.account_body {
+    background: url(~/assets/images/ban_thap_chang.webp);
+    background-repeat: no-repeat;
+    background-position: cover;
+}
+
+.account_container {
+    background: rgba(245, 245, 247, .8);
+}

@@ -48,10 +48,7 @@ import "~/assets/stylesheets/index.css";
         </v-btn>
       </div>
       <div class="text-center ma-lg-16 ma-sm-8 ma-xs-0 my-8">
-        <v-card
-            class="blur-effect location_container px-lg-10 px-sm-5 px-xs-0"
-            text=""
-        >
+        <v-card class="blur-effect location_container px-lg-10 px-sm-5 px-xs-0" text="">
           <v-card-text
               class="text-h3 font-weight-bold my-6 bg-transparent"
           >Locations
@@ -63,11 +60,7 @@ import "~/assets/stylesheets/index.css";
               rounded="lg"
           >
             <v-slide-group :show-arrows="true">
-              <v-slide-group-item
-                  v-for="n in 15"
-                  :key="n"
-                  v-slot="{ isSelected, toggle, selectedClass }"
-              >
+              <v-slide-group-item v-for="n in 15" :key="n" v-slot="{ isSelected, toggle, selectedClass }">
                 <!-- Put Location card here -->
                 <v-card class="ma-2" max-width="350">
                   <v-img
@@ -99,7 +92,7 @@ import "~/assets/stylesheets/index.css";
                         color="#0373DE"
                         rounded="lg"
                         variant="outlined"
-                        @click="$router.push({path: '/reservation',query: { location_id: n },})"
+                        @click="$router.push({path: '/reservation',query: { location_id: n }})"
                     >Reserve
                     </v-btn>
                   </div>

@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user_id = $user_id[0]['user_id'];
         // $obj->update('users', ['access_token' => $token], "user_id={$user_id}");
 
-        $obj->select('users', '*', null, "email='{$email}'", null, null);
+        $obj->select('users', '*', null, "email='{$email}'", null, 1);
         $datas = $obj->getResult();
         foreach ($datas as $data) {
             $id = $data['user_id'];
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $tele = $data['telephone'];
             $role = $data['role'];
             $token = $data['access_token'];
-            if (!password_verify($password, $data['password_hash'])) echo json_encode([
+            if (!password_verify($password, $data['password_hash']) || $data['status'] == "SUSPENDED") echo json_encode([
                 'status' => 0,
                 'message' => 'Invalid Credentials',
             ]); else {

@@ -3,7 +3,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    overflow: clip;
+    overflow: none;
     min-height: 100vh;
 }
 
@@ -24,6 +24,11 @@
     min-height: 500px;
     padding: 22px 32px !important;
     background: radial-gradient(circle at 100% 0, hsla(0, 0%, 100%, .85) 0, hsla(0, 0%, 96.1%, .13) 183%) !important;
+}
+
+.status_box {
+    border-radius: 22px !important;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px !important;
 }
 
 h2 {

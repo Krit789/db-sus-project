@@ -11,120 +11,124 @@ useHead({
 });
 </script>
 <script lang="ts">
-    export default {
-        data: () => ({
-            expandedDT: [],
-            codeDialog: false,
-            reservationCode: null,
-            dtIsError: false,
-            dtErrorData: "",
-            dtData: [],
-            itemsPerPage: 10,
-            dtLoading: false,
-            dtHeaders: [
-                // {
-                //     title: "ID",
-                //     align: "start",
-                //     sortable: true,
-                //     key: "res_id",
-                // },
-                // {title: "User ID", align: "end", key: "user_id"},
-                { title: "Status", align: "start", key: "res_status" },
-                { title: "Location Name", align: "start", key: "location_name" },
-                { title: "No. of Customer", align: "end", key: "cus_count" },
-                { title: "Table", align: "end", key: "table_name" },
-                { title: "Reserved For", align: "start", key: "arrival" },
-                { title: "", key: "data-table-expand" },
-            ],
-        }),
-        methods: {
-            async loadData() {
-                this.dtLoading = true;
-                await $fetch("/api/data", {
-                    method: "POST",
-                    body: {
-                        type: 8,
-                        usage: "user",
-                    },
-                    lazy: true,
-                })
-                    .catch((error) => {
-                        this.dtIsError = true;
-                        this.dtErrorData = error.data;
-                    })
-                    .then(({ message }) => {
-                        this.dtData = message;
-                        this.dtLoading = false;
-                        this.dtIsError = false;
-                    });
-            },
+export default {
+  data: () => ({
+    expandedDT: [],
+    codeDialog: false,
+    reservationCode: null,
+    dtIsError: false,
+    dtErrorData: "",
+    dtData: [],
+    itemsPerPage: 10,
+    dtLoading: false,
+    dtHeaders: [
+      // {
+      //     title: "ID",
+      //     align: "start",
+      //     sortable: true,
+      //     key: "res_id",
+      // },
+      // {title: "User ID", align: "end", key: "user_id"},
+      {title: "Status", align: "start", key: "res_status"},
+      {title: "Location Name", align: "start", key: "location_name"},
+      {title: "No. of Customer", align: "end", key: "cus_count"},
+      {title: "Table", align: "end", key: "table_name"},
+      {title: "Reserved For", align: "start", key: "arrival"},
+      {title: "", key: "data-table-expand"},
+    ],
+  }),
+  methods: {
+    async loadData() {
+      this.dtLoading = true;
+      await $fetch("/api/data", {
+        method: "POST",
+        body: {
+          type: 8,
+          usage: "user",
         },
-        beforeMount() {
-            this.loadData();
-        },
-    };
+        lazy: true,
+      })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then(({message}) => {
+            this.dtData = message;
+            this.dtLoading = false;
+            this.dtIsError = false;
+          });
+    },
+  },
+  beforeMount() {
+    this.loadData();
+  },
+};
 </script>
 
 <template>
-    <v-main class="justify-center dashboard_body">
-        <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
-            <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
-            <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
-                <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
-                <v-no-ssr>
-                    <v-data-table
-                        v-model:items-per-page="itemsPerPage"
-                        :headers="dtHeaders"
-                        :items="dtData"
-                        :loading="dtLoading"
-                        class="elevation-0"
-                        loading-text="We're looking for your reservation, Hang tight!"
-                        :expanded="expandedDT"
-                        item-value="res_id"
-                        @click:row="
+  <v-main class="justify-center dashboard_body">
+    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Dashboard</h1>
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
+            dtErrorData
+          }}
+        </v-alert>
+        <v-no-ssr>
+          <v-data-table
+              v-model:items-per-page="itemsPerPage"
+              :expanded="expandedDT"
+              :headers="dtHeaders"
+              :items="dtData"
+              :loading="dtLoading"
+              class="elevation-0"
+              item-value="res_id"
+              loading-text="We're looking for your reservation, Hang tight!"
+              @click:row="
                             (val, tabl) => {
                                 reservationCode = tabl.item.raw.res_code;
                                 console.log(tabl.item.columns.res_id);
                                 codeDialog = !codeDialog;
                             }
                         "
-                    >
-                        <template v-slot:expanded-row="{ columns, item }">
-                            <tr>
-                                <td :colspan="columns.length" class="text-left">
-                                    <v-container>
-                                        <v-row>
-                                            <v-col col="12" sm="6">
-                                                <b>Address</b>
-                                                <br />
-                                                {{ item.raw.location_address }}
-                                                <br />
-                                            </v-col>
-                                            <v-col col="12" sm="6">
-                                                <b>Reserved For</b>
-                                                <br />
-                                                {{ item.raw.arrival }}
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </td>
-                            </tr>
-                        </template>
-                    </v-data-table>
-                </v-no-ssr>
-                <v-btn :disabled="dtLoading" :elevation="0" class="align-right my-6" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" variant="outlined" @click="loadData"></v-btn>
-            </v-sheet>
-            <v-dialog v-model="codeDialog" width="auto">
-                <v-card>
-                    <v-card-title>Your Reservation Code</v-card-title>
-                    <v-card-text class="text-center">
-                        {{ reservationCode }}
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="primary" block @click="codeDialog = false">Done</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </div>
-    </v-main>
+          >
+            <template v-slot:expanded-row="{ columns, item }">
+              <tr>
+                <td :colspan="columns.length" class="text-left">
+                  <v-container>
+                    <v-row>
+                      <v-col col="12" sm="6">
+                        <b>Address</b>
+                        <br/>
+                        {{ item.raw.location_address }}
+                        <br/>
+                      </v-col>
+                      <v-col col="12" sm="6">
+                        <b>Reserved For</b>
+                        <br/>
+                        {{ item.raw.arrival }}
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </td>
+              </tr>
+            </template>
+          </v-data-table>
+        </v-no-ssr>
+        <v-btn :disabled="dtLoading" :elevation="0" class="align-right my-6" prepend-icon="mdi-refresh" rounded="lg"
+               text="Refresh" variant="outlined" @click="loadData"></v-btn>
+      </v-sheet>
+      <v-dialog v-model="codeDialog" width="auto">
+        <v-card>
+          <v-card-title>Your Reservation Code</v-card-title>
+          <v-card-text class="text-center">
+            {{ reservationCode }}
+          </v-card-text>
+          <v-card-actions>
+            <v-btn block color="primary" @click="codeDialog = false">Done</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+  </v-main>
 </template>

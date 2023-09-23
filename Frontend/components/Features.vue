@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 const {status, data} = useAuth();
+const route = useRoute();
 </script>
 
 <template>
@@ -46,6 +47,7 @@ const {status, data} = useAuth();
     </v-row>
 
     <!--Row 2 Create Branches Report   -->
+    <!-- remember to remove debug condition -->
     <v-row
         v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1"
         class="feature_rounded mx-3 mt-8 px-5 py-8"
@@ -69,6 +71,7 @@ const {status, data} = useAuth();
                 :variant="'elevated'"
                 class="font-weight-bold"
                 rounded="lg"
+                @click="() => {$router.push('/report');}"
             >Create Report
             </v-btn>
           </v-col>
@@ -109,22 +112,23 @@ const {status, data} = useAuth();
             style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
+          @click="() => {$router.push('/management/branches');}"
           >Manage Branches
           </v-btn>
         </v-row>
       </v-col>
 
       <v-col class="feature_rounded row_three_container">
-        <h2 class="text-primary text-h4">Manage Menu</h2>
+        <h2 class="text-primary text-h4">Manage Reservation</h2>
         <v-img
             class="report_macbook"
             height="180"
-            src="https://cdn-icons-png.flaticon.com/512/1046/1046849.png"
+            src="https://cdn-icons-png.flaticon.com/512/886/886329.png"
             width="100%"
         ></v-img>
-        <h3 class="report_text report_header">จัดการเมนูของสาขา</h3>
+        <h3 class="report_text report_header">จัดการการจองของสาขา</h3>
         <p class="report_text report_body mt--3">
-          คุณสามารถจัดการเมนูอาหารภายในร้านของคุณได้ตรงนี้
+          คุณสามารถจัดการการจองของสาขาของคุณได้ตรงนี้
         </p>
         <v-row
             class="min-w-100 justify-center mt-0"
@@ -132,6 +136,7 @@ const {status, data} = useAuth();
             style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
+                @click="() => {$router.push('/management/reservation');}"
           >Manage Menu
           </v-btn>
         </v-row>

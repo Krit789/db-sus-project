@@ -47,7 +47,7 @@ function toTitleCase(str) {
 
 <template>
   <v-main class="bg-grey-lighten-4 justify-center">
-    <v-parallax src="/images/background/cucamonga.webp">
+    <v-parallax class="main_parallax" src="/images/background/cucamonga.webp">
       <div class="main_container mx-auto">
         <v-row class="justify-center mt-8 px-3">
           <v-col class="user_rounded">

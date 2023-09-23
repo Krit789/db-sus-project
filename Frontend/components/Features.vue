@@ -112,7 +112,7 @@ const route = useRoute();
             style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-          @click="() => {$router.push('/management/branches');}"
+                 @click="() => {$router.push('/management/branches');}"
           >Manage Branches
           </v-btn>
         </v-row>
@@ -136,7 +136,7 @@ const route = useRoute();
             style="padding-left: 22px"
         >
           <v-btn :variant="'outlined'" class="" rounded="lg"
-                @click="() => {$router.push('/management/reservation');}"
+                 @click="() => {$router.push('/management/reservation');}"
           >Manage Menu
           </v-btn>
         </v-row>

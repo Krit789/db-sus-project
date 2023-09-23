@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == 'GOD') {
 
-                        $obj->insert('locations', ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3]);
+                        $obj->insert('locations', ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3, 'creation_date' => $time]);
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -174,7 +174,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == 'GOD') {
 
-                        $obj->insert('locations', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url]);
+                        $obj->insert('menus', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url]);
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,

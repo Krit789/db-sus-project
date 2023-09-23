@@ -1,7 +1,9 @@
 <?php
+date_default_timezone_set("Asia/Bangkok");
 include 'database/Database.php';
 include 'random.php';
 
+$time = date("Y-m-d H:i:s", time());
 function readuser($id)
 {
     $obj = new Database();

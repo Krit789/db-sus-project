@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
 
-                    $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8)]);
+                    $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time]);
                     $result = $obj->getResult();
                     if ($result[0] == 1) {
 

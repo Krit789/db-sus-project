@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on", null, null, "user_id", null);
+                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status", null, null, "user_id", null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([

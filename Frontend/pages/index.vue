@@ -59,7 +59,7 @@
                             </v-slide-group-item>
                         </v-slide-group>
                     </v-sheet>
-                    <v-btn class="mb-3" color="#0373DE" rounded="lg" size="large" variant="text" @click="$router.push('/booking')">All Location</v-btn>
+                    <v-btn class="mb-3" color="#0373DE" rounded="lg" size="large" variant="text" @click="$router.push('/reservation')">All Location</v-btn>
                 </v-card>
             </div>
         </v-parallax>

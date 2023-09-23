@@ -13,6 +13,7 @@
 <script lang="ts">
     export default {
         data: () => ({
+            expandedDT: [],
             codeDialog: false,
             reservationCode: null,
             dtIsError: false,
@@ -28,11 +29,12 @@
                 //     key: "res_id",
                 // },
                 // {title: "User ID", align: "end", key: "user_id"},
-                // { title: "Reserved On", align: "start", key: "create_time" },
-                { title: "Reserved For", align: "start", key: "arrival" },
-                { title: "Status", align: "end", key: "status" },
+                { title: "Status", align: "start", key: "res_status" },
+                { title: "Location Name", align: "start", key: "location_name" },
                 { title: "No. of Customer", align: "end", key: "cus_count" },
-                { title: "Table ID", align: "end", key: "table_id" },
+                { title: "Table", align: "end", key: "table_name" },
+                { title: "Reserved For", align: "start", key: "arrival" },
+                { title: "", key: "data-table-expand" },
             ],
         }),
         methods: {
@@ -70,36 +72,56 @@
             <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
                 <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
                 <v-no-ssr>
-                <v-data-table
-                    v-model:items-per-page="itemsPerPage"
-                    :headers="dtHeaders"
-                    :items="dtData"
-                    :loading="dtLoading"
-                    class="elevation-0"
-                    item-value="id"
-                    loading-text="We're looking for your reservation, Hang tight!"
-                    @click:row="
-                        (val, tabl) => {
-                            reservationCode = tabl.item.raw.res_code;
-                            console.log(tabl.item.columns.res_id);
-                            codeDialog = !codeDialog;
-                        }
-                    "
-                ></v-data-table>
+                    <v-data-table
+                        v-model:items-per-page="itemsPerPage"
+                        :headers="dtHeaders"
+                        :items="dtData"
+                        :loading="dtLoading"
+                        class="elevation-0"
+                        loading-text="We're looking for your reservation, Hang tight!"
+                        :expanded="expandedDT"
+                        item-value="res_id"
+                        @click:row="
+                            (val, tabl) => {
+                                reservationCode = tabl.item.raw.res_code;
+                                console.log(tabl.item.columns.res_id);
+                                codeDialog = !codeDialog;
+                            }
+                        "
+                    >
+                        <template v-slot:expanded-row="{ columns, item }">
+                            <tr>
+                                <td :colspan="columns.length" class="text-left">
+                                    <v-container>
+                                        <v-row>
+                                            <v-col col="12" sm="6">
+                                                <b>Address</b>
+                                                <br />
+                                                {{ item.raw.location_address }}
+                                                <br />
+                                            </v-col>
+                                            <v-col col="12" sm="6">
+                                                <b>Reserved For</b>
+                                                <br />
+                                                {{ item.raw.arrival }}
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </td>
+                            </tr>
+                        </template>
+                    </v-data-table>
                 </v-no-ssr>
                 <v-btn :disabled="dtLoading" :elevation="0" class="align-right my-6" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" variant="outlined" @click="loadData"></v-btn>
             </v-sheet>
-            <v-dialog
-            v-model="codeDialog"
-            width="auto"
-            >
+            <v-dialog v-model="codeDialog" width="auto">
                 <v-card>
                     <v-card-title>Your Reservation Code</v-card-title>
                     <v-card-text class="text-center">
-                    {{ reservationCode }}
+                        {{ reservationCode }}
                     </v-card-text>
                     <v-card-actions>
-                    <v-btn color="primary" block @click="codeDialog = false">Done</v-btn>
+                        <v-btn color="primary" block @click="codeDialog = false">Done</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>

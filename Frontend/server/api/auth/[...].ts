@@ -1,11 +1,11 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import {NuxtAuthHandler} from "#auth";
+import { NuxtAuthHandler } from "#auth";
 
 export default NuxtAuthHandler({
     secret: process.env.AUTH_SECRET,
     callbacks: {
         // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
-        jwt: async ({token, user}) => {
+        jwt: async ({ token, user }) => {
             const isSignIn = user ? true : false;
             if (isSignIn) {
                 token.id = user ? user.id || "" : "";
@@ -19,7 +19,7 @@ export default NuxtAuthHandler({
             return Promise.resolve(token);
         },
         // Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
-        session: async ({session, token}) => {
+        session: async ({ session, token }) => {
             (session as any).role = token.role;
             (session as any).uid = token.id;
             (session as any).firstName = token.firstName;
@@ -46,16 +46,13 @@ export default NuxtAuthHandler({
                 },
             },
             async authorize(credentials: any) {
-                const data: any = await $fetch(
-                    "http://localhost:3000/proxy/api/account/login-user.php",
-                    {
-                        method: "POST",
-                        body: {
-                            email: credentials.email,
-                            password: credentials.password,
-                        },
+                const data: any = await $fetch("http://localhost:3000/proxy/api/account/login-user.php", {
+                    method: "POST",
+                    body: {
+                        email: credentials.email,
+                        password: credentials.password,
                     },
-                ).catch((error) => error);
+                }).catch((error) => error);
 
                 if (data?.status == 1) {
                     //   console.log("This Works!");
@@ -74,9 +71,7 @@ export default NuxtAuthHandler({
                     // console.log(u);
                     return u;
                 } else {
-                    console.error(
-                        "Warning: Malicious login attempt registered, bad credentials provided",
-                    );
+                    console.error("Warning: Malicious login attempt registered, bad credentials provided");
                     return null;
                 }
             },

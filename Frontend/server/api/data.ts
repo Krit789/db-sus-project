@@ -1,7 +1,7 @@
-import {getToken} from "#auth";
+import { getToken } from "#auth";
 
 export default defineEventHandler(async (event) => {
-    const jwt = await getToken({event});
+    const jwt = await getToken({ event });
     const postBody = await readBody(event); // Read from POST body
 
     let url: string;
@@ -21,12 +21,12 @@ export default defineEventHandler(async (event) => {
     }
 
     if (jwt?.token) {
-        const tokenObj: any = {token: jwt?.token};
+        const tokenObj: any = { token: jwt?.token };
         const result: any = Object.assign({}, postBody, tokenObj);
 
         const reservations = await $fetch(url, {
             method: "POST",
-            body: result
+            body: result,
         }).catch((error) => error.data);
         return reservations;
     } else {

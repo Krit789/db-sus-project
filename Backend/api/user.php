@@ -245,7 +245,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 8: #เรียกดูการจองทั้งหมดของเจ้าของ Account
                     $id = $user_data['user_id'];
-                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, location.status as `location_status`", null, "user_id={$id}", 'res_id DESC', null,  "join tables using (table_id) join locations using (location_id)");
+                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, locations.status as `location_status`", null, "user_id={$id}", 'res_id DESC', null,  "join tables using (table_id) join locations using (location_id)");
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

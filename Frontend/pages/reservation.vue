@@ -63,15 +63,15 @@
             stepper1: 0,
             pageSpinner: false,
             hasLocation: false,
-            locationList: [],
+            locationList: [] as LocationObject[],
             menuList: [] as MenuListObject[],
             seatList: [],
             filterSeatList: [],
             filterSeatCount: 0,
             branchLayout: "",
             selectedLocID: 0,
-            selectedLoc: {},
-            selectedTime: null,
+            selectedLoc: {} as LocationObject,
+            selectedTime: null as DateTime,
             selectedSeat: null,
             foodPreOrderList: [] as MenuObject[],
             dtSearch: "",
@@ -92,18 +92,37 @@
         }),
         methods: {
             addMenu(obj: MenuObject): void {
-                this.foodPreOrderList.push(obj);
+                if (!this.isMenuIDinPreOpder(obj.id)) {
+                    this.foodPreOrderList.push(obj);
+                } else {
+                    this.updateMenuById(1, obj.id);
+                }
             },
             removeMenuById(id: number): void {
                 this.foodPreOrderList = this.foodPreOrderList.filter((item) => item.id !== id);
             },
-            updateJSONById(id: number, updatedData: Partial<MenuObject>): void {
+            updateMenuById(addOrReduce: number, id: number): void {
+                let tmp: MenuObject;
                 for (let i = 0; i < this.foodPreOrderList.length; i++) {
                     if (this.foodPreOrderList[i].id === id) {
-                        this.foodPreOrderList[i] = { ...this.foodPreOrderList[i], ...updatedData };
+                        tmp = this.foodPreOrderList[i];
+                        if (addOrReduce == 1) {
+                            tmp.amount++;
+                        } else {
+                            tmp.amount--;
+                            if (tmp.amount == 0) {
+                                this.removeMenuById(id);
+                            }
+                        }
                         break;
                     }
                 }
+            },
+            isMenuIDinPreOpder(id: Number) {
+                for (let i = 0; i < this.foodPreOrderList.length; i++) {
+                    if (this.foodPreOrderList[i].id === id) return true;
+                }
+                return false;
             },
             findSeatforSelectedDT() {
                 this.selectedTime = DateTime.fromISO(this.resDateTime);
@@ -191,6 +210,35 @@
                         this.seatList = message;
                         this.pageSpinner = false;
                         this.isError = false;
+                    });
+            },
+            async makeReservation() {
+                // console.log(this.foodPreOrderList)
+                this.pageSpinner = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 3,
+                        usage: "user",
+                        location_id: this.selectedLocID,
+                        arrival: DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"),
+                        cus_count: this.resGuest,
+                        table_id: this.selectedSeat,
+                        menu: this.foodPreOrderList
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.isError = true;
+                        this.errorData = error.data;
+                    })
+                    .then(({ status }) => {
+                        if (status == 1) {
+                            alert("Booking Successful");
+                            $route.push('/')
+                        } else {
+                            alert("Booking Failure")
+                        }
                     });
             },
             seatRule() {
@@ -307,7 +355,7 @@
                                             show-expand
                                             v-on:click:row="
                                                 (val, tabl) => {
-                                                    selectedLoc = loadLocationByID(tabl.item.raw.location_id);
+                                                    loadLocationByID(tabl.item.raw.location_id);
                                                     selectedLocID = tabl.item.raw.location_id;
                                                     stepper1++;
                                                 }
@@ -369,7 +417,7 @@
                                                     variant="tonal"
                                                     @click="
                                                         () => {
-                                                            resDateTime = null;
+                                                            resDateTime = '';
                                                             stepper1--;
                                                         }
                                                     "
@@ -471,24 +519,52 @@
                                     <h3 class="text-h4 font-weight-medium text-left">Pre-Order Food</h3>
                                 </v-card-text>
                                 <v-card elevation="0">
-                                    <h3 class="text-left font-weight-medium">Your Order</h3>
-                                    <v-table fixed-header height="300px">
+                                    <h3 class="ml-5 text-left font-weight-medium">Your Order</h3>
+                                    <v-table class="mx-3" fixed-header height="300px">
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Name</th>
-                                                <th class="text-left">Amount</th>
-                                                <th class="text-left">Price</th>
+                                                <th class="text-right">Amount</th>
+                                                <th class="text-right">Price</th>
+                                                <th class="text-center">Modification</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="item in foodPreOrderList" :key="item.name">
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item.calories }}</td>
+                                            <tr v-for="order in foodPreOrderList" :key="order.id">
+                                                <td class="text-left">{{ order.item_name }}</td>
+                                                <td class="text-right">{{ order.amount }}</td>
+                                                <td class="text-right">{{ order.amount * order.price }} ฿</td>
+                                                <td class="text-center">
+                                                    <v-icon
+                                                        icon="mdi-plus"
+                                                        @click="
+                                                            () => {
+                                                                updateMenuById(1, order.id);
+                                                            }
+                                                        "
+                                                    ></v-icon>
+                                                    <v-icon
+                                                        icon="mdi-minus"
+                                                        @click="
+                                                            () => {
+                                                                updateMenuById(0, order.id);
+                                                            }
+                                                        "
+                                                    ></v-icon>
+                                                    <v-icon
+                                                        icon="mdi-delete"
+                                                        @click="
+                                                            () => {
+                                                                removeMenuById(order.id);
+                                                            }
+                                                        "
+                                                    ></v-icon>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </v-table>
                                 </v-card>
-                                <h3 class="text-left font-weight-medium">Menus</h3>
+                                <h3 class="ml-5 text-left font-weight-medium">Menus</h3>
                                 <v-card height="525" class="overflow-auto" elevation="0">
                                     <v-container>
                                         <v-row>
@@ -500,14 +576,14 @@
                                                 sm="6"
                                                 @click="
                                                     () => {
-                                                        console.log(food.id);
+                                                        addMenu({ id: food.id, item_name: food.item_name, amount: 1, price: food.price });
                                                     }
                                                 "
                                             >
                                                 <v-card v-ripple>
-                                                    <v-img :src="food.img_url ? food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" cover="" height="300">
+                                                    <v-img :src="food.img_url ? food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" height="300" cover>
                                                         <template v-slot:error>
-                                                            <v-img class="mx-auto" height="300" max-width="500" src="https://picsum.photos/500/300?image=232"></v-img>
+                                                            <v-img height="300" src="https://picsum.photos/500/300?image=232"></v-img>
                                                         </template>
                                                     </v-img>
                                                     <v-card-title>
@@ -565,25 +641,57 @@
                                         <v-container>
                                             <v-row>
                                                 <v-col>
-                                                    <v-card class="pa-3">
-                                                        <h3>Location</h3>
-                                                        <p>
-                                                            {{ selectedLoc?.name }}
-                                                        </p>
+                                                    <v-card class="pa-3 text-left" height="150">
+                                                        <div class="mt-3 ml-3">
+                                                            <h3 class="font-weight-bold">
+                                                                <v-icon icon="mdi-map-marker"></v-icon>
+                                                                 Location
+                                                            </h3>
+                                                            <p>
+                                                                {{ selectedLoc.name }}
+                                                            </p>
+                                                        </div>
                                                     </v-card>
                                                 </v-col>
                                                 <v-col>
-                                                    <v-card class="pa-3">
-                                                        <h3>Date and Time</h3>
-                                                        <p>
-                                                            {{ selectedTime }}
-                                                        </p>
+                                                    <v-card class="pa-3 text-left" height="150">
+                                                        <div class="mt-3 ml-3">
+                                                            <h3 class="font-weight-bold"><v-icon icon="mdi-clock-time-three"></v-icon> Date and Time</h3>
+                                                            <p>
+                                                                {{ selectedTime }}
+                                                            </p>
+                                                        </div>
                                                     </v-card>
                                                 </v-col>
                                                 <v-col>
+                                                    <v-card class="pa-3 text-left" height="150">
+                                                        <div class="mt-3 ml-3">
+                                                            <h3 class="font-weight-bold"><v-icon icon="mdi-sofa-single"></v-icon> Seat</h3>
+                                                            <p>{{ selectedSeat }}</p>
+                                                        </div>
+                                                    </v-card>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
                                                     <v-card class="pa-3">
-                                                        <h3>Seat</h3>
-                                                        <p>{{ selectedSeat }}</p>
+                                                        <h3 class="ml-5 mt-3 text-left font-weight-medium">Your Order</h3>
+                                                        <v-table class="mx-3" fixed-header max-height="300px">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="text-left">Name</th>
+                                                                    <th class="text-right">Amount</th>
+                                                                    <th class="text-right">Price</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="order in foodPreOrderList" :key="order.id">
+                                                                    <td class="text-left">{{ order.item_name }}</td>
+                                                                    <td class="text-right">{{ order.amount }}</td>
+                                                                    <td class="text-right">{{ order.amount * order.price }} ฿</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </v-table>
                                                     </v-card>
                                                 </v-col>
                                             </v-row>
@@ -610,7 +718,7 @@
                                                     prepend-icon="mdi-check"
                                                     @click="
                                                         () => {
-                                                            console.log('Confirm');
+                                                            makeReservation()
                                                         }
                                                     "
                                                 >

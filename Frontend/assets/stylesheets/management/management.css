@@ -1,0 +1,13 @@
+.management_main {
+    background: url(~/assets/images/background/surface_duo.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+    min-height: 100vh;
+}
+
+.management_container {
+    padding: 12px 32px 22px 32px;
+    margin-top: 22px;
+}

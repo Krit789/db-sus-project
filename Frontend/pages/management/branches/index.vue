@@ -6,6 +6,8 @@ const route = useRouter();
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
 import "~/assets/stylesheets/management/branches.css";
+import "~/assets/stylesheets/management/management.css";
+
 </script>
 <script lang="ts">
 export default {
@@ -60,11 +62,10 @@ export default {
 };
 </script>
 <template>
-  <v-main class="">
+  <v-main class="management_main">
     <v-dialog
         v-model="addBranch"
-        width="auto"
-    >
+        width="auto">
       <v-card width="400">
         <v-card-title>Add Branch</v-card-title>
         <v-card-text>
@@ -79,32 +80,40 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
-    <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-      <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
-      <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
-             @click="loadData"></v-btn>
-      <v-btn :disabled="dtLoading" class="ml-5 align-right mb-3" color="success" prepend-icon="mdi-plus"
-             text="Add Branch"
-             @click="addBranch = true"></v-btn>
-      <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          :search="dtSearch"
-          class="elevation-1"
-          item-value="id"
-          @click:row="
+    <div class="main_container management_container mx-auto blur-effect">
+      <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
+            dtErrorData
+          }}
+        </v-alert>
+        <v-data-table
+            v-model:items-per-page="itemsPerPage"
+            :headers="dtHeaders"
+            :items="dtData"
+            :loading="dtLoading"
+            :search="dtSearch"
+            class="elevation-1"
+            item-value="id"
+            @click:row="
                     (val, tabl) => {
                         $router.push('/management/branches/' + tabl.item.columns.location_id);
                     }
                 "
-      >
-        <template v-slot:top>
-          <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
-        </template>
-      </v-data-table>
-    </v-sheet>
+        >
+          <template v-slot:top>
+            <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
+          </template>
+        </v-data-table>
+        <v-col>
+          <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
+                 @click="loadData"></v-btn>
+          <v-btn :disabled="dtLoading" class="ml-5 align-right mb-3" color="success" prepend-icon="mdi-plus"
+                 text="Add Branch"
+                 @click="addBranch = true"></v-btn>
+        </v-col>
+      </v-sheet>
+
+    </div>
   </v-main>
 </template>

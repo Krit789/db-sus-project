@@ -124,9 +124,9 @@ export default {
         <v-col>
           <v-btn :disabled="dtLoading"
                  :variant="'tonal'"
-                 rounded="lg"
                  class="align-right mb-3"
                  prepend-icon="mdi-refresh"
+                 rounded="lg"
                  text="Refresh"
                  @click="loadData"></v-btn>
         </v-col>

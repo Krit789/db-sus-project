@@ -138,17 +138,17 @@ export default {
         <v-col class="pt-5">
           <v-btn :disabled="dtLoading"
                  :variant="'tonal'"
-                 rounded="lg"
                  class="align-right mb-3"
                  prepend-icon="mdi-refresh"
+                 rounded="lg"
                  text="Refresh"
                  @click="loadData"></v-btn>
           <v-btn :disabled="dtLoading"
                  :variant="'tonal'"
-                 rounded="lg"
                  class=" ml-5 mb-3"
                  color="success"
-                 prepend-icon="mdi-plus" text="Add Menu"
+                 prepend-icon="mdi-plus"
+                 rounded="lg" text="Add Menu"
                  @click="addMenuDialog = true"></v-btn>
         </v-col>
       </v-sheet>

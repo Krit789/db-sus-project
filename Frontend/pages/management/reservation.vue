@@ -110,17 +110,17 @@ export default {
         <v-col>
           <v-btn :disabled="dtLoading"
                  :variant="'tonal'"
-                 rounded="lg"
                  class="align-right mb-3"
                  prepend-icon="mdi-refresh"
+                 rounded="lg"
                  text="Refresh"
                  @click="loadData"></v-btn>
           <v-btn :disabled="dtLoading"
                  :variant="'tonal'"
-                 rounded="lg"
                  class="align-right mb-3 ml-5"
                  color="green"
                  prepend-icon="mdi-plus"
+                 rounded="lg"
                  text="Accept Reservation"
                  @click="acceptRes = true"></v-btn>
         </v-col>

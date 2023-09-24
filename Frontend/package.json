@@ -1,28 +1,28 @@
 {
-    "name": "nuxt-app",
-    "private": true,
-    "scripts": {
-        "build": "nuxt build",
-        "dev": "nuxt dev",
-        "generate": "nuxt generate",
-        "preview": "nuxt preview",
-        "postinstall": "nuxt prepare",
-        "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\""
-    },
-    "devDependencies": {
-        "@nuxt/devtools": "0.8.3",
-        "@sidebase/nuxt-auth": "^0.6.0-beta.5",
-        "@types/node": "^20.6.3",
-        "nuxt": "^3.6.5",
-        "vite-plugin-vuetify": "^1.0.2"
-    },
-    "dependencies": {
-        "@mdi/font": "^7.2.96",
-        "@types/luxon": "^3.3.2",
-        "luxon": "^3.4.3",
-        "next-auth": "4.21.1",
-        "prettier": "^3.0.3",
-        "sass": "^1.68.0",
-        "vuetify": "^3.3.17"
-    }
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\""
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "0.8.3",
+    "@sidebase/nuxt-auth": "^0.6.0-beta.5",
+    "@types/node": "^20.6.3",
+    "nuxt": "^3.6.5",
+    "vite-plugin-vuetify": "^1.0.2"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.2.96",
+    "@types/luxon": "^3.3.2",
+    "luxon": "^3.4.3",
+    "next-auth": "4.21.1",
+    "prettier": "^3.0.3",
+    "sass": "^1.68.0",
+    "vuetify": "^3.3.17"
+  }
 }

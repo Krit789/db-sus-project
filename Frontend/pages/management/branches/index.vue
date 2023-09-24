@@ -106,9 +106,19 @@ export default {
           </template>
         </v-data-table>
         <v-col>
-          <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
+          <v-btn :disabled="dtLoading"
+                 :variant="'tonal'"
+                 rounded="lg"
+                 class="align-right mb-3"
+                 prepend-icon="mdi-refresh"
+                 text="Refresh"
                  @click="loadData"></v-btn>
-          <v-btn :disabled="dtLoading" class="ml-5 align-right mb-3" color="success" prepend-icon="mdi-plus"
+          <v-btn :disabled="dtLoading"
+                 :variant="'tonal'"
+                 rounded="lg"
+                 class="ml-5 align-right mb-3"
+                 color="success"
+                 prepend-icon="mdi-plus"
                  text="Add Branch"
                  @click="addBranch = true"></v-btn>
         </v-col>

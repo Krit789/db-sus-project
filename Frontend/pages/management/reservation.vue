@@ -108,9 +108,19 @@ export default {
           </template>
         </v-data-table>
         <v-col>
-          <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
+          <v-btn :disabled="dtLoading"
+                 :variant="'tonal'"
+                 rounded="lg"
+                 class="align-right mb-3"
+                 prepend-icon="mdi-refresh"
+                 text="Refresh"
                  @click="loadData"></v-btn>
-          <v-btn :disabled="dtLoading" class="align-right mb-3 ml-5" color="green" prepend-icon="mdi-plus"
+          <v-btn :disabled="dtLoading"
+                 :variant="'tonal'"
+                 rounded="lg"
+                 class="align-right mb-3 ml-5"
+                 color="green"
+                 prepend-icon="mdi-plus"
                  text="Accept Reservation"
                  @click="acceptRes = true"></v-btn>
         </v-col>

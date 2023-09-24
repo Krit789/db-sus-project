@@ -12,6 +12,10 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+    userAction: false,
     dtErrorData: "",
     dtSearch: "",
     dtIsError: false,
@@ -63,6 +67,25 @@ export default {
 </script>
 <template>
   <v-main class="">
+    <v-dialog
+      width="auto"
+      v-model="userAction"
+    >
+      <v-card width="400">
+        <v-card-title>Modify User</v-card-title>
+        <v-card-text>
+          <v-text-field readonly label="First Name" v-model="firstName"></v-text-field>
+          <v-text-field readonly label="Last Name" v-model="lastName"></v-text-field>
+          <v-text-field readonly label="Phone number"  v-model="phoneNumber"></v-text-field>
+          <v-select :items="['User','Manager', 'Admin']" label="Role"></v-select>
+          <v-btn append-icon="mdi-refresh" color="warning">Reset Password</v-btn>
+        </v-card-text>
+        <v-card-actions>
+        <v-btn color="success" append-icon="mdi-check" @click="">Apply</v-btn>
+          <v-btn color="error" append-icon="mdi-cancel" @click="userAction = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">User Management</h1>
     <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
@@ -78,7 +101,11 @@ export default {
           item-value="id"
           @click:row="
                     (val, tabl) => {
-                        console.log(tabl.item.columns.user_id);
+                      firstName = tabl.item.columns.first_name
+                      lastName = tabl.item.columns.last_name
+                      phoneNumber = tabl.item.columns.telephone
+                      userAction = true
+                        // console.log(tabl.item.columns.user_id);
                     }
                 "
       >

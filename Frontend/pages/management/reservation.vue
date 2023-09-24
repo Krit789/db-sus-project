@@ -12,6 +12,7 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
+    acceptRes: false,
     dtSearch: "",
     dtIsError: false,
     dtErrorData: "",
@@ -62,11 +63,28 @@ export default {
 </script>
 <template>
   <v-main class="">
+    <v-dialog
+      width="auto"
+      v-model="acceptRes"
+    >
+      <v-card width="400">
+        <v-card-title>Accept Customer Reservations</v-card-title>
+        <v-card-text>
+          <v-text-field label="Reservation Code"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+        <v-btn color="success" prepend-icon="mdi-check" @click="">Confirm</v-btn>
+          <v-btn color="primary" @click="acceptRes = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation Management</h1>
     <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
              @click="loadData"></v-btn>
+      <v-btn :disabled="dtLoading" class="align-right mb-3 ml-5" color="green" prepend-icon="mdi-plus" text="Accept Reservation"
+             @click="acceptRes = true"></v-btn>
       <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="dtHeaders"

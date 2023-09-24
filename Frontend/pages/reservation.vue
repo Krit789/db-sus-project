@@ -298,7 +298,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="justify-center reservation_body">
+  <v-main class="justify-center reservation_main">
     <div class="main_container mx-auto blur-effect account_body mt-10 py-1 px-1 min-h-40">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
@@ -561,9 +561,10 @@ export default {
                     </td>
                     <td class="text-right">{{ order.amount * order.price }} ฿</td>
                     <td class="text-right">
-                      <v-icon color="red"
-                              icon="mdi-delete"
-                              @click="
+                      <v-icon
+                          color="red"
+                          icon="mdi-delete"
+                          @click="
                                                         () => {
                                                             removeMenuById(order.id);
                                                         }
@@ -595,7 +596,7 @@ export default {
                             :src="food.img_url ? food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
                             cover height="300" width="300">
                           <template v-slot:error>
-                            <v-img height="300" width="300" cover src="https://picsum.photos/500/300?image=232"></v-img>
+                            <v-img cover height="300" src="https://picsum.photos/500/300?image=232" width="300"></v-img>
                           </template>
                         </v-img>
                         <v-card-title>

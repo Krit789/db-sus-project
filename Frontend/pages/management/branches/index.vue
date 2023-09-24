@@ -2,7 +2,7 @@
 import {VDataTable} from "vuetify/labs/VDataTable";
 
 const {status, data, signIn, signOut} = useAuth();
-const route = useRouter()
+const route = useRouter();
 </script>
 <script lang="ts">
 export default {
@@ -74,7 +74,7 @@ export default {
           item-value="id"
           @click:row="
                     (val, tabl) => {
-                        $router.push('/management/branches/' + tabl.item.columns.location_id)
+                        $router.push('/management/branches/' + tabl.item.columns.location_id);
                     }
                 "
       >

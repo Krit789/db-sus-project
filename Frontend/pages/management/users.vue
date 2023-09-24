@@ -2,7 +2,7 @@
 import {VDataTable} from "vuetify/labs/VDataTable";
 
 const {status, data, signIn, signOut} = useAuth();
-const route = useRouter()
+const route = useRouter();
 useHead({
   title: "User Management - Seatify Admin",
   meta: [{name: "Seatify App", content: "My amazing site."}],

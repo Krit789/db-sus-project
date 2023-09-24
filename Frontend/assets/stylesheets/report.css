@@ -1,7 +1,10 @@
-.account_body {
-    /*background: url(~/assets/images/ban_thap_chang.webp);*/
+.report_main {
+    background: url(~/assets/images/background/Wallpaper.webp);
     background-repeat: no-repeat;
-    background-position: cover;
+    background-position: center;
+    background-size: cover;
+    overflow: clip;
+    min-height: 100vh;
 }
 
 .account_container {

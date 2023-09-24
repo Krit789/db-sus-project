@@ -410,12 +410,10 @@ export default {
               </v-card-subtitle>
               <v-card-text>
                 <v-sheet class="mx-auto form_container bg-transparent" width="auto">
-
                   <v-text-field v-model="email" :rules="[emailValidation]" label="E-Mail"
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-
                 </v-sheet>
               </v-card-text>
               <v-card-actions class="ml-3 mb-3">
@@ -425,28 +423,28 @@ export default {
                     rounded="lg"
                     type="submit"
                     @click="
-                                    () => {
-                                        isCardLoading = true;
-                                        mySignInHandler({
-                                            email: email,
-                                            password: password,
-                                        }).then((val) => {
-                                            if (val) {
-                                                dialogIn = false;
-                                                NotiText = 'Sign In Success!';
-                                                NotiColor = 'success';
-                                                NotiIcon = 'mdi-check-circle-outline';
-                                                snackbar = true;
-                                            } else {
-                                                NotiText = 'Sign In Failure!';
-                                                NotiColor = 'error';
-                                                NotiIcon = 'mdi-alert-circle';
-                                                snackbar = true;
-                                            }
-                                            isCardLoading = false;
-                                        });
-                                    }
-                                "
+                                        () => {
+                                            isCardLoading = true;
+                                            mySignInHandler({
+                                                email: email,
+                                                password: password,
+                                            }).then((val) => {
+                                                if (val) {
+                                                    dialogIn = false;
+                                                    NotiText = 'Sign In Success!';
+                                                    NotiColor = 'success';
+                                                    NotiIcon = 'mdi-check-circle-outline';
+                                                    snackbar = true;
+                                                } else {
+                                                    NotiText = 'Sign In Failure!';
+                                                    NotiColor = 'error';
+                                                    NotiIcon = 'mdi-alert-circle';
+                                                    snackbar = true;
+                                                }
+                                                isCardLoading = false;
+                                            });
+                                        }
+                                    "
                 >
                   Submit
                 </v-btn>
@@ -469,7 +467,6 @@ export default {
             </v-card-subtitle>
             <v-card-text>
               <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
-
                 <v-row>
                   <v-col cols="12" sm="6">
                     <v-text-field v-model="first_name" label="First Name *"></v-text-field>
@@ -504,8 +501,7 @@ export default {
                      @click="makeRegistration">Submit
               </v-btn>
               <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
-                     @click="dialogRe = false">
-                Cancel
+                     @click="dialogRe = false">Cancel
               </v-btn>
             </v-card-actions>
           </v-form>

@@ -2,8 +2,8 @@
 import {VDataTable} from "vuetify/labs/VDataTable";
 
 const {status, data, signIn, signOut} = useAuth();
-const route = useRoute()
-console.log(route.params)
+const route = useRoute();
+console.log(route.params);
 </script>
 <script lang="ts">
 export default {
@@ -64,28 +64,28 @@ export default {
       <h3 class="text-left">Information</h3>
 
       <h3 class="text-left">Tables</h3>
-      
+
       <h3 class="text-left">Menu Restrictions</h3>
       <!-- <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
-             @click="loadData"></v-btn> -->
+ @click="loadData"></v-btn> -->
       <!-- <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="dtHeaders"
-          :items="dtData"
-          :loading="dtLoading"
-          :search="dtSearch"
-          class="elevation-1"
-          item-value="id"
-          @click:row="
-                    (val, tabl) => {
-                        console.log(tabl.item.columns.location_id);
-                    }
-                "
-      >
-        <template v-slot:top>
-          <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
-        </template>
-      </v-data-table> -->
+v-model:items-per-page="itemsPerPage"
+:headers="dtHeaders"
+:items="dtData"
+:loading="dtLoading"
+:search="dtSearch"
+class="elevation-1"
+item-value="id"
+@click:row="
+        (val, tabl) => {
+            console.log(tabl.item.columns.location_id);
+        }
+    "
+>
+<template v-slot:top>
+<v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
+</template>
+</v-data-table> -->
     </v-sheet>
   </v-main>
 </template>

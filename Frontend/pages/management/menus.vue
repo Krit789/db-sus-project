@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
 
-const route = useRouter()
+const route = useRouter();
 const {status, data, signIn, signOut} = useAuth();
 useHead({
   title: "Reservation Management - Seatify Admin",
@@ -24,7 +24,7 @@ export default {
       {title: "Category", align: "start", key: "name"},
       {title: "Name", align: "end", key: "item_name"},
       {title: "Price (฿)", align: "end", key: "price"},
-      { title: "", key: "data-table-expand" },
+      {title: "", key: "data-table-expand"},
     ],
   }),
   methods: {
@@ -88,8 +88,8 @@ export default {
           :loading="dtLoading"
           :search="dtSearch"
           class="elevation-1"
-          item-value="menu_id"
           expanded="dtExpanded"
+          item-value="menu_id"
           @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.menu_id);

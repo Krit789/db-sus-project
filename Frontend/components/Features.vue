@@ -43,11 +43,7 @@ const route = useRoute();
                 :variant="'elevated'"
                 class="font-weight-bold"
                 rounded="lg"
-                @click="
-                                () => {
-                                    $router.push('/report');
-                                }
-                            "
+                @click="() => {$router.push('/report');}"
             >
               Create Report
             </v-btn>
@@ -55,7 +51,7 @@ const route = useRoute();
         </v-row>
       </v-col>
       <v-col align-self="end">
-        <v-img class="report_macbook" src="images/home/macbook_air_temp.webp" width="670"></v-img>
+        <v-img class="report_macbook" src="images/home/macbook_air_report.webp" width="670"></v-img>
       </v-col>
     </v-row>
 

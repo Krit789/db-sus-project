@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
 
-const route = useRouter()
+const route = useRouter();
 const {status, data, signIn, signOut} = useAuth();
 useHead({
   title: "Reservation Management - Seatify Admin",

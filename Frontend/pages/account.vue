@@ -39,7 +39,8 @@ export default {
         return true;
 
       return "E-Mail must be in correct format.";
-    }, async loadData() {
+    },
+    async loadData() {
       this.dtLoading = true;
       await $fetch("/api/data", {
         method: "POST",
@@ -63,7 +64,7 @@ export default {
   beforeMount() {
     this.loadData();
   },
-}
+};
 
 function toTitleCase(str) {
   return str.replace(/\w\S*/g, function (txt) {
@@ -73,7 +74,7 @@ function toTitleCase(str) {
 </script>
 
 <template>
-  <v-main class="bg-grey-lighten-4 justify-center account_main">
+  <v-main class="justify-center account_main">
     <div class="main_container mx-auto">
       <v-row class="justify-center mt-8 px-3">
         <v-col class="user_rounded">
@@ -83,7 +84,8 @@ function toTitleCase(str) {
           <!--            <h2>Welcome Back!</h2>-->
           <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
           <h3>{{ data.email }}</h3>
-          <h3 class="mt-12">You are our
+          <h3 class="mt-12">
+            You are our
             <template v-if="data.role == 'USER'">Customer</template>
             <template v-else>{{ toTitleCase(data.role) }}</template>
           </h3>
@@ -100,19 +102,19 @@ function toTitleCase(str) {
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Fulfilled Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
-                {{ dtData.filter((item) => item.res_status == 'FULFILLED').length }} reservations
+                {{ dtData.filter((item) => item.res_status == "FULFILLED").length }} reservations
               </v-card-text>
             </v-card>
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Inprogress Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
-                {{ dtData.filter((item) => item.res_status == 'INPROGRESS').length }} reservations
+                {{ dtData.filter((item) => item.res_status == "INPROGRESS").length }} reservations
               </v-card-text>
             </v-card>
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Cancelled Reservation</v-card-title>
               <v-card-text class="font-weight-regular text-h5 ml-2">
-                {{ dtData.filter((item) => item.res_status == 'CANCELLED').length }} reservations
+                {{ dtData.filter((item) => item.res_status == "CANCELLED").length }} reservations
               </v-card-text>
             </v-card>
           </v-row>

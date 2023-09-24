@@ -62,6 +62,8 @@ export default {
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
              @click="loadData"></v-btn>
+             <v-btn :disabled="dtLoading" color="success" class="ml-5 align-right mb-3" prepend-icon="mdi-plus" text="Add Branch"
+             @click="loadData"></v-btn>
       <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="dtHeaders"

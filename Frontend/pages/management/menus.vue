@@ -12,6 +12,7 @@ useHead({
 <script lang="ts">
 export default {
   data: () => ({
+    addMenuDialog: false,
     dtExpanded: [],
     dtSearch: "",
     dtIsError: false,
@@ -55,12 +56,31 @@ export default {
 </script>
 <template>
   <v-main class="">
+    <v-dialog
+      width="auto"
+      v-model="addMenuDialog"
+    >
+      <v-card width="400">
+        <v-card-title>Add Menu</v-card-title>
+        <v-card-text>
+          <v-text-field label="Name"></v-text-field>
+          
+          <v-textarea label="Description"></v-textarea><v-text-field label="Image URL"></v-text-field>
+          <v-select :items="['Not Assign','Seafood', 'Drinks', 'Dessert']" label="Category"></v-select>
+          <v-btn append-icon="mdi-plus">Create Category</v-btn>
+        </v-card-text>
+        <v-card-actions>
+        <v-btn color="success" append-icon="mdi-plus" @click="">Add</v-btn>
+          <v-btn color="primary" @click="addMenuDialog = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
     <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
              @click="loadData"></v-btn>
-             <v-btn :disabled="dtLoading" color="success" class=" ml-5 mb-3" prepend-icon="mdi-plus" text="Add Menu"></v-btn>
+             <v-btn :disabled="dtLoading" color="success" class=" ml-5 mb-3" prepend-icon="mdi-plus" text="Add Menu" @click="addMenuDialog = true"></v-btn>
       <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="dtHeaders"
@@ -90,6 +110,9 @@ export default {
                                                 {{ item.raw.item_desc }}
                                                 <br />
                                                 <b>Actions</b>
+                                                <br />
+                                                <v-icon color="info">mdi-pencil</v-icon>
+                                                <v-icon color="red">mdi-delete</v-icon>
                                             </v-col>
                                             <v-col col="12" sm="6">
                                                 <b>Image</b>

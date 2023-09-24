@@ -71,13 +71,14 @@ export default {
       width="auto"
       v-model="userAction"
     >
-      <v-card width="400">
+      <v-card width="500">
         <v-card-title>Modify User</v-card-title>
         <v-card-text>
           <v-text-field readonly label="First Name" v-model="firstName"></v-text-field>
           <v-text-field readonly label="Last Name" v-model="lastName"></v-text-field>
           <v-text-field readonly label="Phone number"  v-model="phoneNumber"></v-text-field>
           <v-select :items="['User','Manager', 'Admin']" label="Role"></v-select>
+          <v-btn append-icon="mdi-gavel" class="mr-5" color="error">Suspend User</v-btn>
           <v-btn append-icon="mdi-refresh" color="warning">Reset Password</v-btn>
         </v-card-text>
         <v-card-actions>

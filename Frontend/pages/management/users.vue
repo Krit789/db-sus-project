@@ -8,6 +8,9 @@ useHead({
   meta: [{name: "Seatify App", content: "My amazing site."}],
   link: [{rel: "icon", type: "image/png", href: "favicon.ico"}],
 });
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/users.css";
 </script>
 <script lang="ts">
 export default {
@@ -68,21 +71,21 @@ export default {
 <template>
   <v-main class="">
     <v-dialog
-      width="auto"
-      v-model="userAction"
+        v-model="userAction"
+        width="auto"
     >
       <v-card width="400">
         <v-card-title>Modify User</v-card-title>
         <v-card-text>
-          <v-text-field readonly label="First Name" v-model="firstName"></v-text-field>
-          <v-text-field readonly label="Last Name" v-model="lastName"></v-text-field>
-          <v-text-field readonly label="Phone number"  v-model="phoneNumber"></v-text-field>
+          <v-text-field v-model="firstName" label="First Name" readonly></v-text-field>
+          <v-text-field v-model="lastName" label="Last Name" readonly></v-text-field>
+          <v-text-field v-model="phoneNumber" label="Phone number" readonly></v-text-field>
           <v-select :items="['User','Manager', 'Admin']" label="Role"></v-select>
           <v-btn append-icon="mdi-refresh" color="warning">Reset Password</v-btn>
         </v-card-text>
         <v-card-actions>
-        <v-btn color="success" append-icon="mdi-check" @click="">Apply</v-btn>
-          <v-btn color="error" append-icon="mdi-cancel" @click="userAction = false">Cancel</v-btn>
+          <v-btn append-icon="mdi-check" color="success" @click="">Apply</v-btn>
+          <v-btn append-icon="mdi-cancel" color="error" @click="userAction = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -7,6 +7,9 @@ useHead({
   title: "Reservation Management - Seatify Admin",
   meta: [{name: "Seatify App", content: "My amazing site."}],
 });
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/reservation.css";
 </script>
 
 <script lang="ts">
@@ -64,8 +67,8 @@ export default {
 <template>
   <v-main class="">
     <v-dialog
-      width="auto"
-      v-model="acceptRes"
+        v-model="acceptRes"
+        width="auto"
     >
       <v-card width="400">
         <v-card-title>Accept Customer Reservations</v-card-title>
@@ -73,7 +76,7 @@ export default {
           <v-text-field label="Reservation Code"></v-text-field>
         </v-card-text>
         <v-card-actions>
-        <v-btn color="success" prepend-icon="mdi-check" @click="">Confirm</v-btn>
+          <v-btn color="success" prepend-icon="mdi-check" @click="">Confirm</v-btn>
           <v-btn color="primary" @click="acceptRes = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -83,7 +86,8 @@ export default {
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
              @click="loadData"></v-btn>
-      <v-btn :disabled="dtLoading" class="align-right mb-3 ml-5" color="green" prepend-icon="mdi-plus" text="Accept Reservation"
+      <v-btn :disabled="dtLoading" class="align-right mb-3 ml-5" color="green" prepend-icon="mdi-plus"
+             text="Accept Reservation"
              @click="acceptRes = true"></v-btn>
       <v-data-table
           v-model:items-per-page="itemsPerPage"

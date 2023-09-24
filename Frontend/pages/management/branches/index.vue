@@ -3,6 +3,9 @@ import {VDataTable} from "vuetify/labs/VDataTable";
 
 const {status, data, signIn, signOut} = useAuth();
 const route = useRouter();
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/branches.css";
 </script>
 <script lang="ts">
 export default {
@@ -59,8 +62,8 @@ export default {
 <template>
   <v-main class="">
     <v-dialog
-      width="auto"
-      v-model="addBranch"
+        v-model="addBranch"
+        width="auto"
     >
       <v-card width="400">
         <v-card-title>Add Branch</v-card-title>
@@ -71,7 +74,7 @@ export default {
           <v-text-field label="Close Time" type="time"></v-text-field>
         </v-card-text>
         <v-card-actions>
-        <v-btn color="success" append-icon="mdi-plus" @click="">Add</v-btn>
+          <v-btn append-icon="mdi-plus" color="success" @click="">Add</v-btn>
           <v-btn color="primary" @click="addBranch = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -81,7 +84,8 @@ export default {
       <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       <v-btn :disabled="dtLoading" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh"
              @click="loadData"></v-btn>
-             <v-btn :disabled="dtLoading" color="success" class="ml-5 align-right mb-3" prepend-icon="mdi-plus" text="Add Branch"
+      <v-btn :disabled="dtLoading" class="ml-5 align-right mb-3" color="success" prepend-icon="mdi-plus"
+             text="Add Branch"
              @click="addBranch = true"></v-btn>
       <v-data-table
           v-model:items-per-page="itemsPerPage"

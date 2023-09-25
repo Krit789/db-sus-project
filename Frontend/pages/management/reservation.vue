@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/management/reservation.css";
-import "~/assets/stylesheets/management/management.css";
 
 const route = useRouter();
 const {status, data, signIn, signOut} = useAuth();
@@ -11,13 +7,16 @@ useHead({
   title: "Reservation Management - Seatify Admin",
   meta: [{name: "Seatify App", content: "My amazing site."}],
 });
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/reservation.css";
+import "~/assets/stylesheets/management/management.css";
 
 </script>
 
 <script lang="ts">
 export default {
   data: () => ({
-    expand: false,
     acceptRes: false,
     dtSearch: "",
     dtIsError: false,
@@ -38,7 +37,6 @@ export default {
       {title: "Status", align: "end", key: "status"},
       {title: "No. of Customer", align: "end", key: "cus_count"},
       {title: "Table ID", align: "end", key: "table_id"},
-      {title: "", key: "data-table-expand"},
     ],
   }),
   methods: {
@@ -99,32 +97,14 @@ export default {
             :search="dtSearch"
             class="elevation-1"
             item-value="id"
-            
+            @click:row="
+                    (val, tabl) => {
+                        console.log(tabl.item.columns.res_id);
+                    }
+                "
         >
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
-          </template>
-          <template v-slot:item="row">
-            <tr class="text-end" @click="() => {
-                        console.log(row);
-                        codeDialog = !codeDialog;
-                    }">
-              <td> {{ row.item.raw.res_id }} </td>
-              <td> {{ row.item.raw.user_id}} </td>
-              <td> {{ row.item.raw.create_time}} </td>
-              <td> {{ row.item.raw.arrival}} </td>
-              <td> {{ row.item.raw.status}} </td>
-              <td> {{ row.item.raw.cus_count}} </td>
-              <td> {{ row.item.raw.table_id}} </td>
-              <td @click="row.toggleExpand(row.item.raw)"> test </td>
-            </tr>
-          </template>
-          <template v-slot:expanded-row="{ columns, item }">
-            <tr>
-                <td :colspan="columns.length" class="text-left">
-                  <p>{{ item.raw.res_id }}</p>
-                </td>
-                </tr>
           </template>
         </v-data-table>
         <v-col>

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
+import {useDisplay} from "vuetify";
+const {mobile} = useDisplay();
 
 const {status, data, signIn, signOut} = useAuth();
 const route = useRouter();
@@ -7,11 +9,16 @@ import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
 import "~/assets/stylesheets/management/branches.css";
 import "~/assets/stylesheets/management/management.css";
-
+useHead({
+  title: "Branches Management - Seatify Admin",
+  meta: [{name: "Seatify App", content: "My amazing site."}],
+});
 </script>
 <script lang="ts">
 export default {
   data: () => ({
+    tabNum: null,
+    bEditor: false,
     addBranch: false,
     dtSearch: "",
     dtErrorData: "",
@@ -80,6 +87,43 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="bEditor"
+      :width="(mobile) ? '100%' : 'auto'"
+      :fullscreen="mobile"
+      persistent
+    >
+      <v-card>
+        <v-tabs
+      v-model="tabNum"
+      bg-color="primary"
+      color="white"
+    >
+      <v-tab value="one">General</v-tab>
+      <v-tab value="two">Menus</v-tab>
+      <v-tab value="three">Tables</v-tab>
+    </v-tabs>
+
+    <v-card-text>
+      <v-window v-model="tabNum">
+        <v-window-item value="one">
+          <h3 class="text-left">General</h3>
+        </v-window-item>
+
+        <v-window-item value="two">
+          <h3 class="text-left">Menu Restriction</h3>
+        </v-window-item>
+
+        <v-window-item value="three">
+          <h3 class="text-left">Tables</h3>
+        </v-window-item>
+      </v-window>
+    </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" block @click="bEditor = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
@@ -97,7 +141,8 @@ export default {
             item-value="id"
             @click:row="
                     (val, tabl) => {
-                        $router.push('/management/branches/' + tabl.item.columns.location_id);
+                        // $router.push('/management/branches/' + tabl.item.columns.location_id);
+                        bEditor = true;
                     }
                 "
         >

@@ -80,10 +80,10 @@ export default {
         <v-card-text>
           <v-text-field v-model="firstName" label="First Name" readonly></v-text-field>
           <v-text-field v-model="lastName" label="Last Name" readonly></v-text-field>
-          <v-text-field v-model="phoneNumber" label="Phone number" readonly></v-text-field>
-          <v-select :items="['User','Manager', 'Admin']" label="Role"></v-select>
-          <v-btn append-icon="mdi-gavel" class="mr-5" color="error">Suspend User</v-btn>
-          <v-btn append-icon="mdi-refresh" color="warning">Reset Password</v-btn>
+          <v-text-field prepend-icon="mdi-phone" v-model="phoneNumber" label="Phone number" readonly></v-text-field>
+          <v-select prepend-icon="mdi-tag" :items="['User','Manager', 'Admin']" label="Role"></v-select>
+          <v-btn prepend-icon="mdi-gavel" class="mr-5" color="error">Suspend User</v-btn>
+          <v-btn prepend-icon="mdi-lock-reset" color="warning">Reset Password</v-btn>
         </v-card-text>
         <v-card-actions>
           <v-btn append-icon="mdi-check" color="success" @click="">Apply</v-btn>

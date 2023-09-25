@@ -17,6 +17,7 @@ import "~/assets/stylesheets/management/management.css";
 export default {
   data: () => ({
     acceptRes: false,
+    dtExpanded: [],
     dtSearch: "",
     dtIsError: false,
     dtErrorData: "",
@@ -36,6 +37,7 @@ export default {
       {title: "Status", align: "end", key: "status"},
       {title: "No. of Customer", align: "end", key: "cus_count"},
       {title: "Table ID", align: "end", key: "table_id"},
+      {title: "", key: "data-table-expand"},
     ],
   }),
   methods: {
@@ -95,7 +97,8 @@ export default {
             :loading="dtLoading"
             :search="dtSearch"
             class="elevation-1"
-            item-value="id"
+            expanded="dtExpanded"
+            item-value="res_id"
             @click:row="
                     (val, tabl) => {
                         console.log(tabl.item.columns.res_id);
@@ -104,6 +107,46 @@ export default {
         >
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
+          </template>
+          <template v-slot:item="{ item, index, isExpanded, toggleExpand }">
+            <tr class="text-end" @click="() => {
+                        console.log(item);
+                    }">
+              <td> {{ item.raw.res_id }} </td>
+              <td> {{ item.raw.user_id}} </td>
+              <td> {{ item.raw.create_time}} </td>
+              <td> {{ item.raw.arrival}} </td>
+              <td> {{ item.raw.status}} </td>
+              <td> {{ item.raw.cus_count}} </td>
+              <td> {{ item.raw.table_id}} </td>
+              <td @click="toggleExpand(item)"> test </td>
+            </tr>
+          </template>
+          <template v-slot:expanded-row="{ columns, item }">
+            <tr>
+              <td :colspan="columns.length" class="text-left">
+                <v-container>
+                  <v-row>
+                    <v-col>
+                      <b>Reserved By</b>
+                      <p> {{ item.raw.first_name }} {{ item.raw.last_name }}</p>
+                    </v-col>
+                    <v-col>
+                      <b>Reserved For</b>
+                      <p> Time: {{ item.raw.arrival }}<br/>Seat: {{ item.raw.cus_count }}</p>
+                    </v-col>
+                    <v-col>
+                      <b>Reserved At</b>
+                      <p> {{ item.raw.name }}</p>
+                    </v-col>
+                    <v-col>
+                      <b>Branch Address</b>
+                      <p> {{ item.raw.address }}</p>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </td>
+            </tr>
           </template>
         </v-data-table>
         <v-col>

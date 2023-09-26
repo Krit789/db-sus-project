@@ -5,6 +5,11 @@ export default defineNuxtConfig({
     app: {
         head: {
             link: [{rel: "icon", type: "image/png", href: "/favicon.ico"}],
+            script: [
+                // Polyfills for Safari 13.1 support
+                // <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at"></script>
+                { src: 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at' }
+              ]
         },
     },
     devtools: {

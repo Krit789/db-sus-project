@@ -36,7 +36,7 @@
                 { title: "Reserved On", align: "end", key: "res_on" },
                 { title: "Reserved For", align: "end", key: "arrival" },
 
-                { title: "No. of Customer", align: "end", key: "cus_count" },
+                { title: "Guests", align: "end", key: "cus_count" },
                 { title: "Table", align: "end", key: "table_id" },
                 { title: "", key: "data-table-expand" },
             ],
@@ -93,7 +93,6 @@
                     :loading="dtLoading"
                     :search="dtSearch"
                     class="elevation-1"
-                    expanded="dtExpanded"
                     item-value="res_id"
                     @click:row="
                         (val, tabl) => {
@@ -123,7 +122,7 @@
                             <td>{{ DateTime.fromSQL(item.raw.arrival).toFormat('f') }}</td>
                             <td>{{ item.raw.cus_count }}</td>
                             <td>{{ item.raw.table_id }} | <b>{{ item.raw.table_name }}</b></td>
-                            <td @click="toggleExpand(item)"><v-icon>{{ isExpanded(item) ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon></td>
+                            <td><v-btn @click="toggleExpand(item)" variant="text"><v-icon class="toggleUpDown" :class='{ "rotate": isExpanded(item) }'>mdi-chevron-down</v-icon></v-btn></td>
                         </tr>
                     </template>
                     <template v-slot:expanded-row="{ columns, item }">
@@ -164,3 +163,12 @@
         </div>
     </v-main>
 </template>
+
+<style>
+.toggleUpDown {
+    transition: transform .15s ease-in-out !important;  
+}
+
+.toggleUpDown.rotate {
+    transform: rotate(-180deg);
+}</style>

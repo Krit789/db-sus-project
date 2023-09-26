@@ -293,7 +293,7 @@ export default {
           </v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" :disable-resize-watcher="true" :disable-route-watcher="true">
+      <v-navigation-drawer v-model="drawer" disable-resize-watcher temporary disable-route-watcher>
         <div v-if="status == 'authenticated'">
           <v-list>
             <v-list-item>

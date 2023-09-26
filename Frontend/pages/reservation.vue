@@ -254,7 +254,7 @@ export default {
     },
     isDateTimeInRange() {
       const time = DateTime.fromISO(this.resDateTime);
-      const start = DateTime.now().plus({hours: 2});
+      const start = DateTime.now().plus({hours: 1});
       const end = DateTime.now().plus({days: 14});
       const interval = Interval.fromDateTimes(start, end);
 

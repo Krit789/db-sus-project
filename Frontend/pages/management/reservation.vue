@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { VDataTable } from "vuetify/labs/VDataTable";
-    import { DateTime } from 'luxon';
+    import { DateTime } from "luxon";
     const route = useRouter();
     const { status, data, signIn, signOut } = useAuth();
     useHead({
@@ -17,6 +17,9 @@
     export default {
         data: () => ({
             acceptRes: false,
+            resConfCode: '',
+            confirmCancel: false,
+            cancelResID: 0,
             dtExpanded: [],
             dtSearch: "",
             dtIsError: false,
@@ -24,20 +27,28 @@
             dtData: [],
             itemsPerPage: 10,
             dtLoading: false,
+            snackbar: false,
+            NotiColor: '',
+            timeout: 2000,
+            NotiIcon: '',
+            NotiText: '',
             dtHeaders: [
-                { title: "Status", align: "end", key: "res_status" },
                 {
                     title: "ID",
-                    align: "start",
+                    align: "center",
                     sortable: true,
                     key: "res_id",
                 },
-                { title: "User ID", align: "end", key: "user_id" },
+                { title: "User ID", align: "center", key: "user_id" },
+                { title: "First Name", align: " d-none", key: "first_name" }, // ' d-none' hides the header but keeps the search functionality
+                { title: "Last Name", align: " d-none", key: "last_name" },
                 { title: "Reserved On", align: "end", key: "res_on" },
                 { title: "Reserved For", align: "end", key: "arrival" },
-
                 { title: "Guests", align: "end", key: "cus_count" },
                 { title: "Table", align: "end", key: "table_id" },
+                { title: "Table Name", align: " d-none", key: "table_name" },
+                { title: "Location Name", align: " d-none", key: "loc_name" },
+                { title: "Status", align: "end", key: "res_status" },
                 { title: "", key: "data-table-expand" },
             ],
         }),
@@ -62,6 +73,48 @@
                         this.dtIsError = false;
                     });
             },
+            async cancelReservation(res_id: Number) {
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 2,
+                        usage: "user",
+                        res_id: res_id,
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ message }) => {
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                        this.loadData();
+                    });
+            },
+            async acceptReservation(res_code: string) {
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 1,
+                        usage: "user",
+                        res_code: res_code
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ message }) => {
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                        this.loadData();
+                    });
+            }
         },
         beforeMount() {
             this.loadData();
@@ -70,15 +123,43 @@
 </script>
 <template>
     <v-main class="management_main">
+      <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout">
+          <v-icon :icon="NotiIcon" start></v-icon>
+          {{ NotiText }}
+        </v-snackbar>
         <v-dialog v-model="acceptRes" width="auto">
             <v-card width="400">
                 <v-card-title>Accept Customer Reservations</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Reservation Code"></v-text-field>
+                    <v-text-field v-model="resConfCode" label="Reservation Code"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="success" prepend-icon="mdi-check" @click="">Confirm</v-btn>
+                    <v-btn color="success" prepend-icon="mdi-check" @click=" () => { acceptReservation(resConfCode) }">Confirm</v-btn>
                     <v-btn color="primary" @click="acceptRes = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="confirmCancel" width="375">
+            <v-card>
+                <v-card-title>Reservation Cancellation</v-card-title>
+                <v-card-subtitle>Are you sure? This action cannot be undone</v-card-subtitle>
+                <v-card-item>
+                We're going to cancel reservation id {{ cancelResID }}
+              </v-card-item>
+                <v-card-actions>
+                    <v-btn
+                        color="success"
+                        prepend-icon="mdi-check"
+                        @click="
+                            () => {
+                                cancelReservation(cancelResID);
+                                confirmCancel = false;
+                            }
+                        "
+                    >
+                        Confirm
+                    </v-btn>
+                    <v-btn color="error" prepend-icon="mdi-cancel" @click="confirmCancel = false">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -104,25 +185,45 @@
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
                     </template>
                     <template v-slot:item="{ item, toggleExpand, isExpanded }">
-                        <tr class="text-end" @click="
+                        <tr
+                            class="text-end"
+                            @click="
                                 () => {
                                     console.log(item);
-                                }">
+                                }
+                            "
+                        >
+                            <td class="text-center">{{ item.raw.res_id }}</td>
                             <td class="text-center">
-                                <v-tooltip>
+                                {{ item.raw.user_id }}
+                                <v-tooltip activator="parent" location="top">{{ item.raw.first_name + " " + item.raw.last_name }}</v-tooltip>
+                            </td>
+                            <td class="text-right">
+                                {{ DateTime.fromSQL(item.raw.res_on).toFormat("D") }}
+                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.res_on).toFormat("fff") }}</v-tooltip>
+                            </td>
+                            <td class="text-right">
+                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("D") }}
+                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.arrival).toFormat("fff") }}</v-tooltip>
+                            </td>
+                            <td>{{ item.raw.cus_count }}</td>
+                            <td class="text-right">
+                                <v-icon>mdi-identifier</v-icon>
+                                {{ item.raw.table_id }}
+                                <v-icon class="ml-2">mdi-table-furniture</v-icon>
+                                {{ item.raw.table_name }}
+                            </td>
+                            <td>
+                                <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
                                         <v-icon v-bind="props">{{ item.raw.res_status == "INPROGRESS" ? "mdi-progress-clock" : item.raw.res_status == "FULFILLED" ? "mdi-check" : item.raw.res_status == "CANCELLED" ? "mdi-close" : "mdi-help" }}</v-icon>
                                     </template>
                                     <span>{{ item.raw.res_status == "INPROGRESS" ? "In Progress" : item.raw.res_status == "FULFILLED" ? "Fulfilled" : item.raw.res_status == "CANCELLED" ? "Cancelled" : "Unknown" }}</span>
                                 </v-tooltip>
                             </td>
-                            <td>{{ item.raw.res_id }}</td>
-                            <td>{{ item.raw.user_id }}</td>
-                            <td>{{ DateTime.fromSQL(item.raw.res_on).toFormat('D') }}</td>
-                            <td>{{ DateTime.fromSQL(item.raw.arrival).toFormat('f') }}</td>
-                            <td>{{ item.raw.cus_count }}</td>
-                            <td>{{ item.raw.table_id }} | <b>{{ item.raw.table_name }}</b></td>
-                            <td><v-btn @click="toggleExpand(item)" variant="text"><v-icon class="toggleUpDown" :class='{ "rotate": isExpanded(item) }'>mdi-chevron-down</v-icon></v-btn></td>
+                            <td>
+                                <v-btn @click="toggleExpand(item)" variant="text"><v-icon class="toggleUpDown" :class="{ rotate: isExpanded(item) }">mdi-chevron-down</v-icon></v-btn>
+                            </td>
                         </tr>
                     </template>
                     <template v-slot:expanded-row="{ columns, item }">
@@ -137,8 +238,11 @@
                                         <v-col>
                                             <b>Reserved For</b>
                                             <p>
-                                              <v-icon>mdi-calendar-blank</v-icon> {{ DateTime.fromSQL(item.raw.arrival).toFormat('DDDD') }}<br />
-                                                <v-icon>mdi-clock-outline</v-icon> {{ DateTime.fromSQL(item.raw.arrival).toFormat('t') }}
+                                                <v-icon>mdi-calendar-blank</v-icon>
+                                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("DDDD") }}
+                                                <br />
+                                                <v-icon>mdi-clock-outline</v-icon>
+                                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("t") }}
                                             </p>
                                         </v-col>
                                         <v-col>
@@ -148,6 +252,27 @@
                                         <v-col>
                                             <b>Branch Address</b>
                                             <p>{{ item.raw.loc_addr }}</p>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col class="text-right">
+                                            <v-btn v-if="item.raw.res_status == 'INPROGRESS'"
+                                                color="error"
+                                                variant="text"
+                                                @click="
+                                                    () => {
+                                                        cancelResID = item.raw.res_id;
+                                                        confirmCancel = true;
+                                                    }
+                                                "
+                                            >Cancel Reservation</v-btn>
+                                            <v-btn v-if="item.raw.res_status == 'CANCELLED'"
+                                                color="error"
+                                                variant="text"
+                                                disabled
+                                            >
+                                                Cancelled
+                                            </v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -165,10 +290,11 @@
 </template>
 
 <style>
-.toggleUpDown {
-    transition: transform .15s ease-in-out !important;  
-}
+    .toggleUpDown {
+        transition: transform 0.15s ease-in-out !important;
+    }
 
-.toggleUpDown.rotate {
-    transform: rotate(-180deg);
-}</style>
+    .toggleUpDown.rotate {
+        transform: rotate(-180deg);
+    }
+</style>

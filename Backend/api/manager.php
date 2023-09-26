@@ -5,6 +5,8 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include 'check.php';
 $obj = new Database();
+ini_set('zlib.output_compression', '1');
+
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $data = json_decode(file_get_contents("php://input"));

@@ -25,18 +25,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $res_code = $data->res_code;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select('reservations', "table_id, user_id", null, "res_code={$res_code} and status = 3", null, null);
+                        $obj->select('reservations', "res_id, user_id", null, "res_code='{$res_code}' and status = 3", null, null);
                         $result = $obj->getResult();
+                        if (isset($result[0])) {
 
-                        if ($result[0] == 1) {
-
-                            $obj->update('reservations', ['status' => 1], "res_id={$id}");
+                            $obj->update('reservations', ['status' => 1], "res_id={$result[0]['res_id']}");
                             $result = $obj->getResult();
 
                             if ($result[0] == 1) {
                                 echo json_encode([
                                     'status' => 1,
-                                    'message' => "Successfully",
+                                    'message' => "Reseravtion Accepted",
                                 ], JSON_NUMERIC_CHECK);
                             } else {
                                 echo json_encode([
@@ -47,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         } else {
                             echo json_encode([
                                 'status' => 0,
-                                'message' => "Code not match"
+                                'message' => "Code not found"
                             ], JSON_NUMERIC_CHECK);
                         }
                     } else {

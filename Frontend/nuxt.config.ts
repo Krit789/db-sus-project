@@ -3,6 +3,7 @@ import vuetify from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
     app: {
+        pageTransition: { name: 'page', mode: 'out-in' },
         head: {
             link: [{rel: "icon", type: "image/png", href: "/favicon.ico"}],
             script: [

@@ -68,16 +68,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Successfully",
+                            'message' => "Cancellation Successful",
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Failed Successful",
+                            'message' => "Cancellation Failed",
                         ]);
                     } else {
                         echo json_encode([
                             'status' => 0,
-                            'message' => "Wrong ID or Role",
+                            'message' => "Insufficient Permission",
                         ]);
                     }
                     break;

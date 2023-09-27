@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
-
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
@@ -180,9 +179,9 @@ export default {
         },
       })
           .catch((error) => error.data)
-          .then(get_status);
-
-      function get_status({status: status, message: message}) {
+          .then((data) => this.get_status(data));
+    },
+      get_status({status: status, message: message}) {
         if (status == 1) {
           this.NotiText = "Registration Successful. Login with your account to begin!";
           this.NotiColor = "success";
@@ -201,8 +200,8 @@ export default {
           this.snackbar = true;
         }
         this.isCardLoading = false;
-      }
-    },
+      },
+
   },
   computed: {
     isLoginValid: function () {
@@ -399,8 +398,8 @@ export default {
         </div>
       </v-navigation-drawer>
       <div class="text-center">
-        <v-dialog v-model="dialogIn" :fullscreen="mobile">
-          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" color="">
+        <v-dialog v-model="dialogIn" :fullscreen="mobile" :width="(mobile) ? '100%' : 'auto'">
+          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
             <v-form class="justify-center" fast-fail @submit.prevent>
               <v-card-title class="mt-4 ml-4 pb-3">
                 <h1>Login</h1>

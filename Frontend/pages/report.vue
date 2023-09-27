@@ -95,7 +95,9 @@ export default {
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
           </template>
         </v-data-table>
-        <v-btn :disabled="dtLoading" class="align-right my-3" prepend-icon="" text="Get Report" @click=""></v-btn>
+        <v-btn :disabled="dtLoading" class="align-right my-3" prepend-icon="" text="Get Report" @click="
+        console.log(selectedDT);
+        "></v-btn>
       </v-sheet>
       <div class="w-100 justify-center align-center">
         <v-btn :disabled="dtLoading" :variant="'outlined'" class="align-right mb-3 w-100 mx-auto"

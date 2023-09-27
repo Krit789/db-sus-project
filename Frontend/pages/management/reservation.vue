@@ -185,17 +185,13 @@ const {mobile} = useDisplay();
                 <v-data-table
                     v-model:items-per-page="itemsPerPage"
                     :headers="dtHeaders"
+                    :multi-sort="true"
                     :items="dtData"
                     :loading="dtLoading"
                     :search="dtSearch"
                     class="elevation-1"
                     item-value="res_id"
                     :density="(mobile) ? 'compact' : 'comfortable'"
-                    @click:row="
-                        (val, tabl) => {
-                            console.log(tabl.item.columns.res_id);
-                        }
-                    "
                 >
                     <template v-slot:top>
                         <v-card elevation="0">
@@ -232,28 +228,28 @@ const {mobile} = useDisplay();
                             class="text-end table-hover"
                             @click="toggleExpand(item)"
                         >
-                            <td class="text-center">{{ item.raw.res_id }}</td>
-                            <td class="text-center">
+                            <td class="text-center td-hover">{{ item.raw.res_id }}</td>
+                            <td class="text-center td-hover">
                                 {{ item.raw.user_id }}
                                 <v-tooltip activator="parent" location="top">{{ item.raw.first_name + " " + item.raw.last_name }}</v-tooltip>
                             </td>
-                            <td class="text-left">
+                            <td class="text-left td-hover">
                                 {{ item.raw.loc_name }}
                                 <v-tooltip activator="parent" location="top">ID: {{ item.raw.loc_id }}</v-tooltip>
                             </td>
-                            <td class="text-right">
+                            <td class="text-right td-hover">
                                 {{ DateTime.fromSQL(item.raw.res_on).toFormat("D") }}
                                 <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.res_on).toFormat("fff") }}</v-tooltip>
                             </td>
-                            <td class="text-right">
+                            <td class="text-right td-hover">
                                 {{ DateTime.fromSQL(item.raw.arrival).toFormat("D") }}
                                 <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.arrival).toFormat("fff") }}</v-tooltip>
                             </td>
-                            <td>{{ item.raw.cus_count }}</td>
-                            <td class="text-right">
+                            <td class="td-hover">{{ item.raw.cus_count }}</td>
+                            <td class="text-right td-hover">
                                 {{ item.raw.table_name }}
                             </td>
-                            <td>
+                            <td class="td-hover">
                                 <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
                                         <v-icon v-bind="props">{{ item.raw.res_status == "INPROGRESS" ? "mdi-progress-clock" : item.raw.res_status == "FULFILLED" ? "mdi-check" : item.raw.res_status == "CANCELLED" ? "mdi-close" : "mdi-help" }}</v-icon>
@@ -334,13 +330,5 @@ const {mobile} = useDisplay();
 
     .toggleUpDown.rotate {
         transform: rotate(-180deg);
-    }
-    .table-hover:hover {
-        background-color: #f7f7f7 !important;
-        cursor: pointer;
-    }
-
-    .table-hover:hover td {
-        background-color: transparent !important; /* or #000 */
     }
 </style>

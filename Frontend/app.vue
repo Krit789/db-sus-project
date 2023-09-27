@@ -15,4 +15,13 @@
   opacity: 0;
   filter: blur(1rem);
 }
+
+.table-hover:hover {
+        background-color: #f7f7f7 !important;
+        cursor: pointer;
+    }
+
+.table-hover:hover .td-hover {
+        background-color: transparent !important; /* or #000 */
+    }
 </style>

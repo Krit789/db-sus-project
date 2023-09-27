@@ -611,7 +611,6 @@ export default {
                         <v-card-text>
                           {{ food.item_desc }}
                         </v-card-text>
-                        <!-- <p>{{ food.item_name }}</p> -->
                       </v-card>
                     </v-col>
                   </v-row>

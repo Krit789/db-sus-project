@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/account_index.css";
 
 const {status, data} = useAuth();
 const {mobile} = useDisplay();
 </script>
 
 <script lang="ts">
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/account_index.css";
 
 export default {
   data: () => ({

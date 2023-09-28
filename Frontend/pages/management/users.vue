@@ -1,5 +1,9 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/users.css";
+import "~/assets/stylesheets/management/management.css";
 
 const {status, data, signIn, signOut} = useAuth();
 const route = useRouter();
@@ -8,10 +12,6 @@ useHead({
   meta: [{name: "Seatify App", content: "My amazing site."}],
   link: [{rel: "icon", type: "image/png", href: "favicon.ico"}],
 });
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/management/users.css";
-import "~/assets/stylesheets/management/management.css";
 
 </script>
 <script lang="ts">

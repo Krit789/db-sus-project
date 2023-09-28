@@ -2,12 +2,12 @@
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { DateTime } from "luxon";
     import {useDisplay} from "vuetify";
-const {mobile} = useDisplay();
     import "~/assets/stylesheets/global.css";
     import "~/assets/stylesheets/index.css";
     import "~/assets/stylesheets/management/reservation.css";
     import "~/assets/stylesheets/management/management.css";
     const route = useRouter();
+    const {mobile} = useDisplay();
     const { status, data, signIn, signOut } = useAuth();
     useHead({
         title: "Reservation Management - Seatify Admin",

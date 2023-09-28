@@ -1,6 +1,10 @@
 <script lang="ts" setup>
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
+    import "~/assets/stylesheets/global.css";
+    import "~/assets/stylesheets/index.css";
+    import "~/assets/stylesheets/management/menus.css";
+    import "~/assets/stylesheets/management/management.css";
     const { mobile } = useDisplay();
     const route = useRouter();
     const { status, data, signIn, signOut } = useAuth();
@@ -8,10 +12,6 @@
         title: "Reservation Management - Seatify Admin",
         meta: [{ name: "Seatify App", content: "My amazing site." }],
     });
-    import "~/assets/stylesheets/global.css";
-    import "~/assets/stylesheets/index.css";
-    import "~/assets/stylesheets/management/menus.css";
-    import "~/assets/stylesheets/management/management.css";
 </script>
 
 <script lang="ts">

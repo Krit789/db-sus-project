@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
 definePageMeta({auth: false});
 const {status, data} = useAuth();
 useHead({
@@ -18,11 +20,6 @@ useSeoMeta({
   ogImage: "/og_image.jpg",
   twitterCard: "summary_large_image",
 });
-</script>
-
-<script lang="ts">
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
 </script>
 
 <template>

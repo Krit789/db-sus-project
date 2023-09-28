@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import {VDataTable} from "vuetify/labs/VDataTable";
 import {useDisplay} from "vuetify";
-const {mobile} = useDisplay();
-
-const {status, data, signIn, signOut} = useAuth();
-const route = useRouter();
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
 import "~/assets/stylesheets/management/branches.css";
 import "~/assets/stylesheets/management/management.css";
+const {mobile} = useDisplay();
+
+const {status, data, signIn, signOut} = useAuth();
+const route = useRouter();
 useHead({
   title: "Branches Management - Seatify Admin",
   meta: [{name: "Seatify App", content: "My amazing site."}],

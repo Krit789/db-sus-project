@@ -313,7 +313,7 @@
                     </template>
 
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                        <tr
+                        <tr v-ripple
                             class="table-hover"
                             @click="
                                 () => {

@@ -45,10 +45,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
                     $role = $user_data['role'];
                     $id = $data->location_id;
-                    $name = $data->name;
-                    $address = $data->address;
-                    $ot = $data->open_time;
-                    $ct = $data->close_time;
+                    $name = $obj -> mysqli -> real_escape_string($data->name);
+                    $address = $obj -> mysqli -> real_escape_string($data->address);
+                    $ot = $obj -> mysqli -> real_escape_string($data->open_time);
+                    $ct = $obj -> mysqli -> real_escape_string($data->close_time);
                     $status = $data->status;
 
                     if ($role == "MANAGER" || $role == "GOD") {
@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     //ต้องส่งข้อมูล location_id, name, capacity
                     $role = $user_data['role'];
                     $id = $data->location_id;
-                    $name = $data->name;
+                    $name = $obj -> mysqli -> real_escape_string($data->name);
                     $capa = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {

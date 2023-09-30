@@ -3,7 +3,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 class Database
 {
-    private $mysqli = null;
+    public $mysqli = null;
     private $result = array();
     private $conn = false;
 
@@ -114,9 +114,6 @@ class Database
                 return true;
             }
             
-
-
-
         } else {
             return false;
         }
@@ -132,14 +129,19 @@ class Database
                 $arg[] = "$key = '{$val}'";
             }
             $sql = "UPDATE $table SET " . implode(', ', $arg);
-            error_log(print_r($sql, TRUE));
             if ($where != null) {
                 $sql .= " WHERE $where";
             }
-            if ($this->mysqli->query($sql)) {
-                array_push($this->result, true);
-                return true;
-            } else {
+            try {
+                if ($this->mysqli->query($sql)) {
+                    array_push($this->result, true);
+                    return true;
+                } else {
+                    array_push($this->result, false);
+                    return false;
+                }
+            } catch (Exception $e) {
+                error_log("Error Occurred with the following query\n-- Query -----------------\n" . $sql . "\n-- Exception -------------\n" . $e . "\n-------------------------");
                 array_push($this->result, false);
                 return false;
             }

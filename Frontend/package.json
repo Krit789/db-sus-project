@@ -10,7 +10,7 @@
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\""
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.8.3",
+    "@nuxt/devtools": "^0.8.5",
     "@sidebase/nuxt-auth": "0.6.0-beta.6",
     "@types/luxon": "^3.3.2",
     "@types/node": "^18.18.1",

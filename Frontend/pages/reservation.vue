@@ -25,6 +25,14 @@
         // Add more properties as needed
     }
 
+    interface SeatObject {
+        table_id: number;
+        name: string;
+        capacity: number;
+        location_id: number;
+        // Add more properties as needed
+    }
+
     interface MenuListObject {
         id: number;
         item_name: string;
@@ -66,14 +74,14 @@
             hasLocation: false,
             locationList: [] as LocationObject[],
             menuList: [] as MenuListObject[],
-            seatList: [],
-            filterSeatList: [],
+            seatList: [] as SeatObject[],
+            filterSeatList: [] as SeatObject[],
             filterSeatCount: 0,
             branchLayout: "",
             selectedLocID: 0,
             selectedLoc: {} as LocationObject,
-            selectedTime: null as DateTime,
-            selectedSeat: null,
+            selectedTime: new Date() as DateTime,
+            selectedSeat: {} as SeatObject | null,
             foodPreOrderList: [] as MenuObject[],
             dtSearch: "",
             resDateTime: "",
@@ -681,7 +689,7 @@
                                                             <v-icon icon="mdi-sofa-single"></v-icon>
                                                             Seat
                                                         </h3>
-                                                        <p class="ml-12 text-h6 font-weight-light">{{ selectedSeat.name }}</p>
+                                                        <p class="ml-12 text-h6 font-weight-light">{{ selectedSeat?.name }}</p>
                                                     </div>
                                                 </v-card>
                                             </v-col>

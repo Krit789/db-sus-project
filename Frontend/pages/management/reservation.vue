@@ -51,7 +51,7 @@
                 { title: "Table", align: "end", key: "table_id" },
                 { title: "Table Name", align: " d-none", key: "table_name" },
                 { title: "Status", align: "end", key: "res_status" },
-            ],
+            ] as DataTableHeader[],
         }),
         methods: {
             async loadData() {
@@ -223,7 +223,7 @@
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
                     </template>
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                        <tr
+                        <tr v-ripple
                             class="text-end table-hover"
                             @click="toggleExpand(internalItem)"
                         >

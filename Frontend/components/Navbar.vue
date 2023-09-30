@@ -271,7 +271,7 @@ export default {
                             "
             >
               <p>
-                {{ data?.firstName }}
+                {{ `${data.firstName} ${data.lastName.charAt(0)}.` }}
               </p>
             </v-btn>
           </NuxtLink>

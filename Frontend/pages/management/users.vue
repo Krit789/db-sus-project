@@ -113,7 +113,6 @@ export default {
                       lastName = tabl.item.last_name
                       phoneNumber = tabl.item.telephone
                       userAction = true
-                        // console.log(tabl.item.user_id);
                     }
                 "
         >

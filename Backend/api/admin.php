@@ -54,11 +54,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "User Delete Successfully",
+                            'message' => "User Deleted Successfully",
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Server Problem",
+                            'message' => "Unable to delete user",
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -78,11 +78,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => $passowrd,
+                            'message' => $password,
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Server Problem",
+                            'message' => "Unable to reset password for this user",
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -91,10 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 4: # Administrator ต้องการเพิ่มสาขา
                     //ต้องส่งข้อมูล name, address, ot, ct #ot = open_time, ct = close_time
                     $role = $user_data['role'];
-                    $name = $data->name;
-                    $address = $data->address;
-                    $ot = $data->open_time;
-                    $ct = $data->close_time;
+                    $name = $obj -> mysqli -> real_escape_string($data->name);
+                    $address = $obj -> mysqli -> real_escape_string($data->address);
+                    $ot = $obj -> mysqli -> real_escape_string($data->open_time);
+                    $ct = $obj -> mysqli -> real_escape_string($data->close_time);
 
                     if ($role == 'GOD') {
 
@@ -102,11 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Add Location Successful'
+                            'message' => 'Location Added Successfully'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Add Location Failed Successful'
+                            'message' => 'Failed to add new location'
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 6: # Administrator ต้องการเพิ่มประเภทเมนู
                     //ต้องส่งข้อมูล name
                     $role = $user_data['role'];
-                    $name = $data->name;
+                    $name = $obj -> mysqli -> real_escape_string($data->name);
 
                     if ($role == 'GOD') {
 
@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 7: # Administrator ต้องการเพิ่มเมนู
                     //ต้องส่งข้อมูล name, price, (Optional)[desc, category_id, img_url];
                     $role = $user_data['role'];
-                    $name = $data->m_name;
+                    $name = $obj -> mysqli -> real_escape_string($data->m_name);
                     $price = $data->price;
 
                     $desc = null;
@@ -164,13 +164,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $url = null;
 
                     if (isset($data->m_desc)) {
-                        $desc = $data->m_desc;
+                        $desc = $obj -> mysqli -> real_escape_string($data->m_desc);
                     }
                     if (isset($data->m_category)) {
                         $cate_id = $data->m_category;
                     }
                     if (isset($data->img_url)) {
-                        $url = $data->img_url;
+                        $url = $obj -> mysqli -> real_escape_string($data->img_url);
                     }
 
                     if ($role == 'GOD') {
@@ -194,20 +194,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     $id = $data->menu_id;
                     $role = $user_data['role'];
-                    $name = $data->m_name;
+                    $name = $obj -> mysqli -> real_escape_string($data->m_name);
                     $price = $data->price;
                     $desc = null;
                     $cate_id = null;
                     $url = null;
 
                     if (isset($data->m_desc)) {
-                        $desc = $data->m_desc;
+                        $desc = $obj -> mysqli -> real_escape_string($data->m_desc);
                     }
                     if (isset($data->m_category)) {
                         $cate_id = $data->m_category;
                     }
                     if (isset($data->img_url)) {
-                        $url = $data->img_url;
+                        $url = $obj -> mysqli -> real_escape_string($data->img_url);
                     }
 
                     if ($role == 'GOD') {
@@ -259,11 +259,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Change Role Successful'
+                            'message' => 'Role Changed Successfully'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Change Role Failed Successful'
+                            'message' => 'Failed to change user role '
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -281,11 +281,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Add Manager to Location Successful'
+                            'message' => 'Manager Successfully Assigned to Location ID: '. $loca_id . ' .'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Add Manager to Location Failed Successful'
+                            'message' => 'Manager Assignment Failed'
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -359,8 +359,3 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     'status' => 0,
     'message' => "Access Denied"
 ]);
-// $allheaders = getallheaders();
-// $jwt = $allheaders['Authorization'];
-
-// $secret_key = "Hilal ahmad khan";
-// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

@@ -17,7 +17,6 @@
 </script>
 
 <script lang="ts">
-    import { defineComponent } from 'vue'
     interface MenuObject {
         id: number;
         item_name: string;
@@ -56,7 +55,7 @@
         delete obj[oldKey];
     }
 
-    export default defineComponent({
+    export default {
         data: () => ({
             expanded: [],
             isError: false,
@@ -73,7 +72,7 @@
             branchLayout: "",
             selectedLocID: 0,
             selectedLoc: {} as LocationObject,
-            selectedTime: null,
+            selectedTime: null as DateTime,
             selectedSeat: null,
             foodPreOrderList: [] as MenuObject[],
             dtSearch: "",
@@ -144,8 +143,8 @@
                         this.isError = true;
                         this.errorData = error.data;
                     })
-                    .then(({ message }) => {
-                        this.locationList = message;
+                    .then((response) => {
+                        this.locationList = response.message;
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -165,8 +164,8 @@
                         this.isError = true;
                         this.errorData = error.data;
                     })
-                    .then(({ message }) => {
-                        this.menuList = message;
+                    .then((response) => {
+                        this.menuList = response.message;
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -186,8 +185,8 @@
                         this.isError = true;
                         this.errorData = error.data;
                     })
-                    .then(({ message }) => {
-                        this.selectedLoc = message[0];
+                    .then((response) => {
+                        this.selectedLoc = response.message[0];
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -208,8 +207,8 @@
                         this.isError = true;
                         this.errorData = error.data;
                     })
-                    .then(({ message }) => {
-                        this.seatList = message;
+                    .then((response) => {
+                        this.seatList = response.message;
                         this.pageSpinner = false;
                         this.isError = false;
                     });
@@ -225,7 +224,7 @@
                         location_id: this.selectedLocID,
                         arrival: DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"),
                         cus_count: this.resGuest,
-                        table_id: this.selectedSeat,
+                        table_id: this.selectedSeat.table_id,
                         menu: this.foodPreOrderList,
                     },
                     lazy: true,
@@ -234,8 +233,8 @@
                         this.isError = true;
                         this.errorData = error.data;
                     })
-                    .then(({ status }) => {
-                        if (status == 1) {
+                    .then((response) => {
+                        if (response.status === 1) {
                             alert("Booking Successful");
                             this.$router.push("/");
                         } else {
@@ -296,7 +295,7 @@
             }
             this.loadLocation();
         },
-    });
+    };
 </script>
 <template>
     <v-main class="justify-center reservation_main">
@@ -477,7 +476,7 @@
                                                 type="number"
                                             ></v-text-field>
                                             <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
-                                            <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" prepend-inner-icon="mdi-sofa-single-outline"></v-select>
+                                            <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" return-object prepend-inner-icon="mdi-sofa-single-outline"></v-select>
                                         </v-col>
                                     </v-row>
                                 </v-container>
@@ -652,7 +651,7 @@
                                                             <v-icon icon="mdi-map-marker"></v-icon>
                                                             Location
                                                         </h3>
-                                                        <p>
+                                                        <p class="ml-12 text-h6 font-weight-light">
                                                             {{ selectedLoc.name }}
                                                         </p>
                                                     </div>
@@ -665,8 +664,12 @@
                                                             <v-icon icon="mdi-clock-time-three"></v-icon>
                                                             Date and Time
                                                         </h3>
-                                                        <p>
-                                                            {{ selectedTime }}
+                                                        <p class="ml-12 text-h6 font-weight-light">
+                                                            <v-icon>mdi-calendar-blank</v-icon>
+                                                            {{ DateTime.fromISO(selectedTime).toFormat("DDDD") }}
+                                                            <br />
+                                                            <v-icon>mdi-clock-outline</v-icon>
+                                                            {{ DateTime.fromISO(selectedTime).toFormat("t") }}
                                                         </p>
                                                     </div>
                                                 </v-card>
@@ -678,7 +681,7 @@
                                                             <v-icon icon="mdi-sofa-single"></v-icon>
                                                             Seat
                                                         </h3>
-                                                        <p>{{ selectedSeat }}</p>
+                                                        <p class="ml-12 text-h6 font-weight-light">{{ selectedSeat.name }}</p>
                                                     </div>
                                                 </v-card>
                                             </v-col>

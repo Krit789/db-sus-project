@@ -23,7 +23,6 @@
             confirmCancel: false as boolean,
             acceptError: "",
             cancelResID: 0,
-            dtExpanded: [],
             dtSearch: "",
             dtIsError: false,
             dtErrorData: "",

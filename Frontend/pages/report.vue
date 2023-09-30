@@ -14,15 +14,17 @@ useHead({
 </script>
 
 <script lang="ts">
-export default {
-  data: () => ({
+import Vue from "vue"
+export default defineComponent({
+  data() {
+    return {
     selectedDT: [],
     dtSearch: "",
     dtErrorData: "",
     dtIsError: false,
     dtData: [],
     itemsPerPage: 10,
-    dtLoading: false,
+    dtLoading: false as boolean,
     dtHeaders: [
       {
         title: "Location ID",
@@ -36,8 +38,8 @@ export default {
       { title: "Status", align: "end", key: "status" },
       { title: "Open", align: "end", key: "open_time" },
       { title: "Close", align: "end", key: "close_time" },
-    ],
-  }),
+    ],}
+  },
   methods: {
     async loadData() {
       this.dtLoading = true;
@@ -63,7 +65,7 @@ export default {
   beforeMount() {
     this.loadData();
   },
-};
+});
 </script>
 
 <template>

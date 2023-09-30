@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify from "vite-plugin-vuetify";
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
     app: {
@@ -27,9 +27,12 @@ export default defineNuxtConfig({
     modules: [
         "@sidebase/nuxt-auth",
         /* Treeshaking: https://next.vuetifyjs.com/en/features/treeshaking/ */
-        async (options, nuxt) => {
-            nuxt.hooks.hook("vite:extendConfig", (config) => config?.plugins?.push(vuetify()));
-        },
+        (_options, nuxt) => {
+            nuxt.hooks.hook('vite:extendConfig', (config) => {
+              // @ts-expect-error
+              config.plugins.push(vuetify({ autoImport: true }))
+            })
+          },
     ],
     auth: {
         // The module is enabled. Change this to disable the module
@@ -69,4 +72,11 @@ export default defineNuxtConfig({
         //     }
         // }
     },
+    vite: {
+        vue: {
+          template: {
+            transformAssetUrls,
+          },
+        },
+      },
 });

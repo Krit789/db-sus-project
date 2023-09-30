@@ -143,11 +143,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Add Category Menu Successful'
+                            'message' => 'Menu Category added Successfully'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Add Category Menu Failed Successful'
+                            'message' => 'Failed to add Menu Category'
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -179,11 +179,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Add Menu Successful'
+                            'message' => 'Menu Added Successfully'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Add Menu Failed Successful'
+                            'message' => 'Failed to add menu'
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -191,13 +191,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 8: # Administrator ต้องการแก้ไขข้อมูลของเมนู
                     //ต้องส่งข้อมูล menu_id, name, price, desc, category_id, img_url;
+
                     $id = $data->menu_id;
                     $role = $user_data['role'];
                     $name = $data->m_name;
                     $price = $data->price;
-                    $desc = $data->m_desc;
-                    $cate_id = $data->m_category;
-                    $url = $data->img_url;
+                    $desc = null;
+                    $cate_id = null;
+                    $url = null;
+
+                    if (isset($data->m_desc)) {
+                        $desc = $data->m_desc;
+                    }
+                    if (isset($data->m_category)) {
+                        $cate_id = $data->m_category;
+                    }
+                    if (isset($data->img_url)) {
+                        $url = $data->img_url;
+                    }
 
                     if ($role == 'GOD') {
 
@@ -205,11 +216,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Modify Menu Successful'
+                            'message' => 'Menu updated successfully!'
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Modify Menu Failed Successful'
+                            'message' => 'Failed to update this menu'
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -226,11 +237,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Menu Deleted Successfuly!"
+                            'message' => "Menu deleted successfully"
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Unable to delete this menu!"
+                            'message' => "Unable to delete this menu"
                         ]);
                     } else {
                         $ispermission = !$ispermission;

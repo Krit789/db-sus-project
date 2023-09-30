@@ -333,6 +333,48 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 14: # Administrator แก้ไขประเภทเมนู
+                    //ต้องส่งข้อมูล mc_id และ name
+                    $role = $user_data['role'];
+                    $cate_id = $data->c_id;
+                    $new_name = $obj -> mysqli -> real_escape_string($data->c_name);
+
+                    if ($role == 'GOD') {
+                        $obj->update('menu_category', ['name' => $new_name], "mc_id={$cate_id}");
+                        $res = $obj->getResult();
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Menu Category successfully renamed to \''. $c_name . '\''
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            'message' => 'Failed to rename menu category'
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 15: # Administrator ลบประเภทเมนู
+                    //ต้องส่งข้อมูล mc_id
+                    $role = $user_data['role'];
+                    $cate_id = $obj -> mysqli -> real_escape_string($data->c_id);
+
+                    if ($role == 'GOD') {
+
+                        $obj->delete("menu_category", "mc_id={$cate_id}");
+                        $result = $obj->getResult();
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "Menu Category deleted successfully"
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            'message' => "Unable to delete this menu category"
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
                 default:
                     throw new Exception('Unexpected value');
             }

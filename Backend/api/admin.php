@@ -375,6 +375,28 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 16: # Administrator เรียกดูประเภทเมนูทั้งหมด
+                    //ต้องส่งข้อมูล mc_id
+                    $role = $user_data['role'];
+
+                    if ($role == 'GOD') {
+                        $obj->select("menu_category", "mc_id `c_id`, name `c_name`", null, null, null, null, null);
+                        $result = $obj->getResult();
+
+                        if ($result)
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        else
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array()
+                            ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
                 default:
                     throw new Exception('Unexpected value');
             }

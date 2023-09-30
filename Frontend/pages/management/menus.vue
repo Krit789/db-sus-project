@@ -16,8 +16,8 @@
 
 <script lang="ts">
     interface menu_category {
-        category_id: Number;
-        name: String;
+        c_id: number;
+        c_name: string;
     }
     interface MenuItem {
         m_id: number;
@@ -32,6 +32,9 @@
     export default {
         data: () => ({
             groupBy: [{ key: "c_name", order: "asc" }] as SortItem[],
+            catRename: false,
+            catRenameMode: 0,
+            catDel: false,
             menuDialogMode: 0,
             addMenuDialog: false,
             manageCategory: false,
@@ -40,6 +43,7 @@
             menuID: 0,
             menuPrice: 69,
             menuCategoryID: 0,
+            menuCategoryName: "",
             menuImgUrl: "",
             confDel: false,
             dtSearch: "",
@@ -56,7 +60,7 @@
             NotiIcon: "",
             NotiText: "",
             dtHeaders: [
-                { title: "Menu ID", align: "start", key: "m_id" },
+                // { title: "Menu ID", align: "start", key: "m_id" },
                 // { title: "Menu Description", align: " d-none", key: "item_desc" },
                 // { title: "Category", align: " d-none", key: "name" },
                 { title: "Name", align: "start", key: "m_name" },
@@ -82,24 +86,26 @@
                         this.dtData = message;
                         this.dtLoading = false;
                         this.dtIsError = false;
-                        const uniquePairsMap = new Map();
-
-                        // Iterate through the JSON data and add unique pairs to the map
-                        this.dtData.forEach((item) => {
-                            const { c_id, c_name } = item;
-                            const key = `${c_id}_${c_name}`;
-
-                            // Check if the key is not already in the map
-                            if (!uniquePairsMap.has(key)) {
-                                uniquePairsMap.set(key, { c_id, c_name });
-                            }
-                        });
-                        uniquePairsMap.set("unassign", { c_id: 0, c_name: "Uncategorized" });
-                        // Convert the map values (unique pairs) to an array
-                        const uniquePairsArray = Array.from(uniquePairsMap.values());
-
-                        // Assign the unique pairs
-                        this.menuCategory = uniquePairsArray;
+                    });
+            },
+            async loadCategoryData() {
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 16,
+                        usage: "admin",
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ status, message }) => {
+                        this.menuCategory = message;
+                        this.dtLoading = false;
+                        this.dtIsError = false;
                     });
             },
             async deleteMenu(menu_id: number) {
@@ -135,15 +141,14 @@
                         this.loadData();
                     });
             },
-
-            async addCategory(cat_name: string) {
+            async deleteCategory(cat_id: number) {
                 this.dtLoading = true;
                 await $fetch("/api/data", {
                     method: "POST",
                     body: {
-                        type: 6,
+                        type: 15,
                         usage: "admin",
-                        menu_id: cat_name,
+                        c_id: cat_id,
                     },
                     lazy: true,
                 })
@@ -165,7 +170,49 @@
                             this.NotiIcon = "mdi-check";
                             this.NotiText = message;
                         }
-                        // this.confDel = false;
+                        this.catDel = false;
+                        this.loadCategoryData();
+                        this.loadData();
+                    });
+            },
+            async managCategory(cat_id: number, cat_name: string) {
+                this.dtLoading = true;
+
+                let catQuery = {
+                    usage: "admin",
+                    c_name: cat_name
+                };
+                if (cat_id > 0) {
+                    catQuery = Object.assign({}, catQuery, { c_id: cat_id, type: 14 });
+                } else {
+                    catQuery = Object.assign({}, catQuery, { type: 6 });
+                }
+
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: catQuery,
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ status, message }) => {
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                        if (status == 0) {
+                            this.snackbar = true;
+                            this.NotiColor = "error";
+                            this.NotiIcon = "mdi-alert";
+                            this.NotiText = message;
+                        } else if (status == 1) {
+                            this.snackbar = true;
+                            this.NotiColor = "success";
+                            this.NotiIcon = "mdi-check";
+                            this.NotiText = message;
+                        }
+                        this.catRename = false;
+                        this.loadCategoryData();
                         this.loadData();
                     });
             },
@@ -177,9 +224,9 @@
                     price: menu_price,
                 };
                 if (menu_id > 0) {
-                    menuQuery = Object.assign({}, menuQuery, { menu_id: menu_id, type : 8 });
+                    menuQuery = Object.assign({}, menuQuery, { menu_id: menu_id, type: 8 });
                 } else {
-                    menuQuery = Object.assign({}, menuQuery, { type : 7 });
+                    menuQuery = Object.assign({}, menuQuery, { type: 7 });
                 }
                 if (menu_desc) {
                     menuQuery = Object.assign({}, menuQuery, { m_desc: menu_desc });
@@ -230,6 +277,7 @@
 
         beforeMount() {
             this.loadData();
+            this.loadCategoryData();
         },
     };
 </script>
@@ -241,7 +289,7 @@
         </v-snackbar>
         <v-dialog v-model="addMenuDialog" :width="mobile ? '100%' : 'auto'" :fullscreen="mobile">
             <v-card :width="mobile ? 'auto' : '400px'">
-                <v-card-title v-text="(menuDialogMode == 0) ? 'Add Menu' : 'Edit Menu'"></v-card-title>
+                <v-card-title v-text="menuDialogMode == 0 ? 'Add Menu' : 'Edit Menu'"></v-card-title>
                 <v-form
                     fast-fail
                     @submit.prevent
@@ -258,10 +306,10 @@
                         <v-text-field :prefix="'฿'" min="1" oninput="validity.valid || (value=1)" type="number" :rules="[priceRule]" v-model="menuPrice" label="Price"></v-text-field>
                         <v-text-field v-model="menuImgUrl" label="Image URL"></v-text-field>
                         <v-select v-model="menuCategoryID" hide-details :items="menuCategory" item-title="c_name" item-value="c_id" label="Category"></v-select>
-                        <v-btn class="mt-4" variant="text" color="warning" append-icon="mdi-shape">Manage Category</v-btn>
+                        <v-btn class="mt-4" variant="text" color="warning" append-icon="mdi-shape" @click="manageCategory = true">Manage Category</v-btn>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn :append-icon="(menuDialogMode == 0) ? 'mdi-add' : 'mdi-content-save'" type="submit" :disabled="!menuName" color="success" :text="(menuDialogMode == 0) ? 'Add' : 'Save'"></v-btn>
+                        <v-btn :append-icon="menuDialogMode == 0 ? 'mdi-add' : 'mdi-content-save'" type="submit" :disabled="!menuName" color="success" :text="menuDialogMode == 0 ? 'Add' : 'Save'"></v-btn>
                         <v-btn
                             color="primary"
                             @click="
@@ -274,6 +322,64 @@
                         </v-btn>
                     </v-card-actions>
                 </v-form>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="manageCategory" :width="mobile ? '100%' : 'auto'" :fullscreen="mobile">
+            <v-card :width="mobile ? 'auto' : '450px'">
+                <v-card-title>Manage Category</v-card-title>
+                <v-card-text>
+                    <v-table height="70vh" class="overflow-auto">
+                        <thead>
+                            <tr>
+                                <th class="text-left">ID</th>
+                                <th class="text-left">Name</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in menuCategory" :key="item.c_id">
+                                <td>{{ item.c_id }}</td>
+                                <td>{{ item.c_name }}</td>
+                                <td class="text-right" v-show="item.c_id !== 0">
+                                    <v-tooltip location="top">
+                                        <template v-slot:activator="{ props }">
+                                            <v-btn color="info" variant="text" v-bind="props" @click="() => {
+                                                menuCategoryName = item.c_name;
+                                                menuCategoryID = item.c_id;
+                                                catRenameMode = 0;
+                                                catRename = true;
+                                            }">
+                                                <v-icon>mdi-pencil</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Rename</span>
+                                    </v-tooltip>
+                                    <v-tooltip location="top">
+                                        <template v-slot:activator="{ props }">
+                                            <v-btn color="red" variant="text" v-bind="props" @click="() => {
+                                                menuCategoryID = item.c_id;
+                                                menuCategoryName = item.c_name;
+                                                catDel = true;
+                                            }">
+                                                <v-icon v-bind="props">mdi-delete</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Delete</span>
+                                    </v-tooltip>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </v-table>
+                    <v-btn class="mt-3" prepend-icon="mdi-plus" variant="text" @click="() => {
+                                                menuCategoryName = '';
+                                                menuCategoryID = -1;
+                                                catRenameMode = 1;
+                                                catRename = true;
+                                            }">Create Category</v-btn>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn @click="manageCategory = false">Close</v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="confDel" :width="'auto'">
@@ -302,6 +408,50 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="catDel" :width="'auto'">
+            <v-card :width="mobile ? 'auto' : '400px'">
+                <v-card-title>Category Deletion</v-card-title>
+                <v-card-text>
+                    Are you sure that you want to delete
+                    <b>{{ menuCategoryName }}</b>? This deletion will remove all previously set category in the menus
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        prepend-icon="mdi-check"
+                        color="success"
+                        @click="
+                            () => {
+                                deleteCategory(menuCategoryID);
+                            }
+                        "
+                    >
+                        Confirm
+                    </v-btn>
+                    <v-btn prepend-icon="mdi-cancel" color="error" @click="catDel = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="catRename" :width="'auto'">
+            <v-card :width="mobile ? 'auto' : '400px'">
+                <v-card-title>{{ (catRenameMode === 0) ? 'Rename Category' : 'Create Category' }}</v-card-title>
+                <v-card-text>
+                    <v-text-field label="Category Name" v-model="menuCategoryName"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        :prepend-icon="(catRenameMode === 0) ? 'mdi-content-save' : 'mdi-check'"
+                        color="success"
+                        @click="
+                            () => {
+                                managCategory(menuCategoryID, menuCategoryName);
+                            }
+                        "
+                    >{{ (catRenameMode == 0) ? 'Save' : 'Create' }}
+                    </v-btn>
+                    <v-btn prepend-icon="mdi-cancel" color="error" @click="catRename = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <div class="main_container management_container mx-auto blur-effect">
             <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
             <v-sheet class="mt-8 ma-md-8 ma-sm-5" rounded="lg">
@@ -313,7 +463,8 @@
                     </template>
 
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                        <tr v-ripple
+                        <tr
+                            v-ripple
                             class="table-hover"
                             @click="
                                 () => {
@@ -322,7 +473,7 @@
                             "
                         >
                             <td class="text-start td-hover"></td>
-                            <td class="text-start td-hover">{{ item.m_id }}</td>
+                            <!-- <td class="text-start td-hover">{{ item.m_id }}</td> -->
                             <td class="text-start td-hover">{{ item.m_name }}</td>
                             <td class="text-start td-hover">{{ item.m_price }} ฿</td>
                         </tr>
@@ -334,6 +485,10 @@
                                 <v-container>
                                     <v-row>
                                         <v-col col="12" sm="6">
+                                            <b>Menu ID</b>
+                                            <br />
+                                            {{ item.m_id }}
+                                            <br />
                                             <b>Description</b>
                                             <br />
                                             {{ item.m_desc }}
@@ -347,14 +502,14 @@
                                                 prepend-icon="mdi-pencil"
                                                 @click="
                                                     () => {
-                                                        menuDialogMode = 1
+                                                        menuDialogMode = 1;
                                                         menuName = item.m_name;
                                                         menuDesc = item.m_desc;
                                                         menuID = item.m_id;
                                                         menuPrice = item.m_price;
                                                         menuImgUrl = item.m_img;
                                                         menuCategoryID = item.c_id;
-                                                        addMenuDialog = true
+                                                        addMenuDialog = true;
                                                     }
                                                 "
                                             >
@@ -406,14 +561,28 @@
                 </v-data-table>
                 <v-col class="pt-5 text-center">
                     <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>
-                    <v-btn :disabled="dtLoading" :variant="'tonal'" class="ml-5 mb-3" color="success" prepend-icon="mdi-plus" rounded="lg" text="Add Menu" @click="() => {menuDialogMode = 0;
-                    menuID = -1;
-                                                        menuName = '';
-                                                        menuDesc = '';
-                                                        menuID = 0;
-                                                        menuPrice = 0;
-                                                        menuImgUrl = '';
-                                                        menuCategoryID = 0; addMenuDialog = true}"></v-btn>
+                    <v-btn
+                        :disabled="dtLoading"
+                        :variant="'tonal'"
+                        class="ml-5 mb-3"
+                        color="success"
+                        prepend-icon="mdi-plus"
+                        rounded="lg"
+                        text="Add Menu"
+                        @click="
+                            () => {
+                                menuDialogMode = 0;
+                                menuID = -1;
+                                menuName = '';
+                                menuDesc = '';
+                                menuID = 0;
+                                menuPrice = 0;
+                                menuImgUrl = '';
+                                menuCategoryID = 0;
+                                addMenuDialog = true;
+                            }
+                        "
+                    ></v-btn>
                     <v-btn :disabled="dtLoading" :variant="'tonal'" class="ml-5 mb-3" color="warning" prepend-icon="mdi-shape" rounded="lg" text="Manage Category" @click="manageCategory = true"></v-btn>
                 </v-col>
             </v-sheet>

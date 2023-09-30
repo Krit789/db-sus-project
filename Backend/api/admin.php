@@ -250,12 +250,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 10: # Administrator กำหนดหน้าที่ของ user
                     //ต้องส่งข้อมูล user_id, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
                     $role = $user_data['role'];
-                    $role_user = $data->role_user;
-                    $id = $user_data['user_id'];
+                    $user_role = $data->u_role;
+                    $id = $data->u_id;
 
                     if ($role == 'GOD') {
 
-                        $obj->update('users', ['role' => $role_user], "user_id={$id}");
+                        $obj->update('users', ['role' => $user_role], "user_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,

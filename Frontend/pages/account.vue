@@ -79,7 +79,7 @@ function toTitleCase(str) {
       <v-row class="justify-center mt-8 px-3">
         <v-col class="user_rounded">
           <div class="justify-center">
-            <v-img class="mt-5 bg-white ma-2 user_image" cover="" src="ejudge_avatar280.png" width="170"></v-img>
+            <v-img class="mt-5 bg-white ma-2 user_image" src="/ejudge_avatar280.png" width="170"></v-img>
           </div>
           <!--            <h2>Welcome Back!</h2>-->
           <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>

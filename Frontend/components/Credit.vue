@@ -16,7 +16,7 @@ export default {
   <v-footer class="d-flex flex-column pt-5 credit_container">
     <h1 style="font-size: 42px">About Us</h1>
     <v-img alt="Image Description" class="w-100 mt-1 mb-5" height="auto" max-width="8%" min-width="100px"
-           src="images/rainbow-line.webp"></v-img>
+           src="/images/rainbow-line.webp"></v-img>
     <v-row no-gutters>
       <v-col :cols="credCols[0]">
         <v-card class="ma-2 pa-2 contact_card_box">
@@ -24,7 +24,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/05_Mark.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/05_Mark.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col class="profile_contact_container" cols="12" md="6">
@@ -45,7 +45,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/28_Bess.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/28_Bess.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -67,7 +67,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/30_Krit.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/30_Krit.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -88,7 +88,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/35_Jai.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/35_Jai.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -110,7 +110,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/64_Japan.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/64_Japan.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">
@@ -131,7 +131,7 @@ export default {
             <v-row class="profile_row_card">
               <v-col class="profile_img_left" cols="12" md="6">
                 <div class="profile_img_container mx-auto">
-                  <v-avatar class="profile_img" image="images/credit/89_Tae.webp"></v-avatar>
+                  <v-avatar class="profile_img" image="/images/credit/89_Tae.webp"></v-avatar>
                 </div>
               </v-col>
               <v-col cols="12" md="6">

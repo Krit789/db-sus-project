@@ -24,7 +24,7 @@ useSeoMeta({
 
 <template>
   <v-main class="mt-n16">
-    <v-parallax src="images/home/banner.webp">
+    <v-parallax src="/images/home/banner.webp">
       <div class="text-center mt-16 first-box">
         <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
         <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>

@@ -14,7 +14,7 @@ const route = useRoute();
           <p class="inner_text">หาร้านอาหารร้านโปรดที่คุณชื่นชอบได้ในพริบตาเดียว เพียงแค่คุณค้นหาชื่อของร้านเท่านั้น</p>
         </div>
         <div class="title_body">
-          <v-img class="map_img" height="640" src="images/home/PChang_Apple_Map.webp"></v-img>
+          <v-img class="map_img" height="640" src="/images/home/PChang_Apple_Map.webp"></v-img>
         </div>
       </v-col>
       <v-col class="feature_rounded">
@@ -23,7 +23,7 @@ const route = useRoute();
         </div>
 
         <div class="title_body pin_location_body">
-          <v-img class="icon_img" max-height="350" src="images/home/Swensens.webp"></v-img>
+          <v-img class="icon_img" max-height="350" src="/images/home/Swensens.webp"></v-img>
           <h1 class="icon_text">สำรวจร้านอาหารชั้นเลิศรอบตัวคุณ!</h1>
         </div>
       </v-col>
@@ -51,7 +51,7 @@ const route = useRoute();
         </v-row>
       </v-col>
       <v-col align-self="end">
-        <v-img class="report_macbook" src="images/home/macbook_air_report.webp" width="670"></v-img>
+        <v-img class="report_macbook" src="/images/home/macbook_air_report.webp" width="670"></v-img>
       </v-col>
     </v-row>
 

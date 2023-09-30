@@ -17,19 +17,26 @@
 <script lang="ts">
     export default {
         data: () => ({
-            groupBy: [{ key: 'name', order: 'asc' }],
+            groupBy: [{ key: "name", order: "asc" }],
             addMenuDialog: false,
-            dtExpanded: [],
+            menuDeleteName: "",
+            menuDeleteID: 0,
+            confDel: false,
             dtSearch: "",
             dtIsError: false,
             dtErrorData: "",
             dtData: [],
             itemsPerPage: 10,
             dtLoading: false,
+            snackbar: false,
+            NotiColor: "",
+            timeout: 2000,
+            NotiIcon: "",
+            NotiText: "",
             dtHeaders: [
                 { title: "Menu ID", align: "start", key: "menu_id" },
-                { title: "Menu Description", align: " d-none", key: "item_desc" },
-                { title: "Category", align: " d-none", key: "name" },
+                // { title: "Menu Description", align: " d-none", key: "item_desc" },
+                // { title: "Category", align: " d-none", key: "name" },
                 { title: "Name", align: "start", key: "item_name" },
                 { title: "Price", align: "start", key: "price" },
             ],
@@ -55,7 +62,41 @@
                         this.dtIsError = false;
                     });
             },
+            async deleteMenu(menu_id: Number) {
+                this.dtLoading = true;
+                await $fetch("/api/data", {
+                    method: "POST",
+                    body: {
+                        type: 9,
+                        usage: "admin",
+                        menu_id: menu_id,
+                    },
+                    lazy: true,
+                })
+                    .catch((error) => {
+                        this.dtIsError = true;
+                        this.dtErrorData = error.data;
+                    })
+                    .then(({ status, message }) => {
+                        this.dtLoading = false;
+                        this.dtIsError = false;
+                        if (status == 0) {
+                            this.snackbar = true;
+                            this.NotiColor = "error";
+                            this.NotiIcon = "mdi-alert";
+                            this.NotiText = message;
+                        } else if (status == 1) {
+                            this.snackbar = true;
+                            this.NotiColor = "success";
+                            this.NotiIcon = "mdi-check";
+                            this.NotiText = message;
+                        }
+                        this.confDel = false;
+                        this.loadData();
+                    });
+            },
         },
+
         beforeMount() {
             this.loadData();
         },
@@ -63,8 +104,12 @@
 </script>
 <template>
     <v-main class="management_main">
-        <v-dialog v-model="addMenuDialog" :width="(mobile) ? '100%' : 'auto'" :fullscreen="mobile">
-            <v-card :width="(mobile) ? 'auto' : '400px'">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
+            <v-icon :icon="NotiIcon" start></v-icon>
+            {{ NotiText }}
+        </v-snackbar>
+        <v-dialog v-model="addMenuDialog" :width="mobile ? '100%' : 'auto'" :fullscreen="mobile">
+            <v-card :width="mobile ? 'auto' : '400px'">
                 <v-card-title>Add Menu</v-card-title>
                 <v-card-text>
                     <v-text-field label="Name"></v-text-field>
@@ -80,9 +125,35 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="confDel" :width="'auto'">
+            <v-card :width="mobile ? 'auto' : '400px'">
+                <v-card-title>Menu Deletion</v-card-title>
+                <v-card-text>
+                    Are you sure that you want to delete
+                    <br />
+                    <b>{{ menuDeleteName }}</b>
+                    ?
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        prepend-icon="mdi-check"
+                        color="success"
+                        @click="
+                            () => {
+                                deleteMenu(menuDeleteID);
+                                menuDeleteID = 0;
+                            }
+                        "
+                    >
+                        Confirm
+                    </v-btn>
+                    <v-btn prepend-icon="mdi-cancel" color="error" @click="confDel = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <div class="main_container management_container mx-auto blur-effect">
             <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
-            <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+            <v-sheet class="mt-8 ma-md-8 ma-sm-5" rounded="lg">
                 <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
 
                 <v-data-table
@@ -106,10 +177,16 @@
                     </template>
 
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                        <tr class="table-hover" @click="() => {toggleExpand(internalItem)}">
-                          <td class="text-start td-hover"></td>
+                        <tr
+                            class="table-hover"
+                            @click="
+                                () => {
+                                    toggleExpand(internalItem);
+                                }
+                            "
+                        >
+                            <td class="text-start td-hover"></td>
                             <td class="text-start td-hover">{{ item.menu_id }}</td>
-                            <!-- <td class="text-start td-hover">{{ item.name }}</td> -->
                             <td class="text-start td-hover">{{ item.item_name }}</td>
                             <td class="text-start td-hover">{{ item.price }} ฿</td>
                         </tr>
@@ -129,7 +206,20 @@
                                             <b>Actions</b>
                                             <br />
                                             <v-btn variant="text" color="info" prepend-icon="mdi-pencil">Edit Menu</v-btn>
-                                            <v-btn variant="text" color="red" prepend-icon="mdi-delete">Remove Menu</v-btn>
+                                            <v-btn
+                                                variant="text"
+                                                color="red"
+                                                prepend-icon="mdi-delete"
+                                                @click="
+                                                    () => {
+                                                        menuDeleteID = item.menu_id;
+                                                        menuDeleteName = item.item_name;
+                                                        confDel = true;
+                                                    }
+                                                "
+                                            >
+                                                Remove Menu
+                                            </v-btn>
                                         </v-col>
                                         <v-col cols="12" md="4" sm="6">
                                             <b>Preview</b>
@@ -160,7 +250,7 @@
                         </tr>
                     </template>
                 </v-data-table>
-                <v-col class="pt-5">
+                <v-col class="pt-5 text-center">
                     <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>
                     <v-btn :disabled="dtLoading" :variant="'tonal'" class="ml-5 mb-3" color="success" prepend-icon="mdi-plus" rounded="lg" text="Add Menu" @click="addMenuDialog = true"></v-btn>
                 </v-col>

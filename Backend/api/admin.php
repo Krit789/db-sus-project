@@ -226,11 +226,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Delete Menu Successful"
+                            'message' => "Menu Deleted Successfuly!"
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Delete Menu Falied Successful"
+                            'message' => "Unable to delete this menu!"
                         ]);
                     } else {
                         $ispermission = !$ispermission;

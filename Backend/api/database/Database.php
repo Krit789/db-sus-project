@@ -100,15 +100,23 @@ class Database
                 $sql .= " LIMIT $limit";
             // error_log($sql); #ดูคำสั่ง sql ปิดๆ
             // echo $sql; #ดูคำสั่ง sql ปิดๆ
-            $query = $this->mysqli->query($sql);
-
-
-            if ($query) {
-                $this->result = $query->fetch_all(MYSQLI_ASSOC);
+            try {
+                $query = $this->mysqli->query($sql);
+                if ($query) {
+                    $this->result = $query->fetch_all(MYSQLI_ASSOC);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
+                error_log("Error Occurred with the following query\n-- Query -----------------\n" . $sql . "\n-- Exception -------------\n" . $e . "\n-------------------------");
+                $this->result = "{$e}";
                 return true;
-            } else {
-                return false;
             }
+            
+
+
+
         } else {
             return false;
         }

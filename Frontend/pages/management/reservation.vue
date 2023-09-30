@@ -223,45 +223,40 @@
                         </v-card>
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
                     </template>
-                    <template v-slot:item="{ item, toggleExpand, isExpanded }">
+                    <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                         <tr
                             class="text-end table-hover"
-                            @click="toggleExpand(item)"
+                            @click="toggleExpand(internalItem)"
                         >
-                            <td class="text-center td-hover">{{ item.raw.res_id }}</td>
+                            <td class="text-center td-hover">{{ item.res_id }}</td>
                             <td class="text-center td-hover">
-                                {{ item.raw.user_id }}
-                                <v-tooltip activator="parent" location="top">{{ item.raw.first_name + " " + item.raw.last_name }}</v-tooltip>
+                                {{ item.user_id }}
+                                <v-tooltip activator="parent" location="top">{{ item.first_name + " " + item.last_name }}</v-tooltip>
                             </td>
                             <td class="text-left td-hover">
-                                {{ item.raw.loc_name }}
-                                <v-tooltip activator="parent" location="top">ID: {{ item.raw.loc_id }}</v-tooltip>
+                                {{ item.loc_name }}
+                                <v-tooltip activator="parent" location="top">ID: {{ item.loc_id }}</v-tooltip>
                             </td>
                             <td class="text-right td-hover">
-                                {{ DateTime.fromSQL(item.raw.res_on).toFormat("D") }}
-                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.res_on).toFormat("fff") }}</v-tooltip>
+                                {{ DateTime.fromSQL(item.res_on).toFormat("D") }}
+                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.res_on).toFormat("fff") }}</v-tooltip>
                             </td>
                             <td class="text-right td-hover">
-                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("D") }}
-                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.raw.arrival).toFormat("fff") }}</v-tooltip>
+                                {{ DateTime.fromSQL(item.arrival).toFormat("D") }}
+                                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.arrival).toFormat("fff") }}</v-tooltip>
                             </td>
-                            <td class="td-hover">{{ item.raw.cus_count }}</td>
+                            <td class="td-hover">{{ item.cus_count }}</td>
                             <td class="text-right td-hover">
-                                {{ item.raw.table_name }}
+                                {{ item.table_name }}
                             </td>
                             <td class="td-hover">
                                 <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
-                                        <v-icon v-bind="props">{{ item.raw.res_status == "INPROGRESS" ? "mdi-progress-clock" : item.raw.res_status == "FULFILLED" ? "mdi-check" : item.raw.res_status == "CANCELLED" ? "mdi-close" : "mdi-help" }}</v-icon>
+                                        <v-icon v-bind="props">{{ item.res_status == "INPROGRESS" ? "mdi-progress-clock" : item.res_status == "FULFILLED" ? "mdi-check" : item.res_status == "CANCELLED" ? "mdi-close" : "mdi-help" }}</v-icon>
                                     </template>
-                                    <span>{{ item.raw.res_status == "INPROGRESS" ? "In Progress" : item.raw.res_status == "FULFILLED" ? "Fulfilled" : item.raw.res_status == "CANCELLED" ? "Cancelled" : "Unknown" }}</span>
+                                    <span>{{ item.res_status == "INPROGRESS" ? "In Progress" : item.res_status == "FULFILLED" ? "Fulfilled" : item.res_status == "CANCELLED" ? "Cancelled" : "Unknown" }}</span>
                                 </v-tooltip>
                             </td>
-                            <!-- <td>
-                                <v-col>
-                                    <v-btn @click="toggleExpand(item)" variant="text"><v-icon class="toggleUpDown" :class="{ rotate: isExpanded(item) }">mdi-chevron-down</v-icon></v-btn>
-                                </v-col>
-                            </td> -->
                         </tr>
                     </template>
                     <template v-slot:expanded-row="{ columns, item }">
@@ -271,43 +266,43 @@
                                     <v-row>
                                         <v-col>
                                             <b>Reserved By</b>
-                                            <p>{{ item.raw.first_name }} {{ item.raw.last_name }}</p>
+                                            <p>{{ item.first_name }} {{ item.last_name }}</p>
                                         </v-col>
                                         <v-col>
                                             <b>Reserved For</b>
                                             <p>
                                                 <v-icon>mdi-calendar-blank</v-icon>
-                                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("DDDD") }}
+                                                {{ DateTime.fromSQL(item.arrival).toFormat("DDDD") }}
                                                 <br />
                                                 <v-icon>mdi-clock-outline</v-icon>
-                                                {{ DateTime.fromSQL(item.raw.arrival).toFormat("t") }}
+                                                {{ DateTime.fromSQL(item.arrival).toFormat("t") }}
                                             </p>
                                         </v-col>
                                         <v-col>
                                             <b>Reserved At</b>
-                                            <p>{{ item.raw.loc_name }}</p>
+                                            <p>{{ item.loc_name }}</p>
                                         </v-col>
                                         <v-col>
                                             <b>Branch Address</b>
-                                            <p>{{ item.raw.loc_addr }}</p>
+                                            <p>{{ item.loc_addr }}</p>
                                         </v-col>
                                     </v-row>
                                     <v-row>
                                         <v-col class="text-right">
                                             <v-btn
-                                                v-if="item.raw.res_status == 'INPROGRESS'"
+                                                v-if="item.res_status == 'INPROGRESS'"
                                                 color="error"
                                                 variant="text"
                                                 @click="
                                                     () => {
-                                                        cancelResID = item.raw.res_id;
+                                                        cancelResID = item.res_id;
                                                         confirmCancel = true;
                                                     }
                                                 "
                                             >
                                                 Cancel Reservation
                                             </v-btn>
-                                            <v-btn v-if="item.raw.res_status == 'CANCELLED'" color="error" variant="text" disabled>Cancelled</v-btn>
+                                            <v-btn v-if="item.res_status == 'CANCELLED'" color="error" variant="text" disabled>Cancelled</v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-container>

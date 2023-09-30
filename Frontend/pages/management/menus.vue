@@ -105,13 +105,13 @@
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
                     </template>
 
-                    <template v-slot:item="{ item, toggleExpand, isExpanded }">
-                        <tr class="table-hover" @click="toggleExpand(item)">
+                    <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
+                        <tr class="table-hover" @click="() => {toggleExpand(internalItem)}">
                           <td class="text-start td-hover"></td>
-                            <td class="text-start td-hover">{{ item.raw.menu_id }}</td>
-                            <!-- <td class="text-start td-hover">{{ item.raw.name }}</td> -->
-                            <td class="text-start td-hover">{{ item.raw.item_name }}</td>
-                            <td class="text-start td-hover">{{ item.raw.price }} ฿</td>
+                            <td class="text-start td-hover">{{ item.menu_id }}</td>
+                            <!-- <td class="text-start td-hover">{{ item.name }}</td> -->
+                            <td class="text-start td-hover">{{ item.item_name }}</td>
+                            <td class="text-start td-hover">{{ item.price }} ฿</td>
                         </tr>
                     </template>
 
@@ -123,7 +123,7 @@
                                         <v-col col="12" sm="6">
                                             <b>Description</b>
                                             <br />
-                                            {{ item.raw.item_desc }}
+                                            {{ item.item_desc }}
                                             <br />
                                             <br />
                                             <b>Actions</b>
@@ -135,22 +135,22 @@
                                             <b>Preview</b>
                                             <br />
                                             <v-card elevation="4" v-ripple class="text-center">
-                                                <v-img :src="item.raw.img_url ? item.raw.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" cover aspect="16/9" height="300">
+                                                <v-img :src="item.img_url ? item.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" cover aspect="16/9" height="300">
                                                     <template v-slot:error>
                                                         <v-img cover height="300" src="https://picsum.photos/500/300?image=232" width="300"></v-img>
                                                     </template>
                                                 </v-img>
                                                 <v-card-title>
-                                                    {{ item.raw.item_name }}
+                                                    {{ item.item_name }}
                                                 </v-card-title>
                                                 <v-card-subtitle>
                                                     <v-chip color="warning">
-                                                        {{ item.raw.name }}
+                                                        {{ item.name }}
                                                     </v-chip>
-                                                    <v-chip color="info">{{ item.raw.price }}฿</v-chip>
+                                                    <v-chip color="info">{{ item.price }}฿</v-chip>
                                                 </v-card-subtitle>
                                                 <v-card-text>
-                                                    {{ item.raw.item_desc }}
+                                                    {{ item.item_desc }}
                                                 </v-card-text>
                                             </v-card>
                                         </v-col>

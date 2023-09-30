@@ -356,8 +356,8 @@ export default {
                       show-expand
                       v-on:click:row="
                                             (val, tabl) => {
-                                                loadLocationByID(tabl.item.raw.location_id);
-                                                selectedLocID = tabl.item.raw.location_id;
+                                                loadLocationByID(tabl.item.location_id);
+                                                selectedLocID = tabl.item.location_id;
                                                 stepper1++;
                                             }
                                         "
@@ -374,13 +374,13 @@ export default {
                               <v-col col="12" sm="6">
                                 <b>Operating Hours</b>
                                 <br/>
-                                {{ item.raw.open_time }} - {{ item.raw.close_time }}
+                                {{ item.open_time }} - {{ item.close_time }}
                                 <br/>
                               </v-col>
                               <v-col col="12" sm="6">
                                 <b>Address</b>
                                 <br/>
-                                {{ item.raw.address }}
+                                {{ item.address }}
                               </v-col>
                             </v-row>
                           </v-container>

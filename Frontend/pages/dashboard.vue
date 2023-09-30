@@ -102,7 +102,7 @@ export default {
               loading-text="We're looking for your reservation, Hang tight!"
               @click:row="
                             (val, tabl) => {
-                                reservationCode = tabl.item.raw.res_code;
+                                reservationCode = tabl.item.res_code;
                                 codeDialog = !codeDialog;
                             }
                         "
@@ -115,11 +115,11 @@ export default {
                       <v-col col="12" sm="6">
                         <b>Address</b>
                         <br/>
-                        {{ item.raw.location_address }}
+                        {{ item.location_address }}
                         <br/>
                       </v-col>
                       <v-col col="12" sm="6">
-                        <div v-if="item.raw.res_status === 'INPROGRESS'">
+                        <div v-if="item.res_status === 'INPROGRESS'">
                           <v-tooltip>
                             <template v-slot:activator="{ props }">
                               <v-icon class="mr-3" color="info" v-bind="props" @click="">mdi-pencil</v-icon>
@@ -130,7 +130,7 @@ export default {
                             <template v-slot:activator="{ props }">
                               <v-btn                                   color="red"
                                   v-bind="props" @click="() => {
-                                                        cancelReservation(item.raw.res_id);
+                                                        cancelReservation(item.res_id);
                                                     }" text="Cancel Reservation" prepend-icon="mdi-cancel"></v-btn>
                             </template>
                             <span>Cancel Reservation</span>

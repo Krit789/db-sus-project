@@ -87,7 +87,7 @@ export default {
             show-select
             @click:row="
                         (val, tabl) => {
-                            console.log(tabl.item.columns.location_id);
+                            console.log(tabl.item.location_id);
                         }
                     "
         >

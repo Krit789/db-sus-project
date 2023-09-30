@@ -108,11 +108,11 @@ export default {
             item-value="id"
             @click:row="
                     (val, tabl) => {
-                      firstName = tabl.item.columns.first_name
-                      lastName = tabl.item.columns.last_name
-                      phoneNumber = tabl.item.columns.telephone
+                      firstName = tabl.item.first_name
+                      lastName = tabl.item.last_name
+                      phoneNumber = tabl.item.telephone
                       userAction = true
-                        // console.log(tabl.item.columns.user_id);
+                        // console.log(tabl.item.user_id);
                     }
                 "
         >

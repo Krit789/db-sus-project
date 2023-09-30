@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 6: # Administrator ต้องการเพิ่มประเภทเมนู
                     //ต้องส่งข้อมูล name
                     $role = $user_data['role'];
-                    $name = $obj -> mysqli -> real_escape_string($data->name);
+                    $name = $obj -> mysqli -> real_escape_string($data->c_name);
 
                     if ($role == 'GOD') {
 

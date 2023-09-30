@@ -11,3 +11,10 @@
     padding: 12px 32px 22px 32px;
     margin-top: 22px;
 }
+
+@media only screen and (max-width: 600px) {
+    .management_container {
+    padding: 12px 8px 22px 8px;
+    }
+  }
+  

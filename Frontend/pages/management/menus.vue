@@ -15,17 +15,36 @@
 </script>
 
 <script lang="ts">
+    interface menu_category {
+        category_id: Number;
+        name: String;
+    }
+    interface MenuItem {
+        m_id: number;
+        m_name: string;
+        m_desc: string | null;
+        m_price: number;
+        m_img: string | null;
+        c_id: number | null;
+        c_name: string | null;
+    }
+
     export default {
         data: () => ({
             groupBy: [{ key: "name", order: "asc" }],
             addMenuDialog: false,
-            menuDeleteName: "",
-            menuDeleteID: 0,
+            menuName: "",
+            menuDesc: "",
+            menuID: 0,
+            menuPrice: 0,
+            menuCategoryID: 0,
+            menuImgUrl: "",
             confDel: false,
             dtSearch: "",
             dtIsError: false,
             dtErrorData: "",
-            dtData: [],
+            menuCategory: [] as menu_category[],
+            dtData: [] as MenuItem[],
             itemsPerPage: 10,
             dtLoading: false,
             snackbar: false,
@@ -34,11 +53,11 @@
             NotiIcon: "",
             NotiText: "",
             dtHeaders: [
-                { title: "Menu ID", align: "start", key: "menu_id" },
+                { title: "Menu ID", align: "start", key: "m_id" },
                 // { title: "Menu Description", align: " d-none", key: "item_desc" },
                 // { title: "Category", align: " d-none", key: "name" },
-                { title: "Name", align: "start", key: "item_name" },
-                { title: "Price", align: "start", key: "price" },
+                { title: "Name", align: "start", key: "m_name" },
+                { title: "Price", align: "start", key: "m_price" },
             ],
         }),
         methods: {
@@ -95,10 +114,75 @@
                         this.loadData();
                     });
             },
+            async addMenu(menu_name: String, menu_price: Number, menu_desc: String, menu_category_id: Number, menu_img: String) {
+                this.dtLoading = true;
+                let menuQuery = {
+                    type: 7,
+                    usage: "admin",
+                    m_name: menu_name,
+                    m_price: menu_price,
+                };
+                if (!menu_desc) {
+                    menuQuery = Object.assign({}, menuQuery, { m_desc: menu_desc });
+                }
+                if (!menu_category_id) {
+                    menuQuery = Object.assign({}, menuQuery, { m_category: menu_category_id });
+                }
+                if (!menu_img) {
+                    menuQuery = Object.assign({}, menuQuery, { img_url: menu_img });
+                }
+                console.log(menuQuery);
+                // await $fetch("/api/data", {
+                //     method: "POST",
+                //     body: menuQuery,
+                //     lazy: true,
+                // })
+                //     .catch((error) => {
+                //         this.dtIsError = true;
+                //         this.dtErrorData = error.data;
+                //     })
+                //     .then(({ status, message }) => {
+                //         this.dtLoading = false;
+                //         this.dtIsError = false;
+                //         if (status == 0) {
+                //             this.snackbar = true;
+                //             this.NotiColor = "error";
+                //             this.NotiIcon = "mdi-alert";
+                //             this.NotiText = message;
+                //         } else if (status == 1) {
+                //             this.snackbar = true;
+                //             this.NotiColor = "success";
+                //             this.NotiIcon = "mdi-check";
+                //             this.NotiText = message;
+                //         }
+                //         this.confDel = false;
+                //         this.loadData();
+                //     });
+            },
         },
 
         beforeMount() {
-            this.loadData();
+            this.loadData().then(() => {
+                // Create an empty map to store unique pairs of category_id and name
+                const uniquePairsMap = new Map();
+
+                // Iterate through the JSON data and add unique pairs to the map
+                this.dtData.forEach((item) => {
+                    const { c_id, c_name } = item;
+                    const key = `${c_id}_${c_name}`;
+
+                    // Check if the key is not already in the map
+                    if (!uniquePairsMap.has(key)) {
+                        uniquePairsMap.set(key, { c_id, c_name });
+                    }
+                });
+
+                // Convert the map values (unique pairs) to an array
+                const uniquePairsArray = Array.from(uniquePairsMap.values());
+
+                // Print the unique pairs
+                this.menuCategory = uniquePairsArray;
+            });
         },
     };
 </script>
@@ -112,16 +196,16 @@
             <v-card :width="mobile ? 'auto' : '400px'">
                 <v-card-title>Add Menu</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Name"></v-text-field>
+                    <v-text-field v-model="menuName" label="Name"></v-text-field>
 
-                    <v-textarea label="Description"></v-textarea>
-                    <v-text-field label="Image URL"></v-text-field>
+                    <v-textarea v-model="menuDesc" label="Description"></v-textarea>
+                    <v-text-field v-model="menuImgUrl" label="Image URL"></v-text-field>
                     <v-select :items="['Not Assign', 'Seafood', 'Drinks', 'Dessert']" label="Category"></v-select>
                     <v-btn append-icon="mdi-plus">Create Category</v-btn>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn append-icon="mdi-plus" color="success" @click="">Add</v-btn>
-                    <v-btn color="primary" @click="addMenuDialog = false">Cancel</v-btn>
+                    <v-btn color="primary" @click="() => {addMenuDialog = false}">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -131,7 +215,7 @@
                 <v-card-text>
                     Are you sure that you want to delete
                     <br />
-                    <b>{{ menuDeleteName }}</b>
+                    <b>{{ menuName }}</b>
                     ?
                 </v-card-text>
                 <v-card-actions>
@@ -140,8 +224,8 @@
                         color="success"
                         @click="
                             () => {
-                                deleteMenu(menuDeleteID);
-                                menuDeleteID = 0;
+                                deleteMenu(menuID);
+                                menuID = 0;
                             }
                         "
                     >
@@ -186,9 +270,9 @@
                             "
                         >
                             <td class="text-start td-hover"></td>
-                            <td class="text-start td-hover">{{ item.menu_id }}</td>
-                            <td class="text-start td-hover">{{ item.item_name }}</td>
-                            <td class="text-start td-hover">{{ item.price }} ฿</td>
+                            <td class="text-start td-hover">{{ item.m_id }}</td>
+                            <td class="text-start td-hover">{{ item.m_name }}</td>
+                            <td class="text-start td-hover">{{ item.m_price }} ฿</td>
                         </tr>
                     </template>
 
@@ -200,7 +284,7 @@
                                         <v-col col="12" sm="6">
                                             <b>Description</b>
                                             <br />
-                                            {{ item.item_desc }}
+                                            {{ item.m_desc }}
                                             <br />
                                             <br />
                                             <b>Actions</b>
@@ -212,8 +296,8 @@
                                                 prepend-icon="mdi-delete"
                                                 @click="
                                                     () => {
-                                                        menuDeleteID = item.menu_id;
-                                                        menuDeleteName = item.item_name;
+                                                        menuDeleteID = item.m_id;
+                                                        menuDeleteName = item.m_name;
                                                         confDel = true;
                                                     }
                                                 "
@@ -225,22 +309,22 @@
                                             <b>Preview</b>
                                             <br />
                                             <v-card elevation="4" v-ripple class="text-center">
-                                                <v-img :src="item.img_url ? item.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" cover aspect="16/9" height="300">
+                                                <v-img :src="item.m_img ? item.m_img : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'" cover aspect="16/9" height="300">
                                                     <template v-slot:error>
                                                         <v-img cover height="300" src="https://picsum.photos/500/300?image=232" width="300"></v-img>
                                                     </template>
                                                 </v-img>
                                                 <v-card-title>
-                                                    {{ item.item_name }}
+                                                    {{ item.m_name }}
                                                 </v-card-title>
                                                 <v-card-subtitle>
                                                     <v-chip color="warning">
-                                                        {{ item.name }}
+                                                        {{ item.c_name }}
                                                     </v-chip>
-                                                    <v-chip color="info">{{ item.price }}฿</v-chip>
+                                                    <v-chip color="info">{{ item.m_price }}฿</v-chip>
                                                 </v-card-subtitle>
                                                 <v-card-text>
-                                                    {{ item.item_desc }}
+                                                    {{ item.m_desc }}
                                                 </v-card-text>
                                             </v-card>
                                         </v-col>

@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "GOD") {
 
-                        $obj->select("menus", "*", "menu_category ON (category_id = mc_id)", null, null, null);
+                        $obj->select("menus", "menu_id `m_id`, item_name `m_name`, item_desc `m_desc`, price `m_price`, img_url `m_img`, category_id `c_id`, menu_category.name `c_name`", "menu_category ON (category_id = mc_id)", null, null, null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -163,13 +163,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $cate_id = null;
                     $url = null;
 
-                    if ($data->m_desc != null) {
+                    if (isset($data->m_desc)) {
                         $desc = $data->m_desc;
                     }
-                    if ($data->m_category != null) {
+                    if (isset($data->m_category)) {
                         $cate_id = $data->m_category;
                     }
-                    if ($data->img_url != null) {
+                    if (isset($data->img_url)) {
                         $url = $data->img_url;
                     }
 

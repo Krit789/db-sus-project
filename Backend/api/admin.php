@@ -253,8 +253,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $user_role = $data->u_role;
                     $id = $data->u_id;
 
-                    if ($role == 'GOD') {
+                    if ($id == $user_data['user_id']){
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => 'You can\'t change your own role!'
+                        ]);
+                    }
 
+                    if ($role == 'GOD') {
                         $obj->update('users', ['role' => $user_role], "user_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
@@ -273,7 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     //ต้องส่งข้อมูล user_id, location_id
                     $role = $user_data['role'];
                     $loca_id = $data->location_id;
-                    $id = $data->user_id;
+                    $id = $data->u_id;
 
                     if ($role == 'GOD') {
 

@@ -258,6 +258,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => 'You can\'t change your own role!'
                         ]);
+                        break;
                     }
 
                     if ($role == 'GOD') {

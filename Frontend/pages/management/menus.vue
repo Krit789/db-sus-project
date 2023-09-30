@@ -31,7 +31,7 @@
 
     export default {
         data: () => ({
-            groupBy: [{ key: "name", order: "asc" }],
+            groupBy: [{ key: "c_name", order: "asc" }],
             addMenuDialog: false,
             menuName: "",
             menuDesc: "",

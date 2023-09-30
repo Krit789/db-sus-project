@@ -16,9 +16,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/Sarabun-Thin.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-thin-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-thin-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-thin-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Thin.ttf) format("truetype");
     font-weight: 100;
     font-style: normal;
 }
@@ -26,9 +26,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-ThinItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-thinitalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-thinitalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-thinitalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-ThinItalic.ttf) format("truetype");
     font-weight: 100;
     font-style: italic;
 }
@@ -37,9 +37,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-ExtraLight.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-extralight-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-extralight-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-extralight-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-ExtraLight.ttf) format("truetype");
     font-weight: 200;
     font-style: normal;
 }
@@ -47,9 +47,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-ExtraLightItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-extralightitalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-extralightitalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-extralightitalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-ExtraLightItalic.ttf) format("truetype");
     font-weight: 200;
     font-style: italic;
 }
@@ -58,9 +58,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-Light.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-light-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-light-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-light-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Light.ttf) format("truetype");
     font-weight: 300;
     font-style: normal;
 }
@@ -68,9 +68,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-LightItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-lightitalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-lightitalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-lightitalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-LightItalic.ttf) format("truetype");
     font-weight: 300;
     font-style: italic;
 }
@@ -79,9 +79,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-Regular.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-regular-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-regular-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-regular-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Regular.ttf) format("truetype");
     font-weight: 400;
     font-style: normal;
 }
@@ -89,9 +89,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-Italic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-italic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-italic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-italic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Italic.ttf) format("truetype");
     font-weight: 400;
     font-style: italic;
 }
@@ -100,9 +100,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-Medium.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-medium-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-medium-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-medium-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Medium.ttf) format("truetype");
     font-weight: 500;
     font-style: normal;
 }
@@ -110,9 +110,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-MediumItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-mediumitalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-mediumitalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-mediumitalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-MediumItalic.ttf) format("truetype");
     font-weight: 500;
     font-style: italic;
 }
@@ -121,9 +121,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-SemiBold.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-semibold-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-semibold-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-semibold-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-SemiBold.ttf) format("truetype");
     font-weight: 600;
     font-style: normal;
 }
@@ -131,9 +131,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-SemiBoldItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-semibolditalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-semibolditalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-semibolditalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-SemiBoldItalic.ttf) format("truetype");
     font-weight: 600;
     font-style: italic;
 }
@@ -142,9 +142,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-Bold.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-bold-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-bold-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-bold-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-Bold.ttf) format("truetype");
     font-weight: 700;
     font-style: normal;
 }
@@ -152,9 +152,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-BoldItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-bolditalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-bolditalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-bolditalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-BoldItalic.ttf) format("truetype");
     font-weight: 700;
     font-style: italic;
 }
@@ -163,9 +163,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-ExtraBold.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-extrabold-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-extrabold-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-extrabold-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-ExtraBold.ttf) format("truetype");
     font-weight: 800;
     font-style: normal;
 }
@@ -173,9 +173,9 @@
 @font-face {
     font-family: "Sarabun";
     src: local("Sarabun"),
-    url(/fonts/Sarabun/sarabun-ExtraBoldItalic.ttf) format("truetype"),
     url(/fonts/Sarabun/sarabun-extrabolditalic-webfont.woff2) format("woff2"),
-    url(/fonts/Sarabun/sarabun-extrabolditalic-webfont.woff) format("woff");
+    url(/fonts/Sarabun/sarabun-extrabolditalic-webfont.woff) format("woff"),
+    url(/fonts/Sarabun/sarabun-ExtraBoldItalic.ttf) format("truetype");
     font-weight: 800;
     font-style: italic;
 }

@@ -13,7 +13,7 @@
     "@nuxt/devtools": "0.8.3",
     "@sidebase/nuxt-auth": "0.6.0-beta.6",
     "@types/node": "^20.7.1",
-    "nuxt": "^3.6.5",
+    "nuxt": "^3.7.4",
     "vite-plugin-vuetify": "^1.0.2"
   },
   "dependencies": {

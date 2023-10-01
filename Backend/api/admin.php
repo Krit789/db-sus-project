@@ -43,9 +43,17 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 2: # Administrator แก้ไขสถานะ user
                     //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
-                    $user = $user_data['user_id'];
                     $role = $user_data['role'];
-                    $status = $data->status;
+                    $user = $data->u_id;
+                    $status = $data->u_status;
+
+                    if ($user == $user_data['user_id']) {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => "You can't deactivate yourself!",
+                        ]);
+                        break;
+                    }
 
                     if ($role == "GOD") {
 
@@ -54,11 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "User Deleted Successfully",
+                            'message' => "Account Deactivated Successfully",
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Unable to delete user",
+                            'message' => "Unable to deactivated this account",
                         ]);
                     } else {
                         $ispermission = !$ispermission;

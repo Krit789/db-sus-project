@@ -138,7 +138,8 @@ export default {
             :loading="dtLoading"
             :search="dtSearch"
             class="elevation-1"
-            item-value="id"
+            item-value="location_id"
+            :density="(mobile) ? 'compact' : 'comfortable'"
             @click:row="
                     (val, tabl) => {
                         // $router.push('/management/branches/' + tabl.item.columns.location_id);

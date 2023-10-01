@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($role == "GOD") {                        
                         $password = randomPassword(10);
                         $new_password = password_hash($password, PASSWORD_DEFAULT);
-                        $obj->update("users", ['password' => $new_password], "user_id={$user}");
+                        $obj->update("users", ['password_hash' => $new_password], "user_id={$user}");
                         $result = $obj->getResult();
 
                         if ($result[0] == 1) echo json_encode([

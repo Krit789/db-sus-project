@@ -223,7 +223,7 @@ export default {
   <v-card>
     <v-layout>
       <v-app-bar class="blur-effect nav_bar" elevation="8" prominent>
-        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
           <v-icon :icon="NotiIcon" start></v-icon>
           {{ NotiText }}
         </v-snackbar>

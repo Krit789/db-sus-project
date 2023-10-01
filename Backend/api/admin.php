@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Account " . (($status == 1) ? "activated" : "suspended") . "successfully",
+                            'message' => "Account " . (($status == 1) ? "activated" : "suspended") . " successfully",
                         ]);
                         else echo json_encode([
                             'status' => 0,

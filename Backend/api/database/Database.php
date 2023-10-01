@@ -35,11 +35,18 @@ class Database
             $table_value = implode("', '", array_values($params));
 
             $sql = "INSERT INTO $table ($table_column) VALUES ('$table_value')";
-            if ($this->mysqli->query($sql)) {
-                array_push($this->result, true);
-                return true;
-            } else {
-                array_push($this->result, false);
+            try {
+
+                if ($this->mysqli->query($sql)) {
+                    array_push($this->result, true);
+                    return true;
+                } else {
+                    array_push($this->result, false);
+                    return false;
+                }
+            } catch (Exception $e) {
+                error_log("Error Occurred with the following query\n-- Query -----------------\n" . $sql . "\n-- Exception -------------\n" . $e . "\n-------------------------");
+                $this->result = "{$e}";
                 return false;
             }
         } else {

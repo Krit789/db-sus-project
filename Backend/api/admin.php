@@ -181,8 +181,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
 
                     if ($role == 'GOD') {
-
-                        $obj->insert('menus', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url]);
+                        $insertion_row = ['item_name' => $name, 'price' => $price];
+                        if (isset($data->m_desc)) {
+                            $insertion_row['item_desc'] = $desc;
+                        }
+                        
+                        if (isset($data->m_category)) {
+                            $insertion_row['category_id'] = $cate_id;
+                        }
+                        
+                        if (isset($data->img_url)) {
+                            $insertion_row['img_url'] = $url;
+                        }
+                        $obj->insert('menus', $insertion_row);
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -206,17 +217,31 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $url = null;
 
                     if (isset($data->m_desc)) {
-                        $desc = $obj->mysqli->real_escape_string($data->m_desc);
+                        $insertion_row['item_desc'] = $desc;
                     }
+                    
                     if (isset($data->m_category)) {
-                        $cate_id = $data->m_category;
+                        $insertion_row['category_id'] = $cate_id;
                     }
+                    
                     if (isset($data->img_url)) {
-                        $url = $obj->mysqli->real_escape_string($data->img_url);
+                        $insertion_row['img_url'] = $url;
                     }
 
                     if ($role == 'GOD') {
-                        $obj->update('menus', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url], "menu_id={$id}");
+
+                        $insertion_row = ['item_name' => $name, 'price' => $price];
+                        if (isset($data->m_desc)) {
+                            array_push($insertion_row, ['item_desc' => $desc]);
+                        }
+                        if (isset($data->m_category)) {
+                            array_push($insertion_row, ['category_id' => $cate_id]);
+                        }
+                        if (isset($data->img_url)) {
+                            array_push($insertion_row, ['img_url' => $url]);
+                        }
+
+                        $obj->update('menus', $insertion_row, "menu_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,

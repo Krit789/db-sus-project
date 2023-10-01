@@ -499,7 +499,7 @@
                                                 required
                                             ></v-text-field>
                                             <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
-                                            <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" return-object prepend-inner-icon="mdi-sofa-single-outline"></v-select>
+                                            <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" return-object prepend-inner-icon="mdi-table-chair"></v-select>
                                         </v-col>
                                     </v-row>
                                 </v-container>

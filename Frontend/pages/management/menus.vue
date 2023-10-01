@@ -68,6 +68,12 @@
             ] as DataTableHeader[],
         }),
         methods: {
+            urlValidator(url: string) {
+                const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+                const regex = new RegExp(expression);
+                if (url.match(regex) || url === '') return true;
+                return "Invalid URL Format";
+            },
             async loadData() {
                 this.dtLoading = true;
                 await $fetch("/api/data", {
@@ -103,6 +109,12 @@
                         this.dtErrorData = error.data;
                     })
                     .then(({ status, message }) => {
+                        const newCategory = {
+                            c_id: 0,
+                            c_name: "Uncategorized",
+                        };
+                        const nextIndex = Object.keys(message).length;
+                        message[nextIndex] = newCategory;
                         this.menuCategory = message;
                         this.dtLoading = false;
                         this.dtIsError = false;
@@ -180,7 +192,7 @@
 
                 let catQuery = {
                     usage: "admin",
-                    c_name: cat_name
+                    c_name: cat_name,
                 };
                 if (cat_id > 0) {
                     catQuery = Object.assign({}, catQuery, { c_id: cat_id, type: 14 });
@@ -291,7 +303,6 @@
             <v-card :width="mobile ? 'auto' : '400px'">
                 <v-card-title v-text="menuDialogMode == 0 ? 'Add Menu' : 'Edit Menu'"></v-card-title>
                 <v-form
-                    fast-fail
                     @submit.prevent
                     v-on:submit="
                         () => {
@@ -304,7 +315,7 @@
 
                         <v-textarea v-model="menuDesc" label="Description"></v-textarea>
                         <v-text-field :prefix="'฿'" min="1" oninput="validity.valid || (value=1)" type="number" :rules="[priceRule]" v-model="menuPrice" label="Price"></v-text-field>
-                        <v-text-field v-model="menuImgUrl" label="Image URL"></v-text-field>
+                        <v-text-field v-model="menuImgUrl" :rules="[urlValidator]" label="Image URL"></v-text-field>
                         <v-select v-model="menuCategoryID" hide-details :items="menuCategory" item-title="c_name" item-value="c_id" label="Category"></v-select>
                         <v-btn class="mt-4" variant="text" color="warning" append-icon="mdi-shape" @click="manageCategory = true">Manage Category</v-btn>
                     </v-card-text>
@@ -343,12 +354,19 @@
                                 <td class="text-right" v-show="item.c_id !== 0">
                                     <v-tooltip location="top">
                                         <template v-slot:activator="{ props }">
-                                            <v-btn color="info" variant="text" v-bind="props" @click="() => {
-                                                menuCategoryName = item.c_name;
-                                                menuCategoryID = item.c_id;
-                                                catRenameMode = 0;
-                                                catRename = true;
-                                            }">
+                                            <v-btn
+                                                color="info"
+                                                variant="text"
+                                                v-bind="props"
+                                                @click="
+                                                    () => {
+                                                        menuCategoryName = item.c_name;
+                                                        menuCategoryID = item.c_id;
+                                                        catRenameMode = 0;
+                                                        catRename = true;
+                                                    }
+                                                "
+                                            >
                                                 <v-icon>mdi-pencil</v-icon>
                                             </v-btn>
                                         </template>
@@ -356,11 +374,18 @@
                                     </v-tooltip>
                                     <v-tooltip location="top">
                                         <template v-slot:activator="{ props }">
-                                            <v-btn color="red" variant="text" v-bind="props" @click="() => {
-                                                menuCategoryID = item.c_id;
-                                                menuCategoryName = item.c_name;
-                                                catDel = true;
-                                            }">
+                                            <v-btn
+                                                color="red"
+                                                variant="text"
+                                                v-bind="props"
+                                                @click="
+                                                    () => {
+                                                        menuCategoryID = item.c_id;
+                                                        menuCategoryName = item.c_name;
+                                                        catDel = true;
+                                                    }
+                                                "
+                                            >
                                                 <v-icon v-bind="props">mdi-delete</v-icon>
                                             </v-btn>
                                         </template>
@@ -370,12 +395,21 @@
                             </tr>
                         </tbody>
                     </v-table>
-                    <v-btn class="mt-3" prepend-icon="mdi-plus" variant="text" @click="() => {
-                                                menuCategoryName = '';
-                                                menuCategoryID = -1;
-                                                catRenameMode = 1;
-                                                catRename = true;
-                                            }">Create Category</v-btn>
+                    <v-btn
+                        class="mt-3"
+                        prepend-icon="mdi-plus"
+                        variant="text"
+                        @click="
+                            () => {
+                                menuCategoryName = '';
+                                menuCategoryID = -1;
+                                catRenameMode = 1;
+                                catRename = true;
+                            }
+                        "
+                    >
+                        Create Category
+                    </v-btn>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn @click="manageCategory = false">Close</v-btn>
@@ -413,7 +447,8 @@
                 <v-card-title>Category Deletion</v-card-title>
                 <v-card-text>
                     Are you sure that you want to delete
-                    <b>{{ menuCategoryName }}</b>? This deletion will remove all previously set category in the menus
+                    <b>{{ menuCategoryName }}</b>
+                    ? This deletion will remove all previously set category in the menus
                 </v-card-text>
                 <v-card-actions>
                     <v-btn
@@ -433,20 +468,21 @@
         </v-dialog>
         <v-dialog v-model="catRename" :width="'auto'">
             <v-card :width="mobile ? 'auto' : '400px'">
-                <v-card-title>{{ (catRenameMode === 0) ? 'Rename Category' : 'Create Category' }}</v-card-title>
+                <v-card-title>{{ catRenameMode === 0 ? "Rename Category" : "Create Category" }}</v-card-title>
                 <v-card-text>
                     <v-text-field label="Category Name" v-model="menuCategoryName"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn
-                        :prepend-icon="(catRenameMode === 0) ? 'mdi-content-save' : 'mdi-check'"
+                        :prepend-icon="catRenameMode === 0 ? 'mdi-content-save' : 'mdi-check'"
                         color="success"
                         @click="
                             () => {
                                 managCategory(menuCategoryID, menuCategoryName);
                             }
                         "
-                    >{{ (catRenameMode == 0) ? 'Save' : 'Create' }}
+                    >
+                        {{ catRenameMode == 0 ? "Save" : "Create" }}
                     </v-btn>
                     <v-btn prepend-icon="mdi-cancel" color="error" @click="catRename = false">Cancel</v-btn>
                 </v-card-actions>

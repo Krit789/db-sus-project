@@ -398,8 +398,8 @@ export default {
         </div>
       </v-navigation-drawer>
       <div class="text-center">
-        <v-dialog v-model="dialogIn" :fullscreen="mobile" :width="(mobile) ? '100%' : 'auto'">
-          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
+        <v-dialog v-model="dialogIn" :width="mobile ? '100%' : '700px'" :fullscreen="mobile">
+          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" :width="mobile ? '100%' : '700px'">
             <v-form class="justify-center" fast-fail @submit.prevent>
               <v-card-title class="mt-4 ml-4 pb-3">
                 <h1>Login</h1>
@@ -413,6 +413,7 @@ export default {
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
+                                <p>Don't have a account? <a class="like-a-link" @click="() => {dialogIn = false; dialogRe = true;}">Register Here</a></p>
                 </v-sheet>
               </v-card-text>
               <v-card-actions class="ml-3 mb-3">
@@ -455,8 +456,8 @@ export default {
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog v-model="dialogRe" :fullscreen="mobile" activator="#regisActivator">
-        <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane">
+      <v-dialog v-model="dialogRe" :width="mobile ? '100%' : '700px'" :fullscreen="mobile" activator="#regisActivator">
+        <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" :width="mobile ? '100%' : '700px'">
           <v-form fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3">
               <h1>Register</h1>
@@ -465,7 +466,7 @@ export default {
               <h4 class="font-weight-medium">Get ready to enjoy the best reservation experience!</h4>
             </v-card-subtitle>
             <v-card-text>
-              <v-sheet class="mx-auto w-100 form_container bg-transparent" width="auto">
+              <v-sheet class="mx-auto w-100 form_container bg-transparent">
                 <v-row>
                   <v-col cols="12" sm="6">
                     <v-text-field v-model="first_name" label="First Name *"></v-text-field>
@@ -494,6 +495,7 @@ export default {
                   </v-col>
                 </v-row>
               </v-sheet>
+              <p>Already have a account? <a class="like-a-link" @click="() => {dialogIn = true; dialogRe = false;}">Login Here</a></p>
             </v-card-text>
             <v-card-actions class="ml-3 mb-3">
               <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit"
@@ -510,3 +512,14 @@ export default {
     </v-layout>
   </v-card>
 </template>
+<style scoped>
+.like-a-link {
+  cursor: pointer;
+}
+.like-a-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #0373DE;
+}
+
+</style>

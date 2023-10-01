@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 5: # Administrator เรียกดู menu ทั้งหมด
                     if ($role == "GOD") {
 
-                        $obj->select("menus", "menu_id `m_id`, item_name `m_name`, item_desc `m_desc`, price `m_price`, img_url `m_img`, category_id `c_id`, menu_category.name `c_name`", "menu_category ON (category_id = mc_id)", null, null, null);
+                        $obj->selectAndJoin("menus", "menu_id `m_id`, item_name `m_name`, item_desc `m_desc`, price `m_price`, img_url `m_img`, category_id `c_id`, menu_category.name `c_name`", "menu_category ON (category_id = mc_id)", null, null, null, null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -185,11 +185,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if (isset($data->m_desc)) {
                             $insertion_row['item_desc'] = $desc;
                         }
-                        
+
                         if (isset($data->m_category)) {
                             $insertion_row['category_id'] = $cate_id;
                         }
-                        
+
                         if (isset($data->img_url)) {
                             $insertion_row['img_url'] = $url;
                         }
@@ -215,32 +215,31 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $desc = null;
                     $cate_id = null;
                     $url = null;
-
                     if (isset($data->m_desc)) {
-                        $insertion_row['item_desc'] = $desc;
+                        $desc = $obj->mysqli->real_escape_string($data->m_desc);
                     }
-                    
                     if (isset($data->m_category)) {
-                        $insertion_row['category_id'] = $cate_id;
+                        $cate_id = $data->m_category;
                     }
-                    
                     if (isset($data->img_url)) {
-                        $insertion_row['img_url'] = $url;
+                        $url = $obj->mysqli->real_escape_string($data->img_url);
                     }
 
                     if ($role == 'GOD') {
-
                         $insertion_row = ['item_name' => $name, 'price' => $price];
                         if (isset($data->m_desc)) {
-                            array_push($insertion_row, ['item_desc' => $desc]);
-                        }
-                        if (isset($data->m_category)) {
-                            array_push($insertion_row, ['category_id' => $cate_id]);
-                        }
-                        if (isset($data->img_url)) {
-                            array_push($insertion_row, ['img_url' => $url]);
+                            $insertion_row['item_desc'] = $desc;
                         }
 
+                        if (isset($data->m_category)) {
+                            $insertion_row['category_id'] = $cate_id;
+                        }
+
+                        if (isset($data->img_url)) {
+                            $insertion_row['img_url'] = $url;
+                        }
+
+                        error_log(json_encode($insertion_row));
                         $obj->update('menus', $insertion_row, "menu_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([

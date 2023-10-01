@@ -9,7 +9,7 @@
     const route = useRouter();
     const { status, data, signIn, signOut } = useAuth();
     useHead({
-        title: "Reservation Management - Seatify Admin",
+        title: "Menu Management - Seatify Admin",
         meta: [{ name: "Seatify App", content: "My amazing site." }],
     });
 </script>

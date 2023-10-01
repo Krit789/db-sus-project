@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($user == $user_data['user_id']) {
                         echo json_encode([
                             'status' => 0,
-                            'message' => "You can't deactivate yourself!",
+                            'message' => "You can't " . ($status == 1) ? "activate" : "suspend" . " yourself!",
                         ]);
                         break;
                     }
@@ -59,14 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $obj->update("users", ['status' => $status], "user_id={$user}");
                         $result = $obj->getResult();
+                        
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Account Deactivated Successfully",
+                            'message' => "Account " . ($status == 1) ? "activated" : "suspended" . "successfully",
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Unable to deactivated this account",
+                            'message' => "Unable to " . ($status == 1) ? "activated" : "suspended" . " this account",
                         ]);
                     } else {
                         $ispermission = !$ispermission;

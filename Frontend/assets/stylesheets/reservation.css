@@ -3,6 +3,7 @@
     background: url(~/assets/images/background/SurfaceLaptop3_Blue.webp);
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
     background-size: cover;
     overflow: clip;
     min-height: 100vh;

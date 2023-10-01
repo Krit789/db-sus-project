@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-    import { VDataTable } from "vuetify/labs/VDataTable";
+    // import { VDataTable } from "vuetify/labs/VDataTable";
+    import { VDataTable } from 'vuetify/labs/VDataTable'
     import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
     import "~/assets/stylesheets/index.css";
@@ -71,7 +72,7 @@
             urlValidator(url: string) {
                 const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
                 const regex = new RegExp(expression);
-                if (url.match(regex) || url === '') return true;
+                if (url.match(regex) || url === "") return true;
                 return "Invalid URL Format";
             },
             async loadData() {
@@ -492,14 +493,22 @@
         </v-dialog>
         <div class="main_container management_container mx-auto blur-effect">
             <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
+            <p class="text-h5 font-weight-light ml-8 text-left">{{ mobile ? 'Tap' : 'Click'}} on each category and menu to see further informations and actions</p>
             <v-sheet class="mt-8 ma-md-8 ma-sm-5" rounded="lg">
                 <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
 
-                <v-data-table v-model:items-per-page="itemsPerPage" :headers="dtHeaders" :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" item-value="m_id" :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy">
+                <v-data-table :headers="dtHeaders" :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" item-value="m_id" :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy">
                     <template v-slot:top>
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
                     </template>
-
+                    <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
+                        <tr v-ripple class="table-hover" @click="toggleGroup(item)">
+                            <td class="text-start td-hover" :colspan="columns.length">
+                                <v-btn size="small" variant="text" :icon="isGroupOpen(item) ? '$expand' : '$next'"></v-btn>
+                                {{ item.value }} ({{ item.items.length }})
+                            </td>
+                        </tr>
+                    </template>
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                         <tr
                             v-ripple
@@ -546,7 +555,7 @@
                                                         menuID = item.m_id;
                                                         menuPrice = item.m_price;
                                                         menuImgUrl = item.m_img;
-                                                        menuCategoryID = (item.c_id) ? item.c_id : 0;;
+                                                        menuCategoryID = item.c_id ? item.c_id : 0;
                                                         addMenuDialog = true;
                                                     }
                                                 "

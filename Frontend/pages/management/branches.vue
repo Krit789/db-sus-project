@@ -16,15 +16,34 @@
     });
 </script>
 <script lang="ts">
+    type Location = {
+        l_id: number;
+        l_name: string;
+        l_addr: string;
+        l_open_time: string;
+        l_close_time: string;
+        l_status: "OPERATIONAL" | "MAINTENANCE" | "OUTOFORDER";
+        l_layout_img: string | null;
+        l_mgr_id: number | null;
+        mgr_fn: string | null;
+        mgr_ln: string | null;
+        mgr_tel: string | null;
+        mgr_email: string | null;
+    };
     export default {
         data: () => ({
             tabNum: null,
             bEditor: false,
+            bName: "",
+            bAddress: "",
+            bOpenTime: null,
+            bCloseTime: null,
+            blayout: "",
             addBranch: false,
             dtSearch: "",
             dtErrorData: "",
             dtIsError: false,
-            dtData: [],
+            dtData: [] as Location[],
             itemsPerPage: 10,
             dtLoading: false,
             dtHeaders: [
@@ -68,6 +87,10 @@
                 if (url.match(regex)) return true;
                 return "Invalid URL Format";
             },
+            requiredForm(value: string) {
+                if (value) return true;
+                return "This field is required";
+            },
         },
 
         beforeMount() {
@@ -79,21 +102,30 @@
     <v-main class="management_main">
         <v-dialog v-model="addBranch" width="auto">
             <v-card width="400">
-                <v-card-title>Add Branch</v-card-title>
-                <v-card-text>
-                    <v-text-field label="Name"></v-text-field>
-                    <v-textarea label="Address"></v-textarea>
-                    <v-text-field label="Seat Layout Image URL" :rules="[urlValidator]"></v-text-field>
-                    <v-text-field label="Open Time" type="time"></v-text-field>
-                    <v-text-field label="Close Time" type="time"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn append-icon="mdi-plus" color="success" @click="">Add</v-btn>
-                    <v-btn color="primary" @click="addBranch = false">Cancel</v-btn>
-                </v-card-actions>
+                <v-form
+                    fast-fail
+                    @submit.prevent="
+                        (val) => {
+                            console.log(val);
+                        }
+                    "
+                >
+                    <v-card-title>Add Branch</v-card-title>
+                    <v-card-text>
+                        <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
+                        <v-textarea v-model="bAddress" label="Address"></v-textarea>
+                        <v-text-field v-model="blayout" label="Seat Layout Image URL" :rules="[urlValidator]"></v-text-field>
+                        <v-text-field v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
+                        <v-text-field v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn append-icon="mdi-plus" type="submit" color="success">Add</v-btn>
+                        <v-btn color="primary" @click="addBranch = false">Cancel</v-btn>
+                    </v-card-actions>
+                </v-form>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="bEditor" :width="mobile ? '100%' : 'auto'" :fullscreen="mobile" persistent>
+        <v-dialog v-model="bEditor" :width="mobile ? '100%' : '500px'" :fullscreen="mobile" persistent>
             <v-card>
                 <v-tabs v-model="tabNum" bg-color="primary" color="white">
                     <v-tab value="one">General</v-tab>
@@ -105,6 +137,23 @@
                     <v-window v-model="tabNum">
                         <v-window-item value="one">
                             <h3 class="text-left">General</h3>
+                            <v-form
+                                fast-fail
+                                @submit.prevent="
+                                    (val) => {
+                                        console.log(val);
+                                    }
+                                "
+                            >
+                                <v-card-text>
+                                    <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
+                                    <v-textarea v-model="bAddress" label="Address"></v-textarea>
+                                    <v-text-field v-model="blayout" label="Seat Layout Image URL" :rules="[urlValidator]"></v-text-field>
+                                    <v-text-field v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
+                                    <v-text-field v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+                                </v-card-text>
+                                    <v-btn class="mb-2" variant="tonal" append-icon="mdi-content-save" type="submit" color="success">Save</v-btn>
+                            </v-form>
                         </v-window-item>
 
                         <v-window-item value="two">
@@ -180,27 +229,47 @@
                                             <p>
                                                 <b>Status</b>
                                                 <br />
-                                                <v-icon class="mr-2">{{ item.l_status == "OPERATIONAL" ? "mdi-check" : item.l_status == "MAINTENANCE" ? "mdi-hammer-wrench" :  item.l_status == "OUTOFORDER" ? "mdi-close" : "mdi-help" }}</v-icon>{{ item.l_status == "OPERATIONAL" ? "Operational" : item.l_status == "MAINTENANCE" ? "Maintenance" :  item.l_status == "OUTOFORDER" ? "Out of Order" : item.l_status }}
+                                                <v-icon class="mr-2">{{ item.l_status == "OPERATIONAL" ? "mdi-check" : item.l_status == "MAINTENANCE" ? "mdi-hammer-wrench" : item.l_status == "OUTOFORDER" ? "mdi-close" : "mdi-help" }}</v-icon>
+                                                {{ item.l_status == "OPERATIONAL" ? "Operational" : item.l_status == "MAINTENANCE" ? "Maintenance" : item.l_status == "OUTOFORDER" ? "Out of Order" : item.l_status }}
                                             </p>
                                         </v-col>
                                         <v-col cols="12" md="3" sm="6">
                                             <p>
                                                 <b>Manager</b>
                                                 <br />
-                                                <v-icon class="mr-2">mdi-identifier</v-icon>{{ item.l_mgr_id }}
+                                                <v-icon class="mr-2">mdi-identifier</v-icon>
+                                                {{ item.l_mgr_id }}
                                                 <br />
-                                                <v-icon class="mr-2">mdi-account-circle</v-icon>{{ item.mgr_fn + " " + item.mgr_ln }}
-                                                <br>
-                                                <v-icon class="mr-2">mdi-email</v-icon>{{ item.mgr_email}}
-                                                <br>
-                                                <v-icon class="mr-2">mdi-phone</v-icon>{{ item.mgr_tel}}
+                                                <v-icon class="mr-2">mdi-account-circle</v-icon>
+                                                {{ item.mgr_fn + " " + item.mgr_ln }}
+                                                <br />
+                                                <v-icon class="mr-2">mdi-email</v-icon>
+                                                {{ item.mgr_email }}
+                                                <br />
+                                                <v-icon class="mr-2">mdi-phone</v-icon>
+                                                {{ item.mgr_tel }}
                                             </p>
                                         </v-col>
                                     </v-row>
                                     <v-row>
-                                      <v-col cols="12">
-                                        <v-btn variant="text" prepend-icon="mdi-pencil" @click="bEditor = true">Manage Branch</v-btn>
-                                      </v-col>
+                                        <v-col cols="12">
+                                            <v-btn
+                                                variant="text"
+                                                prepend-icon="mdi-pencil"
+                                                @click="
+                                                    () => {
+                                                        bName = item.l_name;
+                                                        bAddress = item.l_addr;
+                                                        blayout = item.l_layout_img;
+                                                        bOpenTime = DateTime.fromSQL(item.l_open_time).toFormat('T');
+                                                        bCloseTime = DateTime.fromSQL(item.l_close_time).toFormat('T');
+                                                        bEditor = true;
+                                                    }
+                                                "
+                                            >
+                                                Manage Branch
+                                            </v-btn>
+                                        </v-col>
                                     </v-row>
                                 </v-container>
                             </td>
@@ -209,7 +278,25 @@
                 </v-data-table>
                 <v-col>
                     <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>
-                    <v-btn :disabled="dtLoading" :variant="'tonal'" class="ml-5 align-right mb-3" color="success" prepend-icon="mdi-plus" rounded="lg" text="Add Branch" @click="addBranch = true"></v-btn>
+                    <v-btn
+                        :disabled="dtLoading"
+                        :variant="'tonal'"
+                        class="ml-5 align-right mb-3"
+                        color="success"
+                        prepend-icon="mdi-plus"
+                        rounded="lg"
+                        text="Add Branch"
+                        @click="
+                            () => {
+                                bName = '';
+                                bAddress = '';
+                                blayout = '';
+                                bOpenTime = null;
+                                bCloseTime = null;
+                                addBranch = true;
+                            }
+                        "
+                    ></v-btn>
                 </v-col>
             </v-sheet>
         </div>

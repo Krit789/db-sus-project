@@ -2,6 +2,7 @@
     background: url(~/assets/images/background/Wallpaper.webp);
     background-repeat: no-repeat;
     background-position: center;
+    background-attachment: fixed;
     background-size: cover;
     overflow: clip;
     min-height: 100vh;

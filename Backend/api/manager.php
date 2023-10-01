@@ -21,12 +21,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
-        if (isset($user_data['user_id'])) {
+        if (isset($user_data['user_id']) && isset($user_data['role'])) {
+            $role = $user_data['role'];
+            $id = $user_data['user_id'];
             switch ($type) {
                 case 1: # Manager เรียกสาขาทั้งหมดที่ตัวเองดูแล
-                    $id = $user_data['user_id'];
-                    $role = $user_data['role'];
-
                     if ($role == "MANAGER") {
                         $obj->select('locations', "*", null, "manager_id=$id", 'status', null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                         $res = $obj->getResult();
@@ -43,16 +42,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 2: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
                     //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
-                    $role = $user_data['role'];
-                    $id = $data->location_id;
-                    $name = $obj -> mysqli -> real_escape_string($data->name);
+                    $loc_id = $data->location_id;
+                    $loc_name = $obj -> mysqli -> real_escape_string($data->loc_name);
                     $address = $obj -> mysqli -> real_escape_string($data->address);
-                    $ot = $obj -> mysqli -> real_escape_string($data->open_time);
-                    $ct = $obj -> mysqli -> real_escape_string($data->close_time);
+                    $open_time = $obj -> mysqli -> real_escape_string($data->open_time);
+                    $close_time = $obj -> mysqli -> real_escape_string($data->close_time);
                     $status = $data->status;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->update("locations", ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => $status], "location_id={$id}");
+                        $obj->update("locations", ['name' => $loc_name, 'address' => $address, 'open_time' => $open_time, 'close_time' => $close_time, 'status' => $status], "location_id={$loc_id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -67,15 +65,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 3: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
                     //ต้องส่งข้อมูล location_id
-                    $role = $user_data['role'];
-                    $id = $data->location_id;
+                    $loc_id = $data->location_id;
 
                     if ($role == "MANAGER" || $role == "GOD") {
 
                         $obj->select("menus", "*", null, null, null, null);
                         $result = $obj->getResult();
 
-                        $obj->select("restrictions", "menu_id", null, "location_id=$id", 'menu_id', null);
+                        $obj->select("restrictions", "menu_id", null, "location_id=$loc_id", 'menu_id', null);
                         $result2 = $obj->getResult();
 
                         echo json_encode([
@@ -88,8 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 4: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
                     //ต้องส่งข้อมูล location_id, menu
-                    $role = $user_data['role'];
-                    $id = $data->location_id;
+                    $loc_id = $data->location_id;
                     $menu = $data->menu;
 
                     if ($role == "MANAGER" || $role == "GOD") {
@@ -97,22 +93,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $count = 0;
                         foreach ($menu as $menus) {
                             if ($count != sizeof($menu) - 1) {
-                                $tmp .= "($id,$menus), ";
+                                $tmp .= "($loc_id,$menus), ";
                             } else {
-                                $tmp .= "($id,$menus)";
+                                $tmp .= "($loc_id,$menus)";
                             }
                             $count += 1;
                         }
-                        $obj->delete('restrictions', "location_id=$id");
+                        $obj->delete('restrictions', "location_id=$loc_id");
                         $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
 
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Modify Menus Successful',
+                            'message' => 'Menu Restricted Successfully',
                         ]); else echo json_encode([
                             'status' => 0,
-                            'message' => "server problem", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'message' => "No matching menu found!", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -120,13 +116,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 5: # Administrator, Manager เพิ่มโต๊ะ
                     //ต้องส่งข้อมูล location_id, name, capacity
-                    $role = $user_data['role'];
-                    $id = $data->location_id;
+                    $loc_id = $data->location_id;
                     $name = $obj -> mysqli -> real_escape_string($data->name);
                     $capa = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->insert("tables", ['name' => $name, 'capacity' => $capa, 'location_id' => $id]);
+                        $obj->insert("tables", ['name' => $name, 'capacity' => $capa, 'location_id' => $loc_id]);
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
@@ -147,11 +142,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($role == "MANAGER" || $role == "GOD") {
                         $tmp = "";
                         $count = 0;
-                        foreach ($table_id as $id) {
+                        foreach ($table_id as $t_id) {
                             if ($count == 0) {
-                                $tmp .= "$id";
+                                $tmp .= "$t_id";
                             } else {
-                                $tmp .= ", $id";
+                                $tmp .= ", $t_id";
                             }
                             $count++;
                         }
@@ -171,12 +166,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 7: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
                     //ต้องส่งข้อมูล table_id, name, capacity
                     $role = $user_data['role'];
-                    $id = $data->table_id;
-                    $name = $data->name;
-                    $capa = $data->capacity;
+                    $t_id = $data->table_id;
+                    $t_name = $data->t_name;
+                    $t_capacity = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->update("tables", ['name' => $name, 'capacity' => $capa], "table_id=$id");
+                        $obj->update("tables", ['name' => $t_name, 'capacity' => $t_capacity], "table_id=$t_id");
 
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
@@ -192,11 +187,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 8: # Administrator, Manager ดูการจองทั้งหมดใน location_id(สาขา) ที่เลือก
                     //ต้องส่งข้อมูล location_id
-                    $role = $user_data['role'];
-                    $id = $data->location_id;
+                    $loc_id = $data->location_id;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id=$id)", "res_id desc");
+                        $obj->select("reservations", "*", "users using (user_id)", "table_id in (select table_id from tables where location_id=$loc_id)", "res_id desc");
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -211,11 +205,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 9: #Manager เรียกดูการจองในสาขาที่ตัวเองดูแล
-                    $role = $user_data['role'];
-                    $role = "MANAGER";
-
                     if ($role == "MANAGER") {
-                        $obj->select("locations", "manager_id", null, "manager_id=" . $user_data['user_id'], "manager_id");
+                        $obj->select("locations", "manager_id", null, "manager_id=" . $id, "manager_id");
                         $result = $obj->getResult();
                         $tmp = "";
                         for ($i = 0; $i < sizeof($result); $i++) {
@@ -262,8 +253,3 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     'status' => 0,
     'message' => 'Access Denied'
 ]);
-// $allheaders = getallheaders();
-// $jwt = $allheaders['Authorization'];
-
-// $secret_key = "Hilal ahmad khan";
-// json_decode($user_data) = JWT::decode($jwt, $secret_key, array('HS256'));

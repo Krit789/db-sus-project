@@ -81,7 +81,7 @@
             selectedLocID: 0,
             selectedLoc: {} as LocationObject,
             selectedTime: new Date() as DateTime,
-            selectedSeat: {} as SeatObject | null,
+            selectedSeat: null as SeatObject | null,
             foodPreOrderList: [] as MenuObject[],
             dtSearch: "",
             resDateTime: "",
@@ -93,10 +93,7 @@
                 //     key: "location_id",
                 // },
                 { title: "Name", align: "start", key: "name" },
-                // { title: "Address", align: "end", key: "address" },
-                // { title: "Open", align: "end", key: "open_time" },
-                { title: "Close", align: "end", key: "close_time" },
-                { title: "", key: "data-table-expand" },
+                { title: "Close Time", align: "center", key: "close_time" }
             ],
         }),
         methods: {
@@ -349,8 +346,8 @@
                             <v-card title="">
                                 <v-card-text>
                                     <h3 class="text-h4 font-weight-medium text-left">Select Branches</h3>
+                                    <p class="text-h6 font-weight-light text-left">Click on the row to see more infomation of the branches</p>
                                 </v-card-text>
-                                <v-btn :disabled="pageSpinner" class="align-right mb-3" prepend-icon="mdi-refresh" text="Refresh" @click="loadLocation"></v-btn>
                                 <v-no-ssr>
                                     <v-data-table
                                         v-model:expanded="expanded"
@@ -360,18 +357,27 @@
                                         :search="dtSearch"
                                         class="elevation-1"
                                         item-value="location_id"
-                                        show-expand
-                                        v-on:click:row="
-                                            (val, tabl) => {
-                                                loadLocationByID(tabl.item.location_id);
-                                                selectedLocID = tabl.item.location_id;
-                                                stepper1++;
-                                            }
-                                        "
+                                        :density="mobile ? 'compact' : 'comfortable'"
                                     >
                                         <template v-slot:top>
                                             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-text-search"></v-text-field>
                                         </template>
+
+                                        <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
+                        <tr
+                            v-ripple
+                            class="table-hover"
+                            @click="
+                                () => {
+                                    toggleExpand(internalItem);
+                                }
+                            "
+                        >
+                            <td class="text-start td-hover">{{ item.name }}</td>
+                            <td class="text-center td-hover">{{ DateTime.fromISO(item.close_time).toFormat("t") }}</td>
+                        </tr>
+                    </template>
+
                                         <template v-slot:expanded-row="{ columns, item }">
                                             <tr>
                                                 <td :colspan="columns.length" class="text-left">
@@ -380,7 +386,7 @@
                                                             <v-col col="12" sm="6">
                                                                 <b>Operating Hours</b>
                                                                 <br />
-                                                                {{ item.open_time }} - {{ item.close_time }}
+                                                                {{ DateTime.fromISO(item.open_time).toFormat("t") }} - {{ DateTime.fromISO(item.close_time).toFormat("t") }}
                                                                 <br />
                                                             </v-col>
                                                             <v-col col="12" sm="6">
@@ -389,24 +395,33 @@
                                                                 {{ item.address }}
                                                             </v-col>
                                                         </v-row>
+                                                        <v-row>
+                                                            <v-col col="12">
+                                                                <v-btn prepend-icon="mdi-check-decagram" variant="tonal" @click="() => {
+                                                loadLocationByID(item.location_id);
+                                                selectedLocID = item.location_id;
+                                                stepper1++;
+                                                }"
+                                                >Choose This Location</v-btn>
+                                                            </v-col>
+                                                        </v-row>
                                                     </v-container>
                                                 </td>
                                             </tr>
                                         </template>
                                     </v-data-table>
                                 </v-no-ssr>
+                                <v-btn :disabled="pageSpinner" variant="tonal" rounded="2xl" class="align-right my-3" prepend-icon="mdi-refresh" text="Refresh" @click="loadLocation"></v-btn>
                             </v-card>
                         </v-stepper-window-item>
                         <v-stepper-window-item value="2">
                             <v-card>
                                 <v-card-text>
                                     <h3 class="text-h4 font-weight-medium text-left">Choose Reservation Time</h3>
+                                    <p class="text-h6 font-weight-light text-left"><b>{{ selectedLoc.name }}</b>
+                                    is operating from {{ DateTime.fromISO(selectedLoc.open_time).toFormat("t") }} till
+                                    {{ DateTime.fromISO(selectedLoc.close_time).toFormat("t") }}</p>
                                 </v-card-text>
-                                <p class="text-left font-weight-medium pb-1 ml-4">
-                                    <b>{{ selectedLoc.name }}</b>
-                                    is operating from {{ selectedLoc.open_time }} till
-                                    {{ selectedLoc.close_time }}
-                                </p>
                                 <v-container>
                                     <v-row justify="space-around">
                                         <v-col cols="12" sm="6">
@@ -478,10 +493,10 @@
                                                 "
                                                 :rules="[seatRule]"
                                                 min="1"
+                                                type="number"
                                                 oninput="validity.valid || (value=1);"
                                                 prepend-inner-icon="mdi-account-multiple"
                                                 required
-                                                type="number"
                                             ></v-text-field>
                                             <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
                                             <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" return-object prepend-inner-icon="mdi-sofa-single-outline"></v-select>

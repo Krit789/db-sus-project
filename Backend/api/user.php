@@ -228,8 +228,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     }
                     break;
-                case 7: # Customer ต้องการเรียกดูสาขาทั้งหมด
-                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                case 7: # Customer ต้องการเรียกดูสาขาทั้งหมด เอาแค่สาขาที่ OPERATIONAL
+                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, "status=1", "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

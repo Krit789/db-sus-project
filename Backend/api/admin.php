@@ -19,11 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
-        if (isset($user_data['user_id'])) {
+        if (isset($user_data['user_id']) && isset($user_data['role'])) {
+            $role = $user_data['role'];
             switch ($type) {
                 case 1: # Administrator เรียกดู user ทั้งหมด
-                    $role = $user_data['role'];
-
                     if ($role == "GOD") {
 
                         $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status", null, null, "user_id", null);
@@ -43,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 2: # Administrator แก้ไขสถานะ user
                     //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
-                    $role = $user_data['role'];
                     $user = $data->u_id;
                     $status = $data->u_status;
 
@@ -56,10 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
 
                     if ($role == "GOD") {
-
                         $obj->update("users", ['status' => $status], "user_id={$user}");
                         $result = $obj->getResult();
-                        
+
 
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
@@ -75,9 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 3: # Administrator reset password user ข้อมูล password จะอยู่ที่ message ตอนนี้
                     //ต้องส่งข้อมูล user_id
-                    $role = $user_data['role'];
                     $user = $data->u_id;
-                    
+
                     if ($user == $user_data['user_id']) {
                         echo json_encode([
                             'status' => 0,
@@ -85,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                         break;
                     }
-                    
-                    if ($role == "GOD") {                        
+
+                    if ($role == "GOD") {
                         $password = randomPassword(10);
                         $new_password = password_hash($password, PASSWORD_DEFAULT);
                         $obj->update("users", ['password_hash' => $new_password], "user_id={$user}");
@@ -106,11 +102,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 4: # Administrator ต้องการเพิ่มสาขา
                     //ต้องส่งข้อมูล name, address, ot, ct #ot = open_time, ct = close_time
-                    $role = $user_data['role'];
-                    $name = $obj -> mysqli -> real_escape_string($data->name);
-                    $address = $obj -> mysqli -> real_escape_string($data->address);
-                    $ot = $obj -> mysqli -> real_escape_string($data->open_time);
-                    $ct = $obj -> mysqli -> real_escape_string($data->close_time);
+                    $name = $obj->mysqli->real_escape_string($data->name);
+                    $address = $obj->mysqli->real_escape_string($data->address);
+                    $ot = $obj->mysqli->real_escape_string($data->open_time);
+                    $ct = $obj->mysqli->real_escape_string($data->close_time);
 
                     if ($role == 'GOD') {
 
@@ -129,8 +124,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 5: # Administrator เรียกดู menu ทั้งหมด
-                    $role = $user_data['role'];
-
                     if ($role == "GOD") {
 
                         $obj->select("menus", "menu_id `m_id`, item_name `m_name`, item_desc `m_desc`, price `m_price`, img_url `m_img`, category_id `c_id`, menu_category.name `c_name`", "menu_category ON (category_id = mc_id)", null, null, null);
@@ -150,8 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 6: # Administrator ต้องการเพิ่มประเภทเมนู
                     //ต้องส่งข้อมูล name
-                    $role = $user_data['role'];
-                    $name = $obj -> mysqli -> real_escape_string($data->c_name);
+                    $name = $obj->mysqli->real_escape_string($data->c_name);
 
                     if ($role == 'GOD') {
 
@@ -171,8 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 7: # Administrator ต้องการเพิ่มเมนู
                     //ต้องส่งข้อมูล name, price, (Optional)[desc, category_id, img_url];
-                    $role = $user_data['role'];
-                    $name = $obj -> mysqli -> real_escape_string($data->m_name);
+                    $name = $obj->mysqli->real_escape_string($data->m_name);
                     $price = $data->price;
 
                     $desc = null;
@@ -180,13 +171,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $url = null;
 
                     if (isset($data->m_desc)) {
-                        $desc = $obj -> mysqli -> real_escape_string($data->m_desc);
+                        $desc = $obj->mysqli->real_escape_string($data->m_desc);
                     }
                     if (isset($data->m_category)) {
                         $cate_id = $data->m_category;
                     }
                     if (isset($data->img_url)) {
-                        $url = $obj -> mysqli -> real_escape_string($data->img_url);
+                        $url = $obj->mysqli->real_escape_string($data->img_url);
                     }
 
                     if ($role == 'GOD') {
@@ -207,27 +198,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 8: # Administrator ต้องการแก้ไขข้อมูลของเมนู
                     //ต้องส่งข้อมูล menu_id, name, price, desc, category_id, img_url;
-
                     $id = $data->menu_id;
-                    $role = $user_data['role'];
-                    $name = $obj -> mysqli -> real_escape_string($data->m_name);
+                    $name = $obj->mysqli->real_escape_string($data->m_name);
                     $price = $data->price;
                     $desc = null;
                     $cate_id = null;
                     $url = null;
 
                     if (isset($data->m_desc)) {
-                        $desc = $obj -> mysqli -> real_escape_string($data->m_desc);
+                        $desc = $obj->mysqli->real_escape_string($data->m_desc);
                     }
                     if (isset($data->m_category)) {
                         $cate_id = $data->m_category;
                     }
                     if (isset($data->img_url)) {
-                        $url = $obj -> mysqli -> real_escape_string($data->img_url);
+                        $url = $obj->mysqli->real_escape_string($data->img_url);
                     }
 
                     if ($role == 'GOD') {
-
                         $obj->update('menus', ['item_name' => $name, 'item_desc' => $desc, 'category_id' => $cate_id, 'price' => $price, 'img_url' => $url], "menu_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
@@ -244,7 +232,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 9: # Administrator ต้องการลบเมนู
                     //ต้องส่งข้อมูล menu_id
-                    $role = $user_data['role'];
                     $id = $data->menu_id;
 
                     if ($role == "GOD") {
@@ -265,11 +252,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 10: # Administrator กำหนดหน้าที่ของ user
                     //ต้องส่งข้อมูล user_id, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
-                    $role = $user_data['role'];
                     $user_role = $data->u_role;
                     $id = $data->u_id;
 
-                    if ($id == $user_data['user_id']){
+                    if ($id == $user_data['user_id']) {
                         echo json_encode([
                             'status' => 0,
                             'message' => 'You can\'t change your own role!'
@@ -294,7 +280,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 11: # Administrator กำหนดให้ manager ไปดูแล location
                     //ต้องส่งข้อมูล user_id, location_id
-                    $role = $user_data['role'];
                     $loca_id = $data->location_id;
                     $id = $data->u_id;
 
@@ -304,7 +289,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Manager Successfully Assigned to Location ID: '. $loca_id . ' .'
+                            'message' => 'Manager Successfully Assigned to Location ID: ' . $loca_id . ' .'
                         ]);
                         else echo json_encode([
                             'status' => 0,
@@ -315,8 +300,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 12: # Administrator เรียกดูการจองทั้งหมด
-                    $role = $user_data['role'];
-
                     if ($role == "GOD") {
 
                         $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', null, "reservations.status desc, arrival", null);
@@ -335,9 +318,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 13: # Administrator เรียกดูสาขาทั้งหมด และข้อมูลของผู้จัดการ
-                    //
-                    $role = $user_data['role'];
-
                     if ($role == "GOD") {
                         $obj->select("locations", "location_id, name, address, open_time, close_time, locations.status, creation_date, users.user_id, first_name, last_name, email, telephone, role, users.status", null, null, null, null, "left outer join users on (locations.manager_id = users.user_id)");
                         $result = $obj->getResult();
@@ -358,16 +338,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 14: # Administrator แก้ไขประเภทเมนู
                     //ต้องส่งข้อมูล mc_id และ name
-                    $role = $user_data['role'];
                     $cate_id = $data->c_id;
-                    $new_name = $obj -> mysqli -> real_escape_string($data->c_name);
+                    $new_name = $obj->mysqli->real_escape_string($data->c_name);
 
                     if ($role == 'GOD') {
                         $obj->update('menu_category', ['name' => $new_name], "mc_id={$cate_id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Menu Category successfully renamed to \''. $c_name . '\''
+                            'message' => 'Menu Category successfully renamed to \'' . $c_name . '\''
                         ]);
                         else echo json_encode([
                             'status' => 0,
@@ -379,8 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 15: # Administrator ลบประเภทเมนู
                     //ต้องส่งข้อมูล mc_id
-                    $role = $user_data['role'];
-                    $cate_id = $obj -> mysqli -> real_escape_string($data->c_id);
+                    $cate_id = $obj->mysqli->real_escape_string($data->c_id);
 
                     if ($role == 'GOD') {
 
@@ -400,8 +378,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 16: # Administrator เรียกดูประเภทเมนูทั้งหมด
                     //ต้องส่งข้อมูล mc_id
-                    $role = $user_data['role'];
-
                     if ($role == 'GOD') {
                         $obj->select("menu_category", "mc_id `c_id`, name `c_name`", null, null, null, null, null);
                         $result = $obj->getResult();
@@ -416,6 +392,25 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'status' => 1,
                                 'message' => array()
                             ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 17: # Administrator เรียกดูสาขาทั้งหมด รวมทุกสถานะ
+                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                    $res = $obj->getResult();
+                    if ($role == 'GOD') {
+                        if ($res) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $res,
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }

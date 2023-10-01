@@ -75,13 +75,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 3: # Administrator reset password user ข้อมูล password จะอยู่ที่ message ตอนนี้
                     //ต้องส่งข้อมูล user_id
-                    $user = $user_data['user_id'];
                     $role = $user_data['role'];
-                    $password = randomPassword(10);
-                    $new_password = password_hash($password, PASSWORD_DEFAULT);
-
-                    if ($role == "GOD") {
-
+                    $user = $data->u_id;
+                    
+                    if ($user == $user_data['user_id']) {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => "You can't reset your own password! You can change your password in account page",
+                        ]);
+                        break;
+                    }
+                    
+                    if ($role == "GOD") {                        
+                        $password = randomPassword(10);
+                        $new_password = password_hash($password, PASSWORD_DEFAULT);
                         $obj->update("users", ['password' => $new_password], "user_id={$user}");
                         $result = $obj->getResult();
 

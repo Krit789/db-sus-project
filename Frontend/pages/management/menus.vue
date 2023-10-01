@@ -283,7 +283,7 @@
 </script>
 <template>
     <v-main class="management_main">
-        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top" multi-line>
             <v-icon :icon="NotiIcon" start></v-icon>
             {{ NotiText }}
         </v-snackbar>

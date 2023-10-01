@@ -1,11 +1,13 @@
 <script lang="ts" setup>
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { DateTime } from "luxon";
+    import { useDisplay } from "vuetify";
     import "~/assets/stylesheets/global.css";
     import "~/assets/stylesheets/index.css";
     import "~/assets/stylesheets/management/users.css";
     import "~/assets/stylesheets/management/management.css";
-
+    
+    const { mobile } = useDisplay();
     const { status, data, signIn, signOut } = useAuth();
     const route = useRouter();
     useHead({
@@ -173,17 +175,17 @@ type User = {
 </script>
 <template>
     <v-main class="management_main">
-        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top" multi-line>
             <v-icon :icon="NotiIcon" start></v-icon>
             {{ NotiText }}
         </v-snackbar>
-        <v-dialog v-model="userAction" width="auto">
-            <v-card width="500">
+        <v-dialog v-model="userAction" :width="mobile ? '100%' : '500px'" :fullscreen="mobile">
+            <v-card :width="mobile ? '100%' : '500px'">
                 <v-card-title>Modify User</v-card-title>
                 <v-card-text>
-                    <v-text-field v-model="firstName" label="First Name" readonly></v-text-field>
-                    <v-text-field v-model="lastName" label="Last Name" readonly></v-text-field>
-                    <v-text-field prepend-icon="mdi-phone" v-model="phoneNumber" label="Phone number" readonly></v-text-field>
+                    <v-text-field variant="outlined" v-model="firstName" label="First Name" readonly></v-text-field>
+                    <v-text-field variant="outlined" v-model="lastName" label="Last Name" readonly></v-text-field>
+                    <v-text-field variant="outlined" prepend-icon="mdi-phone" v-model="phoneNumber" label="Phone number" readonly></v-text-field>
                     <v-select prepend-icon="mdi-tag" v-model="userRole" :items="roles" item-title="name" item-value="id" label="Role"></v-select>
                 </v-card-text>
                 <v-card-actions>
@@ -192,8 +194,8 @@ type User = {
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="userStatusDialog" width="auto">
-            <v-card width="500">
+        <v-dialog v-model="userStatusDialog" :width="mobile ? '100%' : '500px'" :fullscreen="mobile">
+            <v-card :width="mobile ? '100%' : '500px'">
                 <v-card-title>{{ (userStatusDialogType === 2) ? 'Account Suspension' : 'Account Activation' }}</v-card-title>
                 <v-card-text>
 <p>You are changing the status of '{{ firstName + ' ' + lastName }}' ID: {{ userID }} to {{ (userStatusDialogType === 2) ? 'Suspended' : 'Active' }} are you sure that you want to continue?</p> 
@@ -248,19 +250,19 @@ type User = {
                             <td :colspan="columns.length" class="text-left">
                                 <v-container>
                                     <v-row>
-                                        <v-col>
+                                        <v-col cols="12" md="4" sm="6">
                                             <b>Name</b>
                                             <p>{{ item.first_name }} {{ item.last_name }}</p>
                                         </v-col>
-                                        <v-col>
+                                        <v-col cols="12" md="4" sm="6">
                                             <b>E-Mail</b>
                                             <p>{{ item.email }}</p>
                                         </v-col>
-                                        <v-col>
+                                        <v-col cols="12" md="4" sm="6">
                                             <b>Telephone</b>
                                             <p>{{ item.telephone ? item.telephone : "-" }}</p>
                                         </v-col>
-                                        <v-col>
+                                        <v-col cols="12" md="4" sm="6">
                                             <b>Created On</b>
                                             <p>
                                                 <v-icon>mdi-calendar-blank</v-icon>
@@ -272,10 +274,11 @@ type User = {
                                         </v-col>
                                     </v-row>
                                     <v-row>
-                                        <v-col>
+                                        <v-col cols="12" md="12" sm="12">
                                             <v-btn
                                                 prepend-icon="mdi-pencil"
                                                 variant="text"
+                                                class="mr-5"
                                                 @click="
                                                     () => {
                                                         userID = item.user_id;

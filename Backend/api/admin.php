@@ -245,7 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $insertion_row['img_url'] = $url;
                         }
 
-                        error_log(json_encode($insertion_row));
                         $obj->update('menus', $insertion_row, "menu_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
@@ -427,7 +426,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 17: # Administrator เรียกดูสาขาทั้งหมด รวมทุกสถานะ
-                    $obj->select('locations', "location_id, name, address, open_time, close_time, status, layout_img_url", null, null, "status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                    $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`, address `l_addr`, open_time `l_open_time`, close_time `l_close_time`, locations.status `l_status`, layout_img_url `l_layout_img`, manager_id `l_mgr_id`, first_name `mgr_fn`, last_name `mgr_ln`, telephone `mgr_tel`, email `mgr_email`", "users ON (users.user_id = locations.manager_id)", null, null, "locations.status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                     $res = $obj->getResult();
                     if ($role == 'GOD') {
                         if ($res) {

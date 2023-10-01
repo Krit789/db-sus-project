@@ -352,19 +352,19 @@
                             <td :colspan="columns.length" class="text-left">
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" md="4" sm="6">
+                                        <v-col cols="12" md="3" sm="6">
                                             <b>Name</b>
                                             <p>{{ item.first_name }} {{ item.last_name }}</p>
                                         </v-col>
-                                        <v-col cols="12" md="4" sm="6">
+                                        <v-col cols="12" md="3" sm="6">
                                             <b>E-Mail</b>
                                             <p>{{ item.email }}</p>
                                         </v-col>
-                                        <v-col cols="12" md="4" sm="6">
+                                        <v-col cols="12" md="3" sm="6">
                                             <b>Telephone</b>
                                             <p>{{ item.telephone ? item.telephone : "-" }}</p>
                                         </v-col>
-                                        <v-col cols="12" md="4" sm="6">
+                                        <v-col cols="12" md="3" sm="6">
                                             <b>Created On</b>
                                             <p>
                                                 <v-icon>mdi-calendar-blank</v-icon>
@@ -376,7 +376,7 @@
                                         </v-col>
                                     </v-row>
                                     <v-row>
-                                        <v-col cols="12" md="12" sm="12">
+                                        <v-col cols="12">
                                             <v-btn
                                                 prepend-icon="mdi-pencil"
                                                 variant="text"

@@ -182,9 +182,7 @@ class Database
                     $arg[] = "$key = '{$val}'";
                 }
             }
-            error_log(json_encode($arg));
             $sql = "UPDATE $table SET " . implode(', ', $arg);
-            error_log(json_encode($sql));
             if ($where != null) {
                 $sql .= " WHERE $where";
             }

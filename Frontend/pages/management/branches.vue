@@ -1,6 +1,7 @@
 <script lang="ts" setup>
     import { VDataTable } from "vuetify/labs/VDataTable";
     import { useDisplay } from "vuetify";
+    import { DateTime } from "luxon";
     import "~/assets/stylesheets/global.css";
     import "~/assets/stylesheets/index.css";
     import "~/assets/stylesheets/management/branches.css";
@@ -31,14 +32,13 @@
                     title: "Location ID",
                     align: "start",
                     sortable: true,
-                    key: "location_id",
+                    key: "l_id",
                 },
-                { title: "Name", align: "start", key: "name" },
-                { title: "Manager", align: "end", key: "managerID" },
-                { title: "Address", align: "end", key: "address" },
-                { title: "Status", align: "end", key: "status" },
-                { title: "Open", align: "end", key: "open_time" },
-                { title: "Close", align: "end", key: "close_time" },
+                { title: "Name", align: "start", key: "l_name" },
+                { title: "Address", align: " d-none", key: "l_addr" },
+                { title: "Status", align: " d-none", key: "l_status" },
+                { title: "Open", align: " d-none", key: "l_open_time" },
+                { title: "Close", align: " d-none", key: "l_close_time" },
             ],
         }),
         methods: {
@@ -132,17 +132,79 @@
                     :loading="dtLoading"
                     :search="dtSearch"
                     class="elevation-1"
-                    item-value="location_id"
+                    item-value="l_id"
                     :density="mobile ? 'compact' : 'comfortable'"
                     @click:row="
                         (val, tabl) => {
-                            // $router.push('/management/branches/' + tabl.item.columns.location_id);
                             bEditor = true;
                         }
                     "
                 >
                     <template v-slot:top>
                         <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
+                    </template>
+                    <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
+                        <tr
+                            v-ripple
+                            class="table-hover"
+                            @click="
+                                () => {
+                                    toggleExpand(internalItem);
+                                }
+                            "
+                        >
+                            <td class="text-start td-hover">{{ item.l_id }}</td>
+                            <td class="text-start td-hover">{{ item.l_name }}</td>
+                        </tr>
+                    </template>
+                    <template v-slot:expanded-row="{ columns, item }">
+                        <tr>
+                            <td :colspan="columns.length" class="text-left">
+                                <v-container>
+                                    <v-row>
+                                        <v-col cols="12" md="3" sm="6">
+                                            <p>
+                                                <b>Address</b>
+                                                <br />
+                                                {{ item.l_addr }}
+                                            </p>
+                                        </v-col>
+                                        <v-col cols="12" md="3" sm="6">
+                                            <p>
+                                                <b>Operating Hours</b>
+                                                <br />
+                                                {{ DateTime.fromSQL(item.l_open_time).toFormat("t") }} - {{ DateTime.fromSQL(item.l_close_time).toFormat("t") }}
+                                            </p>
+                                        </v-col>
+                                        <v-col cols="12" md="3" sm="6">
+                                            <p>
+                                                <b>Status</b>
+                                                <br />
+                                                <v-icon class="mr-2">{{ item.l_status == "OPERATIONAL" ? "mdi-check" : item.l_status == "MAINTENANCE" ? "mdi-hammer-wrench" :  item.l_status == "OUTOFORDER" ? "mdi-close" : "mdi-help" }}</v-icon>{{ item.l_status == "OPERATIONAL" ? "Operational" : item.l_status == "MAINTENANCE" ? "Maintenance" :  item.l_status == "OUTOFORDER" ? "Out of Order" : item.l_status }}
+                                            </p>
+                                        </v-col>
+                                        <v-col cols="12" md="3" sm="6">
+                                            <p>
+                                                <b>Manager</b>
+                                                <br />
+                                                <v-icon class="mr-2">mdi-identifier</v-icon>{{ item.l_mgr_id }}
+                                                <br />
+                                                <v-icon class="mr-2">mdi-account-circle</v-icon>{{ item.mgr_fn + " " + item.mgr_ln }}
+                                                <br>
+                                                <v-icon class="mr-2">mdi-email</v-icon>{{ item.mgr_email}}
+                                                <br>
+                                                <v-icon class="mr-2">mdi-phone</v-icon>{{ item.mgr_tel}}
+                                            </p>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                      <v-col cols="12">
+                                        <v-btn variant="text" prepend-icon="mdi-pencil" @click="bEditor = true">Manage Branch</v-btn>
+                                      </v-col>
+                                    </v-row>
+                                </v-container>
+                            </td>
+                        </tr>
                     </template>
                 </v-data-table>
                 <v-col>

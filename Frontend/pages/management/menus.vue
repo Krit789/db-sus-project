@@ -322,7 +322,7 @@
                         <v-btn class="mt-4" variant="text" color="warning" append-icon="mdi-shape" @click="manageCategory = true">Manage Category</v-btn>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn :append-icon="menuDialogMode == 0 ? 'mdi-add' : 'mdi-content-save'" type="submit" :disabled="!menuName" color="success" :text="menuDialogMode == 0 ? 'Add' : 'Save'"></v-btn>
+                        <v-btn :append-icon="menuDialogMode == 0 ? 'mdi-plus' : 'mdi-content-save'" type="submit" :disabled="!menuName" color="success" :text="menuDialogMode == 0 ? 'Add' : 'Save'"></v-btn>
                         <v-btn
                             color="primary"
                             @click="

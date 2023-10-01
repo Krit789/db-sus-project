@@ -187,7 +187,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         }
 
                         if (isset($data->m_category)) {
-                            $insertion_row['category_id'] = $cate_id;
+                            if ($data->m_category != 0) {
+                                $insertion_row['category_id'] = $cate_id;
+                            }
                         }
 
                         if (isset($data->img_url)) {
@@ -232,7 +234,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         }
 
                         if (isset($data->m_category)) {
-                            $insertion_row['category_id'] = $cate_id;
+                            if ($cate_id == 0) {
+                                $insertion_row['category_id'] = NULL;
+                            } else {
+                                $insertion_row['category_id'] = $cate_id; // Set category_id to $cate
+                            }
                         }
 
                         if (isset($data->img_url)) {

@@ -176,9 +176,15 @@ class Database
         if ($this->tableExist($table)) {
             $arg = array();
             foreach ($params as $key => $val) {
-                $arg[] = "$key = '{$val}'";
+                if ($val == NULL) {
+                    $arg[] = "$key = NULL";
+                } else {
+                    $arg[] = "$key = '{$val}'";
+                }
             }
+            error_log(json_encode($arg));
             $sql = "UPDATE $table SET " . implode(', ', $arg);
+            error_log(json_encode($sql));
             if ($where != null) {
                 $sql .= " WHERE $where";
             }

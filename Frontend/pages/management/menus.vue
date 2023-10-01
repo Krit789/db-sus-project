@@ -245,6 +245,8 @@
                 }
                 if (menu_category_id > 0) {
                     menuQuery = Object.assign({}, menuQuery, { m_category: menu_category_id });
+                } else {
+                    menuQuery = Object.assign({}, menuQuery, { m_category: 0 });
                 }
                 if (menu_img) {
                     menuQuery = Object.assign({}, menuQuery, { img_url: menu_img });
@@ -544,7 +546,7 @@
                                                         menuID = item.m_id;
                                                         menuPrice = item.m_price;
                                                         menuImgUrl = item.m_img;
-                                                        menuCategoryID = item.c_id;
+                                                        menuCategoryID = (item.c_id) ? item.c_id : 0;;
                                                         addMenuDialog = true;
                                                     }
                                                 "

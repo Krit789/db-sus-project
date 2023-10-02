@@ -28,15 +28,26 @@ const mySignInHandler = async ({email, password}: { email: string; password: str
 <script lang="ts">
 export default {
   data: () => ({
+    first_name: "",
+    last_name: "",
+    phone: "",
+    emailReg: "",
+    passwordReg: "",
+    passwordRegConfirm: "",
     email: "",
     password: "",
     snackbar: false,
     NotiText: "",
     NotiColor: "",
     NotiIcon: "",
+    wantLogin: true,
     isCardLoading: false,
   }),
   methods: {
+    passwordValidation(value: String) {
+      if (this.passwordReg === value) return true;
+      return "Both passwords must be similar.";
+    },
     emailValidation(value: String) {
       if (
           String(value)
@@ -47,10 +58,47 @@ export default {
 
       return "E-Mail must be in correct format.";
     },
+    makeRegistration: async function () {
+      this.isCardLoading = true;
+      await $fetch("/proxy/api/account/create-user.php", {
+        method: "POST",
+        body: {
+          fn: this.first_name,
+          ln: this.last_name,
+          email: this.emailReg,
+          password: this.passwordReg,
+          tele: this.phone,
+        },
+      })
+          .catch((error) => error.data)
+          .then((data) => this.get_status(data));
+    },
+    get_status({status: status, message: message}) {
+      if (status == 1) {
+        this.NotiText = "Registration Successful. Login with your account to begin!";
+        this.NotiColor = "success";
+        this.NotiIcon = "mdi-check-circle-outline";
+        this.snackbar = true;
+      } else if (status == 2) {
+        this.NotiText = "Email already in use!";
+        this.NotiColor = "error";
+        this.NotiIcon = "mdi-alert";
+        this.snackbar = true;
+      } else {
+        this.NotiText = message;
+        this.NotiColor = "error";
+        this.NotiIcon = "mdi-alert";
+        this.snackbar = true;
+      }
+      this.isCardLoading = false;
+    },
   },
   computed: {
     isLoginValid: function () {
       return this.emailValidation(this.email) && this.password != "";
+    },
+    isRegisValid() {
+      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != "" && this.last_name != "" && this.emailReg != "" && this.passwordRegConfirm != "";
     },
   },
 }
@@ -58,6 +106,12 @@ export default {
 
 <template>
     <v-main class="mt-5">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
+          <v-icon :icon="NotiIcon" start></v-icon>
+          {{ NotiText }}
+        </v-snackbar>
+        <v-card :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                  class="blur-effect account_pane my-2" v-if="wantLogin == true">
             <v-form class="justify-center" fast-fail @submit.prevent>
               <v-card-title class="mt-4 ml-4 pb-3 text-center">
                 <h1>Login</h1>
@@ -72,6 +126,8 @@ export default {
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>     
                 </v-sheet>
+                <p>Don't have a account? <a class="like-a-link" @click="() => {wantLogin = false;}">Register
+                Here</a></p>
               </v-card-text>
               <v-card-actions class="ml-3 mb-3 justify-center">
                 <v-btn
@@ -109,5 +165,58 @@ export default {
                 </v-btn>
               </v-card-actions>
             </v-form>
+        </v-card>
+        <v-card :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                class="blur-effect account_pane my-2" v-else>
+          <v-form fast-fail @submit.prevent>
+            <v-card-title class="mt-4 ml-4 pb-3 text-center">
+              <h1>Register</h1>
+            </v-card-title>
+            <v-card-subtitle class="ml-4 pb-1 text-center">
+              <h4 class="font-weight-medium">Get ready to enjoy the best reservation experience!</h4>
+            </v-card-subtitle>
+            <v-card-text>
+              <v-sheet class="mx-auto w-100 form_container bg-transparent">
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="first_name" label="First Name *"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="last_name" label="Last Name *"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="emailReg" :rules="[emailValidation]" label="E-Mail *"
+                                  prepend-inner-icon="mdi-email"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="phone" label="Phone Number" prepend-inner-icon="mdi-phone"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="passwordReg" label="Password *" prepend-inner-icon="mdi-lock"
+                                  type="password"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]" label="Confirm Password *"
+                                  prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-sheet>
+              <p>Already have a account? <a class="like-a-link" @click="() => {wantLogin = true;}">Login
+                Here</a></p>
+            </v-card-text>
+            <v-card-actions class="ml-3 mb-3">
+              <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit"
+                     @click="makeRegistration">Submit
+              </v-btn>
+              <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
+                     @click="dialogRe = false">Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
     </v-main>
 </template>

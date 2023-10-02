@@ -7,7 +7,7 @@ const {status, data} = useAuth();
 useHead({
   title: "Seatify: Seat Reservation Service",
   meta: [
-    {Ï
+    {
       name: "Seatify: Seat Reservation Service",
       content: "Seatify, The Seat Reservation Service that makes the difference.",
     },

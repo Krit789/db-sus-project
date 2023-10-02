@@ -508,7 +508,8 @@ export default {
           }}
         </v-alert>
 
-        <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders" :items="dtData" :loading="dtLoading"
+        <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders"
+                      :items="dtData" :loading="dtLoading"
                       :search="dtSearch" class="elevation-1" item-value="m_id">
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>

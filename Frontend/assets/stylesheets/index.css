@@ -14,3 +14,11 @@
 .index_parallax {
     min-height: calc(100vh);
 }
+
+.index_text_stroke, .index_text_shadow {
+    -webkit-text-stroke: 0.1px black;
+}
+
+.index_text_shadow {
+    text-shadow: #ffdf5e 1px 0 10px;
+}

@@ -322,7 +322,8 @@ export default {
             dtErrorData
           }}
         </v-alert>
-        <v-data-table v-model:items-per-page="itemsPerPage" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="dtData"
+        <v-data-table v-model:items-per-page="itemsPerPage" :density="mobile ? 'compact' : 'comfortable'"
+                      :headers="dtHeaders" :items="dtData"
                       :loading="dtLoading" :search="dtSearch" class="elevation-1"
                       item-value="user_id">
           <template v-slot:top>

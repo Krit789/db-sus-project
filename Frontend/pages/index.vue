@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/index.css";
+
 definePageMeta({auth: false});
 const {status, data} = useAuth();
 useHead({
@@ -21,12 +22,12 @@ useSeoMeta({
   twitterCard: "summary_large_image",
 });
 </script>
-
+Ï
 <template>
   <v-main class="mt-n16">
-    <v-parallax src="/images/home/banner.webp">
+    <v-parallax class="index_parallax" src="/images/home/banner.webp">
       <div class="text-center mt-16 first-box">
-        <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
+        <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>Ï
         <p class="text-h5 ma-5 text-white">Satisfying your seaty needs.</p>
         <v-btn prepend-icon="mdi-login-variant" rounded="lg" size="x-large" @click="$router.push('/reservation')">
           Reserve Now!
@@ -34,8 +35,8 @@ useSeoMeta({
       </div>
     </v-parallax>
     <div class="bg-grey-lighten-4 mb-3">
-      <Features class="mt-0"/>
-      <Credit class="bg-transparent"/>
+      <Features id="features" class="mt-0"/>
+      <Credit id="about_us" class="bg-transparent"/>
     </div>
   </v-main>
 </template>
@@ -44,3 +45,4 @@ useSeoMeta({
 @import "@/assets/stylesheets/global.css";
 @import "@/assets/stylesheets/index.css";
 </style>
+Ï

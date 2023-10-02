@@ -128,10 +128,10 @@ export default {
                           </v-tooltip>
                           <v-tooltip>
                             <template v-slot:activator="{ props }">
-                              <v-btn                                   color="red"
-                                  v-bind="props" @click="() => {
+                              <v-btn color="red"
+                                     prepend-icon="mdi-cancel" text="Cancel Reservation" v-bind="props" @click="() => {
                                                         cancelReservation(item.res_id);
-                                                    }" text="Cancel Reservation" prepend-icon="mdi-cancel"></v-btn>
+                                                    }"></v-btn>
                             </template>
                             <span>Cancel Reservation</span>
                           </v-tooltip>

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
+
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
@@ -181,26 +182,26 @@ export default {
           .catch((error) => error.data)
           .then((data) => this.get_status(data));
     },
-      get_status({status: status, message: message}) {
-        if (status == 1) {
-          this.NotiText = "Registration Successful. Login with your account to begin!";
-          this.NotiColor = "success";
-          this.NotiIcon = "mdi-check-circle-outline";
-          this.snackbar = true;
-          this.dialogRe = false;
-        } else if (status == 2) {
-          this.NotiText = "Email already in use!";
-          this.NotiColor = "error";
-          this.NotiIcon = "mdi-alert";
-          this.snackbar = true;
-        } else {
-          this.NotiText = message;
-          this.NotiColor = "error";
-          this.NotiIcon = "mdi-alert";
-          this.snackbar = true;
-        }
-        this.isCardLoading = false;
-      },
+    get_status({status: status, message: message}) {
+      if (status == 1) {
+        this.NotiText = "Registration Successful. Login with your account to begin!";
+        this.NotiColor = "success";
+        this.NotiIcon = "mdi-check-circle-outline";
+        this.snackbar = true;
+        this.dialogRe = false;
+      } else if (status == 2) {
+        this.NotiText = "Email already in use!";
+        this.NotiColor = "error";
+        this.NotiIcon = "mdi-alert";
+        this.snackbar = true;
+      } else {
+        this.NotiText = message;
+        this.NotiColor = "error";
+        this.NotiIcon = "mdi-alert";
+        this.snackbar = true;
+      }
+      this.isCardLoading = false;
+    },
 
   },
   computed: {
@@ -292,7 +293,7 @@ export default {
           </v-btn>
         </div>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" disable-resize-watcher temporary disable-route-watcher>
+      <v-navigation-drawer v-model="drawer" disable-resize-watcher disable-route-watcher temporary>
         <div v-if="status == 'authenticated'">
           <v-list>
             <v-list-item>
@@ -398,8 +399,9 @@ export default {
         </div>
       </v-navigation-drawer>
       <div class="text-center">
-        <v-dialog v-model="dialogIn" :width="mobile ? '100%' : '700px'" :fullscreen="mobile">
-          <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" :width="mobile ? '100%' : '700px'">
+        <v-dialog v-model="dialogIn" :fullscreen="mobile" :width="mobile ? '100%' : '700px'">
+          <v-card :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                  class="blur-effect account_pane">
             <v-form class="justify-center" fast-fail @submit.prevent>
               <v-card-title class="mt-4 ml-4 pb-3">
                 <h1>Login</h1>
@@ -413,7 +415,8 @@ export default {
                                 prepend-inner-icon="mdi-email"></v-text-field>
                   <v-text-field v-model="password" label="Password" prepend-inner-icon="mdi-lock"
                                 type="password"></v-text-field>
-                                <p>Don't have a account? <a class="like-a-link" @click="() => {dialogIn = false; dialogRe = true;}">Register Here</a></p>
+                  <p>Don't have a account? <a class="like-a-link" @click="() => {dialogIn = false; dialogRe = true;}">Register
+                    Here</a></p>
                 </v-sheet>
               </v-card-text>
               <v-card-actions class="ml-3 mb-3">
@@ -456,8 +459,9 @@ export default {
           </v-card>
         </v-dialog>
       </div>
-      <v-dialog v-model="dialogRe" :width="mobile ? '100%' : '700px'" :fullscreen="mobile" activator="#regisActivator">
-        <v-card :loading="isCardLoading ? 'blue' : undefined" class="blur-effect account_pane" :width="mobile ? '100%' : '700px'">
+      <v-dialog v-model="dialogRe" :fullscreen="mobile" :width="mobile ? '100%' : '700px'" activator="#regisActivator">
+        <v-card :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                class="blur-effect account_pane">
           <v-form fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3">
               <h1>Register</h1>
@@ -495,7 +499,8 @@ export default {
                   </v-col>
                 </v-row>
               </v-sheet>
-              <p>Already have a account? <a class="like-a-link" @click="() => {dialogIn = true; dialogRe = false;}">Login Here</a></p>
+              <p>Already have a account? <a class="like-a-link" @click="() => {dialogIn = true; dialogRe = false;}">Login
+                Here</a></p>
             </v-card-text>
             <v-card-actions class="ml-3 mb-3">
               <v-btn :disabled="!isRegisValid" class="mt-2 bg-blue-darken-1 h-[22px] mw-50" rounded="lg" type="submit"
@@ -516,6 +521,7 @@ export default {
 .like-a-link {
   cursor: pointer;
 }
+
 .like-a-link:hover {
   cursor: pointer;
   text-decoration: underline;

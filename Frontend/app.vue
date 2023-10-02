@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout>
-    <NuxtLoadingIndicator color="lightblue" :height="5" />
+    <NuxtLoadingIndicator :height="5" color="lightblue"/>
     <NuxtPage/>
   </NuxtLayout>
 </template>
@@ -17,11 +17,11 @@
 }
 
 .table-hover:hover {
-        background-color: #f7f7f7 !important;
-        cursor: pointer;
-    }
+  background-color: #f7f7f7 !important;
+  cursor: pointer;
+}
 
 .table-hover:hover .td-hover {
-        background-color: transparent !important; /* or #000 */
-    }
+  background-color: transparent !important; /* or #000 */
+}
 </style>

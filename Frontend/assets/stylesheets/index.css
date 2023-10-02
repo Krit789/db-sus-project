@@ -10,3 +10,7 @@
     border-radius: 22px !important;
 
 }
+
+.index_parallax {
+    min-height: calc(100vh);
+}

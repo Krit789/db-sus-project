@@ -1,16 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify'
 
 export default defineNuxtConfig({
     app: {
-        pageTransition: { name: 'page', mode: 'out-in' },
+        pageTransition: {name: 'page', mode: 'out-in'},
         head: {
             link: [{rel: "icon", type: "image/png", href: "/favicon.ico"}],
             script: [
                 // Polyfills for Safari 13.1 support
                 // <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at"></script>
-                { src: 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at' }
-              ]
+                {src: 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at'}
+            ]
         },
     },
     devtools: {
@@ -29,10 +29,10 @@ export default defineNuxtConfig({
         /* Treeshaking: https://next.vuetifyjs.com/en/features/treeshaking/ */
         (_options, nuxt) => {
             nuxt.hooks.hook('vite:extendConfig', (config) => {
-              // @ts-expect-error
-              config.plugins.push(vuetify({ autoImport: true }))
+                // @ts-expect-error
+                config.plugins.push(vuetify({autoImport: true}))
             })
-          },
+        },
     ],
     auth: {
         // The module is enabled. Change this to disable the module
@@ -74,9 +74,9 @@ export default defineNuxtConfig({
     },
     vite: {
         vue: {
-          template: {
-            transformAssetUrls,
-          },
+            template: {
+                transformAssetUrls,
+            },
         },
-      },
+    },
 });

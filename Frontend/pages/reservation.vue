@@ -485,8 +485,11 @@ export default {
                       <h3 class="text-left font-weight-medium">Seat Layout</h3>
                       <v-img :src="selectedLoc.layout_img_url" width="600">
                         <template v:slot:placeholder>
-                          <v-skeleton-loader></v-skeleton-loader>
+                          <v-skeleton-loader width="600"></v-skeleton-loader>
                         </template>
+                        <template v-slot:error>
+                            <v-img cover width="600" src="/images/img-error.webp"></v-img>
+                          </template>
                       </v-img>
                     </v-col>
                     <v-col>
@@ -619,10 +622,10 @@ export default {
                     >
                       <v-card v-ripple>
                         <v-img
-                            :src="food.img_url ? food.img_url : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
+                            :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'"
                             aspect="16/9" cover height="300">
                           <template v-slot:error>
-                            <v-img cover height="300" src="https://picsum.photos/500/300?image=232" width="300"></v-img>
+                            <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
                           </template>
                         </v-img>
                         <v-card-title>

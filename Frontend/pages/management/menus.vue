@@ -595,10 +595,10 @@ export default {
                       <br/>
                       <v-card v-ripple class="text-center" elevation="4">
                         <v-img
-                            :src="item.m_img ? item.m_img : 'https://livingstonbagel.com/wp-content/uploads/2016/11/food-placeholder.jpg'"
+                            :src="item.m_img ? item.m_img : '/images/img-coming-soon.webp'"
                             aspect="16/9" cover height="300">
                           <template v-slot:error>
-                            <v-img cover height="300" src="https://picsum.photos/500/300?image=232" width="300"></v-img>
+                            <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
                           </template>
                         </v-img>
                         <v-card-title>

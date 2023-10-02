@@ -314,6 +314,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn
+                    block
                         @click="
                             () => {
                                 newUserPWDialog = false;

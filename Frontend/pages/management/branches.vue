@@ -17,167 +17,250 @@
     });
 </script>
 <script lang="ts">
-    type Location = {
-        l_id: number;
-        l_name: string;
-        l_addr: string;
-        l_open_time: string;
-        l_close_time: string;
-        l_status: "OPERATIONAL" | "MAINTENANCE" | "OUTOFORDER";
-        l_layout_img: string | null;
-        l_mgr_id: number | null;
-        mgr_fn: string | null;
-        mgr_ln: string | null;
-        mgr_tel: string | null;
-        mgr_email: string | null;
-    };
+    // Menu Item interface
+    interface MenuItem {
+      m_id: number;
+      m_name: string;
+      c_id: number | null;
+      c_name?: string;
+      m_price: number;
+    }
 
-    type Table = {
-        table_id: number;
-        name: string;
-        capacity: number;
-    };
-    export default {
-        data: () => ({
-            tabNum: null,
-            layoutPreview: false,
-            addTableDialog: false,
-            addTableMode: 0, // 0 for adding table : 1 for renaming table
-            delTableDialog: false,
-            tableName: "",
-            tableID: 0,
-            bEditor: false,
-            bID: 0,
-            bName: "",
-            bAddress: "",
-            bOpenTime: "",
-            bCloseTime: "",
-            blayout: "",
-            addBranch: false,
-            dtSearch: "",
-            dtErrorData: "",
-            dtIsError: false,
-            dtData: [] as Location[],
-            locSeat: [] as Table[],
-            itemsPerPage: 10,
-            dtLoading: false,
-            snackbar: false,
-            NotiColor: "",
-            timeout: 2000,
-            NotiIcon: "",
-            NotiText: "",
-            dtHeaders: [[
-                {
-                    title: "Location ID",
-                    align: "start",
-                    sortable: true,
-                    key: "l_id",
+    // Menu Category interface
+    interface MenuCategory {
+      c_id: number;
+      c_name: string;
+      menu_items: MenuItem[];
+    }
+
+    // Menu Data type
+    type MenuData = MenuCategory[];
+
+    // Restricted Menu Data type
+    type RestrictedMenuData = MenuItem[];
+
+    // Complete Data type (including both menu and restricted menu)
+    type CompleteMenuData = [MenuData, RestrictedMenuData];
+
+
+        type Location = {
+            l_id: number;
+            l_name: string;
+            l_addr: string;
+            l_open_time: string;
+            l_close_time: string;
+            l_status: "OPERATIONAL" | "MAINTENANCE" | "OUTOFORDER";
+            l_layout_img: string | null;
+            l_mgr_id: number | null;
+            mgr_fn: string | null;
+            mgr_ln: string | null;
+            mgr_tel: string | null;
+            mgr_email: string | null;
+        };
+
+        type Table = {
+            table_id: number;
+            name: string;
+            capacity: number;
+        };
+        export default {
+            data: () => ({
+                tabNum: 0,
+                layoutPreview: false,
+                addTableDialog: false,
+                addTableMode: 0, // 0 for adding table : 1 for renaming table
+                delTableDialog: false,
+                delMenuResDialog: false,
+                addMenuResDialog: false,
+                tableName: "",
+                tableID: 0,
+                bEditor: false,
+                bID: 0,
+                bName: "",
+                bAddress: "",
+                bOpenTime: "",
+                bCloseTime: "",
+                blayout: "",
+                bMgrID: 0,
+                bMgrName: "",
+                bStatus: 1,
+                menuID: undefined,
+                menuName: "",
+                addBranch: false,
+                dtSearch: "",
+                dtErrorData: "",
+                dtIsError: false,
+                dtData: [] as Location[],
+                locSeat: [] as Table[],
+                locMenu: [] as CompleteMenuData[],
+                itemsPerPage: 10,
+                dtLoading: false,
+                snackbar: false,
+                NotiColor: "",
+                timeout: 2000,
+                NotiIcon: "",
+                NotiText: "",
+                bStatusList: [
+                    {
+                        id: 1,
+                        name: "Operational",
+                    },
+                    {
+                        id: 2,
+                        name: "Maintenance",
+                    },
+                    {
+                        id: 3,
+                        name: "Out Of Order",
+                    },
+                ],
+                dtHeaders: [
+                    [
+                        {
+                            title: "Location ID",
+                            align: "start",
+                            sortable: true,
+                            key: "l_id",
+                        },
+                        { title: "Name", align: "start", key: "l_name" },
+                        { title: "Address", align: " d-none", key: "l_addr" },
+                        { title: "Status", align: " d-none", key: "l_status" },
+                        { title: "Open", align: " d-none", key: "l_open_time" },
+                        { title: "Close", align: " d-none", key: "l_close_time" },
+                    ],
+                ],
+            }),
+            methods: {
+                menuItemProps (item) {
+            return {
+                id: item.m_id,
+              title: item.m_name,
+              subtitle: item.c_name,
+            }},
+                async loadData() {
+                    this.dtLoading = true;
+                    await $fetch("/api/data", {
+                        method: "POST",
+                        body: {
+                            type: 17,
+                            usage: "admin",
+                        },
+                        lazy: true,
+                    })
+                        .catch((error) => {
+                            this.dtIsError = true;
+                            this.dtErrorData = error.data;
+                        })
+                        .then((response) => {
+                            const { message } = response as { status: number; message: any };
+                            this.dtData = message;
+                            this.dtLoading = false;
+                            this.dtIsError = false;
+                        });
                 },
-                { title: "Name", align: "start", key: "l_name" },
-                { title: "Address", align: " d-none", key: "l_addr" },
-                { title: "Status", align: " d-none", key: "l_status" },
-                { title: "Open", align: " d-none", key: "l_open_time" },
-                { title: "Close", align: " d-none", key: "l_close_time" },
-            ]],
-        }),
-        methods: {
-            async loadData() {
-                this.dtLoading = true;
-                await $fetch("/api/data", {
-                    method: "POST",
-                    body: {
-                        type: 17,
-                        usage: "admin",
-                    },
-                    lazy: true,
-                })
-                    .catch((error) => {
-                        this.dtIsError = true;
-                        this.dtErrorData = error.data;
+                async loadTableByLocationID(loc_id: number) {
+                    await $fetch("/api/data", {
+                        method: "POST",
+                        body: {
+                            type: 10,
+                            usage: "manager",
+                            l_id: loc_id,
+                        },
+                        lazy: true,
                     })
-                    .then((response) => {
-                        const { message } = response as { status: number; message: any; };
-                        this.dtData = message;
-                        this.dtLoading = false;
-                        this.dtIsError = false;
-                    });
-            },
-            async loadTableByLocationID(loc_id: number) {
-                await $fetch("/api/data", {
-                    method: "POST",
-                    body: {
-                        type: 10,
-                        usage: "manager",
-                        l_id: loc_id,
-                    },
-                    lazy: true,
-                })
-                    .catch((error) => {
-                        this.dtIsError = true;
-                        this.dtErrorData = error.data;
+                        .catch((error) => {
+                            this.dtIsError = true;
+                            this.dtErrorData = error.data;
+                        })
+                        .then((response) => {
+                            const { status, message } = response as { status: number; message: any };
+                            if (status == 0) {
+                                this.snackbar = true;
+                                this.NotiColor = "error";
+                                this.NotiIcon = "mdi-alert";
+                                this.NotiText = message;
+                            } else if (status == 1) {
+                                this.locSeat = message;
+                            }
+                            this.dtIsError = false;
+                        });
+                },
+                async loadMenuByLocationID(loc_id: number) {
+                    await $fetch("/api/data", {
+                        method: "POST",
+                        body: {
+                            type: 3,
+                            usage: "manager",
+                            l_id: loc_id,
+                        },
+                        lazy: true,
                     })
-                    .then((response) => {
-                        const { status, message } = response as { status: number; message: any; };
-                        if (status == 0) {
-                            this.snackbar = true;
-                            this.NotiColor = "error";
-                            this.NotiIcon = "mdi-alert";
-                            this.NotiText = message;
-                        } else if (status == 1) {
-                            this.locSeat = message;
-                        }
-                        this.dtIsError = false;
-                    });
-            },
-            async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
-                let requestBody = { type: 4, usage: "admin", name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
-                if (l_layout_img) {
-                    requestBody = Object.assign({}, requestBody, {layout_img : l_layout_img})
-                }
-                console.log(requestBody);
-                await $fetch("/api/data", {
-                    method: "POST",
-                    body: requestBody,
-                    lazy: true,
-                })
-                    .catch((error) => {
-                        this.dtIsError = true;
-                        this.dtErrorData = error.data;
+                        .catch((error) => {
+                            this.dtIsError = true;
+                            this.dtErrorData = error.data;
+                        })
+                        .then((response) => {
+                            const { status, message } = response as { status: number; message: any };
+                            if (status == 0) {
+                                this.snackbar = true;
+                                this.NotiColor = "error";
+                                this.NotiIcon = "mdi-alert";
+                                this.NotiText = message;
+                            } else if (status == 1) {
+                                this.locMenu = message;
+                            }
+                            this.dtIsError = false;
+                        });
+                },
+                async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
+                    let requestBody = { type: 4, usage: "admin", name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
+                    if (l_layout_img) {
+                        requestBody = Object.assign({}, requestBody, { layout_img: l_layout_img });
+                    }
+                    console.log(requestBody);
+                    await $fetch("/api/data", {
+                        method: "POST",
+                        body: requestBody,
+                        lazy: true,
                     })
-                    .then((response) => {
-                        const { status, message } = response as { status: number; message: any; }; // Destructure inside the callback
-                        if (status == 0) {
-                            this.snackbar = true;
-                            this.NotiColor = "error";
-                            this.NotiIcon = "mdi-alert";
-                            this.NotiText = message;
-                        } else if (status == 1) {
-                            this.snackbar = true;
-                            this.NotiColor = "success";
-                            this.NotiIcon = "mdi-check";
-                            this.NotiText = message;
-                        }
-                        this.addBranch = false;
-                        this.dtIsError = false;
-                        this.loadData()
-                    });
+                        .catch((error) => {
+                            this.dtIsError = true;
+                            this.dtErrorData = error.data;
+                        })
+                        .then((response) => {
+                            const { status, message } = response as { status: number; message: any }; // Destructure inside the callback
+                            if (status == 0) {
+                                this.snackbar = true;
+                                this.NotiColor = "error";
+                                this.NotiIcon = "mdi-alert";
+                                this.NotiText = message;
+                            } else if (status == 1) {
+                                this.snackbar = true;
+                                this.NotiColor = "success";
+                                this.NotiIcon = "mdi-check";
+                                this.NotiText = message;
+                            }
+                            this.addBranch = false;
+                            this.dtIsError = false;
+                            this.loadData();
+                        });
+                },
+                urlValidator(url: string) {
+                    const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+                    const regex = new RegExp(expression);
+                    if (url.match(regex)) return true;
+                    return "Invalid URL Format";
+                },
+                requiredForm(value: string) {
+                    if (value) return true;
+                    return "This field is required";
+                },
             },
-            urlValidator(url: string) {
-                const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-                const regex = new RegExp(expression);
-                if (url.match(regex)) return true;
-                return "Invalid URL Format";
-            },
-            requiredForm(value: string) {
-                if (value) return true;
-                return "This field is required";
-            },
-        },
 
-        beforeMount() {
-            this.loadData();
-        },
-    };
+            beforeMount() {
+                this.loadData();
+            },
+        };
 </script>
 <template>
     <v-main class="management_main">
@@ -185,8 +268,8 @@
             <v-icon :icon="NotiIcon" start></v-icon>
             {{ NotiText }}
         </v-snackbar>
-        <v-dialog v-model="addBranch" width="auto">
-            <v-card width="400">
+        <v-dialog v-model="addBranch" :fullscreen="mobile" :width="mobile ? '100%' : '400px'">
+            <v-card :width="mobile ? 'auto' : '400px'">
                 <v-form
                     fast-fail
                     @submit.prevent="
@@ -228,7 +311,7 @@
                     </v-img>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary" @click="layoutPreview = false">Close</v-btn>
+                    <v-btn color="primary" block @click="layoutPreview = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -277,16 +360,77 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="addMenuResDialog" :width="'auto'">
+            <v-card :width="mobile ? 'auto' : '400px'">
+                <v-card-title>Create Menu Restriction</v-card-title>
+                <v-card-subtitle>Prevents unwanted menus from showing up in your branch</v-card-subtitle>
+                <v-card-text>
+                    <v-autocomplete label="Menu Selection" :items="locMenu[0]" :item-props="menuItemProps" item-value="m_id" v-model="menuID"></v-autocomplete>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        color="success"
+                        prepend-icon="mdi-check"
+                        @click="
+                            () => {
+                                // addMenuRestriction(menu_id, loc_id);
+                                console.log(menuID);
+                                menuID = 0;
+                                menuName = '';
+                            }
+                        "
+                    >
+                        Confirm
+                    </v-btn>
+                    <v-btn color="error" prepend-icon="mdi-cancel" @click="addMenuResDialog = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="delMenuResDialog" :width="'auto'">
+            <v-card :width="mobile ? 'auto' : '400px'">
+                <v-card-title>Remove Menu Restriction</v-card-title>
+                <v-card-text>
+                    Are you sure that you want to continue?
+                    <b>{{ menuName }}</b>
+                    will show up in your branch menu list.
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn
+                        color="success"
+                        prepend-icon="mdi-check"
+                        @click="
+                            () => {
+                                // removeMenuRestriction(menu_id, loc_id);
+                                menuID = 0;
+                                menuName = '';
+                            }
+                        "
+                    >
+                        Confirm
+                    </v-btn>
+                    <v-btn color="error" prepend-icon="mdi-cancel" @click="delMenuResDialog = false">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-dialog v-model="bEditor" :fullscreen="mobile" :width="mobile ? '100%' : '500px'" persistent>
             <v-card>
                 <v-tabs v-model="tabNum" bg-color="primary" color="white">
                     <v-tab value="one">General</v-tab>
-                    <v-tab value="two">Menus</v-tab>
+                    <v-tab
+                        value="two"
+                        @click="
+                            () => {
+                                if (locMenu.length == 0) loadMenuByLocationID(bID);
+                            }
+                        "
+                    >
+                        Menus
+                    </v-tab>
                     <v-tab
                         value="three"
                         @click="
                             () => {
-                                loadTableByLocationID(bID);
+                                if (locSeat.length == 0) loadTableByLocationID(bID);
                             }
                         "
                     >
@@ -312,13 +456,64 @@
                                     <v-text-field v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"></v-text-field>
                                     <v-text-field v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
                                     <v-text-field v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+                                    <v-select v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"></v-select>
                                 </v-card-text>
-                                <v-btn append-icon="mdi-content-save" class="mb-2" color="success" type="submit" variant="tonal">Save</v-btn>
+                                <v-btn prepend-icon="mdi-content-save" class="mb-2 mr-3" color="success" type="submit" variant="tonal">Save</v-btn>
+                                <v-btn :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'" class="mb-2" color="info" type="submit" variant="text">{{ bMgrID ? "Change Manager" : "Assign Manager" }}</v-btn>
                             </v-form>
                         </v-window-item>
 
                         <v-window-item value="two">
                             <h3 class="text-left">Menu Restriction</h3>
+                            <v-card-text>
+                                <v-table fixed-header height="50vh" density="compact">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">Menu ID</th>
+                                            <th class="text-left">Menu Name</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in locMenu[1]" :key="item.m_id">
+                                            <td>{{ item.m_id }}</td>
+                                            <td>{{ item.m_name }}</td>
+                                            <td class="text-center">
+                                                <v-tooltip location="top">
+                                                    <template v-slot:activator="{ props }">
+                                                        <v-icon
+                                                            color="red"
+                                                            v-bind="props"
+                                                            @click="
+                                                                () => {
+                                                                    menuID = item.m_id;
+                                                                    menuName = item.m_name;
+                                                                    delMenuResDialog = true;
+                                                                }
+                                                            "
+                                                        >
+                                                            mdi-delete
+                                                        </v-icon>
+                                                    </template>
+                                                    <span>Delete Restriction</span>
+                                                </v-tooltip>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </v-table>
+                                <v-btn
+                                    class="mt-3"
+                                    variant="text"
+                                    prepend-icon="mdi-plus"
+                                    @click="
+                                        () => {
+                                            addMenuResDialog = true;
+                                        }
+                                    "
+                                >
+                                    Create Restriction
+                                </v-btn>
+                            </v-card-text>
                         </v-window-item>
 
                         <v-window-item value="three">
@@ -404,7 +599,19 @@
                     </v-window>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn block color="primary" @click="bEditor = false">Close</v-btn>
+                    <v-btn
+                        block
+                        color="primary"
+                        @click="
+                            () => {
+                                bEditor = false;
+                                locSeat = [];
+                                locMenu = [];
+                            }
+                        "
+                    >
+                        Close
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -501,8 +708,12 @@
                                                         bName = item.l_name;
                                                         bAddress = item.l_addr;
                                                         blayout = item.l_layout_img;
+                                                        bStatus = item.l_status == 'OPERATIONAL' ? 1 : item.l_status == 'MAINTENANCE' ? 2 : item.l_status == 'OUTOFORDER' ? 3 : item.l_status;
                                                         bOpenTime = DateTime.fromSQL(item.l_open_time).toFormat('T');
                                                         bCloseTime = DateTime.fromSQL(item.l_close_time).toFormat('T');
+                                                        bMgrID = item.l_mgr_id;
+                                                        bMgrName = `${item.mgr_fn} ${item.mgr_fn}`;
+                                                        tabNum = 0;
                                                         bEditor = true;
                                                     }
                                                 "

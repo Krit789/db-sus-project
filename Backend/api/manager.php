@@ -73,19 +73,28 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 3: # Administrator, Manager ดูข้อมูล menu ของสาขาตัวเอง จะดึงข้อมูลสองอย่าง 1) menu_id ทั้งหมด, 2) menu_id ที่ห้าม; ex [[$result, $result2]]
                     //ต้องส่งข้อมูล location_id
-                    $loc_id = $data->location_id;
+                    if (!isset($data->l_id)) {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => "Location ID is missing"
+                        ]);
+                        break;
+                    }
+
+                    $loc_id = $data->l_id;
+
 
                     if ($role == "MANAGER" || $role == "GOD") {
 
-                        $obj->select("menus", "*", null, null, null, null);
-                        $result = $obj->getResult();
+                        $obj->select("menus", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menu_category mc ON (category_id = mc.mc_id)", null, null, null);
+                        $all_menu = $obj->getResult();
 
-                        $obj->select("restrictions", "menu_id", null, "location_id=$loc_id", 'menu_id', null);
-                        $result2 = $obj->getResult();
+                        $obj->select("restrictions", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menus USING (menu_id) JOIN menu_category mc ON (category_id = mc.mc_id)", "location_id=$loc_id", 'menu_id', null);
+                        $restricted_menu = $obj->getResult();
 
                         echo json_encode([
                             'status' => 1,
-                            'message' => [$result, $result2]
+                            'message' => [$all_menu, $restricted_menu]
                         ]);
                     } else {
                         $ispermission = !$ispermission;

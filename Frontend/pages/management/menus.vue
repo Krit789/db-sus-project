@@ -355,7 +355,7 @@ export default {
       <v-card :width="mobile ? 'auto' : '450px'">
         <v-card-title>Manage Category</v-card-title>
         <v-card-text>
-          <v-table class="overflow-auto" height="70vh">
+          <v-table class="overflow-auto" height="70vh" fixed-header="">
             <thead>
             <tr>
               <th class="text-left">ID</th>
@@ -370,40 +370,29 @@ export default {
               <td v-show="item.c_id !== 0" class="text-right">
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
-                    <v-btn
-                        color="info"
-                        v-bind="props"
-                        variant="text"
-                        @click="
+                      <v-icon class="mr-3" v-ripple color="info" v-bind="props" @click="
                                                     () => {
                                                         menuCategoryName = item.c_name;
                                                         menuCategoryID = item.c_id;
                                                         catRenameMode = 0;
                                                         catRename = true;
                                                     }
-                                                "
-                    >
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
+                                                ">mdi-pencil</v-icon>
                   </template>
                   <span>Rename</span>
                 </v-tooltip>
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
-                    <v-btn
-                        color="red"
+                      <v-icon color="red"
                         v-bind="props"
-                        variant="text"
+                        v-ripple
                         @click="
                                                     () => {
                                                         menuCategoryID = item.c_id;
                                                         menuCategoryName = item.c_name;
                                                         catDel = true;
                                                     }
-                                                "
-                    >
-                      <v-icon v-bind="props">mdi-delete</v-icon>
-                    </v-btn>
+                                                ">mdi-delete</v-icon>
                   </template>
                   <span>Delete</span>
                 </v-tooltip>
@@ -428,7 +417,7 @@ export default {
           </v-btn>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="manageCategory = false">Close</v-btn>
+          <v-btn block @click="manageCategory = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -483,7 +472,7 @@ export default {
       </v-card>
     </v-dialog>
     <v-dialog v-model="catRename" :width="'auto'">
-      <v-card :width="mobile ? 'auto' : '400px'">
+      <v-card :width="mobile ? '250px' : '400px'">
         <v-card-title>{{ catRenameMode === 0 ? "Rename Category" : "Create Category" }}</v-card-title>
         <v-card-text>
           <v-text-field v-model="menuCategoryName" label="Category Name"></v-text-field>

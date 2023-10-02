@@ -47,7 +47,8 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({message}) => {
+          .then((response) => {
+          const { message } = response as { status: number; message: any; };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -68,7 +69,8 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({message}) => {
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any; };
             this.dtLoading = false;
             this.dtIsError = false;
             this.loadData();

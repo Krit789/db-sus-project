@@ -54,18 +54,10 @@ interface LocationObject {
   creation_date: string;
   layout_img_url: string;
   manager_id: number;
-
-  // Add more properties as needed
-}
-
-function renameKey(obj, oldKey, newKey) {
-  obj[newKey] = obj[oldKey];
-  delete obj[oldKey];
 }
 
 export default {
   data: () => ({
-    expanded: [],
     isError: false,
     isTimeValid: false,
     errorData: "",
@@ -80,18 +72,13 @@ export default {
     branchLayout: "",
     selectedLocID: 0,
     selectedLoc: {} as LocationObject,
-    selectedTime: new Date() as DateTime,
+    selectedTime: "" as string | DateTime,
     selectedSeat: null as SeatObject | null,
     foodPreOrderList: [] as MenuObject[],
     dtSearch: "",
     resDateTime: "",
     resGuest: 1,
     dtHeaders: [
-      // {
-      //     title: "ID",
-      //     align: "start",
-      //     key: "location_id",
-      // },
       {title: "Name", align: "start", key: "name"},
       {title: "Close Time", align: "center", key: "close_time"}
     ],
@@ -149,7 +136,8 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            this.locationList = response.message;
+          const { status, message } = response as { status: number; message: any; };
+            this.locationList = message;
             this.pageSpinner = false;
             this.isError = false;
           });
@@ -170,7 +158,8 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            this.menuList = response.message;
+          const { status, message } = response as { status: number; message: any; };
+            this.menuList = message;
             this.pageSpinner = false;
             this.isError = false;
           });
@@ -191,7 +180,8 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            this.selectedLoc = response.message[0];
+          const { status, message } = response as { status: number; message: any; };
+            this.selectedLoc = message[0];
             this.pageSpinner = false;
             this.isError = false;
           });
@@ -213,7 +203,8 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            this.seatList = response.message;
+          const { status, message } = response as { status: number; message: any; };
+            this.seatList = message;
             this.pageSpinner = false;
             this.isError = false;
           });
@@ -229,7 +220,7 @@ export default {
           location_id: this.selectedLocID,
           arrival: DateTime.fromISO(this.resDateTime).toFormat("yyyy-LL-dd TT"),
           cus_count: this.resGuest,
-          table_id: this.selectedSeat.table_id,
+          table_id: this.selectedSeat?.table_id,
           menu: this.foodPreOrderList,
         },
         lazy: true,
@@ -239,7 +230,8 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            if (response.status === 1) {
+          const { status, message } = response as { status: number; message: any; };
+            if (status === 1) {
               alert("Booking Successful");
               this.$router.push("/");
             } else {
@@ -284,7 +276,6 @@ export default {
   computed: {
     filteredSeatListCompute() {
       this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
-      // this.filterSeatList.forEach( obj => renameKey( obj, 'name', 'title' ) );
       this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest).length;
       return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
     },
@@ -351,7 +342,6 @@ export default {
                 </v-card-text>
                 <v-no-ssr>
                   <v-data-table
-                      v-model:expanded="expanded"
                       :density="mobile ? 'compact' : 'comfortable'"
                       :headers="dtHeaders"
                       :items="locationList"
@@ -605,6 +595,11 @@ export default {
                 </v-table>
               </v-card>
               <h3 class="ml-5 text-left font-weight-medium">Menus</h3>
+              <v-lazy
+  :min-height="200"
+  :options="{'threshold':0.5}"
+  transition="fade-transition"
+>
               <v-card class="overflow-auto" elevation="0" height="525">
                 <v-container>
                   <v-row>
@@ -645,6 +640,7 @@ export default {
                   </v-row>
                 </v-container>
               </v-card>
+            </v-lazy>
               <v-container>
                 <v-row>
                   <v-col>

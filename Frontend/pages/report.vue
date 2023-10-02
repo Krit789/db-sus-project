@@ -4,6 +4,8 @@ import {VDataTable} from "vuetify/labs/VDataTable";
 import "~/assets/stylesheets/global.css";
 import "~/assets/stylesheets/report.css";
 
+
+
 const {mobile} = useDisplay();
 const {status, data} = useAuth();
 
@@ -14,9 +16,8 @@ useHead({
 </script>
 
 <script lang="ts">
-import Vue from "vue"
 
-export default defineComponent({
+export default {
   data() {
     return {
       selectedDT: [],
@@ -57,7 +58,8 @@ export default defineComponent({
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({message}) => {
+          .then((response) => {
+          const { status, message } = response as { status: number; message: any; };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -67,7 +69,7 @@ export default defineComponent({
   beforeMount() {
     this.loadData();
   },
-});
+};
 </script>
 
 <template>

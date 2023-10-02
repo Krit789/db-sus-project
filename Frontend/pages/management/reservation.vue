@@ -69,7 +69,8 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({status, message}) => {
+          .then((response) => {
+          const { status, message } = response as { status: number; message: any; };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -90,7 +91,8 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({status, message}) => {
+          .then((response) => {
+          const { status, message } = response as { status: number; message: any; };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
@@ -124,7 +126,8 @@ export default {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
-          .then(({status, message}) => {
+          .then((response) => {
+          const { status, message } = response as { status: number; message: any; };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {

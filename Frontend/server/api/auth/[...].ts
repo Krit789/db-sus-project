@@ -3,6 +3,10 @@ import {NuxtAuthHandler} from "#auth";
 
 export default NuxtAuthHandler({
     secret: process.env.AUTH_SECRET,
+    pages: {
+        // Change the default behavior to use `/login` as the path for the sign-in page
+        signIn: '/login'
+      },
     callbacks: {
         // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
         jwt: async ({token, user}) => {

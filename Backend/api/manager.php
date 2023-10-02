@@ -43,6 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 2: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
                     //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
+                    $layout_img = null;
+
                     $loc_id = $data->location_id;
                     $loc_name = $obj->mysqli->real_escape_string($data->loc_name);
                     $address = $obj->mysqli->real_escape_string($data->address);
@@ -50,16 +52,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $close_time = $obj->mysqli->real_escape_string($data->close_time);
                     $status = $data->status;
 
+                    if (isset($data->layout_img)){
+                        $layout_img = $obj->mysqli->real_escape_string($data->layout_img);
+                    }
+                    
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->update("locations", ['name' => $loc_name, 'address' => $address, 'open_time' => $open_time, 'close_time' => $close_time, 'status' => $status], "location_id={$loc_id}");
+                        $obj->update("locations", ['name' => $loc_name, 'address' => $address, 'open_time' => $open_time, 'close_time' => $close_time, 'status' => $status, 'layout_img_url' => $layout_img], "location_id={$loc_id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => 'Update Info Location Successful',
+                            'message' => 'Successfully update location info',
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Update Info Location Failed", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            'message' => "Failed to update location info", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -237,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 10: #Administrator, Manager ต้องการดู table ทั้งหมดในสาขาที่เลิอก
                     //ต้องส่งข้อมูล location_id
-                    $loc_id = $data->location_id;
+                    $loc_id = $data->l_id;
                     if ($role == 'Manager' || $role == 'GOD') {
                         $obj->select("tables", "table_id, name, capacity", null, "location_id=$loc_id", 'table_id');
                         $res = $obj->getResult();

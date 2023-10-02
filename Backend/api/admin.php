@@ -102,14 +102,27 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 4: # Administrator ต้องการเพิ่มสาขา
                     //ต้องส่งข้อมูล name, address, ot, ct #ot = open_time, ct = close_time
+
+                    $layout_img = null;
+
                     $name = $obj->mysqli->real_escape_string($data->name);
                     $address = $obj->mysqli->real_escape_string($data->address);
                     $ot = $obj->mysqli->real_escape_string($data->open_time);
                     $ct = $obj->mysqli->real_escape_string($data->close_time);
 
-                    if ($role == 'GOD') {
+                    if (isset($data->layout_img)){
+                        $layout_img = $obj->mysqli->real_escape_string($data->layout_img);
+                    }
 
-                        $obj->insert('locations', ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3, 'creation_date' => $time]);
+                    if ($role == 'GOD') {
+                        $insertion_row = ['name' => $name, 'address' => $address, 'open_time' => $ot, 'close_time' => $ct, 'status' => 3, 'creation_date' => $time];
+                        if (isset($data->layout_img)) {
+                            if (!is_null($data->layout_img)) {
+                                $insertion_row['layout_img_url'] = $layout_img;
+                            }
+                        }
+
+                        $obj->insert('locations', $insertion_row);
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,

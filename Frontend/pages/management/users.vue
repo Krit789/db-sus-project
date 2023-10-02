@@ -99,7 +99,8 @@
                         this.dtIsError = true;
                         this.dtErrorData = error.data;
                     })
-                    .then(({ message }) => {
+                    .then((response) => {
+                        const { message } = response as { status: number; message: any; }; // Destructure inside the callback
                         this.dtData = message;
                         this.dtLoading = false;
                         this.dtIsError = false;
@@ -120,7 +121,8 @@
                         this.dtIsError = true;
                         this.dtErrorData = error.data;
                     })
-                    .then(({ status, message }) => {
+                    .then((response) => {
+                        const { status, message } = response as { status: any; message: any; }; // Destructure inside the callback
                         this.dtLoading = false;
                         this.dtIsError = false;
                         if (status == 0) {
@@ -153,7 +155,8 @@
                         this.dtIsError = true;
                         this.dtErrorData = error.data;
                     })
-                    .then(({ status, message }) => {
+                    .then((response) => {
+                        const { status, message } = response as { status: number; message: any; }; // Destructure inside the callback
                         this.dtLoading = false;
                         this.dtIsError = false;
                         if (status == 0) {
@@ -185,7 +188,8 @@
                         this.dtIsError = true;
                         this.dtErrorData = error.data;
                     })
-                    .then(({ status, message }) => {
+                    .then((response) => {
+                        const { status, message } = response as { status: any; message: any; }; // Destructure inside the callback
                         this.dtLoading = false;
                         this.dtIsError = false;
                         if (status == 0) {
@@ -407,7 +411,7 @@
                                                 "
                                             >
                                                 Edit
-                                            </v-btn>  
+                                            </v-btn>
                                             <v-btn
                                                 v-if="item.status == 'ACTIVE'"
                                                 class="mr-5"

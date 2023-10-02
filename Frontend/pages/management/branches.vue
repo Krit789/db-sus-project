@@ -156,7 +156,7 @@
                             </v-form>
                         </v-window-item>
 
-                        <v-window-item value="two">
+                        <v-window-item value="two">1
                             <h3 class="text-left">Menu Restriction</h3>
                         </v-window-item>
 

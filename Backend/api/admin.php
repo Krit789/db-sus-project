@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 1: # Administrator เรียกดู user ทั้งหมด
                     if ($role == "GOD") {
 
-                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status", null, null, "user_id", null);
+                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status", null, null, "role, user_id", null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -279,7 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
-                case 10: # Administrator กำหนดหน้าที่ของ user
+                case 10: # Administrator กำหนด role ของ user
                     //ต้องส่งข้อมูล user_id, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
                     $user_role = $data->u_role;
                     $id = $data->u_id;

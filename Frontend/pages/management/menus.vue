@@ -591,7 +591,7 @@
                                                 </v-card-title>
                                                 <v-card-subtitle>
                                                     <v-chip color="warning">
-                                                        {{ item.c_name }}
+                                                        {{ (item.c_name !== null) ? item.c_name : 'Uncategorized' }}
                                                     </v-chip>
                                                     <v-chip color="info">{{ item.m_price }}฿</v-chip>
                                                 </v-card-subtitle>

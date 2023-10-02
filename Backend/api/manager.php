@@ -32,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res) echo json_encode([
                             'status' => 1,
                             'message' => $res
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 1,
                             'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
@@ -43,10 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 2: # Administrator, Manager แก้ไขข้อมูลสาขาตัวเอง
                     //ต้องส่งข้อมูล location_id, name, address, ot, ct, status  #ot = open_time, ct = close_time |||| status ส่งเป็น int {1: 'OPERATIONAL', 2: 'MAINTENANCE', 3: 'OUTOFORDER'}
                     $loc_id = $data->location_id;
-                    $loc_name = $obj -> mysqli -> real_escape_string($data->loc_name);
-                    $address = $obj -> mysqli -> real_escape_string($data->address);
-                    $open_time = $obj -> mysqli -> real_escape_string($data->open_time);
-                    $close_time = $obj -> mysqli -> real_escape_string($data->close_time);
+                    $loc_name = $obj->mysqli->real_escape_string($data->loc_name);
+                    $address = $obj->mysqli->real_escape_string($data->address);
+                    $open_time = $obj->mysqli->real_escape_string($data->open_time);
+                    $close_time = $obj->mysqli->real_escape_string($data->close_time);
                     $status = $data->status;
 
                     if ($role == "MANAGER" || $role == "GOD") {
@@ -55,7 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Update Info Location Successful',
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Update Info Location Failed", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
@@ -106,7 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Menu Restricted Successfully',
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "No matching menu found!", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
@@ -117,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 5: # Administrator, Manager เพิ่มโต๊ะ
                     //ต้องส่งข้อมูล location_id, name, capacity
                     $loc_id = $data->location_id;
-                    $name = $obj -> mysqli -> real_escape_string($data->name);
+                    $name = $obj->mysqli->real_escape_string($data->name);
                     $capa = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
@@ -126,7 +129,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => "Add Table Successful"
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Add Table Falied Successful"
                         ]);
@@ -155,7 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => "Delete Table Successful"
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Delete Table Falied Successful"
                         ]);
@@ -177,7 +182,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
                             'message' => 'Modify Table Successful',
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 0,
                             'message' => "Modify Table Failed", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                         ]);
@@ -196,7 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 1,
                             'message' => array()
                         ]);
@@ -221,11 +228,28 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         if ($result) echo json_encode([
                             'status' => 1,
                             'message' => $result
-                        ]); else echo json_encode([
+                        ]);
+                        else echo json_encode([
                             'status' => 1,
                             'message' => array()
                         ]);
                     }
+                    break;
+                case 10: #Administrator, Manager ต้องการดู table ทั้งหมดในสาขาที่เลิอก
+                    //ต้องส่งข้อมูล location_id
+                    $loc_id = $data->location_id;
+                    if ($role == 'Manager' || $role == 'GOD') {
+                        $obj->select("tables", "table_id, name, capacity", null, "location_id=$loc_id", 'table_id');
+                        $res = $obj->getResult();
+                        if ($res) echo json_encode([
+                            "status" => 1,
+                            "message" => $res
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            "message" => array()
+                        ]);
+                    }else $ispermission = !$ispermission;
                     break;
                 default:
                     throw new Exception('Unexpected value');

@@ -69,6 +69,7 @@
       delTableDialog: false,
       delMenuResDialog: false,
       addMenuResDialog: false,
+      loadingDialog: false,
       tableName: '',
       tabNum: 0,
       tableID: 0,
@@ -254,6 +255,7 @@
           });
       },
       async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
+        this.loadingDialog = true;
         let requestBody = { type: 4, usage: 'admin', name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
         if (l_layout_img) {
           requestBody = Object.assign({}, requestBody, { layout_img: l_layout_img });
@@ -282,12 +284,14 @@
               this.NotiText = message;
             }
             this.addBranch = false;
+            this.loadingDialog = false;
             this.dtIsError = false;
             this.loadData();
           });
       },
-      async updateLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
-        let requestBody = { type: 4, usage: 'admin', name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
+      async updateLocation(l_id: number,l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string, l_status: number) {
+        this.loadingDialog = true;
+        let requestBody = { type: 2, usage: 'manager', location_id: l_id, loc_name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time, status: l_status };
         if (l_layout_img) {
           requestBody = Object.assign({}, requestBody, { layout_img: l_layout_img });
         }
@@ -314,9 +318,44 @@
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
-            this.addBranch = false;
             this.dtIsError = false;
+            this.loadingDialog = false;
             this.loadData();
+          });
+      },
+      async assignManager(l_id: number, mgr_id: number) {
+        this.loadingDialog = true;
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 11,
+            usage: "admin",
+            l_id: l_id,
+            u_id: mgr_id,
+        },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any }; // Destructure inside the callback
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.bMgrID = mgr_id;
+              this.NotiText = message;
+              this.loadData();
+            }
+            this.managerDialog = false;
+            this.loadingDialog = false;
           });
       },
       urlValidator(url: string) {
@@ -342,6 +381,14 @@
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
     </v-snackbar>
+    <v-dialog v-model="loadingDialog" :scrim="false" persistent width="auto">
+      <v-card color="primary">
+        <v-card-text>
+          Saving Changes
+          <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="addBranch" :fullscreen="mobile" :width="mobile ? '100%' : '400px'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-form
@@ -494,7 +541,7 @@
             prepend-icon="mdi-check"
             @click="
               () => {
-                // assignManager(menu_id, loc_id);
+                assignManager(bID, bSelMgrID);
               }
             ">
             Confirm
@@ -556,7 +603,7 @@
                   <v-text-field prepend-inner-icon="mdi-clock-end" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
                   <v-select prepend-inner-icon="mdi-list-status" v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"></v-select>
                 </v-card-text>
-                <v-btn prepend-icon="mdi-content-save" class="mb-2 mr-3" color="success" type="submit" variant="tonal">Save</v-btn>
+                <v-btn prepend-icon="mdi-content-save" class="mb-2 mr-3" color="success" type="submit" variant="tonal" @click="() => {updateLocation(bID, bName, bAddress, DateTime.fromISO(bOpenTime).toFormat('yyyy-LL-dd TT'), DateTime.fromISO(bCloseTime).toFormat('yyyy-LL-dd TT'), blayout, bStatus)}">Save</v-btn>
                 <v-btn
                   :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'"
                   class="mb-2"
@@ -804,7 +851,7 @@
                       </div>
                       <div v-else>
                         <v-icon class="mr-2">mdi-help</v-icon>
-                        Unassign
+                        Unassigned
                       </div>
                     </v-col>
                   </v-row>

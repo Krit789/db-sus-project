@@ -533,7 +533,6 @@
               "
             >
               <td class="text-start td-hover"></td>
-              <!-- <td class="text-start td-hover">{{ item.m_id }}</td> -->
               <td class="text-start td-hover">{{ item.m_name }}</td>
               <td class="text-start td-hover">{{ item.m_price }} ฿</td>
             </tr>

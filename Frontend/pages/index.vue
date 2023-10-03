@@ -22,13 +22,11 @@
     twitterCard: "summary_large_image",
   });
 </script>
-Ï
 <template>
   <v-main class="mt-n16">
     <v-parallax class="index_parallax" src="/images/home/banner.webp">
       <div class="text-center mt-16 first-box">
         <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
-        Ï
         <p class="text-h5 mb-5 text-white index_text_shadow">Satisfying your seaty needs.</p>
         <v-btn prepend-icon="mdi-login-variant" rounded="lg" size="x-large" @click="$router.push('/reservation')">Reserve Now!</v-btn>
       </div>
@@ -44,4 +42,3 @@
   @import "@/assets/stylesheets/global.css";
   @import "@/assets/stylesheets/index.css";
 </style>
-Ï

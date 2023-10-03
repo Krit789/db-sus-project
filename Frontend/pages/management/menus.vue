@@ -354,7 +354,7 @@
       <v-card :width="mobile ? 'auto' : '450px'">
         <v-card-title>Manage Category</v-card-title>
         <v-card-text>
-          <v-table class="overflow-auto" height="70vh" fixed-header="">
+          <v-table class="overflow-auto" height="70vh" fixed-header>
             <thead>
               <tr>
                 <th class="text-left">ID</th>

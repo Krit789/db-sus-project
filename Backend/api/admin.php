@@ -322,12 +322,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 11: # Administrator กำหนดให้ manager ไปดูแล location
                     //ต้องส่งข้อมูล user_id, location_id
-                    $loca_id = $data->location_id;
-                    $id = $data->u_id;
+                    $u_id = null; 
+                    $loca_id = $data->l_id;
+                    if ($data->u_id != 0){
+                        $u_id = $data->u_id;
+                    }
 
                     if ($role == 'GOD') {
-
-                        $obj->update('locations', ['manager_id' => $id], "location_id={$loca_id}");
+                        $obj->update('locations', ['manager_id' => $u_id], "location_id={$loca_id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -400,7 +402,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 15: # Administrator ลบประเภทเมนู
                     //ต้องส่งข้อมูล mc_id
-                    $cate_id = $obj->mysqli->real_escape_string($data->c_id);
+                    $cate_id = $data->c_id;
 
                     if ($role == 'GOD') {
 
@@ -453,6 +455,46 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
                             ]);
                         }
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 18: # Administrator เรียกดู user ประเภท MANAGER ทั้งหมดที่มีสถานะเป็น ACTIVE
+                    if ($role == 'GOD') {
+                        $obj->select("users", "user_id `u_id`, CONCAT(first_name, ' ', last_name) `u_name`, email `u_email`", null, "role=2 AND status=1", null, null, null);
+                        $result = $obj->getResult();
+
+                        if ($result)
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        else
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array()
+                            ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
+                case 19: # Administrator เรียกดู locations ที่ MANAGER เป็นคนดูแล (ต้องส่ง u_id ของ manager มา)
+                    $mgr_id = $data->mgr_id;
+
+                    if ($role == 'GOD') {
+                        $obj->select("locations", "location_id `l_id`, name `l_name`", null, "manager_id={$mgr_id}", null, null, null);
+                        $result = $obj->getResult();
+
+                        if ($result)
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $result
+                            ]);
+                        else
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array()
+                            ]);
                     } else {
                         $ispermission = !$ispermission;
                     }

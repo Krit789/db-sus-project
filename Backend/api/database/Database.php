@@ -75,7 +75,7 @@ class Database
 
     // get data
 
-    public function insertlagacy($table, $table_column, $table_value)
+    public function insertlegacy($table, $table_column, $table_value)
     {
         if ($this->tableExist($table)) {
             $sql = "INSERT INTO $table ($table_column) VALUES $table_value";

@@ -105,6 +105,5 @@
         <v-btn :disabled="dtLoading" :variant="'outlined'" class="align-right mb-3 w-100 mx-auto" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>
       </div>
     </div>
-    <!--    <Credit/> // AGAIN????? -->
   </v-main>
 </template>

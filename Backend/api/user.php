@@ -107,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 }
                             }
                             // error_log($tmp);
-                            $obj->insertlagacy('orders', 'res_id, menu_id, amount', $tmp);
+                            $obj->insertlegacy('orders', 'res_id, menu_id, amount', $tmp);
                             # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
 
                             $resutl = $obj->getResult();
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                         $tmp .= "($res_id, $menu[0], $menu[1]),";
                                     }
                                 }
-                                $obj->insertlagacy('orders', 'res_id, menu_id, amount', $tmp);
+                                $obj->insertlegacy('orders', 'res_id, menu_id, amount', $tmp);
 
                                 $resutl = $obj->getResult(); #อยากเช็คแต่ยังก่อน
                             }

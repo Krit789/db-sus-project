@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $count += 1;
                         }
                         $obj->delete('restrictions', "location_id=$loc_id");
-                        $obj->insertlagacy('restrictions', 'location_id, menu_id', $tmp);
+                        $obj->insertlegacy('restrictions', 'location_id, menu_id', $tmp);
 
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([

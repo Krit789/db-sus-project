@@ -16,7 +16,7 @@
     const { error } = await signIn("credentials", {
       email,
       password,
-      redirect: false,
+      redirect: true,
       callbackUrl: "/",
     });
     if (error) {
@@ -109,6 +109,9 @@
 </script>
 
 <template>
+  <v-container fluid fill-height style="background: #BBDEFB;">
+    <v-row>
+      <v-col>
   <v-main class="mt-5">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="2000" location="top">
       <v-icon :icon="NotiIcon" start></v-icon>
@@ -231,4 +234,7 @@
       </v-form>
     </v-card>
   </v-main>
+</v-col>
+</v-row>
+</v-container>
 </template>

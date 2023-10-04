@@ -6,9 +6,10 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../../vendor/autoload.php';
 include '../check.php';
-
 use Firebase\JWT\JWT;
 
+$dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
+$dotenv->safeload();
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -55,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     ],
                 ];
 
-                $secret_key = "Hilal ahmad khan";
+                $secret_key = $_SERVER['SECRET'];
                 $jwt = JWT::encode($payload, $secret_key, 'HS256');
                 echo json_encode([
                     'status' => 1,
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         #การดึงข้อมูล
-        // $secret_key = "Hilal ahmad khan";
+        // $secret_key = $_SERVER['SECRET'];
         // $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
         // $data = $user_data->data;
         // if ($data->role == "USER"){
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     } else echo json_encode([
         'status' => 0,
-        'message' => 'No No User in Database',
+        'message' => 'No User in Database',
     ]);
 
 } else echo json_encode([

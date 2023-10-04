@@ -10,13 +10,16 @@ include '../random.php';
 
 use Firebase\JWT\JWT;
 
+$dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
+$dotenv->safeload();
+
 $obj = new Database();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $allheaders = getallheaders();
     $jwt = $allheaders['Authorization'];
 
-    $secret_key = "Hilal ahmad khan";
+    $secret_key = $_SERVER['SECRET'];
     $user_data = JWT::decode($jwt, $secret_key, array('HS256'));
     $user_data = $user_data->data;
 

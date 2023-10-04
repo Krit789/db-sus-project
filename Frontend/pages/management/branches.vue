@@ -70,6 +70,7 @@
       delMenuResDialog: false,
       addMenuResDialog: false,
       loadingDialog: false,
+      delLocDialog: false,
       tableName: '',
       tableNameDialog: '',
       tabNum: 0,
@@ -458,6 +459,38 @@
             this.loadData();
           });
       },
+      async deleteLocation(loc_id: number) {
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 20,
+            usage: 'admin',
+            l_id: loc_id,
+          },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+              this.delLocDialog = false;
+              this.loadData();
+            }
+            this.dtIsError = false;
+          });
+      },
       async assignManager(l_id: number, mgr_id: number) {
         this.loadingDialog = true;
         await $fetch('/api/data', {
@@ -538,8 +571,8 @@
             <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
             <v-textarea prepend-inner-icon="mdi-map-marker" v-model="bAddress" :rules="[requiredForm]" label="Address"></v-textarea>
             <v-text-field prepend-inner-icon="mdi-floor-plan" v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"></v-text-field>
-            <v-text-field prepend-inner-icon="mdi-clock-start" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
-            <v-text-field prepend-inner-icon="mdi-clock-end" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+            <v-text-field prepend-inner-icon="mdi-weather-sunset-up" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
+            <v-text-field prepend-inner-icon="mdi-weather-night" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
           </v-card-text>
           <v-card-actions>
             <v-btn append-icon="mdi-plus" color="success" type="submit">Add</v-btn>
@@ -671,6 +704,31 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="delLocDialog" :width="'auto'">
+      <v-card width="400px">
+        <v-card-title>Delete Location</v-card-title>
+        <v-card-text>
+          Are you sure that you want to continue?
+          <b>{{ bName }}</b>
+          and its properties will be remove permanently.
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="success"
+            prepend-icon="mdi-check"
+            @click="
+              () => {
+                deleteLocation(bID);
+                bName = '';
+                bID = 0;
+              }
+            ">
+            Confirm
+          </v-btn>
+          <v-btn color="error" prepend-icon="mdi-cancel" @click="delLocDialog = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="managerDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>{{ bMgrID ? 'Manager Switch' : 'Manager Assignment' }}</v-card-title>
@@ -742,8 +800,8 @@
                   <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
                   <v-textarea prepend-inner-icon="mdi-map-marker" v-model="bAddress" label="Address"></v-textarea>
                   <v-text-field prepend-inner-icon="mdi-floor-plan" v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-clock-start" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-clock-end" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+                  <v-text-field prepend-inner-icon="mdi-weather-sunset-up" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
+                  <v-text-field prepend-inner-icon="mdi-weather-night" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
                   <v-select prepend-inner-icon="mdi-list-status" v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"></v-select>
                 </v-card-text>
                 <v-btn
@@ -1049,6 +1107,18 @@
                         ">
                         View Seat Layout
                       </v-btn>
+                      <v-btn
+                      prepend-icon="mdi-delete"
+                      variant="text"
+                      color="red"
+                      v-if="data.role == 'GOD'"
+                        @click="
+                          () => {
+                            bID = item.l_id;
+                            bName = item.l_name;
+                            delLocDialog = true;
+                          }
+                        ">Delete Branch</v-btn>
                     </v-col>
                   </v-row>
                 </v-container>

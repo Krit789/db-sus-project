@@ -499,6 +499,26 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 20: # Administrator ลบสาขาทิ้ง
+                    //ต้องส่งข้อมูล l_id
+                    $loc_id = $data->l_id;
+
+                    if ($role == 'GOD') {
+
+                        $obj->delete("locations", "location_id=$loc_id");
+                        $result = $obj->getResult();
+                        if ($result[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => "Location deleted successfully"
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            'message' => "Unable to delete this location"
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
                 default:
                     throw new Exception('Unexpected value');
             }

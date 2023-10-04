@@ -71,8 +71,10 @@
       addMenuResDialog: false,
       loadingDialog: false,
       tableName: '',
+      tableNameDialog: '',
       tabNum: 0,
       tableID: 0,
+      tableCapacity: 1,
       bEditor: false,
       bID: 0,
       bName: '',
@@ -194,6 +196,7 @@
             this.dtIsError = false;
           });
       },
+
       async loadManager() {
         await $fetch('/api/data', {
           method: 'POST',
@@ -254,6 +257,138 @@
             this.dtIsError = false;
           });
       },
+      async manageTable(table_name: string, table_id: number, table_capacity: number, loc_id: number) {
+        let requestBody = { usage: 'manager' };
+        if (loc_id > 0 && table_id <= 0) {
+          requestBody = Object.assign({}, requestBody, { type: 5, t_name: table_name, capacity: table_capacity, location_id: loc_id });
+        } else {
+          requestBody = Object.assign({}, requestBody, { type: 7, table_id: table_id, capacity: table_capacity, t_name: table_name });
+        }
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: requestBody,
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+              this.addTableDialog = false;
+              this.loadTableByLocationID(this.bID);
+            }
+            this.dtIsError = false;
+          });
+      },
+      async deleteTable(table_id: number) {
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 6,
+            usage: 'manager',
+            table_id: table_id,
+          },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+              this.delTableDialog = false;
+              this.loadTableByLocationID(this.bID);
+            }
+            this.dtIsError = false;
+          });
+      },
+      async addMenuRestriction(loc_id: number, menu_id: number | null) {
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 4,
+            usage: 'manager',
+            location_id: loc_id,
+            menu: menu_id,
+          },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+              this.addMenuResDialog = false;
+              this.loadMenuByLocationID(loc_id);
+            }
+            this.dtIsError = false;
+          });
+      },
+      async removeMenuRestriction(loc_id: number, menu_id: number | null) {
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 11,
+            usage: 'manager',
+            location_id: loc_id,
+            menu: menu_id,
+          },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            if (status == 0) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+              this.delMenuResDialog = false;
+              this.loadMenuByLocationID(loc_id);
+            }
+            this.dtIsError = false;
+          });
+      },
       async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
         this.loadingDialog = true;
         let requestBody = { type: 4, usage: 'admin', name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
@@ -289,7 +424,7 @@
             this.loadData();
           });
       },
-      async updateLocation(l_id: number,l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string, l_status: number) {
+      async updateLocation(l_id: number, l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string, l_status: number) {
         this.loadingDialog = true;
         let requestBody = { type: 2, usage: 'manager', location_id: l_id, loc_name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time, status: l_status };
         if (l_layout_img) {
@@ -329,10 +464,10 @@
           method: 'POST',
           body: {
             type: 11,
-            usage: "admin",
+            usage: 'admin',
             l_id: l_id,
             u_id: mgr_id,
-        },
+          },
           lazy: true,
         })
           .catch((error) => {
@@ -437,10 +572,11 @@
     </v-dialog>
     <v-dialog v-model="addTableDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
-        <v-card-title>{{ addTableMode == 0 ? 'Create Table' : 'Rename Table' }}</v-card-title>
+        <v-card-title>{{ addTableMode == 0 ? 'Create Table' : 'Edit Table' }}</v-card-title>
         <v-card-subtitle>{{ addTableMode == 0 ? 'Create a new table' : `Renaming table ${tableName} at ${bName}` }}</v-card-subtitle>
         <v-card-text>
-          <v-text-field label="Table Name" v-model="tableName"></v-text-field>
+          <v-text-field label="Table Name" prepend-icon="mdi-table-furniture" v-model="tableNameDialog"></v-text-field>
+          <v-text-field label="Capacity" prepend-icon="mdi-account-multiple" v-model="tableCapacity" type="number" min="1" oninput="validity.valid || (value=1);"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -448,8 +584,13 @@
             :prepend-icon="addTableMode == 0 ? 'mdi-check' : 'mdi-content-save'"
             @click="
               () => {
-                // manageTable(tableName, tableID, bID);
+                if (addTableMode == 0) {
+                  manageTable(tableNameDialog, 0, tableCapacity, bID);
+                } else {
+                  manageTable(tableNameDialog, tableID, tableCapacity, bID);
+                }
                 tableName = '';
+                tableID = 0;
               }
             ">
             {{ addTableMode == 0 ? 'Confirm' : 'Save' }}
@@ -461,15 +602,17 @@
     <v-dialog v-model="delTableDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>Table Deletion</v-card-title>
-        <v-card-text>Are you sure that you want to delete table {{ tableName }} at {{ bName }}?</v-card-text>
+        <v-card-text>Are you sure that you want to delete table {{ tableNameDialog }} at {{ bName }}?</v-card-text>
         <v-card-actions>
           <v-btn
             color="success"
             prepend-icon="mdi-check"
             @click="
               () => {
-                // deleteTable(tableID);
+                deleteTable(tableID);
+                tableNameDialog = '';
                 tableName = '';
+                tableID = 0;
               }
             ">
             Confirm
@@ -492,7 +635,7 @@
             @click="
               () => {
                 // addMenuRestriction(menu_id, loc_id);
-                console.log(menuID);
+                addMenuRestriction(bID, menuID);
                 menuID = 0;
                 menuName = '';
               }
@@ -517,7 +660,7 @@
             prepend-icon="mdi-check"
             @click="
               () => {
-                // removeMenuRestriction(menu_id, loc_id);
+                removeMenuRestriction(bID, menuID);
                 menuID = 0;
                 menuName = '';
               }
@@ -603,7 +746,19 @@
                   <v-text-field prepend-inner-icon="mdi-clock-end" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
                   <v-select prepend-inner-icon="mdi-list-status" v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"></v-select>
                 </v-card-text>
-                <v-btn prepend-icon="mdi-content-save" class="mb-2 mr-3" color="success" type="submit" variant="tonal" @click="() => {updateLocation(bID, bName, bAddress, DateTime.fromISO(bOpenTime).toFormat('yyyy-LL-dd TT'), DateTime.fromISO(bCloseTime).toFormat('yyyy-LL-dd TT'), blayout, bStatus)}">Save</v-btn>
+                <v-btn
+                  prepend-icon="mdi-content-save"
+                  class="mb-2 mr-3"
+                  color="success"
+                  type="submit"
+                  variant="tonal"
+                  @click="
+                    () => {
+                      updateLocation(bID, bName, bAddress, DateTime.fromISO(bOpenTime).toFormat('yyyy-LL-dd TT'), DateTime.fromISO(bCloseTime).toFormat('yyyy-LL-dd TT'), blayout, bStatus);
+                    }
+                  ">
+                  Save
+                </v-btn>
                 <v-btn
                   :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'"
                   class="mb-2"
@@ -704,6 +859,8 @@
                                 () => {
                                   tableID = item.table_id;
                                   tableName = item.name;
+                                  tableNameDialog = tableName;
+                                  tableCapacity = item.capacity;
                                   addTableMode = 1;
                                   addTableDialog = true;
                                 }
@@ -722,6 +879,7 @@
                                 () => {
                                   tableID = item.table_id;
                                   tableName = item.name;
+                                  tableNameDialog = tableName;
                                   delTableDialog = true;
                                 }
                               ">
@@ -742,6 +900,7 @@
                     () => {
                       tableID = 0;
                       tableName = '';
+                      tableNameDialog = tableName;
                       addTableMode = 0;
                       addTableDialog = true;
                     }

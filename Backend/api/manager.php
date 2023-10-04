@@ -16,8 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $access_token = $data->token;
         $ispermission = false;
         $user_data = readuserwithtoken($access_token);
-        // error_log(json_encode($data));
-        // error_log($user_data['user_id']);
 
         #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
 
@@ -86,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if ($role == "MANAGER" || $role == "GOD") {
 
-                        $obj->select("menus", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menu_category mc ON (category_id = mc.mc_id)", null, null, null);
+                        $obj->selectAndJoin("menus", "DISTINCT menus.menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menu_category mc ON (menus.category_id = mc.mc_id) LEFT OUTER JOIN restrictions re USING (menu_id)", null, "menu_id NOT IN (SELECT menu_id FROM restrictions JOIN menus USING (menu_id) WHERE location_id= $loc_id)", "menus.menu_id", null);
                         $all_menu = $obj->getResult();
 
                         $obj->select("restrictions", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menus USING (menu_id) JOIN menu_category mc ON (category_id = mc.mc_id)", "location_id=$loc_id", 'menu_id', null);
@@ -103,22 +101,23 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 4: # Administrator, Manager ลบ หรือ เพิ่ม menu ที่ต้องการในสาขาที่เลือก ส่งแค่ menu_id ที่จะต้องการให้ไม่มีในสาขาเป็นรูปแบบ [1,2,3,4,5,6,7,8,9] ตัวเดียวก็ [1]
                     //ต้องส่งข้อมูล location_id, menu
                     $loc_id = $data->location_id;
-                    $menu = $data->menu;
+                    $menu = $obj->mysqli->real_escape_string($data->menu);
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $tmp = "";
-                        $count = 0;
-                        foreach ($menu as $menus) {
-                            if ($count != sizeof($menu) - 1) {
-                                $tmp .= "($loc_id,$menus), ";
-                            } else {
-                                $tmp .= "($loc_id,$menus)";
-                            }
-                            $count += 1;
-                        }
-                        $obj->delete('restrictions', "location_id=$loc_id");
-                        $obj->insertlegacy('restrictions', 'location_id, menu_id', $tmp);
-
+                        // TOO COMPLICATED, NOT IMPLEMENTING THIS
+                        // $tmp = "";
+                        // $count = 0;
+                        // foreach ($menu as $menus) {
+                        //     if ($count != sizeof($menu) - 1) {
+                        //         $tmp .= "($loc_id,$menus), ";
+                        //     } else {
+                        //         $tmp .= "($loc_id,$menus)";
+                        //     }
+                        //     $count += 1;
+                        // }
+                        // $obj->delete('restrictions', "location_id=$loc_id");
+                        // $obj->insertlegacy('restrictions', 'location_id, menu_id', $tmp);
+                        $obj->insert("restrictions", ['menu_id' => $menu, 'location_id' => $loc_id]);
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -135,11 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 5: # Administrator, Manager เพิ่มโต๊ะ
                     //ต้องส่งข้อมูล location_id, name, capacity
                     $loc_id = $data->location_id;
-                    $name = $obj->mysqli->real_escape_string($data->name);
+                    $t_name = $obj->mysqli->real_escape_string($data->t_name);
                     $capa = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->insert("tables", ['name' => $name, 'capacity' => $capa, 'location_id' => $loc_id]);
+                        $obj->insert("tables", ['name' => $t_name, 'capacity' => $capa, 'location_id' => $loc_id]);
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
@@ -153,31 +152,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
-                case 6: # Administrator, Manager ลบโต๊ะ ใส่ table_id มาในรูปแบบ [1, 2, 3, 4, 5] ตัวเดียวก็ [1]
+                case 6: # Administrator, Manager ลบโต๊ะ ใส่ table_id
                     //ต้องส่งข้อมูล table_id
-                    $role = $user_data['role'];
                     $table_id = $data->table_id;
-
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $tmp = "";
-                        $count = 0;
-                        foreach ($table_id as $t_id) {
-                            if ($count == 0) {
-                                $tmp .= "$t_id";
-                            } else {
-                                $tmp .= ", $t_id";
-                            }
-                            $count++;
-                        }
-                        $obj->delete("tables", "table_id in ($tmp)");
+                        $obj->delete("tables", "table_id=$table_id");
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Delete Table Successful"
+                            'message' => "Table ID: $table_id Deleted Successfully"
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Delete Table Falied Successful"
+                            'message' => "Failed to delete this table"
                         ]);
                     } else {
                         $ispermission = !$ispermission;
@@ -185,9 +172,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 7: # Administrator, Manager แก้ไขโต๊ะ ใส่ table_id
                     //ต้องส่งข้อมูล table_id, name, capacity
-                    $role = $user_data['role'];
                     $t_id = $data->table_id;
-                    $t_name = $data->t_name;
+                    $t_name = $obj->mysqli->real_escape_string($data->t_name);
                     $t_capacity = $data->capacity;
 
                     if ($role == "MANAGER" || $role == "GOD") {
@@ -261,10 +247,30 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             "message" => $res
                         ]);
                         else echo json_encode([
-                            'status' => 0,
+                            'status' => 1,
                             "message" => array()
                         ]);
                     }else $ispermission = !$ispermission;
+                    break;
+                case 11: # Administrator, Manager ลบ menu ที่จะต้องการให้ไม่มีในสาขา
+                    //ต้องส่งข้อมูล location_id, menu
+                    $loc_id = $data->location_id;
+                    $menu = $obj->mysqli->real_escape_string($data->menu);
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->delete("restrictions", "menu_id=$menu AND location_id = $loc_id");
+                        $res = $obj->getResult();
+                        if ($res[0] == 1) echo json_encode([
+                            'status' => 1,
+                            'message' => 'Menu Restricted Successfully',
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            'message' => "No matching menu found!", #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
                     break;
                 default:
                     throw new Exception('Unexpected value');

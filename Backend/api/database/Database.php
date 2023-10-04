@@ -60,7 +60,7 @@ class Database
     private function tableExist($table)
     {
         $sql = "SHOW TABLES FROM " . $_SERVER['DB_DATABASE'] . " LIKE '{$table}'";
-        error_log($sql);
+        // error_log($sql);
         $tableInDb = $this->mysqli->query($sql);
         if ($tableInDb) {
             if ($tableInDb->num_rows == 1) {

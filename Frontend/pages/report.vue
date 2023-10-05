@@ -33,14 +33,14 @@
             title: "Location ID",
             align: "start",
             sortable: true,
-            key: "location_id",
+            key: "l_id",
           },
-          { title: "Name", align: "start", key: "name" },
-          { title: "Manager", align: "end", key: "managerID" },
-          { title: "Address", align: "end", key: "address" },
-          { title: "Status", align: "end", key: "status" },
-          { title: "Open", align: "end", key: "open_time" },
-          { title: "Close", align: "end", key: "close_time" },
+          { title: "Name", align: "start", key: "l_name" },
+          { title: "Manager", align: "end", key: "mgr_id" },
+          { title: "Address", align: "end", key: "l_addr" },
+          { title: "Status", align: "end", key: "l_status" },
+          { title: "Open", align: "end", key: "l_open_time" },
+          { title: "Close", align: "end", key: "l_close_time" },
         ],
       };
     },
@@ -50,8 +50,8 @@
         await $fetch("/api/data", {
           method: "POST",
           body: {
-            type: 7,
-            usage: "user",
+            type: 17,
+            usage: "admin",
           },
           lazy: true,
         })
@@ -79,7 +79,7 @@
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
-
+<v-no-ssr>
         <v-data-table
           v-model="selectedDT"
           :headers="dtHeaders"
@@ -87,18 +87,24 @@
           :loading="dtLoading"
           :search="dtSearch"
           class="elevation-1"
-          item-value="location_id"
+          item-value="l_id"
           show-select
           @click:row="
             (val, tabl) => {
-              console.log(tabl.item.columns.location_id);
+              console.log(tabl.item.l_id);
             }
           "
         >
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
           </template>
+          <template v-slot:no-data>
+            <v-alert icon="mdi-exclamation" title="Notice" color="info">
+              <p>You don't have anything to report on.</p>
+            </v-alert>
+          </template>
         </v-data-table>
+      </v-no-ssr>
         <v-btn :disabled="dtLoading" class="align-right my-3" prepend-icon="" text="Get Report" @click="console.log(selectedDT)"></v-btn>
       </v-sheet>
       <div class="w-100 justify-center align-center">

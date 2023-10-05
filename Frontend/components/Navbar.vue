@@ -333,9 +333,11 @@
               <template v-slot:activator="{ props }">
                 <v-list-item color="primary" prepend-icon="mdi-tools" rounded="xl" v-bind="props">Management</v-list-item>
               </template>
-              <v-list-item v-for="(item, index) in management" :key="index" :prepend-icon="item.props.prependIcon" rounded="xl" @click="navActions(item.action)">
-                <v-list-item-title v-if="item.permitted.includes(data.role)">{{ item.title }}</v-list-item-title>
+              <template v-for="(item, index) in management" :key="index">
+              <v-list-item v-if="item.permitted.includes(data.role)" :prepend-icon="item.props.prependIcon" rounded="xl" @click="navActions(item.action)">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
+            </template>
             </v-list-group>
           </v-list>
           <v-divider></v-divider>

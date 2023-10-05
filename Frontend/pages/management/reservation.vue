@@ -305,6 +305,11 @@
               </td>
             </tr>
           </template>
+          <template v-slot:no-data>
+            <v-alert icon="mdi-exclamation" title="Notice" color="info">
+              <p>You don't have reservation to see.</p>
+            </v-alert>
+          </template>
         </v-data-table>
         <v-col>
           <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>

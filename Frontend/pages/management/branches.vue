@@ -630,7 +630,7 @@
         <v-card-actions>
           <v-btn
             color="success"
-            :prepend-icon="addTableMode == 0 ? 'mdi-check' : 'mdi-content-save'"
+            :prepend-icon="addTableMode == 0 ? 'mdi-check' : 'mdi-content-save'" :disabled="loadingDialog"
             @click="
               () => {
                 if (addTableMode == 0) {
@@ -656,6 +656,7 @@
           <v-btn
             color="success"
             prepend-icon="mdi-check"
+            :disabled="loadingDialog"
             @click="
               () => {
                 deleteTable(tableID);
@@ -707,6 +708,7 @@
           <v-btn
             color="success"
             prepend-icon="mdi-check"
+            :disabled="loadingDialog"
             @click="
               () => {
                 removeMenuRestriction(bID, menuID);
@@ -732,6 +734,7 @@
           <v-btn
             color="success"
             prepend-icon="mdi-check"
+            :disabled="loadingDialog"
             @click="
               () => {
                 deleteLocation(bID);
@@ -1140,6 +1143,11 @@
                 </v-container>
               </td>
             </tr>
+          </template>
+          <template v-slot:no-data>
+            <v-alert icon="mdi-exclamation" title="Notice" color="info">
+              <p>You don't have branche to manage.</p>
+            </v-alert>
           </template>
         </v-data-table>
         <v-col>

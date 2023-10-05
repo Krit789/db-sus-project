@@ -345,8 +345,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 12: # Administrator เรียกดูการจองทั้งหมด
                     if ($role == "GOD") {
-
                         $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', null, "reservations.status desc, arrival", null);
+                        $result = $obj->getResult();
+
+                        if ($result) echo json_encode([
+                            'status' => 1,
+                            'message' => $result
+                        ]);
+                        else echo json_encode([
+                            'status' => 1,
+                            'message' => array()
+                        ]);
+                    } else if ($role == "MANAGER") {
+                        $u_id = $user_data['user_id'];
+                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', "location_id IN (SELECT location_id FROM locations WHERE manager_id=$u_id)", "reservations.status desc, arrival", null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -441,9 +453,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 17: # Administrator เรียกดูสาขาทั้งหมด รวมทุกสถานะ
-                    $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`, address `l_addr`, open_time `l_open_time`, close_time `l_close_time`, locations.status `l_status`, layout_img_url `l_layout_img`, manager_id `l_mgr_id`, first_name `mgr_fn`, last_name `mgr_ln`, telephone `mgr_tel`, email `mgr_email`", "users ON (users.user_id = locations.manager_id)", null, null, "locations.status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
-                    $res = $obj->getResult();
-                    if ($role == 'GOD') {
+                if ($role == 'GOD') {
+                        $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`, address `l_addr`, open_time `l_open_time`, close_time `l_close_time`, locations.status `l_status`, layout_img_url `l_layout_img`, manager_id `l_mgr_id`, first_name `mgr_fn`, last_name `mgr_ln`, telephone `mgr_tel`, email `mgr_email`", "users ON (users.user_id = locations.manager_id)", null, null, "locations.status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $res = $obj->getResult();
+                        if ($res) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $res,
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+                    } else if ($role == 'MANAGER') {
+                        $u_id = $user_data['user_id'];
+                        $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`, address `l_addr`, open_time `l_open_time`, close_time `l_close_time`, locations.status `l_status`, layout_img_url `l_layout_img`, manager_id `l_mgr_id`, first_name `mgr_fn`, last_name `mgr_ln`, telephone `mgr_tel`, email `mgr_email`", "users ON (users.user_id = locations.manager_id)", null, "manager_id=$u_id", "locations.status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $res = $obj->getResult();
                         if ($res) {
                             echo json_encode([
                                 'status' => 1,

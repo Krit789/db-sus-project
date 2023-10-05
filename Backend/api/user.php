@@ -366,6 +366,23 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'message' => "Unavailable Time"
                         ], JSON_NUMERIC_CHECK);
                     }
+                    break;
+                case 12: #เรียกข้อมูลของตัวเอง
+                    $id = $user_data['user_id'];
+                    $obj->select('users', "user_id `id`, first_name, last_name, email, telephone", null, "user_id=$id", null, 1);
+                    $res = $obj->getResult();
+                    if ($res) {
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => $res[0],
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => array()
+                        ]);
+                    }
+                    break;
             }
             exit;
         } else {

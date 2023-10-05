@@ -319,7 +319,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => 'Failed to change user role '
+                            'message' => 'Failed to change user role'
                         ]);
                         if ($old_role == 'MANAGER' && $new_role != $old_role){
                             $obj->update('locations', ['manager_id' => null], "manager_id={$id}");

@@ -43,7 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 2: # Administrator แก้ไขสถานะ user
                     //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
                     $user = $data->u_id;
-                    $user_role = $data->u_role;
+                    $obj->select('users', 'role', null, "user_id={$user}");
+                    $user_role = $obj->getResult()['role'];
                     $status = $data->u_status;
 
                     if ($user == $user_data['user_id']) {

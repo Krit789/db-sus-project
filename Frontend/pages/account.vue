@@ -82,12 +82,12 @@
             <v-img class="mt-5 bg-white ma-2 user_image" src="/ejudge_avatar280.png" width="170"></v-img>
           </div>
           <!--            <h2>Welcome Back!</h2>-->
-          <h2 class="mt-6">{{ data.firstName }} {{ data.lastName }}</h2>
-          <h3>{{ data.email }}</h3>
+          <h2 class="mt-6">{{ data?.firstName }} {{ data?.lastName }}</h2>
+          <h3>{{ data?.email }}</h3>
           <h3 class="mt-12">
             You are our
             <template v-if="data.role == 'USER'">Customer</template>
-            <template v-else>{{ toTitleCase(data.role) }}</template>
+            <template v-else>{{ toTitleCase(data?.role) }}</template>
           </h3>
         </v-col>
         <v-col class="user_rounded">

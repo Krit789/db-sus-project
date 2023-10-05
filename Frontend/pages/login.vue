@@ -10,6 +10,15 @@
       navigateAuthenticatedTo: "/",
     },
   });
+  useHead({
+    title: "Seatify: Authentication Required",
+    meta: [
+      {
+        name: "Seatify: Seat Reservation Service",
+        content: "Seatify, The Seat Reservation Service that makes the difference.",
+      },
+    ],
+  });
   const { status, data, signIn } = useAuth();
   const route = useRoute();
   const mySignInHandler = async ({ email, password }: { email: string; password: string }) => {

@@ -171,6 +171,7 @@
           });
       },
       async loadTableByLocationID(loc_id: number) {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -194,11 +195,13 @@
             } else if (status == 1) {
               this.locSeat = message;
             }
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
 
       async loadManager() {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -229,9 +232,11 @@
               this.managerList = message;
             }
             this.dtIsError = false;
+            this.loadingDialog = false;
           });
       },
       async loadMenuByLocationID(loc_id: number) {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -256,9 +261,11 @@
               this.locMenu = message;
             }
             this.dtIsError = false;
+            this.loadingDialog = false;
           });
       },
       async manageTable(table_name: string, table_id: number, table_capacity: number, loc_id: number) {
+        this.loadingDialog = true;
         let requestBody = { usage: 'manager' };
         if (loc_id > 0 && table_id <= 0) {
           requestBody = Object.assign({}, requestBody, { type: 5, t_name: table_name, capacity: table_capacity, location_id: loc_id });
@@ -289,10 +296,12 @@
               this.addTableDialog = false;
               this.loadTableByLocationID(this.bID);
             }
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
       async deleteTable(table_id: number) {
+        this.loadingDialog = false;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -321,10 +330,12 @@
               this.delTableDialog = false;
               this.loadTableByLocationID(this.bID);
             }
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
       async addMenuRestriction(loc_id: number, menu_id: number | null) {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -354,10 +365,12 @@
               this.addMenuResDialog = false;
               this.loadMenuByLocationID(loc_id);
             }
+        this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
       async removeMenuRestriction(loc_id: number, menu_id: number | null) {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -387,6 +400,7 @@
               this.delMenuResDialog = false;
               this.loadMenuByLocationID(loc_id);
             }
+        this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
@@ -460,6 +474,7 @@
           });
       },
       async deleteLocation(loc_id: number) {
+        this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
           body: {
@@ -488,6 +503,7 @@
               this.delLocDialog = false;
               this.loadData();
             }
+        this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
@@ -549,10 +565,10 @@
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
     </v-snackbar>
-    <v-dialog v-model="loadingDialog" :scrim="false" persistent width="auto">
+    <v-dialog v-model="loadingDialog" :scrim="false" persistent width="200px">
       <v-card color="primary">
-        <v-card-text>
-          Saving Changes
+        <v-card-text class="text-center">
+          <p class="mb-1">Please Wait</p>
           <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
         </v-card-text>
       </v-card>

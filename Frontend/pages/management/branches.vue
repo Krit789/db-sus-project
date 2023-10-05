@@ -265,6 +265,7 @@
           });
       },
       async manageTable(table_name: string, table_id: number, table_capacity: number, loc_id: number) {
+        this.addTableDialog = false;
         this.loadingDialog = true;
         let requestBody = { usage: 'manager' };
         if (loc_id > 0 && table_id <= 0) {
@@ -293,7 +294,6 @@
               this.NotiColor = 'success';
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
-              this.addTableDialog = false;
               this.loadTableByLocationID(this.bID);
             }
             this.loadingDialog = false;
@@ -301,6 +301,7 @@
           });
       },
       async deleteTable(table_id: number) {
+        this.delTableDialog = false;
         this.loadingDialog = false;
         await $fetch('/api/data', {
           method: 'POST',
@@ -327,7 +328,6 @@
               this.NotiColor = 'success';
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
-              this.delTableDialog = false;
               this.loadTableByLocationID(this.bID);
             }
             this.loadingDialog = false;
@@ -335,6 +335,7 @@
           });
       },
       async addMenuRestriction(loc_id: number, menu_id: number | null) {
+        this.addMenuResDialog = false;
         this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
@@ -362,7 +363,6 @@
               this.NotiColor = 'success';
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
-              this.addMenuResDialog = false;
               this.loadMenuByLocationID(loc_id);
             }
         this.loadingDialog = false;
@@ -370,6 +370,7 @@
           });
       },
       async removeMenuRestriction(loc_id: number, menu_id: number | null) {
+        this.delMenuResDialog = false;
         this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
@@ -397,7 +398,6 @@
               this.NotiColor = 'success';
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
-              this.delMenuResDialog = false;
               this.loadMenuByLocationID(loc_id);
             }
         this.loadingDialog = false;
@@ -405,6 +405,7 @@
           });
       },
       async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
+        this.addBranch = false;
         this.loadingDialog = true;
         let requestBody = { type: 4, usage: 'admin', name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
         if (l_layout_img) {
@@ -433,7 +434,6 @@
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
-            this.addBranch = false;
             this.loadingDialog = false;
             this.dtIsError = false;
             this.loadData();
@@ -474,6 +474,7 @@
           });
       },
       async deleteLocation(loc_id: number) {
+        this.delLocDialog = false;
         this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
@@ -500,7 +501,6 @@
               this.NotiColor = 'success';
               this.NotiIcon = 'mdi-check';
               this.NotiText = message;
-              this.delLocDialog = false;
               this.loadData();
             }
         this.loadingDialog = false;
@@ -508,6 +508,7 @@
           });
       },
       async assignManager(l_id: number, mgr_id: number) {
+        this.managerDialog = false;
         this.loadingDialog = true;
         await $fetch('/api/data', {
           method: 'POST',
@@ -538,7 +539,6 @@
               this.NotiText = message;
               this.loadData();
             }
-            this.managerDialog = false;
             this.loadingDialog = false;
           });
       },

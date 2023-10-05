@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 2: # Administrator แก้ไขสถานะ user
                     //ต้องส่งข้อมูล user_id, status เป็นตัวเลข {1: "ACTIVE", 2: "SUSPENDED"}
                     $user = $data->u_id;
+                    $user_role = $data->u_role;
                     $status = $data->u_status;
 
                     if ($user == $user_data['user_id']) {
@@ -66,6 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => "Unable to " . (($status == 1) ? "activated" : "suspended") . " this account",
                         ]);
+                        if ($user_role == "MANAGER" && $status == 2){
+                            $obj->update('locations', ['manager_id' => null], "manager_id={$user}");
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }
@@ -294,7 +298,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 10: # Administrator กำหนด role ของ user
                     //ต้องส่งข้อมูล user_id, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
-                    $user_role = $data->u_role;
+                    $new_role = $data->u_role;
+                    $old_role = $data->ou_role;
                     $id = $data->u_id;
 
                     if ($id == $user_data['user_id']) {
@@ -306,7 +311,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
 
                     if ($role == 'GOD') {
-                        $obj->update('users', ['role' => $user_role], "user_id={$id}");
+                        $obj->update('users', ['role' => $new_role], "user_id={$id}");
                         $res = $obj->getResult();
                         if ($res[0] == 1) echo json_encode([
                             'status' => 1,
@@ -316,6 +321,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => 'Failed to change user role '
                         ]);
+                        if ($old_role == 'MANAGER' && $new_role != $old_role){
+                            $obj->update('locations', ['manager_id' => null], "manager_id={$id}");
+                        }
                     } else {
                         $ispermission = !$ispermission;
                     }

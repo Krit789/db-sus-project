@@ -635,7 +635,7 @@
                 menuName = '';
                 menuDesc = '';
                 menuID = 0;
-                menuPrice = 0;
+                menuPrice = 1;
                 menuImgUrl = '';
                 menuCategoryID = 0;
                 addMenuDialog = true;

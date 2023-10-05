@@ -359,7 +359,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => "No table available on location or no tables available on selected time"
                         ], JSON_NUMERIC_CHECK);
-
                     } else {
                         echo json_encode([
                             'status' => 0,
@@ -380,6 +379,88 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         echo json_encode([
                             'status' => 1,
                             'message' => array()
+                        ]);
+                    }
+                    break;
+                case 13: # Update User Data
+                    $fn = $data->first_name;
+                    $ln = $data->last_name;
+                    $email = $data->email;
+                    $tele = $data->tel_num;
+                    $password = $data->pswd;
+                    $id = $user_data['user_id'];
+
+                    if (password_verify($password, $user_data['password_hash'])) {
+                        if ($user_data['email'] != $email) {
+                            $obj->select("users", "email", null, "email='{$email}'", null, 1); // Check for duplicate email
+                            $is_email = $obj->getResult();
+                            if (isset($is_email[0]['email']) == $email) {
+                                echo json_encode([
+                                    'status' => 2,
+                                    'message' => 'Email already Exists',
+                                ]);
+                            }
+                        } else {
+                            $obj->update('users', ['first_name' => $fn, 'last_name' => $ln, 'telephone' => $tele, 'email' => $email], "user_id={$id}");
+                            $result = $obj->getResult();
+                            if ($result[0] == 1) {
+                                echo json_encode([
+                                    'status' => 1,
+                                    'message' => "User Updated Successfully",
+                                ]);
+                            } else {
+                                echo json_encode([
+                                    'status' => 0,
+                                    'message' => "Failed to update this user",
+                                ]);
+                            }
+                        }
+                    } else {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => 'Invalid Password, Unable to update user data.',
+                        ]);
+                    }
+                    break;
+                case 14: # Update User Password
+                    $password = $data->pswd;
+                    $new_password = $data->new_pswd;
+                    $id = $user_data['user_id'];
+
+                    if (password_verify($password, $user_data['password_hash'])) {
+                        $obj->update('users', ['password_hash' => password_hash($new_password, PASSWORD_DEFAULT)], "user_id={$id}");
+                        $result = $obj->getResult();
+                        if ($result[0] == 1) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => "User Password Changed Successfully",
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => "Failed to change this user password",
+                            ]);
+                        }
+                    } else {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => 'Invalid Password, Unable to update user data.',
+                        ]);
+                    }
+                    break;
+                case 15: #เรียกดูการจองทั้งหมดของเจ้าของ Account
+                    $id = $user_data['user_id'];
+                    $obj->select('reservations', "status", null, "user_id={$id}", 'res_id DESC', null, null);
+                    $res = $obj->getResult();
+                    if ($res) {
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => $res,
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => array(),
                         ]);
                     }
                     break;

@@ -838,6 +838,7 @@
                 </v-btn>
                 <v-btn
                   :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'"
+                  v-if="data.role == 'GOD'"
                   class="mb-2"
                   color="info"
                   type="submit"

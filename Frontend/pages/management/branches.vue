@@ -624,7 +624,7 @@
         <v-card-title>{{ addTableMode == 0 ? 'Create Table' : 'Edit Table' }}</v-card-title>
         <v-card-subtitle>{{ addTableMode == 0 ? 'Create a new table' : `Renaming table ${tableName} at ${bName}` }}</v-card-subtitle>
         <v-card-text>
-          <v-text-field label="Table Name" prepend-icon="mdi-table-furniture" v-model="tableNameDialog"></v-text-field>
+          <v-text-field label="Table Name" :rules="[v => (v || '' ).length <= 5 || 'Table Name must be 5 characters or less']" prepend-icon="mdi-table-furniture" persistent-counter v-model="tableNameDialog"></v-text-field>
           <v-text-field label="Capacity" prepend-icon="mdi-account-multiple" v-model="tableCapacity" type="number" min="1" oninput="validity.valid || (value=1);"></v-text-field>
         </v-card-text>
         <v-card-actions>

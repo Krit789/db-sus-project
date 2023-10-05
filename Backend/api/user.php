@@ -170,24 +170,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             if ($result[0] == 1) {
                                 echo json_encode([
                                     'status' => 1,
-                                    'message' => 'Modify Reservation Successful'
+                                    'message' => 'Reservation Modified Successfully'
                                 ]);
                             } else {
                                 echo json_encode([
                                     'status' => 0,
-                                    'message' => 'Modify Reservation Failed Successful'
+                                    'message' => 'Reservation Modification Failed'
                                 ]);
                             }
                         } else {
                             echo json_encode([
                                 'status' => 0,
-                                'message' => 'ID Customer not match',
+                                'message' => 'Customer ID mismatch',
                             ]);
                         }
                     } else {
                         echo json_encode([
                             'status' => 0,
-                            'message' => 'Has someone reserved this time'
+                            'message' => 'This time slot is already taken'
                         ]);
                     }
                     break;

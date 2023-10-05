@@ -142,11 +142,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $result = $obj->getResult();
                         if ($result[0] == 1) echo json_encode([
                             'status' => 1,
-                            'message' => "Add Table Successful"
+                            'message' => "Table '$t_name' Added"
                         ]);
                         else echo json_encode([
                             'status' => 0,
-                            'message' => "Add Table Falied Successful"
+                            'message' => "Failed to add table '$t_name'"
                         ]);
                     } else {
                         $ispermission = !$ispermission;

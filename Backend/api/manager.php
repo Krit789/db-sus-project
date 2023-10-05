@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->selectAndJoin("menus", "DISTINCT menus.menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menu_category mc ON (menus.category_id = mc.mc_id) LEFT OUTER JOIN restrictions re USING (menu_id)", null, "menu_id NOT IN (SELECT menu_id FROM restrictions JOIN menus USING (menu_id) WHERE location_id= $loc_id)", "menus.menu_id", null);
                         $all_menu = $obj->getResult();
 
-                        $obj->select("restrictions", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menus USING (menu_id) JOIN menu_category mc ON (category_id = mc.mc_id)", "location_id=$loc_id", 'menu_id', null);
+                        $obj->select("restrictions", "menu_id `m_id`, item_name `m_name`, category_id `c_id`, mc.name `c_name`, price `m_price`", "menus USING (menu_id) LEFT OUTER JOIN menu_category mc ON (category_id = mc.mc_id)", "location_id=$loc_id", 'menu_id', null);
                         $restricted_menu = $obj->getResult();
 
                         echo json_encode([
@@ -239,7 +239,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 10: #Administrator, Manager ต้องการดู table ทั้งหมดในสาขาที่เลิอก
                     //ต้องส่งข้อมูล location_id
                     $loc_id = $data->l_id;
-                    if ($role == 'Manager' || $role == 'GOD') {
+                    if ($role == 'MANAGER' || $role == 'GOD') {
                         $obj->select("tables", "table_id, name, capacity", null, "location_id=$loc_id", 'table_id');
                         $res = $obj->getResult();
                         if ($res) echo json_encode([

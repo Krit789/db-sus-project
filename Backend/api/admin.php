@@ -555,6 +555,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 21: # Administrator Report ทุกสาขา
+                    //
+                    $obj->select("reservations", '*', null, "reservations.status = 1", null, null, "join tables using (table_id) right outer join locations using (location_id)");
+
                 default:
                     throw new Exception('Unexpected value');
             }

@@ -272,6 +272,25 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
+                case 12: # Administrator, Manager ดู menus ทั้งหมด ของ res_id ที่ส่ง
+                    //ต้องส่งข้อมูล res_id
+                    $res_id = $data->res_id;
+
+                    if ($role == "MANAGER" || $role == "GOD") {
+                        $obj->select("orders",'*',"menus using (menu_id)", "res_id=$res_id");
+                        $res = $obj->getResult();
+                        if ($res) echo json_encode([
+                            'status' => 1,
+                            'message' => $res,
+                        ]);
+                        else echo json_encode([
+                            'status' => 0,
+                            'message' => array()
+                        ]);
+                    } else {
+                        $ispermission = !$ispermission;
+                    }
+                    break;
                 default:
                     throw new Exception('Unexpected value');
             }

@@ -284,7 +284,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'message' => $res,
                         ]);
                         else echo json_encode([
-                            'status' => 0,
+                            'status' => 1,
                             'message' => array()
                         ]);
                     } else {

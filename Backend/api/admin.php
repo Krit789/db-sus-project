@@ -17,8 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $user_data = readuserwithtoken($access_token);
         $ispermission = false;
 
-        #ถ้าไม่มีข้อมูลใน database จะขึ้น server problem
-
         if (isset($user_data['user_id']) && isset($user_data['role'])) {
             $role = $user_data['role'];
             switch ($type) {
@@ -68,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => "Unable to " . (($status == 1) ? "activated" : "suspended") . " this account",
                         ]);
-                        if ($user_role == "MANAGER" && $status == 2){
+                        if ($user_role == "MANAGER" && $status == 2) {
                             $obj->update('locations', ['manager_id' => null], "manager_id={$user}");
                         }
                     } else {
@@ -115,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $ot = $obj->mysqli->real_escape_string($data->open_time);
                     $ct = $obj->mysqli->real_escape_string($data->close_time);
 
-                    if (isset($data->layout_img)){
+                    if (isset($data->layout_img)) {
                         $layout_img = $obj->mysqli->real_escape_string($data->layout_img);
                     }
 
@@ -322,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => 'Failed to change user role'
                         ]);
-                        if ($old_role == 'MANAGER' && $new_role != $old_role){
+                        if ($old_role == 'MANAGER' && $new_role != $old_role) {
                             $obj->update('locations', ['manager_id' => null], "manager_id={$id}");
                         }
                     } else {
@@ -331,9 +329,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 11: # Administrator กำหนดให้ manager ไปดูแล location
                     //ต้องส่งข้อมูล user_id, location_id
-                    $u_id = null; 
+                    $u_id = null;
                     $loca_id = $data->l_id;
-                    if ($data->u_id != 0){
+                    if ($data->u_id != 0) {
                         $u_id = $data->u_id;
                     }
 
@@ -462,7 +460,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 17: # Administrator เรียกดูสาขาทั้งหมด รวมทุกสถานะ
-                if ($role == 'GOD') {
+                    if ($role == 'GOD') {
                         $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`, address `l_addr`, open_time `l_open_time`, close_time `l_close_time`, locations.status `l_status`, layout_img_url `l_layout_img`, manager_id `l_mgr_id`, first_name `mgr_fn`, last_name `mgr_ln`, telephone `mgr_tel`, email `mgr_email`", "users ON (users.user_id = locations.manager_id)", null, null, "locations.status", null); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
                         $res = $obj->getResult();
                         if ($res) {
@@ -555,10 +553,72 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $ispermission = !$ispermission;
                     }
                     break;
-                case 21: # Administrator Report ทุกสาขา
-                    //
-                    $obj->select("reservations", '*', null, "reservations.status = 1", null, null, "join tables using (table_id) right outer join locations using (location_id)");
+                case 21: # Administrator, Manager Report ทุกสาขา
+                    //start, end, (Administrator Optional) loc_id ส่งแบบ [1, 2, 3, 4]
+                    $start = substr($data->start, 0, 19);
+                    $end = substr($data->end, 0, 19);
 
+                    $message = "Error No Specify Location";
+                    $tmp = "";
+                    if (isset($data->loc_id)) {
+                        foreach ($data->loc_id as $i) {
+                            $tmp .= "{$i},";
+                        }
+                    }
+
+                    $tmp = substr($tmp, 0, -1);
+
+                    if ($role == 'GOD' && $tmp == "") {
+                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `amount_menu`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
+                        $res = $obj->getResult();
+                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `amount_reservation`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
+                        $res2 = $obj->getResult();
+                        //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
+                        //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
+                        echo json_encode([
+                            'status' => 1,
+                            'message' => [$res, $res2]
+                        ]);
+                    } else if ($role == 'MANAGER' || ($role == "GOD" && $tmp != "")) {
+                        $u_loc = array();
+                        $obj->select("locations", 'location_id', null, "manager_id={$user_data['user_id']}");
+                        foreach ($obj->getResult() as $i) array_push($u_loc, $i['location_id']);
+                        if (isset($data->loc_id)) {
+                            foreach ($data->loc_id as $i) {
+                                if ($role == "GOD") break;
+                                if (!in_array($i, $u_loc)) {
+                                    $tmp = "";
+                                    $message = "No Permission To Create Report These Locations";
+                                    break;
+                                }
+                            }
+                        }
+
+
+                        if ($tmp != "") {
+                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `amount_menu`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
+                            $res = $obj->getResult();
+                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `amount_reservation`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
+                            $res2 = $obj->getResult();
+                            //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
+                            //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => [$res, $res2]
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 0,
+                                'message' => $message
+                            ]);
+                        }
+                    } else {
+                        echo json_encode([
+                            'status' => 0,
+                            'message' => 'No Permission to Create Report'
+                        ]);
+                    }
+                    break;
                 default:
                     throw new Exception('Unexpected value');
             }

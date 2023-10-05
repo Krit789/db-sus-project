@@ -4,7 +4,7 @@
   import '~/assets/stylesheets/index.css';
   import '~/assets/stylesheets/account_index.css';
 
-  const { status, data } = useAuth();
+  const { signOut, data } = useAuth();
   const { mobile } = useDisplay();
 </script>
 
@@ -36,6 +36,7 @@
       New_password: '',
       conf_password: '',
       loadingDialog: false,
+      resetTokenDialog: false,
       fName: '',
       lName: '',
       telNum: '' as string | null,
@@ -189,6 +190,40 @@
             this.loadingDialog = false;
           });
       },
+      async resetToken() {
+        this.loadingDialog = true;
+        await $fetch('/api/data', {
+          method: 'POST',
+          body: {
+            type: 16,
+            usage: 'user',
+          },
+          lazy: true,
+        })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const { status, message } = response as { status: number; message: any };
+            this.dtLoading = false;
+            this.dtIsError = false;
+            if (status != 1) {
+              this.snackbar = true;
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
+              this.NotiText = message;
+            } else if (status == 1) {
+              this.snackbar = true;
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = message;
+            }
+            this.resetTokenDialog = false;
+            this.loadingDialog = false;
+
+          });
+      },
     },
     beforeMount() {
       this.loadData();
@@ -209,6 +244,39 @@
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
     </v-snackbar>
+    <v-dialog v-model="resetTokenDialog" :width="'auto'">
+      <v-card :width="mobile ? 'auto' : '400px'">
+        <v-card-title>Token Reset</v-card-title>
+        <v-card-text>
+          Are you sure that you want to reset your token?
+          This will make all authenticated instance stop working until they reauthenticate!
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="success"
+            prepend-icon="mdi-check"
+            @click="
+              () => {
+                resetToken();
+                signOut({
+                  callbackUrl: '/',
+                  redirect: true,
+                }).then(() => {
+                  $router.push('/');
+                  NotiText = 'You have been logged out';
+                  NotiColor = 'info';
+                  NotiIcon = 'mdi-check-circle-outline';
+                  snackbar = true;
+                })
+              }
+            "
+          >
+            Confirm
+          </v-btn>
+          <v-btn color="error" prepend-icon="mdi-cancel" @click="resetTokenDialog = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="loadingDialog" :scrim="false" persistent width="200px">
       <v-card color="primary">
         <v-card-text class="text-center">
@@ -282,7 +350,6 @@
           ">
           Edit
         </v-btn>
-
         <!-- vv only appear on edit mode vv -->
         <v-btn
           v-if="editMode == true"
@@ -315,7 +382,20 @@
           Cancel
         </v-btn>
         <!-- ^^ only appear on edit mode ^^ -->
-
+        <br>
+        <v-btn
+          class="ma-2"
+          color="warning"
+          prepend-icon="mdi-logout-variant"
+          rounded="lg"
+          variant="tonal"
+          @click.stop="
+            () => {
+              resetTokenDialog = true;
+            }
+          ">
+          Reset Token
+        </v-btn>
         <div class="text-center">
           <v-dialog v-model="DialogueCP" :fullscreen="mobile">
             <v-card class="blur-effect account_pane">

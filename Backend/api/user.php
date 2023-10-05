@@ -464,6 +464,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     }
                     break;
+                case 16:
+                    $id = $user_data['user_id'];
+                    $token = randomCode(32);
+                    $obj->update('users', ['access_token' => $token], "user_id=$id");
+                    $result = $obj->getResult();
+                    if ($result[0] == 1) echo json_encode([
+                        'status' => 1,
+                        'message' => 'Token Reset Successful'
+                    ]); else echo json_encode([
+                        'status' => 0,
+                        'message' => 'Tonken Reset Failed'
+                    ]);
+                    break;
             }
             exit;
         } else {

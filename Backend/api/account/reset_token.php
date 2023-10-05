@@ -28,10 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $obj->getResult();
     if ($result[0] == 1) echo json_encode([
         'status' => 1,
-        'message' => 'Update Token Successful'
+        'message' => 'Token Reset Successful'
     ]); else echo json_encode([
         'status' => 0,
-        'message' => 'Update Token Failed'
+        'message' => 'Tonken Reset Failed'
     ]);
 
 } else echo json_encode([

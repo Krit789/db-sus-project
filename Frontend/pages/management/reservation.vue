@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-  import { VDataTable } from "vuetify/labs/VDataTable";
-  import { DateTime } from "luxon";
-  import { useDisplay } from "vuetify";
-  import "~/assets/stylesheets/global.css";
-  import "~/assets/stylesheets/index.css";
-  import "~/assets/stylesheets/management/reservation.css";
-  import "~/assets/stylesheets/management/management.css";
+  import { VDataTable } from 'vuetify/labs/VDataTable';
+  import { DateTime } from 'luxon';
+  import { useDisplay } from 'vuetify';
+  import '~/assets/stylesheets/global.css';
+  import '~/assets/stylesheets/index.css';
+  import '~/assets/stylesheets/management/reservation.css';
+  import '~/assets/stylesheets/management/management.css';
 
   const route = useRouter();
   const { mobile } = useDisplay();
   const { status, data, signIn, signOut } = useAuth();
   useHead({
-    title: "Reservation Management - Seatify Admin",
-    meta: [{ name: "Seatify App", content: "My amazing site." }],
+    title: 'Reservation Management - Seatify Admin',
+    meta: [{ name: 'Seatify App', content: 'My amazing site.' }],
   });
   definePageMeta({
-    middleware: ["allowed-roles-only"],
-    meta: { permitted: ["MANAGER", "GOD"] },
+    middleware: ['allowed-roles-only'],
+    meta: { permitted: ['MANAGER', 'GOD'] },
   });
 </script>
 
@@ -24,48 +24,48 @@
   export default {
     data: () => ({
       acceptRes: false as boolean,
-      resConfCode: "",
+      resConfCode: '',
       confirmCancel: false as boolean,
-      acceptError: "",
+      acceptError: '',
       cancelResID: 0,
-      dtSearch: "",
+      dtSearch: '',
       dtIsError: false,
-      dtErrorData: "",
+      dtErrorData: '',
       dtData: [],
       itemsPerPage: 10,
       dtLoading: false,
       snackbar: false,
-      NotiColor: "",
+      NotiColor: '',
       timeout: 2000,
-      NotiIcon: "",
-      NotiText: "",
+      NotiIcon: '',
+      NotiText: '',
       dtHeaders: [
         {
-          title: "ID",
-          align: "center",
+          title: 'ID',
+          align: 'center',
           sortable: true,
-          key: "res_id",
+          key: 'res_id',
         },
-        { title: "User ID", align: "center", key: "user_id" },
-        { title: "Location Name", align: "start", key: "loc_name" },
-        { title: "First Name", align: " d-none", key: "first_name" }, // ' d-none' hides the header but keeps the search functionality
-        { title: "Last Name", align: " d-none", key: "last_name" },
-        { title: "Reserved On", align: "end", key: "res_on" },
-        { title: "Reserved For", align: "end", key: "arrival" },
-        { title: "Guests", align: "end", key: "cus_count" },
-        { title: "Table", align: "end", key: "table_id" },
-        { title: "Table Name", align: " d-none", key: "table_name" },
-        { title: "Status", align: "end", key: "res_status" },
+        { title: 'User ID', align: 'center', key: 'user_id' },
+        { title: 'Location Name', align: 'start', key: 'loc_name' },
+        { title: 'First Name', align: ' d-none', key: 'first_name' }, // ' d-none' hides the header but keeps the search functionality
+        { title: 'Last Name', align: ' d-none', key: 'last_name' },
+        { title: 'Reserved On', align: 'end', key: 'res_on' },
+        { title: 'Reserved For', align: 'end', key: 'arrival' },
+        { title: 'Guests', align: 'end', key: 'cus_count' },
+        { title: 'Table', align: 'end', key: 'table_id' },
+        { title: 'Table Name', align: ' d-none', key: 'table_name' },
+        { title: 'Status', align: 'end', key: 'res_status' },
       ] as DataTableHeader[],
     }),
     methods: {
       async loadData() {
         this.dtLoading = true;
-        await $fetch("/api/data", {
-          method: "POST",
+        await $fetch('/api/data', {
+          method: 'POST',
           body: {
             type: 12,
-            usage: "admin",
+            usage: 'admin',
           },
           lazy: true,
         })
@@ -82,11 +82,11 @@
       },
       async cancelReservation(res_id: Number) {
         this.dtLoading = true;
-        await $fetch("/api/data", {
-          method: "POST",
+        await $fetch('/api/data', {
+          method: 'POST',
           body: {
             type: 2,
-            usage: "user",
+            usage: 'user',
             res_id: res_id,
           },
           lazy: true,
@@ -102,14 +102,14 @@
             if (status == 0) {
               this.acceptError = message;
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
-              this.acceptError = "";
+              this.acceptError = '';
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
             this.loadData();
@@ -117,11 +117,11 @@
       },
       async acceptReservation(res_code: string) {
         this.dtLoading = true;
-        await $fetch("/api/data", {
-          method: "POST",
+        await $fetch('/api/data', {
+          method: 'POST',
           body: {
             type: 1,
-            usage: "user",
+            usage: 'user',
             res_code: res_code,
           },
           lazy: true,
@@ -137,17 +137,17 @@
             if (status == 0) {
               this.acceptError = message;
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
-              this.acceptError = "";
+              this.acceptError = '';
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
-            this.resConfCode = "";
+            this.resConfCode = '';
             this.loadData();
           });
       },
@@ -177,8 +177,7 @@
                 cancelReservation(cancelResID);
                 confirmCancel = false;
               }
-            "
-          >
+            ">
             Confirm
           </v-btn>
           <v-btn color="error" prepend-icon="mdi-cancel" @click="confirmCancel = false">Cancel</v-btn>
@@ -211,8 +210,7 @@
                           () => {
                             acceptReservation(resConfCode);
                           }
-                        "
-                      >
+                        ">
                         Accept Reservation
                       </v-btn>
                     </v-col>
@@ -227,19 +225,19 @@
               <td class="text-center td-hover">{{ item.res_id }}</td>
               <td class="text-center td-hover">
                 {{ item.user_id }}
-                <v-tooltip activator="parent" location="top">{{ item.first_name + " " + item.last_name }}</v-tooltip>
+                <v-tooltip activator="parent" location="top">{{ item.first_name + ' ' + item.last_name }}</v-tooltip>
               </td>
               <td class="text-left td-hover">
                 {{ item.loc_name }}
                 <v-tooltip activator="parent" location="top">ID: {{ item.loc_id }}</v-tooltip>
               </td>
               <td class="text-right td-hover">
-                {{ DateTime.fromSQL(item.res_on).toFormat("D") }}
-                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.res_on).toFormat("fff") }}</v-tooltip>
+                {{ DateTime.fromSQL(item.res_on).toFormat('D') }}
+                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.res_on).toFormat('fff') }}</v-tooltip>
               </td>
               <td class="text-right td-hover">
-                {{ DateTime.fromSQL(item.arrival).toFormat("D") }}
-                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.arrival).toFormat("fff") }}</v-tooltip>
+                {{ DateTime.fromSQL(item.arrival).toFormat('D') }}
+                <v-tooltip activator="parent" location="top">{{ DateTime.fromSQL(item.arrival).toFormat('fff') }}</v-tooltip>
               </td>
               <td class="td-hover">{{ item.cus_count }}</td>
               <td class="text-right td-hover">
@@ -248,9 +246,9 @@
               <td class="td-hover">
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
-                    <v-icon v-bind="props">{{ item.res_status == "INPROGRESS" ? "mdi-progress-clock" : item.res_status == "FULFILLED" ? "mdi-check" : item.res_status == "CANCELLED" ? "mdi-close" : "mdi-help" }}</v-icon>
+                    <v-icon v-bind="props">{{ item.res_status == 'INPROGRESS' ? 'mdi-progress-clock' : item.res_status == 'FULFILLED' ? 'mdi-check' : item.res_status == 'CANCELLED' ? 'mdi-close' : 'mdi-help' }}</v-icon>
                   </template>
-                  <span>{{ item.res_status == "INPROGRESS" ? "In Progress" : item.res_status == "FULFILLED" ? "Fulfilled" : item.res_status == "CANCELLED" ? "Cancelled" : "Unknown" }}</span>
+                  <span>{{ item.res_status == 'INPROGRESS' ? 'In Progress' : item.res_status == 'FULFILLED' ? 'Fulfilled' : item.res_status == 'CANCELLED' ? 'Cancelled' : 'Unknown' }}</span>
                 </v-tooltip>
               </td>
             </tr>
@@ -268,10 +266,10 @@
                       <b>Reserved For</b>
                       <p>
                         <v-icon>mdi-calendar-blank</v-icon>
-                        {{ DateTime.fromSQL(item.arrival).toFormat("DDDD") }}
+                        {{ DateTime.fromSQL(item.arrival).toFormat('DDDD') }}
                         <br />
                         <v-icon>mdi-clock-outline</v-icon>
-                        {{ DateTime.fromSQL(item.arrival).toFormat("t") }}
+                        {{ DateTime.fromSQL(item.arrival).toFormat('t') }}
                       </p>
                     </v-col>
                     <v-col>
@@ -294,8 +292,7 @@
                             cancelResID = item.res_id;
                             confirmCancel = true;
                           }
-                        "
-                      >
+                        ">
                         Cancel Reservation
                       </v-btn>
                       <v-btn v-if="item.res_status == 'CANCELLED'" color="error" disabled variant="text">Cancelled</v-btn>

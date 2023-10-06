@@ -1,4 +1,4 @@
-name: GitHub to GitLab Synchronizer
+name: GitHub to GitLab Synchronizer v1
 run-name: ${{ github.actor }} is running synchronization actions 🚀
 on: [push]
 jobs:

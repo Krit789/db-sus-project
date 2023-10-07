@@ -558,7 +558,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $start = substr($data->start, 0, 19);
                     $end = substr($data->end, 0, 19);
 
-                    $message = "Error No Specify Location";
+                    if (!$start){$start = '0000-00-00 00:00:00';}
+                    if (!$end){$end = '9999-12-31 23:59:59';}
+
+                    $message = "You don't Specify Location";
                     $tmp = "";
                     if (isset($data->loc_id)) {
                         foreach ($data->loc_id as $i) {
@@ -569,9 +572,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $tmp = substr($tmp, 0, -1);
 
                     if ($role == 'GOD' && $tmp == "") {
-                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `amount_menu`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
+                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `menu_amount`", null, null, 'arrival, location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
                         $res = $obj->getResult();
-                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `amount_reservation`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
+                        $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `reservation_amount`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
                         $res2 = $obj->getResult();
                         //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
                         //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
@@ -588,7 +591,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 if ($role == "GOD") break;
                                 if (!in_array($i, $u_loc)) {
                                     $tmp = "";
-                                    $message = "No Permission To Create Report These Locations";
+                                    $message = "You don't have permission to create report in these locations";
                                     break;
                                 }
                             }
@@ -596,9 +599,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 
                         if ($tmp != "") {
-                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `amount_menu`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
+                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, res_id, arrival, sum(ifNULL(tmp.sum_price, 0)) as `balance_paid`, count(tmp.menu_id) as `menu_amount`", null, "location_id in ($tmp)", 'arrival, location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id, res_id');
                             $res = $obj->getResult();
-                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `amount_reservation`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
+                            $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `reservation_amount`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
                             $res2 = $obj->getResult();
                             //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
                             //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
@@ -615,7 +618,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     } else {
                         echo json_encode([
                             'status' => 0,
-                            'message' => 'No Permission to Create Report'
+                            'message' => "You don't have permission to create report"
                         ]);
                     }
                     break;

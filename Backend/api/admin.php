@@ -558,7 +558,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $start = substr($data->start, 0, 19);
                     $end = substr($data->end, 0, 19);
 
-                    $message = "Error No Specify Location";
+                    $message = "";
                     $tmp = "";
                     if (isset($data->loc_id)) {
                         foreach ($data->loc_id as $i) {
@@ -588,7 +588,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 if ($role == "GOD") break;
                                 if (!in_array($i, $u_loc)) {
                                     $tmp = "";
-                                    $message = "No Permission To Create Report These Locations";
+                                    $message = "You don't have permission to create report in these locations";
                                     break;
                                 }
                             }
@@ -609,13 +609,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         } else {
                             echo json_encode([
                                 'status' => 0,
-                                'message' => $message
+                                'message' => "Error no location specified"
                             ]);
                         }
                     } else {
                         echo json_encode([
                             'status' => 0,
-                            'message' => 'No Permission to Create Report'
+                            'message' => "You don't have permission to create report"
                         ]);
                     }
                     break;

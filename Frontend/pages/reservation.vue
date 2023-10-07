@@ -91,7 +91,7 @@
     }),
     methods: {
       addMenu(obj: MenuObject): void {
-        if (!this.isMenuIDinPreOpder(obj.id)) {
+        if (!this.isMenuIDinPreOrder(obj.id)) {
           this.foodPreOrderList.push(obj);
         } else {
           this.updateMenuById(1, obj.id);
@@ -117,7 +117,7 @@
           }
         }
       },
-      isMenuIDinPreOpder(id: Number) {
+      isMenuIDinPreOrder(id: Number) {
         for (let i = 0; i < this.foodPreOrderList.length; i++) {
           if (this.foodPreOrderList[i].id === id) return true;
         }

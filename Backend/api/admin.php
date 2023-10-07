@@ -559,7 +559,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $end = substr($data->end, 0, 19);
 
                     if (!$start){$start = '0000-00-00 00:00:00';}
-                    if (!$end){$end = '9999-99-99 23:59:59';}
+                    if (!$end){$end = '9999-12-31 23:59:59';}
 
                     $message = "Error No Specify Location";
                     $tmp = "";

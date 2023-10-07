@@ -1,0 +1,13 @@
+name: GitHub to GitLab Synchronizer v1
+run-name: ${{ github.actor }} is running synchronization actions 🚀
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - uses: adambirds/sync-github-to-gitlab-action@v1.1.0
+          with:
+            destination_repository: git@gitlab.com:kmitl-it-projects/seatify-app.git
+            destination_branch_name: main
+            destination_ssh_key: ${{ secrets.GITLAB_SSH_KEY }}

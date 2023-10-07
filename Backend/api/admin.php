@@ -561,13 +561,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if (!$start){$start = '0000-00-00 00:00:00';}
                     if (!$end){$end = '9999-99-99 23:59:59';}
 
-                    if (!$start){$start = '0000-00-00 00:00:00';}
-                    if (!$end){$end = '9999-99-99 23:59:59';}
-
-                    if (!$start){$start = '0000-00-00 00:00:00';}
-                    if (!$end){$end = '9999-99-99 23:59:59';}
-
-                    $message = "";
                     $tmp = "";
                     if (isset($data->loc_id)) {
                         foreach ($data->loc_id as $i) {

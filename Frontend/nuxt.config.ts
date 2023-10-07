@@ -64,7 +64,7 @@ export default defineNuxtConfig({
         routeRules: {
             "/management/**": {ssr: false},
             "/proxy/**": {proxy: "https://s.iservkmitl.tech/**"},  // For prod
-        //     "/proxy/**": {proxy: "http://127.0.0.1:8000/**"}, // For local development
+            //     "/proxy/**": {proxy: "http://127.0.0.1:8000/**"}, // For local development
         },
     },
     vite: {

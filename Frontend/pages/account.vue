@@ -1,137 +1,146 @@
 <script lang="ts" setup>
-  import { useDisplay } from 'vuetify';
-  import '~/assets/stylesheets/global.css';
-  import '~/assets/stylesheets/index.css';
-  import '~/assets/stylesheets/account_index.css';
+import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/index.css';
+import '~/assets/stylesheets/account_index.css';
 
-  const { signOut, data } = useAuth();
-  const { mobile } = useDisplay();
+const {signOut, data} = useAuth();
+const {mobile} = useDisplay();
 </script>
 
 <script lang="ts">
-  interface User {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    telephone: string | null;
-  }
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+}
 
-  interface StatusData {
+interface StatusData {
   status: "INPROGRESS" | "CANCELLED" | "FULFILLED";
   count: number;
 }
 
-  export default {
-    data: () => ({
-      DialogueCP: false,
-      editMode: false,
-      dtIsError: false,
-      dtErrorData: '',
-      dtData: [] as StatusData[],
-      inprogress: 0,
-      fufilled: 0,
-      cancelled: 0,
-      Old_password: '',
-      New_password: '',
-      conf_password: '',
-      loadingDialog: false,
-      resetTokenDialog: false,
-      fName: '',
-      lName: '',
-      telNum: '' as string | null,
-      email: '',
-      snackbar: false,
-      NotiColor: '',
-      timeout: 2000,
-      NotiIcon: '',
-      NotiText: '',
-      dtLoading: false,
-      confirm_new_password: '',
-      accountData: {} as User,
-    }),
-    methods: {
-      passwordValidation(value: String) {
-        if (this.New_password === value) return true;
-        return 'Both passwords must be similar.';
-      },
-      emailValidation(value: String) {
-        if (
+export default {
+  data: () => ({
+    DialogueCP: false,
+    editMode: false,
+    dtIsError: false,
+    dtErrorData: '',
+    dtData: [] as StatusData[],
+    inprogress: 0,
+    fufilled: 0,
+    cancelled: 0,
+    Old_password: '',
+    New_password: '',
+    conf_password: '',
+    loadingDialog: false,
+    resetTokenDialog: false,
+    fName: '',
+    lName: '',
+    telNum: '' as string | null,
+    email: '',
+    snackbar: false,
+    NotiColor: '',
+    timeout: 2000,
+    NotiIcon: '',
+    NotiText: '',
+    dtLoading: false,
+    confirm_new_password: '',
+    accountData: {} as User,
+  }),
+  methods: {
+    passwordValidation(value: String) {
+      if (this.New_password === value) return true;
+      return 'Both passwords must be similar.';
+    },
+    emailValidation(value: String) {
+      if (
           String(value)
-            .toLowerCase()
-            .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-        )
-          return true;
+              .toLowerCase()
+              .match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+      )
+        return true;
 
-        return 'E-Mail must be in correct format.';
-      },
-      async loadData() {
-        this.dtLoading = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 15,
-            usage: 'user',
-          },
-          lazy: true,
-        })
+      return 'E-Mail must be in correct format.';
+    },
+    async loadData() {
+      this.dtLoading = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 15,
+          usage: 'user',
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
           });
-      },
-      async loadAccountData() {
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 12,
-            usage: 'user',
-          },
-          lazy: true,
-        })
+    },
+    async loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: User };
+            const {status, message} = response as {
+              status: number;
+              message: User
+            };
             this.accountData = message;
             this.fName = message.first_name;
             this.lName = message.last_name;
             this.telNum = message.telephone;
             this.email = message.email;
           });
-      },
-      async updateUser(first_name: string, last_name: string, email: string, tel_num: string | null, password: string) {
-        this.loadingDialog = true;
-        let requestBody = {
-          type: 13,
-          usage: 'user',
-          first_name: first_name,
-          last_name: last_name,
-          email: email,
-          pswd: password,
-        };
-        if (tel_num) {
-          requestBody = Object.assign({}, requestBody, { tel_num: tel_num });
-        }
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: requestBody,
-          lazy: true,
-        })
+    },
+    async updateUser(first_name: string, last_name: string, email: string, tel_num: string | null, password: string) {
+      this.loadingDialog = true;
+      let requestBody = {
+        type: 13,
+        usage: 'user',
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        pswd: password,
+      };
+      if (tel_num) {
+        requestBody = Object.assign({}, requestBody, {tel_num: tel_num});
+      }
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: requestBody,
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status != 1) {
@@ -150,25 +159,28 @@
             this.loadAccountData();
             this.loadingDialog = false;
           });
-      },
-      async updateUserPassword(password: string, new_password: string) {
-        this.loadingDialog = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 14,
-            usage: 'user',
-            pswd: password,
-            new_pswd: new_password,
-          },
-          lazy: true,
-        })
+    },
+    async updateUserPassword(password: string, new_password: string) {
+      this.loadingDialog = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 14,
+          usage: 'user',
+          pswd: password,
+          new_pswd: new_password,
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status != 1) {
@@ -189,23 +201,26 @@
             this.loadData();
             this.loadingDialog = false;
           });
-      },
-      async resetToken() {
-        this.loadingDialog = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 16,
-            usage: 'user',
-          },
-          lazy: true,
-        })
+    },
+    async resetToken() {
+      this.loadingDialog = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 16,
+          usage: 'user',
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status != 1) {
@@ -223,19 +238,19 @@
             this.loadingDialog = false;
 
           });
-      },
     },
-    beforeMount() {
-      this.loadData();
-      this.loadAccountData();
-    },
-  };
+  },
+  beforeMount() {
+    this.loadData();
+    this.loadAccountData();
+  },
+};
 
-  function toTitleCase(str: string) {
-    return str.replace(/\w\S*/g, function (txt: string) {
-      return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
-    });
-  }
+function toTitleCase(str: string) {
+  return str.replace(/\w\S*/g, function (txt: string) {
+    return txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase();
+  });
+}
 </script>
 
 <template>
@@ -253,9 +268,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            color="success"
-            prepend-icon="mdi-check"
-            @click="
+              color="success"
+              prepend-icon="mdi-check"
+              @click="
               () => {
                 resetToken();
                 signOut({
@@ -311,15 +326,21 @@
             </v-card>
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Fulfilled Reservation</v-card-title>
-              <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.status == 'FULFILLED').length }} reservations</v-card-text>
+              <v-card-text class="font-weight-regular text-h5 ml-2">
+                {{ dtData.filter((item) => item.status == 'FULFILLED').length }} reservations
+              </v-card-text>
             </v-card>
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Inprogress Reservation</v-card-title>
-              <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.status == 'INPROGRESS').length }} reservations</v-card-text>
+              <v-card-text class="font-weight-regular text-h5 ml-2">
+                {{ dtData.filter((item) => item.status == 'INPROGRESS').length }} reservations
+              </v-card-text>
             </v-card>
             <v-card class="text-center ma-2 status_box" width="80%">
               <v-card-title class="font-weight-bold text-h5">Cancelled Reservation</v-card-title>
-              <v-card-text class="font-weight-regular text-h5 ml-2">{{ dtData.filter((item) => item.status == 'CANCELLED').length }} reservations</v-card-text>
+              <v-card-text class="font-weight-regular text-h5 ml-2">
+                {{ dtData.filter((item) => item.status == 'CANCELLED').length }} reservations
+              </v-card-text>
             </v-card>
           </v-row>
         </v-col>
@@ -329,20 +350,26 @@
         <div class="mx-md-16 mx-sm-8 mx-xs-8">
           <v-text-field v-model="fName" :readonly="!editMode" label="First Name" variant="underlined"></v-text-field>
           <v-text-field v-model="lName" :readonly="!editMode" label="Last Name" variant="underlined"></v-text-field>
-          <v-text-field v-model="telNum" :rules="[(v) => (v || '').length <= 10 || 'Phone Number Must be shorter than 10 characters']" :readonly="!editMode" label="Telephone Number" variant="underlined"></v-text-field>
+          <v-text-field v-model="telNum"
+                        :readonly="!editMode"
+                        :rules="[(v) => (v || '').length <= 10 || 'Phone Number Must be shorter than 10 characters']"
+                        label="Telephone Number" variant="underlined"></v-text-field>
           <v-text-field v-model="email" :readonly="!editMode" label="Email" variant="underlined"></v-text-field>
-          <v-text-field v-model="conf_password" :readonly="!editMode" v-if="editMode" label="Confirm Password" variant="underlined" type="password"></v-text-field>
+          <v-text-field v-if="editMode" v-model="conf_password" :readonly="!editMode" label="Confirm Password"
+                        type="password" variant="underlined"></v-text-field>
         </div>
 
-        <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="tonal" @click="DialogueCP = true">Change Password</v-btn>
+        <v-btn v-if="editMode == true" class="ma-2" color="#0373DE" rounded="lg" variant="tonal"
+               @click="DialogueCP = true">Change Password
+        </v-btn>
         <v-divider class="border-opacity-0"></v-divider>
         <v-btn
-          v-if="editMode == false"
-          class="ma-2"
-          color="#0373DE"
-          rounded="lg"
-          variant="tonal"
-          @click.stop="
+            v-if="editMode == false"
+            class="ma-2"
+            color="#0373DE"
+            rounded="lg"
+            variant="tonal"
+            @click.stop="
             () => {
               conf_password = '';
               editMode = true;
@@ -352,13 +379,13 @@
         </v-btn>
         <!-- vv only appear on edit mode vv -->
         <v-btn
-          v-if="editMode == true"
-          class="ma-2"
-          rounded="lg"
-          variant="tonal"
-          color="success"
-          prepend-icon="mdi-content-save"
-          @click.stop="
+            v-if="editMode == true"
+            class="ma-2"
+            color="success"
+            prepend-icon="mdi-content-save"
+            rounded="lg"
+            variant="tonal"
+            @click.stop="
             () => {
               updateUser(fName, lName, email, telNum, conf_password);
             }
@@ -367,13 +394,13 @@
         </v-btn>
 
         <v-btn
-          v-if="editMode == true"
-          class="ma-2"
-          rounded="lg"
-          variant="tonal"
-          color="error"
-          prepend-icon="mdi-cancel"
-          @click.stop="
+            v-if="editMode == true"
+            class="ma-2"
+            color="error"
+            prepend-icon="mdi-cancel"
+            rounded="lg"
+            variant="tonal"
+            @click.stop="
             () => {
               conf_password = '';
               editMode = false;
@@ -384,12 +411,12 @@
         <!-- ^^ only appear on edit mode ^^ -->
         <br>
         <v-btn
-          class="ma-2"
-          color="warning"
-          prepend-icon="mdi-logout-variant"
-          rounded="lg"
-          variant="tonal"
-          @click.stop="
+            class="ma-2"
+            color="warning"
+            prepend-icon="mdi-logout-variant"
+            rounded="lg"
+            variant="tonal"
+            @click.stop="
             () => {
               resetTokenDialog = true;
             }
@@ -403,17 +430,21 @@
                 <h1 class="mb-3">Change Password</h1>
                 <v-sheet class="mx-auto form_container" width="auto">
                   <v-form fast-fail @submit.prevent>
-                    <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
-                    <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock" type="password"></v-text-field>
-                    <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]" label="Confirm New Password" prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
+                    <v-text-field v-model="Old_password" label="Old Password" prepend-inner-icon="mdi-lock"
+                                  type="password"></v-text-field>
+                    <v-text-field v-model="New_password" label="New Password" prepend-inner-icon="mdi-lock"
+                                  type="password"></v-text-field>
+                    <v-text-field v-model="confirm_new_password" :rules="[passwordValidation]"
+                                  label="Confirm New Password" prepend-inner-icon="mdi-lock-check"
+                                  type="password"></v-text-field>
                   </v-form>
                 </v-sheet>
               </v-card-text>
               <v-card-actions>
                 <v-btn
-                  class="mt-2 bg-blue-darken-1"
-                  type="submit"
-                  @click="
+                    class="mt-2 bg-blue-darken-1"
+                    type="submit"
+                    @click="
                     () => {
                       updateUserPassword(Old_password, New_password);
                     }

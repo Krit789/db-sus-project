@@ -612,7 +612,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         } else {
                             echo json_encode([
                                 'status' => 0,
-                                'message' => "Error no location specified"
+                                'message' => $message
                             ]);
                         }
                     } else {

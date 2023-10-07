@@ -4,7 +4,10 @@
   import { DateTime } from 'luxon';
   import '~/assets/stylesheets/global.css';
   import '~/assets/stylesheets/report.css';
+  import { Bar } from 'vue-chartjs';
+  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
+  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
   definePageMeta({
     middleware: ['allowed-roles-only'],
     meta: { permitted: ['MANAGER', 'GOD'] },
@@ -19,15 +22,53 @@
 </script>
 
 <script lang="ts">
+  interface LocationInfo {
+    location_id: number;
+    l_name: string;
+    l_address: string;
+    manager_fname: string;
+    manager_lname: string;
+    res_id: number | null;
+    arrival: string | null;
+    balance_paid: number;
+    menu_amount: number;
+  }
+
+  interface SummaryInfo {
+    location_id: number;
+    l_name: string;
+    l_address: string;
+    manager_fname: string;
+    manager_lname: string;
+    total_earning: number;
+    reservation_amount: number;
+  }
+  type Location = {
+    l_id: number;
+    l_name: string;
+    l_addr: string;
+    l_open_time: string;
+    l_close_time: string;
+    l_status: 'OPERATIONAL' | 'MAINTENANCE' | 'OUTOFORDER';
+    l_layout_img: string;
+    l_mgr_id: number | null;
+    mgr_fn: string | null;
+    mgr_ln: string | null;
+    mgr_tel: string | null;
+    mgr_email: string | null;
+  };
+
+  type CompleteReportData = [LocationInfo[], SummaryInfo[]];
+
   export default {
     data() {
       return {
-        selectedDT: [],
-        reportData: null,
+        selectedDT: [] as number[],
+        reportData: [] as CompleteReportData[],
         dtSearch: '',
         dtErrorData: '',
         dtIsError: false,
-        dtData: [],
+        dtData: [] as Location[],
         loadingDialog: false,
         itemsPerPage: 10,
         dtLoading: false as boolean,
@@ -39,13 +80,23 @@
         timeout: 2000,
         NotiIcon: '',
         NotiText: '',
+        salesChartData: {
+          labels: [] as string[], // Will hold l_name values
+          datasets: [
+            {
+              label: 'Total Earnings',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Customize as needed
+              borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+              borderWidth: 1,
+              data: [] as number[], // Will hold total_earning values
+            },
+          ],
+        },
+        salesChartOptions: {
+          responsive: true,
+        },
         dtHeaders: [
-          {
-            title: 'Location ID',
-            align: 'start',
-            sortable: true,
-            key: 'l_id',
-          },
+          { title: 'Location ID', align: 'start', sortable: true, key: 'l_id' },
           { title: 'Name', align: 'center', key: 'l_name' },
         ],
       };
@@ -93,10 +144,20 @@
             const { status, message } = response as { status: number; message: any };
             if (status === 1) {
               this.reportData = message;
+              this.extractDataForChart();
+              console.log(this.salesChartData)
             } else {
             }
             this.loadingDialog = false;
+            this.selectReport = false;
           });
+      },
+      extractDataForChart() {
+        const locationData: SummaryInfo[] = this.reportData[1];
+        for (const entry of locationData) {
+          this.salesChartData.labels.push(entry.l_name);
+          this.salesChartData.datasets[0].data.push(entry.total_earning);
+        }
       },
     },
     beforeMount() {
@@ -128,12 +189,12 @@
               <template v-slot:top>
                 <v-row>
                   <v-col>
-                    <h4>Begin</h4>     
-                    <v-text-field v-model="reportBeginTime" variant="underlined" type="datetime-local"></v-text-field>           
+                    <h4>Begin</h4>
+                    <v-text-field v-model="reportBeginTime" variant="underlined" type="datetime-local"></v-text-field>
                   </v-col>
                   <v-col>
                     <h4>End</h4>
-                    <v-text-field v-model="reportEndTime" variant="underlined" type="datetime-local"></v-text-field>                
+                    <v-text-field v-model="reportEndTime" variant="underlined" type="datetime-local"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-container>
@@ -218,7 +279,8 @@
             ">
             Go Back
           </v-btn>
-          <v-btn :disabled="selectedDT.length <= 0" prepend-icon="mdi-chart-timeline-variant-shimmer" color="success" @click="loadReportData(DateTime.fromISO(this.reportBeginTime), DateTime.fromISO(this.reportEndTime), selectedDT)">Generate Report</v-btn>
+          <v-btn :disabled="selectedDT.length <= 0" prepend-icon="mdi-chart-timeline-variant-shimmer" color="success" @click="loadReportData(DateTime.fromISO(reportBeginTime), DateTime.fromISO(reportEndTime), selectedDT)">Generate Report</v-btn>
+          <v-btn prepend-icon="mdi-chart-timeline-variant-shimmer" color="red" @click="selectReport = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -227,6 +289,7 @@
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       </v-sheet>
+      <Bar id="locationSales" :options="salesChartOptions" :data="salesChartData" />
       <div class="w-100 justify-center align-center"></div>
     </div>
   </v-main>

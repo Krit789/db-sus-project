@@ -22,6 +22,8 @@
   });
 </script>
 <script lang="ts">
+  import { integer } from 'vscode-languageserver-types';
+
   interface ManagerItem {
     u_id: number;
     u_name: string;
@@ -73,7 +75,7 @@
       delLocDialog: false,
       tableName: '',
       tableNameDialog: '',
-      tabNum: 0,
+      tabNum: 1,
       tableID: 0,
       tableCapacity: 1,
       bEditor: false,
@@ -127,6 +129,7 @@
             key: 'l_id',
           },
           { title: 'Name', align: 'start', key: 'l_name' },
+          { title: 'Status', align: 'center', key: 'l_status' },
           { title: 'Address', align: ' d-none', key: 'l_addr' },
           { title: 'Status', align: ' d-none', key: 'l_status' },
           { title: 'Open', align: ' d-none', key: 'l_open_time' },
@@ -164,7 +167,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { message } = response as { status: number; message: any };
+            const { message } = response as {
+              status: number;
+              message: any;
+            };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -186,7 +192,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -215,7 +224,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -251,7 +263,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -269,9 +284,19 @@
         this.loadingDialog = true;
         let requestBody = { usage: 'manager' };
         if (loc_id > 0 && table_id <= 0) {
-          requestBody = Object.assign({}, requestBody, { type: 5, t_name: table_name, capacity: table_capacity, location_id: loc_id });
+          requestBody = Object.assign({}, requestBody, {
+            type: 5,
+            t_name: table_name,
+            capacity: table_capacity,
+            location_id: loc_id,
+          });
         } else {
-          requestBody = Object.assign({}, requestBody, { type: 7, table_id: table_id, capacity: table_capacity, t_name: table_name });
+          requestBody = Object.assign({}, requestBody, {
+            type: 7,
+            table_id: table_id,
+            capacity: table_capacity,
+            t_name: table_name,
+          });
         }
         await $fetch('/api/data', {
           method: 'POST',
@@ -283,7 +308,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -317,7 +345,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -352,7 +383,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -365,7 +399,7 @@
               this.NotiText = message;
               this.loadMenuByLocationID(loc_id);
             }
-        this.loadingDialog = false;
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
@@ -387,7 +421,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -400,14 +437,21 @@
               this.NotiText = message;
               this.loadMenuByLocationID(loc_id);
             }
-        this.loadingDialog = false;
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
       async createLocation(l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string) {
         this.addBranch = false;
         this.loadingDialog = true;
-        let requestBody = { type: 4, usage: 'admin', name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time };
+        let requestBody = {
+          type: 4,
+          usage: 'admin',
+          name: l_name,
+          address: l_addr,
+          open_time: l_open_time,
+          close_time: l_close_time,
+        };
         if (l_layout_img) {
           requestBody = Object.assign({}, requestBody, { layout_img: l_layout_img });
         }
@@ -422,7 +466,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any }; // Destructure inside the callback
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            }; // Destructure inside the callback
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -441,7 +488,16 @@
       },
       async updateLocation(l_id: number, l_name: string, l_addr: string, l_open_time: string, l_close_time: string, l_layout_img: string, l_status: number) {
         this.loadingDialog = true;
-        let requestBody = { type: 2, usage: 'manager', location_id: l_id, loc_name: l_name, address: l_addr, open_time: l_open_time, close_time: l_close_time, status: l_status };
+        let requestBody = {
+          type: 2,
+          usage: 'manager',
+          location_id: l_id,
+          loc_name: l_name,
+          address: l_addr,
+          open_time: l_open_time,
+          close_time: l_close_time,
+          status: l_status,
+        };
         if (l_layout_img) {
           requestBody = Object.assign({}, requestBody, { layout_img: l_layout_img });
         }
@@ -456,7 +512,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any }; // Destructure inside the callback
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            }; // Destructure inside the callback
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -490,7 +549,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            };
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -503,10 +565,11 @@
               this.NotiText = message;
               this.loadData();
             }
-        this.loadingDialog = false;
+            this.loadingDialog = false;
             this.dtIsError = false;
           });
       },
+
       async assignManager(l_id: number, mgr_id: number) {
         this.managerDialog = false;
         this.loadingDialog = true;
@@ -525,7 +588,10 @@
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any }; // Destructure inside the callback
+            const { status, message } = response as {
+              status: number;
+              message: any;
+            }; // Destructure inside the callback
             if (status == 0) {
               this.snackbar = true;
               this.NotiColor = 'error';
@@ -585,10 +651,10 @@
           <v-card-title>Add Branch</v-card-title>
           <v-card-text>
             <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
-            <v-textarea prepend-inner-icon="mdi-map-marker" v-model="bAddress" :rules="[requiredForm]" label="Address"></v-textarea>
-            <v-text-field prepend-inner-icon="mdi-floor-plan" v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"></v-text-field>
-            <v-text-field prepend-inner-icon="mdi-weather-sunset-up" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
-            <v-text-field prepend-inner-icon="mdi-weather-night" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
+            <v-textarea v-model="bAddress" :rules="[requiredForm]" label="Address" prepend-inner-icon="mdi-map-marker"></v-textarea>
+            <v-text-field v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL" prepend-inner-icon="mdi-floor-plan"></v-text-field>
+            <v-text-field v-model="bOpenTime" label="Open Time" prepend-inner-icon="mdi-weather-sunset-up" type="time"></v-text-field>
+            <v-text-field v-model="bCloseTime" label="Close Time" prepend-inner-icon="mdi-weather-night" type="time"></v-text-field>
           </v-card-text>
           <v-card-actions>
             <v-btn append-icon="mdi-plus" color="success" type="submit">Add</v-btn>
@@ -607,7 +673,7 @@
         <v-card-text>
           <v-img :src="blayout ? blayout : '/images/img-coming-soon.webp'" height="auto">
             <template v-slot:placeholder>
-              <v-skeleton-loader type="image" height="auto"></v-skeleton-loader>
+              <v-skeleton-loader height="auto" type="image"></v-skeleton-loader>
             </template>
             <template v-slot:error>
               <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
@@ -615,7 +681,7 @@
           </v-img>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" block @click="layoutPreview = false">Close</v-btn>
+          <v-btn block color="primary" @click="layoutPreview = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -624,13 +690,14 @@
         <v-card-title>{{ addTableMode == 0 ? 'Create Table' : 'Edit Table' }}</v-card-title>
         <v-card-subtitle>{{ addTableMode == 0 ? 'Create a new table' : `Renaming table ${tableName} at ${bName}` }}</v-card-subtitle>
         <v-card-text>
-          <v-text-field label="Table Name" :rules="[v => (v || '' ).length <= 5 || 'Table Name must be 5 characters or less']" prepend-icon="mdi-table-furniture" persistent-counter v-model="tableNameDialog"></v-text-field>
-          <v-text-field label="Capacity" prepend-icon="mdi-account-multiple" v-model="tableCapacity" type="number" min="1" oninput="validity.valid || (value=1);"></v-text-field>
+          <v-text-field v-model="tableNameDialog" :rules="[(v) => (v || '').length <= 5 || 'Table Name must be 5 characters or less']" label="Table Name" persistent-counter prepend-icon="mdi-table-furniture"></v-text-field>
+          <v-text-field v-model="tableCapacity" label="Capacity" min="1" oninput="validity.valid || (value=1);" prepend-icon="mdi-account-multiple" type="number"></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn
+            :disabled="loadingDialog"
+            :prepend-icon="addTableMode == 0 ? 'mdi-check' : 'mdi-content-save'"
             color="success"
-            :prepend-icon="addTableMode == 0 ? 'mdi-check' : 'mdi-content-save'" :disabled="loadingDialog"
             @click="
               () => {
                 if (addTableMode == 0) {
@@ -654,9 +721,9 @@
         <v-card-text>Are you sure that you want to delete table {{ tableNameDialog }} at {{ bName }}?</v-card-text>
         <v-card-actions>
           <v-btn
+            :disabled="loadingDialog"
             color="success"
             prepend-icon="mdi-check"
-            :disabled="loadingDialog"
             @click="
               () => {
                 deleteTable(tableID);
@@ -676,7 +743,7 @@
         <v-card-title>Create Menu Restriction</v-card-title>
         <v-card-subtitle>Prevents unwanted menus from showing up in your branch</v-card-subtitle>
         <v-card-text>
-          <v-autocomplete label="Menu Selection" :items="locMenu[0]" :item-props="menuItemProps" item-value="m_id" v-model="menuID"></v-autocomplete>
+          <v-autocomplete v-model="menuID" :item-props="menuItemProps" :items="locMenu[0]" item-value="m_id" label="Menu Selection"></v-autocomplete>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -706,9 +773,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
+            :disabled="loadingDialog"
             color="success"
             prepend-icon="mdi-check"
-            :disabled="loadingDialog"
             @click="
               () => {
                 removeMenuRestriction(bID, menuID);
@@ -732,9 +799,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
+            :disabled="loadingDialog"
             color="success"
             prepend-icon="mdi-check"
-            :disabled="loadingDialog"
             @click="
               () => {
                 deleteLocation(bID);
@@ -751,9 +818,11 @@
     <v-dialog v-model="managerDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>{{ bMgrID ? 'Manager Switch' : 'Manager Assignment' }}</v-card-title>
-        <v-card-subtitle>{{ bMgrID ? 'Reassign new manager to manage your branch' : 'Assign manager to manage your branch' }}</v-card-subtitle>
+        <v-card-subtitle>
+          {{ bMgrID ? 'Reassign new manager to manage your branch' : 'Assign manager to manage your branch' }}
+        </v-card-subtitle>
         <v-card-text>
-          <v-autocomplete label="Manager Selection" :items="managerList" :item-props="managerItemProps" item-value="u_id" v-model="bSelMgrID"></v-autocomplete>
+          <v-autocomplete v-model="bSelMgrID" :item-props="managerItemProps" :items="managerList" item-value="u_id" label="Manager Selection"></v-autocomplete>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -781,8 +850,8 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="bEditor" :fullscreen="mobile" :width="mobile ? '100%' : '500px'" persistent>
-      <v-card>
-        <v-tabs v-model="tabNum" bg-color="primary" color="white">
+      <v-card class="tab-card blur-effect">
+        <v-tabs v-model="tabNum" bg-color="bg-transparent" color="black" style="height: 44px; padding: 0px 14px">
           <v-tab value="one">General</v-tab>
           <v-tab
             value="two"
@@ -804,206 +873,208 @@
           </v-tab>
         </v-tabs>
 
-        <v-card-text>
-          <v-window v-model="tabNum">
-            <v-window-item value="one">
-              <h3 class="text-left">General</h3>
-              <v-form
-                fast-fail
-                @submit.prevent="
-                  (val) => {
-                    console.log(val);
-                  }
-                ">
+        <div class="tab-bg">
+          <v-card-text>
+            <v-window v-model="tabNum">
+              <v-window-item value="one">
+                <h3 class="text-left">General</h3>
+                <v-form
+                  fast-fail
+                  @submit.prevent="
+                    (val) => {
+                      console.log(val);
+                    }
+                  ">
+                  <v-card-text>
+                    <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
+                    <v-textarea v-model="bAddress" label="Address" prepend-inner-icon="mdi-map-marker"></v-textarea>
+                    <v-text-field v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL" prepend-inner-icon="mdi-floor-plan"></v-text-field>
+                    <v-text-field v-model="bOpenTime" label="Open Time" prepend-inner-icon="mdi-weather-sunset-up" type="time"></v-text-field>
+                    <v-text-field v-model="bCloseTime" label="Close Time" prepend-inner-icon="mdi-weather-night" type="time"></v-text-field>
+                    <v-select v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status" prepend-inner-icon="mdi-list-status"></v-select>
+                  </v-card-text>
+                  <v-btn
+                    class="mb-2 mr-3"
+                    color="success"
+                    prepend-icon="mdi-content-save"
+                    type="submit"
+                    variant="tonal"
+                    @click="
+                      () => {
+                        updateLocation(bID, bName, bAddress, DateTime.fromISO(bOpenTime).toFormat('yyyy-LL-dd TT'), DateTime.fromISO(bCloseTime).toFormat('yyyy-LL-dd TT'), blayout, bStatus);
+                      }
+                    ">
+                    Save
+                  </v-btn>
+                  <v-btn
+                    v-if="data.role == 'GOD'"
+                    :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'"
+                    class="mb-2"
+                    color="info"
+                    type="submit"
+                    variant="text"
+                    @click="
+                      () => {
+                        managerDialog = true;
+                        bSelMgrID = bMgrID;
+                        if (managerList.length === 0) loadManager();
+                      }
+                    ">
+                    {{ bMgrID ? 'Change Manager' : 'Assign Manager' }}
+                  </v-btn>
+                </v-form>
+              </v-window-item>
+
+              <v-window-item value="two">
+                <h3 class="text-left">Menu Restriction</h3>
                 <v-card-text>
-                  <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
-                  <v-textarea prepend-inner-icon="mdi-map-marker" v-model="bAddress" label="Address"></v-textarea>
-                  <v-text-field prepend-inner-icon="mdi-floor-plan" v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-weather-sunset-up" v-model="bOpenTime" label="Open Time" type="time"></v-text-field>
-                  <v-text-field prepend-inner-icon="mdi-weather-night" v-model="bCloseTime" label="Close Time" type="time"></v-text-field>
-                  <v-select prepend-inner-icon="mdi-list-status" v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"></v-select>
+                  <v-table density="compact" fixed-header height="50vh">
+                    <thead>
+                      <tr>
+                        <th class="text-left">Menu ID</th>
+                        <th class="text-left">Menu Name</th>
+                        <th class="text-center">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in locMenu[1]" :key="item.m_id">
+                        <td>{{ item.m_id }}</td>
+                        <td>{{ item.m_name }}</td>
+                        <td class="text-center">
+                          <v-tooltip location="top">
+                            <template v-slot:activator="{ props }">
+                              <v-icon
+                                color="red"
+                                v-bind="props"
+                                @click="
+                                  () => {
+                                    menuID = item.m_id;
+                                    menuName = item.m_name;
+                                    delMenuResDialog = true;
+                                  }
+                                ">
+                                mdi-delete
+                              </v-icon>
+                            </template>
+                            <span>Delete Restriction</span>
+                          </v-tooltip>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                  <v-btn
+                    class="mt-3"
+                    prepend-icon="mdi-plus"
+                    variant="text"
+                    @click="
+                      () => {
+                        addMenuResDialog = true;
+                      }
+                    ">
+                    Create Restriction
+                  </v-btn>
                 </v-card-text>
-                <v-btn
-                  prepend-icon="mdi-content-save"
-                  class="mb-2 mr-3"
-                  color="success"
-                  type="submit"
-                  variant="tonal"
-                  @click="
-                    () => {
-                      updateLocation(bID, bName, bAddress, DateTime.fromISO(bOpenTime).toFormat('yyyy-LL-dd TT'), DateTime.fromISO(bCloseTime).toFormat('yyyy-LL-dd TT'), blayout, bStatus);
-                    }
-                  ">
-                  Save
-                </v-btn>
-                <v-btn
-                  :prepend-icon="bMgrID ? 'mdi-account-switch-outline' : 'mdi-clipboard-account'"
-                  v-if="data.role == 'GOD'"
-                  class="mb-2"
-                  color="info"
-                  type="submit"
-                  variant="text"
-                  @click="
-                    () => {
-                      managerDialog = true;
-                      bSelMgrID = bMgrID;
-                      if (managerList.length === 0) loadManager();
-                    }
-                  ">
-                  {{ bMgrID ? 'Change Manager' : 'Assign Manager' }}
-                </v-btn>
-              </v-form>
-            </v-window-item>
+              </v-window-item>
 
-            <v-window-item value="two">
-              <h3 class="text-left">Menu Restriction</h3>
-              <v-card-text>
-                <v-table fixed-header height="50vh" density="compact">
-                  <thead>
-                    <tr>
-                      <th class="text-left">Menu ID</th>
-                      <th class="text-left">Menu Name</th>
-                      <th class="text-center">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="item in locMenu[1]" :key="item.m_id">
-                      <td>{{ item.m_id }}</td>
-                      <td>{{ item.m_name }}</td>
-                      <td class="text-center">
-                        <v-tooltip location="top">
-                          <template v-slot:activator="{ props }">
-                            <v-icon
-                              color="red"
-                              v-bind="props"
-                              @click="
-                                () => {
-                                  menuID = item.m_id;
-                                  menuName = item.m_name;
-                                  delMenuResDialog = true;
-                                }
-                              ">
-                              mdi-delete
-                            </v-icon>
-                          </template>
-                          <span>Delete Restriction</span>
-                        </v-tooltip>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-table>
-                <v-btn
-                  class="mt-3"
-                  variant="text"
-                  prepend-icon="mdi-plus"
-                  @click="
-                    () => {
-                      addMenuResDialog = true;
-                    }
-                  ">
-                  Create Restriction
-                </v-btn>
-              </v-card-text>
-            </v-window-item>
-
-            <v-window-item value="three">
-              <h3 class="text-left">Tables</h3>
-              <v-card-text>
-                <v-table fixed-header height="50vh" density="compact">
-                  <thead>
-                    <tr>
-                      <th class="text-left">Table ID</th>
-                      <th class="text-left">Table Name</th>
-                      <th class="text-left">
-                        {{ mobile ? '' : 'Capacity' }}
-                        <v-icon v-if="mobile">mdi-account-multiple</v-icon>
-                      </th>
-                      <th class="text-left">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="item in locSeat" :key="item.table_id">
-                      <td>{{ item.table_id }}</td>
-                      <td>{{ item.name }}</td>
-                      <td>{{ item.capacity }}</td>
-                      <td>
-                        <v-tooltip location="top">
-                          <template v-slot:activator="{ props }">
-                            <v-icon
-                              class="mr-3"
-                              v-bind="props"
-                              color="info"
-                              @click="
-                                () => {
-                                  tableID = item.table_id;
-                                  tableName = item.name;
-                                  tableNameDialog = tableName;
-                                  tableCapacity = item.capacity;
-                                  addTableMode = 1;
-                                  addTableDialog = true;
-                                }
-                              ">
-                              mdi-pencil
-                            </v-icon>
-                          </template>
-                          <span>Rename</span>
-                        </v-tooltip>
-                        <v-tooltip location="top">
-                          <template v-slot:activator="{ props }">
-                            <v-icon
-                              color="red"
-                              v-bind="props"
-                              @click="
-                                () => {
-                                  tableID = item.table_id;
-                                  tableName = item.name;
-                                  tableNameDialog = tableName;
-                                  delTableDialog = true;
-                                }
-                              ">
-                              mdi-delete
-                            </v-icon>
-                          </template>
-                          <span>Delete</span>
-                        </v-tooltip>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-table>
-                <v-btn
-                  class="mt-3"
-                  variant="text"
-                  prepend-icon="mdi-plus"
-                  @click="
-                    () => {
-                      tableID = 0;
-                      tableName = '';
-                      tableNameDialog = tableName;
-                      addTableMode = 0;
-                      addTableDialog = true;
-                    }
-                  ">
-                  Create Table
-                </v-btn>
-              </v-card-text>
-            </v-window-item>
-          </v-window>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            block
-            color="primary"
-            @click="
-              () => {
-                bEditor = false;
-                locSeat = [];
-                locMenu = [];
-                managerList = [];
-              }
-            ">
-            Close
-          </v-btn>
-        </v-card-actions>
+              <v-window-item value="three">
+                <h3 class="text-left">Tables</h3>
+                <v-card-text>
+                  <v-table density="compact" fixed-header height="50vh">
+                    <thead>
+                      <tr>
+                        <th class="text-left">Table ID</th>
+                        <th class="text-left">Table Name</th>
+                        <th class="text-left">
+                          {{ mobile ? '' : 'Capacity' }}
+                          <v-icon v-if="mobile">mdi-account-multiple</v-icon>
+                        </th>
+                        <th class="text-left">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in locSeat" :key="item.table_id">
+                        <td>{{ item.table_id }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.capacity }}</td>
+                        <td>
+                          <v-tooltip location="top">
+                            <template v-slot:activator="{ props }">
+                              <v-icon
+                                class="mr-3"
+                                color="info"
+                                v-bind="props"
+                                @click="
+                                  () => {
+                                    tableID = item.table_id;
+                                    tableName = item.name;
+                                    tableNameDialog = tableName;
+                                    tableCapacity = item.capacity;
+                                    addTableMode = 1;
+                                    addTableDialog = true;
+                                  }
+                                ">
+                                mdi-pencil
+                              </v-icon>
+                            </template>
+                            <span>Rename</span>
+                          </v-tooltip>
+                          <v-tooltip location="top">
+                            <template v-slot:activator="{ props }">
+                              <v-icon
+                                color="red"
+                                v-bind="props"
+                                @click="
+                                  () => {
+                                    tableID = item.table_id;
+                                    tableName = item.name;
+                                    tableNameDialog = tableName;
+                                    delTableDialog = true;
+                                  }
+                                ">
+                                mdi-delete
+                              </v-icon>
+                            </template>
+                            <span>Delete</span>
+                          </v-tooltip>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                  <v-btn
+                    class="mt-3"
+                    prepend-icon="mdi-plus"
+                    variant="text"
+                    @click="
+                      () => {
+                        tableID = 0;
+                        tableName = '';
+                        tableNameDialog = tableName;
+                        addTableMode = 0;
+                        addTableDialog = true;
+                      }
+                    ">
+                    Create Table
+                  </v-btn>
+                </v-card-text>
+              </v-window-item>
+            </v-window>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              block=""
+              color="primary"
+              @click="
+                () => {
+                  bEditor = false;
+                  locSeat = [];
+                  locMenu = [];
+                  managerList = [];
+                }
+              ">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </div>
       </v-card>
     </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
@@ -1038,6 +1109,16 @@
               ">
               <td class="text-start td-hover">{{ item.l_id }}</td>
               <td class="text-start td-hover">{{ item.l_name }}</td>
+              <td class="text-center td-hover">
+                <v-tooltip location="top">
+                  <template v-slot:activator="{ props }">
+                    <v-icon v-bind="props">{{ item.l_status == 'OPERATIONAL' ? 'mdi-check' : item.l_status == 'MAINTENANCE' ? 'mdi-hammer-wrench' : item.l_status == 'OUTOFORDER' ? 'mdi-close' : 'mdi-help' }}</v-icon>
+                  </template>
+                  <span>
+                    {{ item.l_status == 'OPERATIONAL' ? 'Operational' : item.l_status == 'MAINTENANCE' ? 'Maintenance' : item.l_status == 'OUTOFORDER' ? 'Out Of Order' : item.l_status }}
+                    </span>
+                </v-tooltip>
+              </td>
             </tr>
           </template>
           <template v-slot:expanded-row="{ columns, item }">
@@ -1066,11 +1147,11 @@
                       <p>
                         <b>Status</b>
                         <br />
-                        <v-icon class="mr-2">{{ item.l_status == 'OPERATIONAL' ? 'mdi-check' : item.l_status == 'MAINTENANCE' ? 'mdi-hammer-wrench' : item.l_status == 'OUTOFORDER' ? 'mdi-close' : 'mdi-help' }}</v-icon>
+                        <v-icon>{{ item.l_status == 'OPERATIONAL' ? 'mdi-check' : item.l_status == 'MAINTENANCE' ? 'mdi-hammer-wrench' : item.l_status == 'OUTOFORDER' ? 'mdi-close' : 'mdi-help' }}</v-icon>
                         {{ item.l_status == 'OPERATIONAL' ? 'Operational' : item.l_status == 'MAINTENANCE' ? 'Maintenance' : item.l_status == 'OUTOFORDER' ? 'Out of Order' : item.l_status }}
                       </p>
                     </v-col>
-                    <v-col cols="12" md="3" sm="6">
+                    <v-col v-if="data.role === 'GOD'" cols="12" md="3" sm="6">
                       <b>Manager</b>
                       <br />
                       <div v-if="item.l_mgr_id">
@@ -1083,8 +1164,10 @@
                         <v-icon class="mr-2">mdi-email</v-icon>
                         {{ item.mgr_email }}
                         <br />
-                        <v-icon class="mr-2">mdi-phone</v-icon>
-                        {{ item.mgr_tel }}
+                        <div v-if="item.mgr_tel">
+                          <v-icon class="mr-2">mdi-phone</v-icon>
+                          {{ item.mgr_tel }}
+                        </div>
                       </div>
                       <div v-else>
                         <v-icon class="mr-2">mdi-help</v-icon>
@@ -1115,9 +1198,9 @@
                         Manage Branch
                       </v-btn>
                       <v-btn
+                        color="warning"
                         prepend-icon="mdi-floor-plan"
                         variant="text"
-                        color="warning"
                         @click="
                           () => {
                             bName = item.l_name;
@@ -1128,17 +1211,19 @@
                         View Seat Layout
                       </v-btn>
                       <v-btn
-                      prepend-icon="mdi-delete"
-                      variant="text"
-                      color="red"
-                      v-if="data.role == 'GOD'"
+                        v-if="data.role == 'GOD'"
+                        color="red"
+                        prepend-icon="mdi-delete"
+                        variant="text"
                         @click="
                           () => {
                             bID = item.l_id;
                             bName = item.l_name;
                             delLocDialog = true;
                           }
-                        ">Delete Branch</v-btn>
+                        ">
+                        Delete Branch
+                      </v-btn>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -1146,7 +1231,7 @@
             </tr>
           </template>
           <template v-slot:no-data>
-            <v-alert icon="mdi-exclamation" title="Notice" color="info">
+            <v-alert color="info" icon="mdi-exclamation" title="Notice">
               <p>You don't have branche to manage.</p>
             </v-alert>
           </template>

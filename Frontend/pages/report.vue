@@ -85,21 +85,81 @@
           datasets: [
             {
               label: 'Total Earnings',
-              backgroundColor: 'rgba(75, 192, 192, 0.2)', // Customize as needed
-              borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+              backgroundColor: '#1E88E5', // Customize as needed
+              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+              yAxisID: 'A',
+              borderWidth: 1,
+              data: [] as number[], // Will hold total_earning values
+            },
+            {
+              label: 'Total Reservation',
+              backgroundColor: '#4DB6AC', // Customize as needed
+              yAxisID: 'B',
+              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
               borderWidth: 1,
               data: [] as number[], // Will hold total_earning values
             },
           ],
         },
-        salesChartOptions: {
-          responsive: true,
+        earningsChartData: {
+          labels: [] as string[], // Will hold l_name values
+          datasets: [
+            {
+              label: 'Total Earnings Per Reservation',
+              backgroundColor: '#1E88E5', // Customize as needed
+              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+              borderWidth: 1,
+              data: [] as number[], // Will hold total_earning values
+            },
+          ],
         },
         dtHeaders: [
           { title: 'Location ID', align: 'start', sortable: true, key: 'l_id' },
           { title: 'Name', align: 'center', key: 'l_name' },
         ],
       };
+    },
+    computed: {
+      salesChartOptions() {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            A: {
+              type: 'linear',
+              position: 'left',
+            },
+            B: {
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                precision: 0,
+              },
+            },
+          },
+        };
+      },
+      earningChartOptions() {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Earnings',
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: 'Date',
+              },
+            },
+          },
+        };
+      },
     },
     methods: {
       async loadData() {
@@ -145,7 +205,8 @@
             if (status === 1) {
               this.reportData = message;
               this.extractDataForChart();
-              console.log(this.salesChartData)
+              this.createChartData(this.reportData[0]);
+              console.log(this.earningsChartData, this.salesChartData);
             } else {
             }
             this.loadingDialog = false;
@@ -154,10 +215,69 @@
       },
       extractDataForChart() {
         const locationData: SummaryInfo[] = this.reportData[1];
+        this.salesChartData.datasets[0].data = [];
+        this.salesChartData.datasets[1].data = [];
+        this.salesChartData.labels = [];
         for (const entry of locationData) {
           this.salesChartData.labels.push(entry.l_name);
           this.salesChartData.datasets[0].data.push(entry.total_earning);
+          this.salesChartData.datasets[1].data.push(entry.reservation_amount);
         }
+      },
+      createChartData(data) {
+        // Create a map to store earnings data by location and date
+        const earningsMap = new Map();
+
+        // Loop through the data and populate the earningsMap
+        data.forEach((entry) => {
+          // console.log(DateTime.fromSQL(entry.arrival))
+          if (entry.arrival === null) {
+            return
+          } 
+          const arrivalDate = DateTime.fromSQL(entry.arrival).toISODate();
+          const locationName = entry.l_name;
+
+          // Initialize the location in the map if it doesn't exist
+          if (!earningsMap.has(locationName)) {
+            earningsMap.set(locationName, new Map());
+          }
+
+          // Initialize the date in the location's map if it doesn't exist
+          if (!earningsMap.get(locationName).has(arrivalDate)) {
+            earningsMap.get(locationName).set(arrivalDate, 0);
+          }
+
+          // Add balance_paid to the earnings for the location and date
+          earningsMap.get(locationName).set(arrivalDate, earningsMap.get(locationName).get(arrivalDate) + entry.balance_paid);
+        });
+
+        // Create labels (dates) and datasets for Chart.js
+        const labels = Array.from([...earningsMap.values()][0].keys()); // Get dates from the first location's map
+        const datasets = [];
+
+        earningsMap.forEach((locationData, locationName) => {
+          const dataValues = Array.from(locationData.values());
+          datasets.push({
+            label: locationName,
+            data: dataValues,
+            backgroundColor: this.getRandomColor(), // Function to generate random colors
+            // borderColor: this.getRandomColor(),
+            borderWidth: 1, // Function to generate random colors
+            // fill: false,
+          });
+        });
+        this.earningsChartData.labels = labels;
+        this.earningsChartData.datasets = datasets;
+        // console.log(earningsMap, datasets, this.earningsChartData.labels,this.earningsChartData.datasets);
+        // return { labels, datasets };
+      },
+      getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
       },
     },
     beforeMount() {
@@ -279,18 +399,58 @@
             ">
             Go Back
           </v-btn>
+          <v-btn prepend-icon="mdi-close" color="red" @click="selectReport = false">Close</v-btn>
           <v-btn :disabled="selectedDT.length <= 0" prepend-icon="mdi-chart-timeline-variant-shimmer" color="success" @click="loadReportData(DateTime.fromISO(reportBeginTime), DateTime.fromISO(reportEndTime), selectedDT)">Generate Report</v-btn>
-          <v-btn prepend-icon="mdi-chart-timeline-variant-shimmer" color="red" @click="selectReport = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div v-if="!selectReport" class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
-      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report</h1>
+    <div v-show="!selectReport || salesChartData.datasets[0].data.length !== 0" class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report {{ (reportBeginTime !== null && reportEndTime !== null) ? `for ${DateTime.fromISO(reportBeginTime).toFormat('D')} till ${DateTime.fromISO(reportEndTime).toFormat('D')}` : '' }}</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       </v-sheet>
-      <Bar id="locationSales" :options="salesChartOptions" :data="salesChartData" />
-      <div class="w-100 justify-center align-center"></div>
+      <v-btn class="ml-10" prepend-icon="mdi-select-multiple-marker" color="info" variant="tonal" @click="selectReport = true">Re-select Branches</v-btn>
+      <v-container>
+        <v-row>
+          <v-col>
+            <h3 class="ml-5 mb-3">Total Branch Earnings & Reservations</h3>
+            <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
+              <Bar id="locationSales" :options="salesChartOptions" :key="reportData[1]" :data="salesChartData" />
+            </v-sheet>
+          </v-col>
+          <v-col>
+            <h3 class="ml-5 mb-3">Branch Earnings</h3>
+            <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
+              <Bar id="locationEarning" :options="earningChartOptions" :key="reportData[1]" :data="earningsChartData" />
+            </v-sheet>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <h3 class="ml-5 mb-1">Branch Summary</h3>
+            <v-sheet class="mt-5 ma-md-8 ma-xs-1 text-center" rounded="lg">
+            <v-table class="mx-3" fixed-header height="300px">
+                  <thead>
+                    <tr>
+                      <th class="text-right">ID</th>
+                      <th class="text-left">Location</th>
+                      <th class="text-right">Reservations</th>
+                      <th class="text-right">Earnings</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="loc in reportData[1]" :key="loc.location_id">
+                      <td class="text-right">{{ loc.location_id }}</td>
+                      <td class="text-left">{{ loc.l_name }}</td>
+                      <td class="text-right">{{ loc.reservation_amount }}</td>
+                      <td class="text-right">{{ loc.total_earning }} ฿</td>
+                    </tr>
+                  </tbody>
+                </v-table>
+              </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </v-main>
 </template>

@@ -1,0 +1,43 @@
+.manage-card-button {
+    /*background-color: red;*/
+    margin: 3px 2px 0 2px;
+
+}
+
+.tab-card {
+    background-color: rgba(202, 223, 251, 0.92) !important;
+}
+
+.v-tab {
+    height: 40px !important;
+    width: 112px;
+    border-radius: 8px 8px 0 0 !important;
+    cursor: pointer;
+    padding: 0 10px;
+    margin: 6px 1px 0 2px;
+    color: black;
+}
+
+.v-tab:focus {
+    background-color: white;
+    color: black !important;
+}
+
+.v-tab:hover {
+    background-color: white;
+    color: black !important;
+}
+
+.tab-bg {
+    padding: 12px;
+    border-radius: 8px !important;
+    background-color: white;
+}
+
+.v-card-text {
+
+}
+
+.active-tab {
+    background-color: black;
+}

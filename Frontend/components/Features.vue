@@ -5,7 +5,7 @@ const route = useRoute();
 
 <template>
   <v-container class="justify-center feature_container pb-2 mb-8">
-    <h1 class="feature_header text-primary pl-4 mb-5">Dinner is ready to served!</h1>
+    <h1 class="feature_header text-primary pl-4 mb-5">Dinner is ready to be served!</h1>
     <!-- Row 1 -->
     <v-row class="feature_flex mx-0" justify="center">
       <v-col class="feature_rounded">
@@ -31,7 +31,7 @@ const route = useRoute();
 
     <!--Row 2 Create Branches Report   -->
     <!-- remember to remove debug condition -->
-    <v-row v-if="(status == 'authenticated' && data.role == 'MANAGER') || 1" class="feature_rounded mx-3 mt-8 px-5 py-8"
+    <v-row v-if="(status == 'authenticated' && data.role == 'MANAGER')" class="feature_rounded mx-3 mt-8 px-5 py-8"
            justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="text-primary text-h4">Create Branches Report</h2>
@@ -60,7 +60,7 @@ const route = useRoute();
     </v-row>
 
     <!--Row 3 Manage Branches and Manage Menu   -->
-    <v-row v-if="(status == 'authenticated' && (data.role == 'MANAGER' || data.role == 'GOD')) || 1" class="mt-5 px-3"
+    <v-row v-if="(status === 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))" class="mt-8 px-3"
            justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Branches</h2>
@@ -101,7 +101,7 @@ const route = useRoute();
               }
             "
           >
-            Manage Menu
+            Manage Reservations
           </v-btn>
         </v-row>
       </v-col>

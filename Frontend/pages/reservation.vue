@@ -10,6 +10,7 @@
   const { mobile } = useDisplay();
   const { status, data } = useAuth();
   const route = useRoute();
+  const router = useRouter();
 
   definePageMeta({
     middleware: ['allowed-roles-only'],
@@ -26,6 +27,7 @@
   interface MenuObject {
     id: number;
     item_name: string;
+    item_desc: string;
     amount: number;
     price: number;
     // Add more properties as needed
@@ -70,6 +72,8 @@
       stepper1: 0,
       pageSpinner: false,
       hasLocation: false,
+      resConfirm: false,
+      resFailConfirm: false,
       locationList: [] as LocationObject[],
       menuList: [] as MenuListObject[],
       seatList: [] as SeatObject[],
@@ -143,9 +147,14 @@
           })
           .then((response) => {
             const { status, message } = response as { status: number; message: any };
-            this.locationList = message;
+            if (status === 1) {
+              this.locationList = message;
+              this.isError = false;
+            } else {
+              this.isError = true;
+              this.errorData = message;
+            }
             this.pageSpinner = false;
-            this.isError = false;
           });
       },
       async loadMenusFromLocation(locID: Number) {
@@ -238,10 +247,9 @@
           .then((response) => {
             const { status, message } = response as { status: number; message: any };
             if (status === 1) {
-              alert('Booking Successful');
-              this.$router.push('/');
+              this.resConfirm = true;
             } else {
-              alert('Booking Failure');
+              this.resFailConfirm = true
             }
           });
       },
@@ -304,6 +312,62 @@
 </script>
 <template>
   <v-main class="justify-center reservation_main">
+    <v-dialog v-model="resConfirm" :width="'auto'">
+      <v-card :width="mobile ? 'auto' : '400px'">
+        <v-card-title>Confirmation</v-card-title>
+        <v-card-text class="text-center">
+          <v-icon icon="mdi-check" color="success" style="font-size: 120px"></v-icon>
+          <br />
+          Your reservation was created successfully!
+          <br />
+          You can view your reservation code
+          <a
+            class="like-a-link"
+            @click="
+              () => {
+                router.push('/dashboard');
+              }
+            ">
+            here
+          </a>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="info"
+            block
+            @click="
+              () => {
+                resConfirm = false;
+                navigateTo('/');
+              }
+            ">
+            Return Home
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="resFailConfirm" :width="'auto'">
+      <v-card :width="mobile ? 'auto' : '400px'">
+        <v-card-title>Reseravtion Abort</v-card-title>
+        <v-card-text class="text-center">
+          <v-icon icon="mdi-close" color="red" style="font-size: 120px"></v-icon>
+          <br />
+          Sorry, it looks like your reservation didn't went through.<br>Please try again or contact staff for assistance.
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="info"
+            block
+            @click="
+              () => {
+                resFailConfirm = false;
+              }
+            ">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <div class="main_container mx-auto blur-effect account_body mt-10 py-1 px-1 min-h-40">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
@@ -554,7 +618,7 @@
                               sm="6"
                               @click="
                                 () => {
-                                  addMenu({ id: food.id, item_name: food.item_name, amount: 1, price: food.price });
+                                  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
                                 }
                               ">
                               <v-card v-ripple>
@@ -586,61 +650,104 @@
                     <v-card elevation="0">
                       <h3 class="pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table fixed-header height="300px" :density="mobile ? 'compact' : 'comfortable'">
+                        <v-table fixed-header height="400px" :density="mobile ? 'compact' : 'comfortable'">
                           <thead>
                             <tr>
-                              <th class="text-left">Name</th>
-                              <th class="text-right">Amount</th>
-                              <th class="text-right">Price</th>
-                              <th class="text-right"></th>
+                              <th class="text-left mx-0 px-0">Name</th>
+                              <th class="text-center mx-0 px-0">Amount</th>
+                              <th class="text-right px-0">Price</th>
+                              <th class="text-right mr-0 pr-0"><v-icon size="xl-small">mdi-check-circle-outline</v-icon></th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr v-for="order in foodPreOrderList" :key="order.id">
-                              <td class="text-left">{{ order.item_name }}</td>
-                              <td class="text-right">
-                                <v-icon
-                                  v-ripple
-                                  size="x-small"
-                                  color="red"
-                                  icon="mdi-minus mr-1"
-                                  @click="
-                                    () => {
-                                      updateMenuById(0, order.id);
-                                    }
-                                  "></v-icon>
-                                {{ order.amount }}
-                                <v-icon
-                                  v-ripple
-                                  size="x-small"
-                                  color="green"
-                                  icon="mdi-plus ml-1"
-                                  @click="
-                                    () => {
-                                      updateMenuById(1, order.id);
-                                    }
-                                  "></v-icon>
+                              <td class="text-left mx-0 px-0">
+                                <v-tooltip location="bottom">
+                                  <template v-slot:activator="{ props }">
+                                    <p v-bind="props">{{ order.item_name }}</p>
+                                  </template>
+                                  <span>{{ order.item_desc }}</span>
+                                </v-tooltip>
                               </td>
-                              <td class="text-right">{{ order.amount * order.price }} ฿</td>
-                              <td class="text-right">
-                                <v-icon
-                                  color="red"
-                                  size="x-small"
-                                  @click="
-                                    () => {
-                                      removeMenuById(order.id);
-                                    }
-                                  ">
-                                  mdi-delete
-                                </v-icon>
+                              <td class="text-center mx-0 px-0" width="100px">
+                                <v-tooltip location="top">
+                                  <template v-slot:activator="{ props }">
+                                    <v-icon
+                                      v-ripple
+                                      size="x-small"
+                                      color="red"
+                                      v-bind="props"
+                                      @click="
+                                        () => {
+                                          updateMenuById(0, order.id);
+                                        }
+                                      ">
+                                      mdi-minus
+                                    </v-icon>
+                                  </template>
+                                  <span>Decrease Amount</span>
+                                </v-tooltip>
+                                {{ order.amount }}
+                                <v-tooltip location="top">
+                                  <template v-slot:activator="{ props }">
+                                    <v-icon
+                                      v-ripple
+                                      size="x-small"
+                                      color="green"
+                                      icon="mdi-plus ml-1"
+                                      v-bind="props"
+                                      @click="
+                                        () => {
+                                          updateMenuById(1, order.id);
+                                        }
+                                      ">
+                                      mdi-plus
+                                    </v-icon>
+                                  </template>
+                                  <span>Increase Amount</span>
+                                </v-tooltip>
+                              </td>
+                              <td class="text-right mx-0 px-0" width="90px">{{ order.amount * order.price }} ฿</td>
+                              <td class="text-right mx-0 pr-0" width="10px">
+                                <v-tooltip location="top">
+                                  <template v-slot:activator="{ props }">
+                                    <v-icon
+                                      v-ripple
+                                      color="red"
+                                      size="x-small"
+                                      v-bind="props"
+                                      @click="
+                                        () => {
+                                          removeMenuById(order.id);
+                                        }
+                                      ">
+                                      mdi-delete
+                                    </v-icon>
+                                  </template>
+                                  <span>Delete Order</span>
+                                </v-tooltip>
                               </td>
                             </tr>
                           </tbody>
                         </v-table>
                         <v-table class="mx-3 mt-3 text-h6 font-weight-medium">
                           <tbody>
-                            <td class="text-center"><b>Total</b></td>
-                            <td class="text-center">{{ total }} ฿</td>
+                            <tr>
+                              <td class="text-center px-0" width="200px"><b>Total</b></td>
+                              <td class="text-right px-0" width="100px">{{ total }} ฿</td>
+                              <td class="text-right px-0">
+                                <v-btn
+                                  variant="text"
+                                  color="red"
+                                  @click="
+                                    () => {
+                                      foodPreOrderList = [];
+                                    }
+                                  ">
+                                  Clear
+                                </v-btn>
+                              </td>
+                            </tr>
                           </tbody>
                         </v-table>
                       </div>
@@ -805,3 +912,15 @@
     </div>
   </v-main>
 </template>
+
+<style scoped>
+  .like-a-link {
+    cursor: pointer;
+  }
+
+  .like-a-link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #0373de;
+  }
+</style>

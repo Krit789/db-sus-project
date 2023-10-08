@@ -356,7 +356,8 @@
                               foodViewDialog = true;
                             }
                           "></v-btn>
-                        <v-btn
+                        <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
+                        <!-- <v-btn
                           v-if="item.res_status === 'INPROGRESS'"
                           color="info"
                           prepend-icon="mdi-pencil"
@@ -367,7 +368,7 @@
                             () => {
                               // cancelReservation(item.res_id);
                             }
-                          "></v-btn>
+                          "></v-btn> -->
                         <v-btn
                           v-if="item.res_status === 'INPROGRESS'"
                           color="red"

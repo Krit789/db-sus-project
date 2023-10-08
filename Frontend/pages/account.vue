@@ -6,6 +6,11 @@
 
   const { signOut, data } = useAuth();
   const { mobile } = useDisplay();
+
+  useHead({
+    title: 'My Account - Seatify',
+    meta: [{ name: 'Seatify App', content: 'My amazing site.' }],
+  });
 </script>
 
 <script lang="ts">
@@ -297,7 +302,7 @@
     </v-dialog>
     <div class="main_container mx-auto">
       <v-row class="justify-center mt-8 px-3">
-        <v-col class="user_rounded">
+        <v-col class="user_rounded mt-10">
           <div class="justify-center">
             <v-img class="mt-5 bg-white ma-2 user_image" src="/ejudge_avatar280.png" width="170"></v-img>
           </div>
@@ -310,57 +315,57 @@
             <template v-else>{{ toTitleCase(data?.role) }}</template>
           </h3>
         </v-col>
-        <v-col class="user_rounded">
+        <v-col class="user_rounded mt-10">
           <v-row class="mt-1 ml-2">
             <div class="font-weight-bold text-h3"><p class="text-left">Statistics</p></div>
           </v-row>
           <v-row class="justify-center">
-            <v-card class="text-center ma-2 status_box" width="80%">
+            <v-card class="text-center ma-2 status_box" :width="mobile ? 'auto' : '80%'">
               <v-container>
                 <v-row>
                   <v-col cols="2" class="py-0">
                     <v-icon style="font-size: 80px">mdi-ticket-confirmation</v-icon>
                   </v-col>
-                  <v-col col="10" class="text-left py-0">
+                  <v-col col="10" class="text-left py-0 ml-3">
                     <v-card-title class="font-weight-bold text-h5">You have made</v-card-title>
                     <v-card-text class="font-weight-regular text-h5">{{ dtData.length }} reservations in total</v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card>
-            <v-card class="text-center ma-2 status_box" width="80%">
+            <v-card class="text-center ma-2 status_box" :width="mobile ? 'auto' : '80%'">
               <v-container>
                 <v-row>
                   <v-col cols="2" class="py-0">
                     <v-icon style="font-size: 80px">mdi-book-check</v-icon>
                   </v-col>
-                  <v-col col="10" class="text-left py-0">
+                  <v-col col="10" class="text-left py-0 ml-3">
                     <v-card-title class="font-weight-bold text-h5">Your reservation got fulfilled</v-card-title>
                     <v-card-text class="font-weight-regular text-h5">{{ dtData.filter((item) => item.status == 'FULFILLED').length }} {{ dtData.filter((item) => item.status == 'FULFILLED').length === 1 ? 'time' : 'times' }}</v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card>
-            <v-card class="text-center ma-2 status_box" width="80%">
+            <v-card class="text-center ma-2 status_box" :width="mobile ? 'auto' : '80%'">
               <v-container>
                 <v-row>
                   <v-col cols="2" class="py-0">
                     <v-icon style="font-size: 80px">mdi-tag-multiple</v-icon>
                   </v-col>
-                  <v-col col="10" class="text-left py-0">
+                  <v-col col="10" class="text-left py-0 ml-3">
                     <v-card-title class="font-weight-bold text-h5">You have</v-card-title>
                     <v-card-text class="font-weight-regular text-h5">{{ dtData.filter((item) => item.status == 'INPROGRESS').length }} upcoming reservations</v-card-text>
                   </v-col>
                 </v-row>
               </v-container>
             </v-card>
-            <v-card class="text-center ma-2 status_box" width="80%">
+            <v-card class="text-center ma-2 status_box" :width="mobile ? 'auto' : '80%'">
               <v-container>
                 <v-row>
                   <v-col cols="2" class="py-0">
                     <v-icon style="font-size: 80px">mdi-file-document-remove</v-icon>
                   </v-col>
-                  <v-col col="10" class="text-left py-0">
+                  <v-col col="10" class="text-left py-0 ml-3">
                     <v-card-title class="font-weight-bold text-h5">You cancelled</v-card-title>
                     <v-card-text class="font-weight-regular text-h5">{{ dtData.filter((item) => item.status == 'CANCELLED').length }} reservations</v-card-text>
                   </v-col>

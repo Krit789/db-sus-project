@@ -28,7 +28,10 @@ useSeoMeta({
       <div class="text-center mt-16 first-box">
         <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
         <p class="text-h5 mb-5 text-white index_text_shadow">Satisfying your seaty needs.</p>
-        <v-btn prepend-icon="mdi-login-variant" rounded="lg" size="x-large" @click="data.role === 'USER' ? $router.push('/reservation') : $router.push('/management/branches')">
+        <v-btn v-if="status === 'unauthenticated'" prepend-icon="mdi-login-variant" rounded="lg" size="x-large" @click="$router.push('/login')">
+          Login Now!
+        </v-btn>
+        <v-btn v-else prepend-icon="mdi-login-variant" rounded="lg" size="x-large" @click="data.role === 'USER' ? $router.push('/reservation') : $router.push('/management/branches')">
           {{ data.role === 'USER' ? 'Reserve Now!' : 'Manage Now!' }}
         </v-btn>
       </div>

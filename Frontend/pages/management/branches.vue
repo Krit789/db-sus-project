@@ -51,6 +51,7 @@
     l_status: 'OPERATIONAL' | 'MAINTENANCE' | 'OUTOFORDER';
     l_layout_img: string | null;
     l_mgr_id: number | null;
+    l_creation: string;
     mgr_fn: string | null;
     mgr_ln: string | null;
     mgr_tel: string | null;
@@ -1141,6 +1142,12 @@
                         <v-icon class="mr-2">mdi-clock-outline</v-icon>
                         {{ DateTime.fromSQL(item.l_open_time).toFormat('t') }} -
                         {{ DateTime.fromSQL(item.l_close_time).toFormat('t') }}
+                        <br />
+                        <br />
+                        <b>Created On</b>
+                        <br />
+                        <v-icon class="mr-2">mdi-calendar-star</v-icon>
+                        {{ DateTime.fromSQL(item.l_creation).toFormat('DDDD') }}
                       </p>
                     </v-col>
                     <v-col cols="12" md="3" sm="6">
@@ -1231,8 +1238,8 @@
             </tr>
           </template>
           <template v-slot:no-data>
-            <v-alert color="info" icon="mdi-exclamation" title="Notice">
-              <p>You don't have branche to manage.</p>
+            <v-alert color="info" class="my-5" icon="mdi-exclamation" title="Notice">
+              <p class="text-left">You don't have branch to manage.</p>
             </v-alert>
           </template>
         </v-data-table>

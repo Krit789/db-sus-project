@@ -437,21 +437,21 @@
             </v-col>
           </v-row>
           <v-row>
-                          <v-col class="mx-15">
-                            <p class="text-h5 text-left">Reservation Type</p>
-                            <v-select
-                              v-model="resTypeSelect"
-                              density="compact"
-                              :items="resType"
-                              item-value="id"
-                              item-title="title"
-                              @update:modelValue="
-                                () => {
-                                  loadData();
-                                }
-                              "></v-select>
-                          </v-col>
-                        </v-row>
+            <v-col class="mx-15">
+              <p class="text-h5 text-left">Reservation Type</p>
+              <v-select
+                v-model="resTypeSelect"
+                density="compact"
+                :items="resType"
+                item-value="id"
+                item-title="title"
+                @update:modelValue="
+                  () => {
+                    loadData();
+                  }
+                "></v-select>
+            </v-col>
+          </v-row>
           <v-row>
             <v-col>
               <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>

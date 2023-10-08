@@ -255,6 +255,7 @@
               <v-select
                 v-model="resTypeSelect"
                 :items="resType"
+                density="compact"
                 item-value="id"
                 item-title="title"
                 @update:modelValue="

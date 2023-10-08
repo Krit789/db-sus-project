@@ -41,6 +41,21 @@
       timeout: 2000,
       NotiIcon: '',
       NotiText: '',
+      resTypeSelect: 2,
+      resType: [
+        {
+          id: 0,
+          title: 'All Reservation',
+        },
+        {
+          id: 1,
+          title: 'Previous Reservation',
+        },
+        {
+          id: 2,
+          title: 'Upcoming Reservation',
+        },
+      ],
       dtHeaders: [
         {
           title: 'ID',
@@ -68,6 +83,7 @@
           body: {
             type: 12,
             usage: 'admin',
+            range: this.resTypeSelect,
           },
           lazy: true,
         })
@@ -292,7 +308,7 @@
                       <v-container>
                         <v-row>
                           <v-col>
-                            <v-text-field v-model="resConfCode" label="Reservation Code" v-bind:error-messages="acceptError"></v-text-field>
+                            <v-text-field density="compact" v-model="resConfCode" label="Reservation Code" v-bind:error-messages="acceptError"></v-text-field>
                           </v-col>
                         </v-row>
                         <v-row>
@@ -420,6 +436,22 @@
               </v-data-table>
             </v-col>
           </v-row>
+          <v-row>
+                          <v-col class="mx-15">
+                            <p class="text-h5 text-left">Reservation Type</p>
+                            <v-select
+                              v-model="resTypeSelect"
+                              density="compact"
+                              :items="resType"
+                              item-value="id"
+                              item-title="title"
+                              @update:modelValue="
+                                () => {
+                                  loadData();
+                                }
+                              "></v-select>
+                          </v-col>
+                        </v-row>
           <v-row>
             <v-col>
               <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh" rounded="lg" text="Refresh" @click="loadData"></v-btn>

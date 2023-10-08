@@ -351,8 +351,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 12: # Administrator เรียกดูการจองทั้งหมด
+                    $time_range = '';
+                    if (isset($data->range)) {
+                        $range = $data->range; // {'all', 'previous', 'upcoming'}
+                        if ($range == 1) { // Previous
+                            $time_range = "arrival < '" . date('Y-m-d H:i:s') . "'";
+                        } else if ($range == 2) { // Upcoming
+                            $time_range = "arrival >= '" . date('Y-m-d H:i:s') . "'";
+                        } else {
+                            $time_range = ''; // or any other default value
+                        }
+                    }
                     if ($role == "GOD") {
-                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', null, "reservations.status desc, arrival", null);
+                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', $time_range, "reservations.status desc, arrival", null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -365,7 +376,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         ]);
                     } else if ($role == "MANAGER") {
                         $u_id = $user_data['user_id'];
-                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', "location_id IN (SELECT location_id FROM locations WHERE manager_id=$u_id)", "reservations.status desc, arrival", null);
+                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', "location_id IN (SELECT location_id FROM locations WHERE manager_id=$u_id)" . ($time_range ? 'AND ' . $time_range : ''), "reservations.status desc, arrival", null);
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -558,8 +569,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $start = substr($data->start, 0, 19);
                     $end = substr($data->end, 0, 19);
 
-                    if (!$start){$start = '0000-00-00 00:00:00';}
-                    if (!$end){$end = '9999-12-31 23:59:59';}
+                    if (!$start) {
+                        $start = '0000-00-00 00:00:00';
+                    }
+                    if (!$end) {
+                        $end = '9999-12-31 23:59:59';
+                    }
 
                     $message = "You don't Specify Location";
                     $tmp = "";

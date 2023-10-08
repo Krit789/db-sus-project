@@ -214,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $id = $data->res_id;
 
                     #น่าจะต้องถามเพิ่มว่า res_id, user_id ตรงไหม
-                    $obj->select('orders', "*", "menus using (menu_id)", "res_id={$id}", null, null);
+                    $obj->select('orders', "menu_id `m_id`, item_name `m_name`, price `m_price`, amount `m_amount`", "menus using (menu_id)", "res_id={$id}", null, null);
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([
@@ -245,7 +245,18 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 8: #เรียกดูการจองทั้งหมดของเจ้าของ Account
                     $id = $user_data['user_id'];
-                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, locations.status as `location_status`", null, "user_id={$id}", 'res_id DESC', null, "join tables using (table_id) join locations using (location_id)");
+                    $time_range = '';
+                    if (isset($data->range)) {
+                        $range = $data->range; // {'all', 'previous', 'upcoming'}
+                        if ($range == 1) { // Previous
+                            $time_range = "arrival < '" . date('Y-m-d H:i:s') . "'";
+                        } else if ($range == 2) { // Upcoming
+                            $time_range = "arrival >= '" . date('Y-m-d H:i:s') . "'";
+                        } else {
+                            $time_range = ''; // or any other default value
+                        }
+                    }
+                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, locations.status as `location_status`", "tables using (table_id) join locations using (location_id)", "user_id={$id} " . ($time_range ? 'AND ' . $time_range : ''), 'res_id DESC', null);
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

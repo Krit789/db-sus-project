@@ -130,13 +130,33 @@
           responsive: true,
           maintainAspectRatio: false,
           scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Branches',
+              },
+            },
             A: {
               type: 'linear',
               position: 'left',
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Earnings',
+              },
+              ticks: {
+                callback: (value, index, values) => {
+                  return value + ' ฿';
+                },
+              },
             },
             B: {
               type: 'linear',
               position: 'right',
+              title: {
+                display: true,
+                text: 'Reservations',
+              },
               ticks: {
                 precision: 0,
               },
@@ -151,6 +171,11 @@
           scales: {
             y: {
               beginAtZero: true,
+              ticks: {
+                callback: (value, index, values) => {
+                  return value + ' ฿';
+                }
+              },
               title: {
                 display: true,
                 text: 'Earnings',

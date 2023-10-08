@@ -272,7 +272,7 @@ export default {
                   $router.push('/account');
                 }
               "
-            >
+            ><v-icon size="x-large" class="mr-1">mdi-account-circle-outline</v-icon>
               <p>
                 {{ `${data.firstName} ${data.lastName.charAt(0)}.` }}
               </p>

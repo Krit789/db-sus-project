@@ -543,7 +543,7 @@
               </v-card-text>
               <v-card elevation="0">
                 <h3 class="ml-5 text-left font-weight-medium">Your Order</h3>
-                <v-table class="mx-3" fixed-header height="300px">
+                <v-table class="mx-3" fixed-header height="300px" :density="mobile ? 'compact' : 'comfortable'">
                   <thead>
                     <tr>
                       <th class="text-left">Name</th>

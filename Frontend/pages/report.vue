@@ -22,6 +22,8 @@
 </script>
 
 <script lang="ts">
+  import JsonCSV from 'vue-json-csv';
+
   interface LocationInfo {
     location_id: number;
     l_name: string;
@@ -61,6 +63,9 @@
   type CompleteReportData = [LocationInfo[], SummaryInfo[]];
 
   export default {
+    components: {
+      JsonCSV,
+    },
     data() {
       return {
         selectedDT: [] as number[],
@@ -232,8 +237,8 @@
         data.forEach((entry) => {
           // console.log(DateTime.fromSQL(entry.arrival))
           if (entry.arrival === null) {
-            return
-          } 
+            return;
+          }
           const arrivalDate = DateTime.fromSQL(entry.arrival).toISODate();
           const locationName = entry.l_name;
 
@@ -405,7 +410,7 @@
       </v-card>
     </v-dialog>
     <div v-show="!selectReport || salesChartData.datasets[0].data.length !== 0" class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
-      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report {{ (reportBeginTime !== null && reportEndTime !== null) ? `for ${DateTime.fromISO(reportBeginTime).toFormat('D')} till ${DateTime.fromISO(reportEndTime).toFormat('D')}` : '' }}</h1>
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report {{ reportBeginTime !== null && reportEndTime !== null ? `for ${DateTime.fromISO(reportBeginTime).toFormat('D')} till ${DateTime.fromISO(reportEndTime).toFormat('D')}` : '' }}</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
       </v-sheet>
@@ -417,37 +422,51 @@
             <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
               <Bar id="locationSales" :options="salesChartOptions" :key="reportData[1]" :data="salesChartData" />
             </v-sheet>
+            <v-btn class="ml-10 mt-3" prepend-icon="mdi-download-circle" color="success" variant="text" @click="">
+              <JsonCSV :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
+            </v-btn>
           </v-col>
           <v-col>
             <h3 class="ml-5 mb-3">Branch Earnings</h3>
             <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
               <Bar id="locationEarning" :options="earningChartOptions" :key="reportData[1]" :data="earningsChartData" />
             </v-sheet>
+            <v-btn class="ml-10 mt-3" prepend-icon="mdi-download-circle" color="success" variant="text" @click="">
+              <JsonCSV :data="reportData[1]" name="reservation_earnings.csv">Download as CSV</JsonCSV>
+            </v-btn>
           </v-col>
         </v-row>
         <v-row>
           <v-col>
             <h3 class="ml-5 mb-1">Branch Summary</h3>
             <v-sheet class="mt-5 ma-md-8 ma-xs-1 text-center" rounded="lg">
-            <v-table class="mx-3" fixed-header height="300px">
-                  <thead>
-                    <tr>
-                      <th class="text-right">ID</th>
-                      <th class="text-left">Location</th>
-                      <th class="text-right">Reservations</th>
-                      <th class="text-right">Earnings</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="loc in reportData[1]" :key="loc.location_id">
-                      <td class="text-right">{{ loc.location_id }}</td>
-                      <td class="text-left">{{ loc.l_name }}</td>
-                      <td class="text-right">{{ loc.reservation_amount }}</td>
-                      <td class="text-right">{{ loc.total_earning }} ฿</td>
-                    </tr>
-                  </tbody>
-                </v-table>
-              </v-sheet>
+              <v-table class="mx-3" fixed-header height="300px" :density="mobile ? 'compact' : 'comfortable'">
+                <thead>
+                  <tr>
+                    <th class="text-right">ID</th>
+                    <th class="text-left">Location</th>
+                    <th class="text-right">Reservations</th>
+                    <th class="text-right">Earnings</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="loc in reportData[1]" :key="loc.location_id">
+                    <td class="text-right">{{ loc.location_id }}</td>
+                    <td class="text-left">{{ loc.l_name }}</td>
+                    <td class="text-right">{{ loc.reservation_amount }}</td>
+                    <td class="text-right">{{ loc.total_earning }} ฿</td>
+                  </tr>
+                </tbody>
+              </v-table>
+              <v-table class="mr-10 mt-2" height="40px">
+                <tr class="text-h5">
+                  <td class="text-right" :width="mobile ? 'auto' : '500px'"></td>
+                  <td class="text-right"><b>Total</b></td>
+                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0) }} Reservations</td>
+                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0) }} ฿</td>
+                </tr>
+              </v-table>
+            </v-sheet>
           </v-col>
         </v-row>
       </v-container>

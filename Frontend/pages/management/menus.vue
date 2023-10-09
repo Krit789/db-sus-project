@@ -377,7 +377,7 @@ export default {
       <v-card :width="mobile ? 'auto' : '450px'">
         <v-card-title>Manage Category</v-card-title>
         <v-card-text>
-          <v-table class="overflow-auto" :density="mobile ? 'compact' : 'comfortable'" fixed-header height="70vh">
+          <v-table :density="mobile ? 'compact' : 'comfortable'" class="overflow-auto" fixed-header height="70vh">
             <thead>
             <tr>
               <th class="text-left">ID</th>
@@ -537,8 +537,10 @@ export default {
           }}
         </v-alert>
 
-        <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders" items-per-page="-1"
-                      :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" item-value="m_id" height="60vh" sticky fixed-header>
+        <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders"
+                      :items="dtData"
+                      :loading="dtLoading" :search="dtSearch" class="elevation-1" fixed-header height="60vh"
+                      item-value="m_id" items-per-page="-1" sticky>
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
           </template>

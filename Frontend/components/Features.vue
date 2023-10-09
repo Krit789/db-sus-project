@@ -31,7 +31,8 @@ const route = useRoute();
 
     <!--Row 2 Create Branches Report   -->
     <!-- remember to remove debug condition -->
-    <v-row v-if="(status == 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))" class="feature_rounded mx-3 mt-8 px-5 py-8"
+    <v-row v-if="(status == 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))"
+           class="feature_rounded mx-3 mt-8 px-5 py-8"
            justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="text-primary text-h4">Create Branches Report</h2>
@@ -60,7 +61,8 @@ const route = useRoute();
     </v-row>
 
     <!--Row 3 Manage Branches and Manage Reservation   -->
-    <v-row v-if="(status === 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))" id="management_features" class="mt-8 px-3"
+    <v-row v-if="(status === 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))"
+           id="management_features" class="mt-8 px-3"
            justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Branches</h2>
@@ -105,8 +107,8 @@ const route = useRoute();
         </v-row>
       </v-col>
     </v-row>
-        <!--Row 4 Manage Menu and Manage User   -->
-        <v-row v-if="status === 'authenticated' && data.role === 'GOD'" class="mt-8 px-3"
+    <!--Row 4 Manage Menu and Manage User   -->
+    <v-row v-if="status === 'authenticated' && data.role === 'GOD'" class="mt-8 px-3"
            justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Menus</h2>
@@ -125,7 +127,7 @@ const route = useRoute();
               }
             "
           >
-          Manage Menus
+            Manage Menus
           </v-btn>
         </v-row>
       </v-col>
@@ -134,7 +136,8 @@ const route = useRoute();
         <v-img class="report_macbook" height="180" src="https://cdn-icons-png.flaticon.com/512/476/476700.png"
                width="100%"></v-img>
         <h3 class="report_text report_header">จัดการผู้ใช้งานระบบ</h3>
-        <p class="report_text report_body mt--3">คุณสามารถจัดการผู้ใช้ด้วยการแก้ไขบทบาท ระงับบัญชี หรือรีเซ็ตรหัสผ่านของผู้ใช้ได้ที่นี่</p>
+        <p class="report_text report_body mt--3">คุณสามารถจัดการผู้ใช้ด้วยการแก้ไขบทบาท ระงับบัญชี
+          หรือรีเซ็ตรหัสผ่านของผู้ใช้ได้ที่นี่</p>
         <v-row class="min-w-100 justify-center mt-0" cols="auto" style="padding-left: 22px">
           <v-btn
               :variant="'outlined'"

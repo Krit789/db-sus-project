@@ -1,237 +1,238 @@
 <script lang="ts" setup>
-  import { useDisplay } from 'vuetify';
-  import { VDataTable } from 'vuetify/labs/VDataTable';
-  import { DateTime } from 'luxon';
-  import '~/assets/stylesheets/global.css';
-  import '~/assets/stylesheets/report.css';
-  import { Bar } from 'vue-chartjs';
-  import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import {useDisplay} from 'vuetify';
+import {VDataTable} from 'vuetify/labs/VDataTable';
+import {DateTime} from 'luxon';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/report.css';
+import {Bar} from 'vue-chartjs';
+import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js';
 
-  ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
-  definePageMeta({
-    middleware: ['allowed-roles-only'],
-    meta: { permitted: ['MANAGER', 'GOD'] },
-  });
-  useHead({
-    title: 'Report - Seatify Admin',
-    meta: [{ name: 'Seatify App', content: 'My amazing site.' }],
-  });
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+definePageMeta({
+  middleware: ['allowed-roles-only'],
+  meta: {permitted: ['MANAGER', 'GOD']},
+});
+useHead({
+  title: 'Report - Seatify Admin',
+  meta: [{name: 'Seatify App', content: 'My amazing site.'}],
+});
 
-  const { mobile } = useDisplay();
-  const router = useRouter();
+const {mobile} = useDisplay();
+const router = useRouter();
 </script>
 
 <script lang="ts">
-  import JsonCSV from 'vue-json-csv';
+import JsonCSV from 'vue-json-csv';
 
-  interface LocationInfo {
-    location_id: number;
-    l_name: string;
-    l_address: string;
-    manager_fname: string;
-    manager_lname: string;
-    res_id: number | null;
-    arrival: string | null;
-    balance_paid: number;
-    menu_amount: number;
-  }
+interface LocationInfo {
+  location_id: number;
+  l_name: string;
+  l_address: string;
+  manager_fname: string;
+  manager_lname: string;
+  res_id: number | null;
+  arrival: string | null;
+  balance_paid: number;
+  menu_amount: number;
+}
 
-  interface SummaryInfo {
-    location_id: number;
-    l_name: string;
-    l_address: string;
-    manager_fname: string;
-    manager_lname: string;
-    total_earning: number;
-    reservation_amount: number;
-  }
-  type Location = {
-    l_id: number;
-    l_name: string;
-    l_addr: string;
-    l_open_time: string;
-    l_close_time: string;
-    l_status: 'OPERATIONAL' | 'MAINTENANCE' | 'OUTOFORDER';
-    l_layout_img: string;
-    l_mgr_id: number | null;
-    mgr_fn: string | null;
-    mgr_ln: string | null;
-    mgr_tel: string | null;
-    mgr_email: string | null;
-  };
+interface SummaryInfo {
+  location_id: number;
+  l_name: string;
+  l_address: string;
+  manager_fname: string;
+  manager_lname: string;
+  total_earning: number;
+  reservation_amount: number;
+}
 
-  type CompleteReportData = [LocationInfo[], SummaryInfo[]];
+type Location = {
+  l_id: number;
+  l_name: string;
+  l_addr: string;
+  l_open_time: string;
+  l_close_time: string;
+  l_status: 'OPERATIONAL' | 'MAINTENANCE' | 'OUTOFORDER';
+  l_layout_img: string;
+  l_mgr_id: number | null;
+  mgr_fn: string | null;
+  mgr_ln: string | null;
+  mgr_tel: string | null;
+  mgr_email: string | null;
+};
 
-  export default {
-    components: {
-      JsonCSV,
-    },
-    data() {
-      return {
-        selectedDT: [] as number[],
-        reportData: [] as CompleteReportData[],
-        dtSearch: '',
-        dtErrorData: '',
-        dtIsError: false,
-        dtData: [] as Location[],
-        loadingDialog: false,
-        itemsPerPage: 10,
-        dtLoading: false as boolean,
-        reportBeginTime: null as DateTime | null,
-        reportEndTime: null as DateTime | null,
-        selectReport: true,
-        snackbar: false,
-        NotiColor: '',
-        timeout: 2000,
-        NotiIcon: '',
-        NotiText: '',
-        salesChartData: {
-          labels: [] as string[], // Will hold l_name values
-          datasets: [
-            {
-              label: 'Total Earnings',
-              backgroundColor: '#1E88E5', // Customize as needed
-              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
-              yAxisID: 'A',
-              borderWidth: 1,
-              data: [] as number[], // Will hold total_earning values
-            },
-            {
-              label: 'Total Reservation',
-              backgroundColor: '#4DB6AC', // Customize as needed
-              yAxisID: 'B',
-              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
-              borderWidth: 1,
-              data: [] as number[], // Will hold total_earning values
-            },
-          ],
-        },
-        earningsChartData: {
-          labels: [] as string[], // Will hold l_name values
-          datasets: [
-            {
-              label: 'Total Earnings Per Reservation',
-              backgroundColor: '#1E88E5', // Customize as needed
-              // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
-              borderWidth: 1,
-              data: [] as number[], // Will hold total_earning values
-            },
-          ],
-        },
-        dtHeaders: [
-          { title: 'Location ID', align: 'start', sortable: true, key: 'l_id' },
-          { title: 'Name', align: 'center', key: 'l_name' },
+type CompleteReportData = [LocationInfo[], SummaryInfo[]];
+
+export default {
+  components: {
+    JsonCSV,
+  },
+  data() {
+    return {
+      selectedDT: [] as number[],
+      reportData: [] as CompleteReportData[],
+      dtSearch: '',
+      dtErrorData: '',
+      dtIsError: false,
+      dtData: [] as Location[],
+      loadingDialog: false,
+      itemsPerPage: 10,
+      dtLoading: false as boolean,
+      reportBeginTime: null as DateTime | null,
+      reportEndTime: null as DateTime | null,
+      selectReport: true,
+      snackbar: false,
+      NotiColor: '',
+      timeout: 2000,
+      NotiIcon: '',
+      NotiText: '',
+      salesChartData: {
+        labels: [] as string[], // Will hold l_name values
+        datasets: [
+          {
+            label: 'Total Earnings',
+            backgroundColor: '#1E88E5', // Customize as needed
+            // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+            yAxisID: 'A',
+            borderWidth: 1,
+            data: [] as number[], // Will hold total_earning values
+          },
+          {
+            label: 'Total Reservation',
+            backgroundColor: '#4DB6AC', // Customize as needed
+            yAxisID: 'B',
+            // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+            borderWidth: 1,
+            data: [] as number[], // Will hold total_earning values
+          },
         ],
+      },
+      earningsChartData: {
+        labels: [] as string[], // Will hold l_name values
+        datasets: [
+          {
+            label: 'Total Earnings Per Reservation',
+            backgroundColor: '#1E88E5', // Customize as needed
+            // borderColor: 'rgba(75, 192, 192, 1)', // Customize as needed
+            borderWidth: 1,
+            data: [] as number[], // Will hold total_earning values
+          },
+        ],
+      },
+      dtHeaders: [
+        {title: 'Location ID', align: 'start', sortable: true, key: 'l_id'},
+        {title: 'Name', align: 'center', key: 'l_name'},
+      ],
+    };
+  },
+  computed: {
+    salesChartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Branches',
+            },
+          },
+          A: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Earnings',
+            },
+            ticks: {
+              callback: (value, index, values) => {
+                return value + ' ฿';
+              },
+            },
+          },
+          B: {
+            type: 'linear',
+            position: 'right',
+            title: {
+              display: true,
+              text: 'Reservations',
+            },
+            ticks: {
+              precision: 0,
+            },
+          },
+        },
       };
     },
-    computed: {
-      salesChartOptions() {
-        return {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Branches',
-              },
+    earningChartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: (value, index, values) => {
+                return value + ' ฿';
+              }
             },
-            A: {
-              type: 'linear',
-              position: 'left',
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Earnings',
-              },
-              ticks: {
-                callback: (value, index, values) => {
-                  return value + ' ฿';
-                },
-              },
-            },
-            B: {
-              type: 'linear',
-              position: 'right',
-              title: {
-                display: true,
-                text: 'Reservations',
-              },
-              ticks: {
-                precision: 0,
-              },
+            title: {
+              display: true,
+              text: 'Earnings',
             },
           },
-        };
-      },
-      earningChartOptions() {
-        return {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: (value, index, values) => {
-                  return value + ' ฿';
-                }
-              },
-              title: {
-                display: true,
-                text: 'Earnings',
-              },
-            },
-            x: {
-              title: {
-                display: true,
-                text: 'Date',
-              },
+          x: {
+            title: {
+              display: true,
+              text: 'Date',
             },
           },
-        };
-      },
+        },
+      };
     },
-    methods: {
-      async loadData() {
-        this.dtLoading = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 17,
-            usage: 'admin',
-          },
-          lazy: true,
-        })
+  },
+  methods: {
+    async loadData() {
+      this.dtLoading = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 17,
+          usage: 'admin',
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as { status: number; message: any };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
           });
-      },
-      async loadReportData(start_time: DateTime, end_time: DateTime, locations: any) {
-        this.loadingDialog = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 21,
-            usage: 'admin',
-            start: start_time,
-            end: end_time,
-            loc_id: locations,
-          },
-          lazy: true,
-        })
+    },
+    async loadReportData(start_time: DateTime, end_time: DateTime, locations: any) {
+      this.loadingDialog = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 21,
+          usage: 'admin',
+          start: start_time,
+          end: end_time,
+          loc_id: locations,
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.dtIsError = true;
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as { status: number; message: any };
+            const {status, message} = response as { status: number; message: any };
             if (status === 1) {
               this.reportData = message;
               this.extractDataForChart();
@@ -242,78 +243,78 @@
             this.loadingDialog = false;
             this.selectReport = false;
           });
-      },
-      extractDataForChart() {
-        const locationData: SummaryInfo[] = this.reportData[1];
-        this.salesChartData.datasets[0].data = [];
-        this.salesChartData.datasets[1].data = [];
-        this.salesChartData.labels = [];
-        for (const entry of locationData) {
-          this.salesChartData.labels.push(entry.l_name);
-          this.salesChartData.datasets[0].data.push(entry.total_earning);
-          this.salesChartData.datasets[1].data.push(entry.reservation_amount);
-        }
-      },
-      createChartData(data) {
-        // Create a map to store earnings data by location and date
-        const earningsMap = new Map();
-
-        // Loop through the data and populate the earningsMap
-        data.forEach((entry) => {
-          // console.log(DateTime.fromSQL(entry.arrival))
-          if (entry.arrival === null) {
-            return;
-          }
-          const arrivalDate = DateTime.fromSQL(entry.arrival).toISODate();
-          const locationName = entry.l_name;
-
-          // Initialize the location in the map if it doesn't exist
-          if (!earningsMap.has(locationName)) {
-            earningsMap.set(locationName, new Map());
-          }
-
-          // Initialize the date in the location's map if it doesn't exist
-          if (!earningsMap.get(locationName).has(arrivalDate)) {
-            earningsMap.get(locationName).set(arrivalDate, 0);
-          }
-
-          // Add balance_paid to the earnings for the location and date
-          earningsMap.get(locationName).set(arrivalDate, earningsMap.get(locationName).get(arrivalDate) + entry.balance_paid);
-        });
-
-        // Create labels (dates) and datasets for Chart.js
-        const labels = Array.from([...earningsMap.values()][0].keys()); // Get dates from the first location's map
-        const datasets = [];
-
-        earningsMap.forEach((locationData, locationName) => {
-          const dataValues = Array.from(locationData.values());
-          datasets.push({
-            label: locationName,
-            data: dataValues,
-            backgroundColor: this.getRandomColor(), // Function to generate random colors
-            // borderColor: this.getRandomColor(),
-            borderWidth: 1, // Function to generate random colors
-            // fill: false,
-          });
-        });
-        this.earningsChartData.labels = labels;
-        this.earningsChartData.datasets = datasets;
-        // console.log(earningsMap, datasets, this.earningsChartData.labels,this.earningsChartData.datasets);
-        // return { labels, datasets };
-      },
-      getRandomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-      },
     },
-    beforeMount() {
-      this.loadData();
+    extractDataForChart() {
+      const locationData: SummaryInfo[] = this.reportData[1];
+      this.salesChartData.datasets[0].data = [];
+      this.salesChartData.datasets[1].data = [];
+      this.salesChartData.labels = [];
+      for (const entry of locationData) {
+        this.salesChartData.labels.push(entry.l_name);
+        this.salesChartData.datasets[0].data.push(entry.total_earning);
+        this.salesChartData.datasets[1].data.push(entry.reservation_amount);
+      }
     },
-  };
+    createChartData(data) {
+      // Create a map to store earnings data by location and date
+      const earningsMap = new Map();
+
+      // Loop through the data and populate the earningsMap
+      data.forEach((entry) => {
+        // console.log(DateTime.fromSQL(entry.arrival))
+        if (entry.arrival === null) {
+          return;
+        }
+        const arrivalDate = DateTime.fromSQL(entry.arrival).toISODate();
+        const locationName = entry.l_name;
+
+        // Initialize the location in the map if it doesn't exist
+        if (!earningsMap.has(locationName)) {
+          earningsMap.set(locationName, new Map());
+        }
+
+        // Initialize the date in the location's map if it doesn't exist
+        if (!earningsMap.get(locationName).has(arrivalDate)) {
+          earningsMap.get(locationName).set(arrivalDate, 0);
+        }
+
+        // Add balance_paid to the earnings for the location and date
+        earningsMap.get(locationName).set(arrivalDate, earningsMap.get(locationName).get(arrivalDate) + entry.balance_paid);
+      });
+
+      // Create labels (dates) and datasets for Chart.js
+      const labels = Array.from([...earningsMap.values()][0].keys()); // Get dates from the first location's map
+      const datasets = [];
+
+      earningsMap.forEach((locationData, locationName) => {
+        const dataValues = Array.from(locationData.values());
+        datasets.push({
+          label: locationName,
+          data: dataValues,
+          backgroundColor: this.getRandomColor(), // Function to generate random colors
+          // borderColor: this.getRandomColor(),
+          borderWidth: 1, // Function to generate random colors
+          // fill: false,
+        });
+      });
+      this.earningsChartData.labels = labels;
+      this.earningsChartData.datasets = datasets;
+      // console.log(earningsMap, datasets, this.earningsChartData.labels,this.earningsChartData.datasets);
+      // return { labels, datasets };
+    },
+    getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    },
+  },
+  beforeMount() {
+    this.loadData();
+  },
+};
 </script>
 
 <template>
@@ -335,22 +336,26 @@
         <v-card-title>Select Braches To Create Report</v-card-title>
         <v-card-item>
           <v-no-ssr>
-            <v-data-table v-model="selectedDT" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" items-per-page="-1" select-strategy="page" :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" item-value="l_id" show-select show-expand sticky height="40vh">
+            <v-data-table v-model="selectedDT" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
+                          :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1"
+                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand show-select
+                          sticky>
               <template v-slot:top>
                 <v-row>
                   <v-col>
                     <h4>Begin</h4>
-                    <v-text-field v-model="reportBeginTime" variant="underlined" type="datetime-local"></v-text-field>
+                    <v-text-field v-model="reportBeginTime" type="datetime-local" variant="underlined"></v-text-field>
                   </v-col>
                   <v-col>
                     <h4>End</h4>
-                    <v-text-field v-model="reportEndTime" variant="underlined" type="datetime-local"></v-text-field>
+                    <v-text-field v-model="reportEndTime" type="datetime-local" variant="underlined"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-container>
                   <v-row>
                     <v-col>
-                      <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
+                      <v-text-field v-model="dtSearch" placeholder="Search"
+                                    prepend-inner-icon="mdi-store-search"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -363,7 +368,7 @@
                         <v-col cols="12" md="3" sm="6">
                           <p>
                             <b>Address</b>
-                            <br />
+                            <br/>
                             <v-icon class="mr-2">mdi-map-marker</v-icon>
                             {{ item.l_addr }}
                           </p>
@@ -371,7 +376,7 @@
                         <v-col cols="12" md="3" sm="6">
                           <p>
                             <b>Operating Hours</b>
-                            <br />
+                            <br/>
                             <v-icon class="mr-2">mdi-clock-outline</v-icon>
                             {{ DateTime.fromSQL(item.l_open_time).toFormat('t') }} -
                             {{ DateTime.fromSQL(item.l_close_time).toFormat('t') }}
@@ -380,24 +385,29 @@
                         <v-col cols="12" md="3" sm="6">
                           <p>
                             <b>Status</b>
-                            <br />
-                            <v-icon class="mr-2">{{ item.l_status == 'OPERATIONAL' ? 'mdi-check' : item.l_status == 'MAINTENANCE' ? 'mdi-hammer-wrench' : item.l_status == 'OUTOFORDER' ? 'mdi-close' : 'mdi-help' }}</v-icon>
-                            {{ item.l_status == 'OPERATIONAL' ? 'Operational' : item.l_status == 'MAINTENANCE' ? 'Maintenance' : item.l_status == 'OUTOFORDER' ? 'Out of Order' : item.l_status }}
+                            <br/>
+                            <v-icon class="mr-2">{{
+                                item.l_status == 'OPERATIONAL' ? 'mdi-check' : item.l_status == 'MAINTENANCE' ? 'mdi-hammer-wrench' : item.l_status == 'OUTOFORDER' ? 'mdi-close' : 'mdi-help'
+                              }}
+                            </v-icon>
+                            {{
+                              item.l_status == 'OPERATIONAL' ? 'Operational' : item.l_status == 'MAINTENANCE' ? 'Maintenance' : item.l_status == 'OUTOFORDER' ? 'Out of Order' : item.l_status
+                            }}
                           </p>
                         </v-col>
                         <v-col cols="12" md="3" sm="6">
                           <b>Manager</b>
-                          <br />
+                          <br/>
                           <div v-if="item.l_mgr_id">
                             <v-icon class="mr-2">mdi-identifier</v-icon>
                             {{ item.l_mgr_id }}
-                            <br />
+                            <br/>
                             <v-icon class="mr-2">mdi-account-circle</v-icon>
                             {{ item.mgr_fn + ' ' + item.mgr_ln }}
-                            <br />
+                            <br/>
                             <v-icon class="mr-2">mdi-email</v-icon>
                             {{ item.mgr_email }}
-                            <br />
+                            <br/>
                             <v-icon class="mr-2">mdi-phone</v-icon>
                             {{ item.mgr_tel }}
                           </div>
@@ -412,7 +422,7 @@
                 </tr>
               </template>
               <template v-slot:no-data>
-                <v-alert class="my-5 text-left" icon="mdi-exclamation" title="Notice" color="info">
+                <v-alert class="my-5 text-left" color="info" icon="mdi-exclamation" title="Notice">
                   <p>You don't have anything to report on.</p>
                 </v-alert>
               </template>
@@ -421,42 +431,53 @@
         </v-card-item>
         <v-card-actions>
           <v-btn
-            prepend-icon="mdi-arrow-left"
-            @click="
+              prepend-icon="mdi-arrow-left"
+              @click="
               () => {
                 router.back();
               }
             ">
             Go Back
           </v-btn>
-          <v-btn prepend-icon="mdi-close" color="red" @click="selectReport = false">Close</v-btn>
-          <v-btn :disabled="selectedDT.length <= 0" prepend-icon="mdi-chart-timeline-variant-shimmer" color="success" @click="loadReportData(DateTime.fromISO(reportBeginTime), DateTime.fromISO(reportEndTime), selectedDT)">Generate Report</v-btn>
+          <v-btn color="red" prepend-icon="mdi-close" @click="selectReport = false">Close</v-btn>
+          <v-btn :disabled="selectedDT.length <= 0" color="success" prepend-icon="mdi-chart-timeline-variant-shimmer"
+                 @click="loadReportData(DateTime.fromISO(reportBeginTime), DateTime.fromISO(reportEndTime), selectedDT)">
+            Generate Report
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div v-show="!selectReport || salesChartData.datasets[0].data.length !== 0" class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
-      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report {{ reportBeginTime !== null && reportEndTime !== null ? `for ${DateTime.fromISO(reportBeginTime).toFormat('D')} till ${DateTime.fromISO(reportEndTime).toFormat('D')}` : '' }}</h1>
+    <div v-show="!selectReport || salesChartData.datasets[0].data.length !== 0"
+         class="main_container mx-auto blur-effect py-4 px-2 mt-8 account_container justify-center">
+      <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Report {{
+          reportBeginTime !== null && reportEndTime !== null ? `for ${DateTime.fromISO(reportBeginTime).toFormat('D')} till ${DateTime.fromISO(reportEndTime).toFormat('D')}` : ''
+        }}</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
-        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{ dtErrorData }}</v-alert>
+        <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
+            dtErrorData
+          }}
+        </v-alert>
       </v-sheet>
-      <v-btn class="ml-10" prepend-icon="mdi-select-multiple-marker" color="info" variant="tonal" @click="selectReport = true">Re-select Branches</v-btn>
+      <v-btn class="ml-10" color="info" prepend-icon="mdi-select-multiple-marker" variant="tonal"
+             @click="selectReport = true">Re-select Branches
+      </v-btn>
       <v-container>
         <v-row>
           <v-col>
             <h3 class="ml-5 mb-3">Total Branch Earnings & Reservations</h3>
-            <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
-              <Bar id="locationSales" :options="salesChartOptions" :key="reportData[1]" :data="salesChartData" />
+            <v-sheet class="rounded-xl mx-5 px-8 pa-3 overflow-auto" style="height: 50vh">
+              <Bar id="locationSales" :key="reportData[1]" :data="salesChartData" :options="salesChartOptions"/>
             </v-sheet>
-            <v-btn class="ml-10 mt-3" prepend-icon="mdi-download-circle" color="success" variant="text" @click="">
+            <v-btn class="ml-10 mt-3" color="success" prepend-icon="mdi-download-circle" variant="text" @click="">
               <JsonCSV :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
           <v-col>
             <h3 class="ml-5 mb-3">Branch Earnings</h3>
-            <v-sheet style="height: 50vh" class="rounded-xl mx-5 px-8 pa-3 overflow-auto">
-              <Bar id="locationEarning" :options="earningChartOptions" :key="reportData[1]" :data="earningsChartData" />
+            <v-sheet class="rounded-xl mx-5 px-8 pa-3 overflow-auto" style="height: 50vh">
+              <Bar id="locationEarning" :key="reportData[1]" :data="earningsChartData" :options="earningChartOptions"/>
             </v-sheet>
-            <v-btn class="ml-10 mt-3" prepend-icon="mdi-download-circle" color="success" variant="text" @click="">
+            <v-btn class="ml-10 mt-3" color="success" prepend-icon="mdi-download-circle" variant="text" @click="">
               <JsonCSV :data="reportData[1]" name="reservation_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
@@ -465,30 +486,36 @@
           <v-col>
             <h3 class="ml-5 mb-1">Branch Summary</h3>
             <v-sheet class="mt-5 ma-md-8 ma-xs-1 text-center" rounded="lg">
-              <v-table class="mx-3" fixed-header height="300px" :density="mobile ? 'compact' : 'comfortable'">
+              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header height="300px">
                 <thead>
-                  <tr>
-                    <th class="text-right">ID</th>
-                    <th class="text-left">Location</th>
-                    <th class="text-right">Reservations</th>
-                    <th class="text-right">Earnings</th>
-                  </tr>
+                <tr>
+                  <th class="text-right">ID</th>
+                  <th class="text-left">Location</th>
+                  <th class="text-right">Reservations</th>
+                  <th class="text-right">Earnings</th>
+                </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="loc in reportData[1]" :key="loc.location_id">
-                    <td class="text-right">{{ loc.location_id }}</td>
-                    <td class="text-left">{{ loc.l_name }}</td>
-                    <td class="text-right">{{ loc.reservation_amount }}</td>
-                    <td class="text-right">{{ loc.total_earning }} ฿</td>
-                  </tr>
+                <tr v-for="loc in reportData[1]" :key="loc.location_id">
+                  <td class="text-right">{{ loc.location_id }}</td>
+                  <td class="text-left">{{ loc.l_name }}</td>
+                  <td class="text-right">{{ loc.reservation_amount }}</td>
+                  <td class="text-right">{{ loc.total_earning }} ฿</td>
+                </tr>
                 </tbody>
               </v-table>
               <v-table class="mr-10 mt-2" height="40px">
                 <tr class="text-h5">
-                  <td class="text-right" :width="mobile ? 'auto' : '500px'"></td>
+                  <td :width="mobile ? 'auto' : '500px'" class="text-right"></td>
                   <td class="text-right"><b>Total</b></td>
-                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0) }} Reservations</td>
-                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0) }} ฿</td>
+                  <td class="text-right">{{
+                      salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0)
+                    }} Reservations
+                  </td>
+                  <td class="text-right">{{
+                      salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0)
+                    }} ฿
+                  </td>
                 </tr>
               </v-table>
             </v-sheet>

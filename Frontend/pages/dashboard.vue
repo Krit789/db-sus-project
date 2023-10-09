@@ -357,19 +357,6 @@ export default {
                             }
                           "></v-btn>
                         <v-btn
-                          color="purple"
-                          prepend-icon="mdi-food"
-                          text="View Food Pre-Order"
-                          variant="text"
-                          v-bind="props"
-                          @click="
-                            () => {
-                              preOrderMenu = [];
-                              loadOrderByResID(item.res_id);
-                              foodViewDialog = true;
-                            }
-                          "></v-btn>
-                        <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="success"
                             prepend-icon="mdi-card-account-details-outline"
@@ -382,20 +369,6 @@ export default {
                           ">
                           Reservation Code
                         </v-btn>
-
-                        <v-btn
-                            color="purple"
-                            prepend-icon="mdi-food"
-                            text="View Food Pre-Order"
-                            v-bind="props"
-                            variant="text"
-                            @click="
-                            () => {
-                              preOrderMenu = [];
-                              loadOrderByResID(item.res_id);
-                              foodViewDialog = true;
-                            }
-                          "></v-btn>
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
                         <!-- <v-btn
                           v-if="item.res_status === 'INPROGRESS'"

@@ -259,6 +259,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if (isset($data->img_url)) {
                             $insertion_row['img_url'] = $url;
+                        } else {
+                            $insertion_row['img_url'] = NULL;
                         }
 
                         $obj->update('menus', $insertion_row, "menu_id={$id}");

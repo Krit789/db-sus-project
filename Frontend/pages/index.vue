@@ -25,7 +25,7 @@
 <script lang="ts">
   export default {
     methods: {
-      scrollTo(id) {
+      scrollTo(id: string) {
         const position = document.getElementById(id).offsetTop;
         window.scrollTo({ top: position - 80, behavior: 'smooth' });
       },

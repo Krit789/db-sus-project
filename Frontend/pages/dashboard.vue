@@ -156,7 +156,7 @@
     },
     computed: {
       total: function () {
-        return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0);
+        return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
       },
     },
     beforeMount() {
@@ -218,7 +218,7 @@
             <tr v-for="item in preOrderMenu" :key="item.m_id">
               <td class="pr-0">{{ item.m_name }}</td>
               <td class="text-center px-0">{{ item.m_amount }}</td>
-              <td class="text-right pl-0" width="100">{{ item.m_amount * item.m_price }} ฿</td>
+              <td class="text-right pl-0" width="100">{{ (item.m_amount * item.m_price).toLocaleString() }} ฿</td>
             </tr>
           </tbody>
         </v-table>
@@ -331,19 +331,6 @@
                     <v-row>
                       <v-col col="12" md="12" sm="6">
                         <v-btn
-                          v-if="item.res_status === 'INPROGRESS'"
-                          variant="text"
-                          color="success"
-                          prepend-icon="mdi-card-account-details-outline"
-                          @click="
-                            () => {
-                              reservationCode = item.res_code;
-                              codeDialog = !codeDialog;
-                            }
-                          ">
-                          Reservation Code
-                        </v-btn>
-                        <v-btn
                           color="purple"
                           prepend-icon="mdi-food"
                           text="View Food Pre-Order"
@@ -356,6 +343,20 @@
                               foodViewDialog = true;
                             }
                           "></v-btn>
+                        <v-btn
+                          v-if="item.res_status === 'INPROGRESS'"
+                          variant="text"
+                          color="success"
+                          prepend-icon="mdi-card-account-details-outline"
+                          @click="
+                            () => {
+                              reservationCode = item.res_code;
+                              codeDialog = !codeDialog;
+                            }
+                          ">
+                          Reservation Code
+                        </v-btn>
+
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
                         <!-- <v-btn
                           v-if="item.res_status === 'INPROGRESS'"

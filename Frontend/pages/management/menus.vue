@@ -562,7 +562,7 @@ export default {
             >
               <td class="text-start td-hover"></td>
               <td class="text-start td-hover">{{ item.m_name }}</td>
-              <td class="text-start td-hover">{{ item.m_price }} ฿</td>
+              <td class="text-start td-hover">{{ item.m_price.toLocaleString() }} ฿</td>
             </tr>
           </template>
 
@@ -634,7 +634,7 @@ export default {
                           <v-chip color="warning">
                             {{ item.c_name }}
                           </v-chip>
-                          <v-chip color="info">{{ item.m_price }}฿</v-chip>
+                          <v-chip color="info">{{ item.m_price.toLocaleString() }}฿</v-chip>
                         </v-card-subtitle>
                         <v-card-text>
                           {{ item.m_desc }}

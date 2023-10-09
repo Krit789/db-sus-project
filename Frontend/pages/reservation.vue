@@ -294,7 +294,7 @@
         return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
       },
       total: function () {
-        return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0);
+        return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
       },
     },
     beforeMount() {
@@ -634,7 +634,7 @@
                                   <v-chip color="warning">
                                     {{ food.mc_name }}
                                   </v-chip>
-                                  <v-chip color="info">{{ food.price }}฿</v-chip>
+                                  <v-chip color="info">{{ food.price.toLocaleString() }}฿</v-chip>
                                 </v-card-subtitle>
                                 <v-card-text>
                                   {{ food.item_desc }}
@@ -707,7 +707,7 @@
                                   <span>Increase Amount</span>
                                 </v-tooltip>
                               </td>
-                              <td class="text-right mx-0 px-0" width="90px">{{ order.amount * order.price }} ฿</td>
+                              <td class="text-right mx-0 px-0" width="90px">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
                               <td class="text-right mx-0 pr-0" width="10px">
                                 <v-tooltip location="top">
                                   <template v-slot:activator="{ props }">
@@ -854,7 +854,7 @@
                                 <tr v-for="order in foodPreOrderList" :key="order.id">
                                   <td class="text-left">{{ order.item_name }}</td>
                                   <td class="text-right">{{ order.amount }}</td>
-                                  <td class="text-right">{{ order.amount * order.price }} ฿</td>
+                                  <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
                                 </tr>
                               </tbody>
                             </v-table>

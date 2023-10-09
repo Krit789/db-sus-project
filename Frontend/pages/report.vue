@@ -478,8 +478,8 @@
                   <tr v-for="loc in reportData[1]" :key="loc.location_id">
                     <td class="text-right">{{ loc.location_id }}</td>
                     <td class="text-left">{{ loc.l_name }}</td>
-                    <td class="text-right">{{ loc.reservation_amount }}</td>
-                    <td class="text-right">{{ loc.total_earning }} ฿</td>
+                    <td class="text-right">{{ loc.reservation_amount.toLocaleString() }}</td>
+                    <td class="text-right">{{ loc.total_earning.toLocaleString() }} ฿</td>
                   </tr>
                 </tbody>
               </v-table>
@@ -487,8 +487,8 @@
                 <tr class="text-h5">
                   <td class="text-right" :width="mobile ? 'auto' : '500px'"></td>
                   <td class="text-right"><b>Total</b></td>
-                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0) }} Reservations</td>
-                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0) }} ฿</td>
+                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} Reservations</td>
+                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} ฿</td>
                 </tr>
               </v-table>
             </v-sheet>

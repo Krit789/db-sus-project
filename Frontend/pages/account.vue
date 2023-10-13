@@ -2,7 +2,7 @@
 import {useDisplay} from 'vuetify';
 import '~/assets/stylesheets/global.css';
 import '~/assets/stylesheets/index.css';
-import '~/assets/stylesheets/account_index.css';
+import 'assets/stylesheets/account.css';
 
 const {signOut, data} = useAuth();
 const {mobile} = useDisplay();
@@ -324,9 +324,9 @@ function toTitleCase(str: string) {
           <v-row class="justify-center">
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row>
-                  <v-col class="py-0" cols="2">
-                    <v-icon style="font-size: 80px">mdi-ticket-confirmation</v-icon>
+                <v-row justify="center" align="center">
+                  <v-col class="py-0 justify-center align-center" cols="2">
+                    <v-icon class="icon_img">mdi-ticket-confirmation</v-icon>
                   </v-col>
                   <v-col class="text-left py-0 ml-3" col="10">
                     <v-card-title class="font-weight-bold text-h5">You have made</v-card-title>
@@ -338,9 +338,9 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row>
-                  <v-col class="py-0" cols="2">
-                    <v-icon style="font-size: 80px">mdi-book-check</v-icon>
+                <v-row justify="center" align="center">
+                  <v-col class="py-0 justify-center align-center" cols="2">
+                    <v-icon class="icon_img">mdi-book-check</v-icon>
                   </v-col>
                   <v-col class="text-left py-0 ml-3" col="10">
                     <v-card-title class="font-weight-bold text-h5">Your reservation got fulfilled</v-card-title>
@@ -354,9 +354,9 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row>
-                  <v-col class="py-0" cols="2">
-                    <v-icon style="font-size: 80px">mdi-tag-multiple</v-icon>
+                <v-row justify="center" align="center">
+                  <v-col class="py-0 justify-center align-center" cols="2">
+                    <v-icon class="icon_img">mdi-tag-multiple</v-icon>
                   </v-col>
                   <v-col class="text-left py-0 ml-3" col="10">
                     <v-card-title class="font-weight-bold text-h5">You have</v-card-title>
@@ -369,9 +369,9 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row>
-                  <v-col class="py-0" cols="2">
-                    <v-icon style="font-size: 80px">mdi-file-document-remove</v-icon>
+                <v-row justify="center" align="center">
+                  <v-col class="py-0 justify-center align-center" cols="2">
+                    <v-icon class="icon_img">mdi-file-document-remove</v-icon>
                   </v-col>
                   <v-col class="text-left py-0 ml-3" col="10">
                     <v-card-title class="font-weight-bold text-h5">You cancelled</v-card-title>

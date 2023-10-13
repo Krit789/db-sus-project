@@ -298,10 +298,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 10: # Administrator กำหนด role ของ user
-                    //ต้องส่งข้อมูล user_id, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
+                    //ต้องส่งข้อมูล u_role, role_user เป็น เลข {1: 'USER', 2:'MANAGER', 3:'GOD'}
                     $new_role = $data->u_role;
-                    $old_role = $data->ou_role;
                     $id = $data->u_id;
+
+                    $obj->select('users', 'role', null, "user_id={$id}");
+                    $old_role = $obj->getResult()[0]['role'];
 
                     if ($id == $user_data['user_id']) {
                         echo json_encode([

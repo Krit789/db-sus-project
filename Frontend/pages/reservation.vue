@@ -417,7 +417,8 @@ export default {
                 <v-no-ssr>
                   <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
                                 :items="locationList" :loading="pageSpinner"
-                                :search="dtSearch" class="elevation-0 primary  bg-transparent" color="rgba(255, 0, 0, 0)"
+                                :search="dtSearch" class="elevation-0 primary  bg-transparent"
+                                color="rgba(255, 0, 0, 0)"
                                 item-value="location_id">
                     <template v-slot:top>
                       <v-text-field v-model="dtSearch" placeholder="Search"

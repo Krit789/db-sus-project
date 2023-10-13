@@ -247,9 +247,9 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
+    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-4 bg-transparent0">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Reservation</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center bg-transparent" rounded="lg">
         <v-container>
           <v-row>
             <v-col>
@@ -279,7 +279,8 @@ export default {
               :headers="dtHeaders"
               :items="dtData"
               :loading="dtLoading"
-              class="elevation-0"
+              class="elevation-0 bg-transparent"
+              color="#000000"
               fixed-header
               height="40vh"
               item-value="res_id"

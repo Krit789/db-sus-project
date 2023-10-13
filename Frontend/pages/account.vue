@@ -324,7 +324,7 @@ function toTitleCase(str: string) {
           <v-row class="justify-center">
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row justify="center" align="center">
+                <v-row align="center" justify="center">
                   <v-col class="py-0 justify-center align-center" cols="2">
                     <v-icon class="icon_img">mdi-ticket-confirmation</v-icon>
                   </v-col>
@@ -338,7 +338,7 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row justify="center" align="center">
+                <v-row align="center" justify="center">
                   <v-col class="py-0 justify-center align-center" cols="2">
                     <v-icon class="icon_img">mdi-book-check</v-icon>
                   </v-col>
@@ -354,7 +354,7 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row justify="center" align="center">
+                <v-row align="center" justify="center">
                   <v-col class="py-0 justify-center align-center" cols="2">
                     <v-icon class="icon_img">mdi-tag-multiple</v-icon>
                   </v-col>
@@ -369,7 +369,7 @@ function toTitleCase(str: string) {
             </v-card>
             <v-card :width="mobile ? 'auto' : '80%'" class="text-center ma-2 status_box">
               <v-container>
-                <v-row justify="center" align="center">
+                <v-row align="center" justify="center">
                   <v-col class="py-0 justify-center align-center" cols="2">
                     <v-icon class="icon_img">mdi-file-document-remove</v-icon>
                   </v-col>

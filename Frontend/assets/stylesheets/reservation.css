@@ -11,7 +11,7 @@
 }
 
 
-.summary-box{
+.summary-box {
     border-radius: 22px !important;
     background: rgba(255, 255, 255, .8) !important;
 }
@@ -20,7 +20,7 @@
     margin: 12px 0 0 0;
 }
 
-th, tr, td {
+tr, td {
     background: transparent !important;
     color: black;
 }

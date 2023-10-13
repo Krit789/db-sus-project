@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             switch ($type) {
                 case 1: #Manager ยืนยันว่ามาตามที่จอง
                     //ต้องส่งข้อมูล res_id, res_code
+                    $sum_p = 0;
                     $role = $user_data['role'];
                     $res_code = $data->res_code;
 
@@ -29,9 +30,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $result = $obj->getResult();
                         if (isset($result[0])) {
 
+                            $obj->select('orders', '*', null, "res_id='{$result[0]['res_id']}'");
+                            $result1 = $obj->getResult();
+                            foreach ($result1 as $datas) {
+                                $sum_p += $datas['item_price'] * $datas['amount'];
+                            }
+
+                            $obj->update('users', ['points' => floor($sum_p/10)], "user_id={$result[0]['user_id']}");
                             $obj->update('reservations', ['status' => 1], "res_id={$result[0]['res_id']}");
                             $result = $obj->getResult();
-
                             if ($result[0] == 1) {
                                 echo json_encode([
                                     'status' => 1,
@@ -92,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $result = $obj->getResult();
                     if ($result[0] == 1) {
 
-                        if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]] 
+                        if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
                             $tmp = "";
                             $obj->select('reservations', 'res_id', null, "table_id=$table_id and user_id=$user", 'res_id desc', 1);
                             $resutl = $obj->getResult();
@@ -100,14 +107,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                             foreach ($data->menu as $menu) {
                                 //[0] menu_id [1] จำนวน
+                                $obj->select('menus', 'price', null, "menu_id={$menu->data}");
+                                $price = $obj->getResult()[0]['price'];
                                 if ($menu == $data->menu[sizeof($data->menu) - 1]) {
-                                    $tmp .= "($res_id, $menu->id, $menu->amount)";
+                                    $tmp .= "($res_id, $menu->id, $menu->amount, $price)";
                                 } else {
-                                    $tmp .= "($res_id, $menu->id, $menu->amount),";
+                                    $tmp .= "($res_id, $menu->id, $menu->amount, $price),";
                                 }
                             }
                             // error_log($tmp);
-                            $obj->insertlegacy('orders', 'res_id, menu_id, amount', $tmp);
+                            $obj->insertlegacy('orders', 'res_id, menu_id, amount, price', $tmp);
                             # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
 
                             $resutl = $obj->getResult();
@@ -483,7 +492,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     if ($result[0] == 1) echo json_encode([
                         'status' => 1,
                         'message' => 'Token Reset Successful'
-                    ]); else echo json_encode([
+                    ]);
+                    else echo json_encode([
                         'status' => 0,
                         'message' => 'Tonken Reset Failed'
                     ]);

@@ -33,7 +33,7 @@
     font-weight: 700 !important;
 }
 
-th, tr, td {
+tr, td {
     background: transparent !important;
     color: black;
 }

@@ -1096,7 +1096,7 @@ export default {
     </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
             dtErrorData
           }}
@@ -1108,7 +1108,7 @@ export default {
             :items="dtData"
             :loading="dtLoading"
             :search="dtSearch"
-            class="elevation-1"
+            class="elevation-0 bg-transparent"
             item-value="l_id"
             @click:row="
             (val, tabl) => {

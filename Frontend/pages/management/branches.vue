@@ -10,7 +10,7 @@ import '~/assets/stylesheets/management/management.css';
 
 const {mobile} = useDisplay();
 
-const {status, data, signIn, signOut} = useAuth();
+const {data} = useAuth();
 const route = useRouter();
 useHead({
   title: 'Branches Management - Seatify Admin',
@@ -22,7 +22,6 @@ definePageMeta({
 });
 </script>
 <script lang="ts">
-import {integer} from 'vscode-languageserver-types';
 
 interface ManagerItem {
   u_id: number;
@@ -1096,7 +1095,7 @@ export default {
     </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
             dtErrorData
           }}
@@ -1108,7 +1107,7 @@ export default {
             :items="dtData"
             :loading="dtLoading"
             :search="dtSearch"
-            class="elevation-1"
+            class="elevation-0 bg-transparent"
             item-value="l_id"
             @click:row="
             (val, tabl) => {
@@ -1276,6 +1275,7 @@ export default {
           <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh"
                  rounded="lg" text="Refresh" @click="loadData"></v-btn>
           <v-btn
+          v-if="data.role === 'GOD'"
               :disabled="dtLoading"
               :variant="'tonal'"
               class="ml-5 align-right mb-3"

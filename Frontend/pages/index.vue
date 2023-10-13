@@ -23,14 +23,14 @@ useSeoMeta({
 });
 </script>
 <script lang="ts">
-  export default {
-    methods: {
-      scrollTo(id: string) {
-        const position = document.getElementById(id).offsetTop;
-        window.scrollTo({ top: position - 80, behavior: 'smooth' });
-      },
+export default {
+  methods: {
+    scrollTo(id: string) {
+      const position = document.getElementById(id).offsetTop;
+      window.scrollTo({top: position - 80, behavior: 'smooth'});
     },
-  };
+  },
+};
 </script>
 <template>
   <v-main class="mt-n16">

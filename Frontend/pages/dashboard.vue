@@ -152,17 +152,17 @@ export default {
             this.loadingDialog = false;
             this.dtIsError = false;
           });
-      },
     },
-    computed: {
-      total: function () {
-        return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
-      },
+  },
+  computed: {
+    total: function () {
+      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
     },
-    beforeMount() {
-      this.loadData();
-    },
-  };
+  },
+  beforeMount() {
+    this.loadData();
+  },
+};
 </script>
 
 <template>
@@ -247,9 +247,9 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-40">
+    <div class="dashboard_container main_container mx-auto blur-effect mt-10 py-1 px-1 min-h-4 bg-transparent0">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">My Reservation</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center bg-transparent" rounded="lg">
         <v-container>
           <v-row>
             <v-col>
@@ -279,7 +279,8 @@ export default {
               :headers="dtHeaders"
               :items="dtData"
               :loading="dtLoading"
-              class="elevation-0"
+              class="elevation-0 bg-transparent"
+              color="#000000"
               fixed-header
               height="40vh"
               item-value="res_id"
@@ -291,8 +292,9 @@ export default {
                 <td class="td-hover text-left">
                   <v-tooltip location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon :color="item.res_status == 'INPROGRESS' ? 'warning' : item.res_status == 'FULFILLED' ? 'success' : item.res_status == 'CANCELLED' ? 'red' : 'grey'"
-                              v-bind="props">
+                      <v-icon
+                          :color="item.res_status == 'INPROGRESS' ? 'warning' : item.res_status == 'FULFILLED' ? 'success' : item.res_status == 'CANCELLED' ? 'red' : 'grey'"
+                          v-bind="props">
                         {{
                           item.res_status == 'INPROGRESS' ? 'mdi-progress-clock' : item.res_status == 'FULFILLED' ? 'mdi-check' : item.res_status == 'CANCELLED' ? 'mdi-close' : 'mdi-help'
                         }}
@@ -344,12 +346,12 @@ export default {
                     <v-row>
                       <v-col col="12" md="12" sm="6">
                         <v-btn
-                          color="purple"
-                          prepend-icon="mdi-food"
-                          text="View Food Pre-Order"
-                          variant="text"
-                          v-bind="props"
-                          @click="
+                            color="purple"
+                            prepend-icon="mdi-food"
+                            text="View Food Pre-Order"
+                            v-bind="props"
+                            variant="text"
+                            @click="
                             () => {
                               preOrderMenu = [];
                               loadOrderByResID(item.res_id);

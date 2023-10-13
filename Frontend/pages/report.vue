@@ -320,25 +320,26 @@ export default {
 <template>
   <v-main class="justify-center report_main">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
-      <v-icon :icon="NotiIcon" start></v-icon>
+      <v-icon :icon="NotiIcon" start=""></v-icon>
       {{ NotiText }}
     </v-snackbar>
-    <v-dialog v-model="loadingDialog" :scrim="false" persistent width="200px">
+    <v-dialog v-model="loadingDialog" :scrim="false" persistent="" width="200px">
       <v-card color="primary">
         <v-card-text class="text-center">
           <p class="mb-1">Please Wait</p>
-          <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
+          <v-progress-linear class="mb-0" color="white" indeterminate=""></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="selectReport" :fullscreen="mobile" :width="mobile ? '100%' : '900px'" persistent>
-      <v-card style="overflow: initial; z-index: initial">
-        <v-card-title>Select Braches To Create Report</v-card-title>
+    <v-dialog v-model="selectReport" :fullscreen="mobile" :width="mobile ? '100%' : '900px'" persistent="">
+      <v-card class="" style="overflow: initial; z-index: initial">
+        <v-card-title class="report-popup-header mt-4 mb-2 ml-1">Select Branches To Create Report</v-card-title>
         <v-card-item>
           <v-no-ssr>
             <v-data-table v-model="selectedDT" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
                           :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1"
-                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand show-select
+                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand
+                          show-select
                           sticky>
               <template v-slot:top>
                 <v-row>
@@ -462,9 +463,9 @@ export default {
              @click="selectReport = true">Re-select Branches
       </v-btn>
       <v-container>
-        <v-row>
-          <v-col>
-            <h3 class="ml-5 mb-3">Total Branch Earnings & Reservations</h3>
+        <v-row class="mt-6">
+          <v-col class="pa-0 ma-0">
+            <h3 class="ml-5 mb-3 pl-3 graph-title">Total Branch Earnings & Reservations</h3>
             <v-sheet class="rounded-xl mx-5 px-8 pa-3 overflow-auto" style="height: 50vh">
               <Bar id="locationSales" :key="reportData[1]" :data="salesChartData" :options="salesChartOptions"/>
             </v-sheet>
@@ -472,8 +473,8 @@ export default {
               <JsonCSV :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
-          <v-col>
-            <h3 class="ml-5 mb-3">Branch Earnings</h3>
+          <v-col class="pa-0 ma-0 ">
+            <h3 class="ml-5 mb-3 pl-3 graph-title">Branch Earnings</h3>
             <v-sheet class="rounded-xl mx-5 px-8 pa-3 overflow-auto" style="height: 50vh">
               <Bar id="locationEarning" :key="reportData[1]" :data="earningsChartData" :options="earningChartOptions"/>
             </v-sheet>
@@ -482,11 +483,12 @@ export default {
             </v-btn>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col>
-            <h3 class="ml-5 mb-1">Branch Summary</h3>
-            <v-sheet class="mt-5 ma-md-8 ma-xs-1 text-center" rounded="lg">
-              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header height="300px">
+        <v-row class="py-10 px-5">
+          <v-col class="box-container">
+            <h3 class="ml-5 mb-1 summary-title">Branch Summary</h3>
+            <v-sheet class="mt-5 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
+              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3 bg-transparent" fixed-header
+                       height="300px">
                 <thead>
                 <tr>
                   <th class="text-right">ID</th>
@@ -496,20 +498,26 @@ export default {
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="loc in reportData[1]" :key="loc.location_id">
-                    <td class="text-right">{{ loc.location_id }}</td>
-                    <td class="text-left">{{ loc.l_name }}</td>
-                    <td class="text-right">{{ loc.reservation_amount.toLocaleString() }}</td>
-                    <td class="text-right">{{ loc.total_earning.toLocaleString() }} ฿</td>
-                  </tr>
+                <tr v-for="loc in reportData[1]" :key="loc.location_id">
+                  <td class="text-right">{{ loc.location_id }}</td>
+                  <td class="text-left">{{ loc.l_name }}</td>
+                  <td class="text-right">{{ loc.reservation_amount.toLocaleString() }}</td>
+                  <td class="text-right">{{ loc.total_earning.toLocaleString() }} ฿</td>
+                </tr>
                 </tbody>
               </v-table>
-              <v-table class="mr-10 mt-2" height="40px">
+              <v-table class="mr-10 mt-2 bg-transparent" height="40px">
                 <tr class="text-h5">
                   <td :width="mobile ? 'auto' : '500px'" class="text-right"></td>
                   <td class="text-right"><b>Total</b></td>
-                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} Reservations</td>
-                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} ฿</td>
+                  <td class="text-right">
+                    {{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }}
+                    Reservations
+                  </td>
+                  <td class="text-right">
+                    {{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }}
+                    ฿
+                  </td>
                 </tr>
               </v-table>
             </v-sheet>

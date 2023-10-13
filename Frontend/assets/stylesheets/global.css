@@ -12,6 +12,7 @@ v-btn {
 .main_container {
     max-width: 1380px;
     padding-bottom: 32px;
+    margin-bottom: 32px;
     border-radius: 32px;
 }
 
@@ -24,7 +25,7 @@ img_background {
 }
 
 .blur-effect {
-    background: rgba(245, 245, 247, .72);
+    background: rgba(245, 245, 247, .82);
     backdrop-filter: blur(20px) saturate(1.8);
     -webkit-backdrop-filter: blur(15px) saturate(86%);
     -webkit-backface-visibility: hidden;

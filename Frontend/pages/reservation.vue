@@ -287,28 +287,28 @@ export default {
     },
   },
 
-    computed: {
-      filteredSeatListCompute() {
-        this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
-        this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest).length;
-        return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
-      },
-      total: function () {
-        return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
-      },
+  computed: {
+    filteredSeatListCompute() {
+      this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
+      this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest).length;
+      return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
     },
-    beforeMount() {
-      if (this.$route.query.location_id != null) {
-        this.hasLocation = true;
-        this.selectedLocID = Number(this.$route.query.location_id);
-        this.loadLocationByID(Number(this.$route.query.location_id));
-        this.stepper1 = 1;
-      } else {
-        this.stepper1 = 0;
-      }
-      this.loadLocation();
+    total: function () {
+      return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
     },
-  };
+  },
+  beforeMount() {
+    if (this.$route.query.location_id != null) {
+      this.hasLocation = true;
+      this.selectedLocID = Number(this.$route.query.location_id);
+      this.loadLocationByID(Number(this.$route.query.location_id));
+      this.stepper1 = 1;
+    } else {
+      this.stepper1 = 0;
+    }
+    this.loadLocation();
+  },
+};
 </script>
 <template>
   <v-main class="justify-center reservation_main">
@@ -372,11 +372,11 @@ export default {
     <div class="main_container mx-auto blur-effect account_body mt-10 py-1 px-1 min-h-40">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
-        <v-stepper v-model="stepper1" :mobile="mobile">
+        <v-stepper class="bg-transparent" :elevation="0" v-model="stepper1" :mobile="mobile">
           <v-alert v-if="isError" class="ma-3" color="error" icon="$error" title="Error">
             {{ errorData }}
           </v-alert>
-          <v-stepper-header>
+          <v-stepper-header class="#E3F2FD rounded-xl blur-effect" :elevation="0">
             <v-stepper-item :complete="hasLocation" :disabled="hasLocation" value="1">
               <template v-slot:title>Select Branch</template>
             </v-stepper-item>
@@ -408,15 +408,17 @@ export default {
 
           <v-stepper-window :touch="false">
             <v-stepper-window-item :disabled="hasLocation" value="1">
-              <v-card title="">
+              <v-card class="bg-transparent" title="">
                 <v-card-text>
                   <h3 class="text-h4 font-weight-medium text-left">Select Branches</h3>
                   <p class="text-h6 font-weight-light text-left">Click on the row to see more infomation of the
                     branches</p>
                 </v-card-text>
                 <v-no-ssr>
-                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="locationList"
-                                :loading="pageSpinner" :search="dtSearch" class="elevation-1" item-value="location_id">
+                  <v-data-table color="rgba(255, 0, 0, 0)" :density="mobile ? 'compact' : 'comfortable'"
+                                :headers="dtHeaders" :items="locationList"
+                                :loading="pageSpinner" :search="dtSearch" class="elevation-0 primary  bg-transparent"
+                                item-value="location_id">
                     <template v-slot:top>
                       <v-text-field v-model="dtSearch" placeholder="Search"
                                     prepend-inner-icon="mdi-text-search"></v-text-field>
@@ -481,7 +483,7 @@ export default {
               </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="2">
-              <v-card>
+              <v-card class="bg-transparent">
                 <v-card-text>
                   <h3 class="text-h4 font-weight-medium text-left">Choose Reservation Time</h3>
                   <p class="text-h6 font-weight-light text-left">
@@ -536,7 +538,7 @@ export default {
               </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="3">
-              <v-card>
+              <v-card class="bg-transparent">
                 <v-card-text>
                   <h3 class="text-h4 font-weight-medium text-left">Guest & Seating</h3>
                 </v-card-text>
@@ -544,7 +546,7 @@ export default {
                   <v-row>
                     <v-col>
                       <h3 class="text-left font-weight-medium">Seat Layout</h3>
-                      <v-img :src="selectedLoc.layout_img_url" width="600">
+                      <v-img :src="selectedLoc.layout_img_url" class="img-layout mt-1 rounded-lg" width="600">
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
                         </template>
@@ -616,8 +618,8 @@ export default {
                 <v-row>
                   <v-col cols="12" md="8" sm="12">
                     <h3 class="ml-3 text-left font-weight-medium">Menus</h3>
-                    <v-lazy :min-height="200" :options="{ threshold: 0.5 }" transition="fade-transition">
-                      <v-card class="overflow-auto" elevation="0" height="525">
+                    <v-lazy class="" :min-height="200" :options="{ threshold: 0.5 }" transition="fade-transition">
+                      <v-card class="overflow-auto bg-transparent" elevation="0" height="525">
                         <v-container>
                           <v-row>
                             <v-col
@@ -658,7 +660,7 @@ export default {
                     </v-lazy>
                   </v-col>
                   <v-col cols="12" md="4" sm="12">
-                    <v-card elevation="0">
+                    <v-card elevation="0" class="bg-transparent">
                       <h3 class="pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
                         <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header height="400px">
@@ -714,17 +716,19 @@ export default {
                                           updateMenuById(1, order.id);
                                         }
                                       ">
-                                      mdi-plus
-                                    </v-icon>
-                                  </template>
-                                  <span>Increase Amount</span>
-                                </v-tooltip>
-                              </td>
-                              <td class="text-right mx-0 px-0" width="90px">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
-                              <td class="text-right mx-0 pr-0" width="10px">
-                                <v-tooltip location="top">
-                                  <template v-slot:activator="{ props }">
-                                    <v-icon
+                                    mdi-plus
+                                  </v-icon>
+                                </template>
+                                <span>Increase Amount</span>
+                              </v-tooltip>
+                            </td>
+                            <td class="text-right mx-0 px-0" width="90px">
+                              {{ (order.amount * order.price).toLocaleString() }} ฿
+                            </td>
+                            <td class="text-right mx-0 pr-0" width="10px">
+                              <v-tooltip location="top">
+                                <template v-slot:activator="{ props }">
+                                  <v-icon
                                       v-ripple
                                       color="red"
                                       size="x-small"
@@ -803,13 +807,13 @@ export default {
               </v-container>
             </v-stepper-window-item>
             <v-stepper-window-item value="5">
-              <v-card>
+              <v-card class="bg-transparent">
                 <v-card-text>
                   <h3 class="text-h4 font-weight-medium text-left">Summary</h3>
                   <v-container>
                     <v-row>
-                      <v-col>
-                        <v-card class="pa-3 text-left" height="150">
+                      <v-col class="">
+                        <v-card class="pa-3 text-left bg-transparent summary-box" height="150">
                           <div class="mt-3 ml-3">
                             <h3 class="font-weight-bold">
                               <v-icon icon="mdi-map-marker"></v-icon>
@@ -822,13 +826,13 @@ export default {
                         </v-card>
                       </v-col>
                       <v-col>
-                        <v-card class="pa-3 text-left" height="150">
+                        <v-card class="pa-3 text-left bg-transparent summary-box" height="150">
                           <div class="mt-3 ml-3">
                             <h3 class="font-weight-bold">
                               <v-icon icon="mdi-clock-time-three"></v-icon>
                               Date and Time
                             </h3>
-                            <p class="ml-12 text-h6 font-weight-light">
+                            <p class="ml-4 text-h6 font-weight-light ">
                               <v-icon>mdi-calendar-blank</v-icon>
                               {{ DateTime.fromISO(selectedTime).toFormat('DDDD') }}
                               <br/>
@@ -839,7 +843,7 @@ export default {
                         </v-card>
                       </v-col>
                       <v-col>
-                        <v-card class="pa-3 text-left" height="150">
+                        <v-card class="pa-3 text-left bg-transparent summary-box" height="150">
                           <div class="mt-3 ml-3">
                             <h3 class="font-weight-bold">
                               <v-icon>mdi-table-chair</v-icon>
@@ -852,7 +856,7 @@ export default {
                     </v-row>
                     <v-row>
                       <v-col>
-                        <v-card class="pa-3">
+                        <v-card class="pa-3 bg-transparent summary-box">
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
                             <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
@@ -865,11 +869,11 @@ export default {
                               </tr>
                               </thead>
                               <tbody>
-                                <tr v-for="order in foodPreOrderList" :key="order.id">
-                                  <td class="text-left">{{ order.item_name }}</td>
-                                  <td class="text-right">{{ order.amount }}</td>
-                                  <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
-                                </tr>
+                              <tr v-for="order in foodPreOrderList" :key="order.id">
+                                <td class="text-left">{{ order.item_name }}</td>
+                                <td class="text-right">{{ order.amount }}</td>
+                                <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
+                              </tr>
                               </tbody>
                             </v-table>
                             <v-table class="mx-3 text-h6">

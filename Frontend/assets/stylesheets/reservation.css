@@ -10,6 +10,26 @@
     /*min-width: 100vw;*/
 }
 
+
+.summary-box{
+    border-radius: 22px !important;
+    background: rgba(255, 255, 255, .8) !important;
+}
+
+.img-layout {
+    margin: 12px 0 0 0;
+}
+
+th, tr, td {
+    background: transparent !important;
+    color: black;
+}
+
+th {
+    font-weight: 700 !important;
+    font-size: large !important;
+}
+
 /*.main_container {*/
 /*    border-radius: 22px;*/
 /*}*/

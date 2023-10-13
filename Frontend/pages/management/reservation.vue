@@ -207,17 +207,17 @@ export default {
               this.NotiText = message;
             }
           });
-      },
     },
-    computed: {
-      total: function () {
-        return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
-      },
+  },
+  computed: {
+    total: function () {
+      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
     },
-    beforeMount() {
-      this.loadData();
-    },
-  };
+  },
+  beforeMount() {
+    this.loadData();
+  },
+};
 </script>
 <template>
   <v-main class="management_main">
@@ -240,11 +240,11 @@ export default {
             </tr>
             </thead>
             <tbody>
-              <tr v-for="item in preOrderMenu" :key="item.m_id">
-                <td class="pr-0">{{ item.m_name }}</td>
-                <td class="text-center px-0">{{ item.m_amount }}</td>
-                <td class="text-right pl-0" width="100">{{ (item.m_amount * item.m_price).toLocaleString() }} ฿</td>
-              </tr>
+            <tr v-for="item in preOrderMenu" :key="item.m_id">
+              <td class="pr-0">{{ item.m_name }}</td>
+              <td class="text-center px-0">{{ item.m_amount }}</td>
+              <td class="text-right pl-0" width="100">{{ (item.m_amount * item.m_price).toLocaleString() }} ฿</td>
+            </tr>
             </tbody>
           </v-table>
           <v-table>

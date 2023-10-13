@@ -372,11 +372,11 @@ export default {
     <div class="main_container mx-auto blur-effect account_body mt-10 py-1 px-1 min-h-40">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="0">
-        <v-stepper class="bg-transparent" :elevation="0" v-model="stepper1" :mobile="mobile">
+        <v-stepper v-model="stepper1" :elevation="0" :mobile="mobile" class="bg-transparent">
           <v-alert v-if="isError" class="ma-3" color="error" icon="$error" title="Error">
             {{ errorData }}
           </v-alert>
-          <v-stepper-header class="#E3F2FD rounded-xl blur-effect" :elevation="0">
+          <v-stepper-header :elevation="0" class="#E3F2FD rounded-xl blur-effect">
             <v-stepper-item :complete="hasLocation" :disabled="hasLocation" value="1">
               <template v-slot:title>Select Branch</template>
             </v-stepper-item>
@@ -415,9 +415,9 @@ export default {
                     branches</p>
                 </v-card-text>
                 <v-no-ssr>
-                  <v-data-table color="rgba(255, 0, 0, 0)" :density="mobile ? 'compact' : 'comfortable'"
-                                :headers="dtHeaders" :items="locationList"
-                                :loading="pageSpinner" :search="dtSearch" class="elevation-0 primary  bg-transparent"
+                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
+                                :items="locationList" :loading="pageSpinner"
+                                :search="dtSearch" class="elevation-0 primary  bg-transparent" color="rgba(255, 0, 0, 0)"
                                 item-value="location_id">
                     <template v-slot:top>
                       <v-text-field v-model="dtSearch" placeholder="Search"
@@ -618,7 +618,7 @@ export default {
                 <v-row>
                   <v-col cols="12" md="8" sm="12">
                     <h3 class="ml-3 text-left font-weight-medium">Menus</h3>
-                    <v-lazy class="" :min-height="200" :options="{ threshold: 0.5 }" transition="fade-transition">
+                    <v-lazy :min-height="200" :options="{ threshold: 0.5 }" class="" transition="fade-transition">
                       <v-card class="overflow-auto bg-transparent" elevation="0" height="525">
                         <v-container>
                           <v-row>
@@ -660,7 +660,7 @@ export default {
                     </v-lazy>
                   </v-col>
                   <v-col cols="12" md="4" sm="12">
-                    <v-card elevation="0" class="bg-transparent">
+                    <v-card class="bg-transparent" elevation="0">
                       <h3 class="pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
                         <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header height="400px">

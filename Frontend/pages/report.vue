@@ -338,7 +338,8 @@ export default {
           <v-no-ssr>
             <v-data-table v-model="selectedDT" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
                           :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1"
-                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand show-select
+                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand
+                          show-select
                           sticky>
               <template v-slot:top>
                 <v-row>
@@ -496,20 +497,26 @@ export default {
                 </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="loc in reportData[1]" :key="loc.location_id">
-                    <td class="text-right">{{ loc.location_id }}</td>
-                    <td class="text-left">{{ loc.l_name }}</td>
-                    <td class="text-right">{{ loc.reservation_amount.toLocaleString() }}</td>
-                    <td class="text-right">{{ loc.total_earning.toLocaleString() }} ฿</td>
-                  </tr>
+                <tr v-for="loc in reportData[1]" :key="loc.location_id">
+                  <td class="text-right">{{ loc.location_id }}</td>
+                  <td class="text-left">{{ loc.l_name }}</td>
+                  <td class="text-right">{{ loc.reservation_amount.toLocaleString() }}</td>
+                  <td class="text-right">{{ loc.total_earning.toLocaleString() }} ฿</td>
+                </tr>
                 </tbody>
               </v-table>
               <v-table class="mr-10 mt-2" height="40px">
                 <tr class="text-h5">
                   <td :width="mobile ? 'auto' : '500px'" class="text-right"></td>
                   <td class="text-right"><b>Total</b></td>
-                  <td class="text-right">{{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} Reservations</td>
-                  <td class="text-right">{{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }} ฿</td>
+                  <td class="text-right">
+                    {{ salesChartData.datasets[1].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }}
+                    Reservations
+                  </td>
+                  <td class="text-right">
+                    {{ salesChartData.datasets[0].data.reduce((partialSum, a) => partialSum + a, 0).toLocaleString() }}
+                    ฿
+                  </td>
                 </tr>
               </v-table>
             </v-sheet>

@@ -152,17 +152,17 @@ export default {
             this.loadingDialog = false;
             this.dtIsError = false;
           });
-      },
     },
-    computed: {
-      total: function () {
-        return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
-      },
+  },
+  computed: {
+    total: function () {
+      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
     },
-    beforeMount() {
-      this.loadData();
-    },
-  };
+  },
+  beforeMount() {
+    this.loadData();
+  },
+};
 </script>
 
 <template>
@@ -291,8 +291,9 @@ export default {
                 <td class="td-hover text-left">
                   <v-tooltip location="top">
                     <template v-slot:activator="{ props }">
-                      <v-icon :color="item.res_status == 'INPROGRESS' ? 'warning' : item.res_status == 'FULFILLED' ? 'success' : item.res_status == 'CANCELLED' ? 'red' : 'grey'"
-                              v-bind="props">
+                      <v-icon
+                          :color="item.res_status == 'INPROGRESS' ? 'warning' : item.res_status == 'FULFILLED' ? 'success' : item.res_status == 'CANCELLED' ? 'red' : 'grey'"
+                          v-bind="props">
                         {{
                           item.res_status == 'INPROGRESS' ? 'mdi-progress-clock' : item.res_status == 'FULFILLED' ? 'mdi-check' : item.res_status == 'CANCELLED' ? 'mdi-close' : 'mdi-help'
                         }}
@@ -344,12 +345,12 @@ export default {
                     <v-row>
                       <v-col col="12" md="12" sm="6">
                         <v-btn
-                          color="purple"
-                          prepend-icon="mdi-food"
-                          text="View Food Pre-Order"
-                          variant="text"
-                          v-bind="props"
-                          @click="
+                            color="purple"
+                            prepend-icon="mdi-food"
+                            text="View Food Pre-Order"
+                            v-bind="props"
+                            variant="text"
+                            @click="
                             () => {
                               preOrderMenu = [];
                               loadOrderByResID(item.res_id);

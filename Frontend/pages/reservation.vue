@@ -4,6 +4,8 @@ import {VSkeletonLoader} from 'vuetify/labs/VSkeletonLoader';
 import {DateTime, Interval} from 'luxon';
 import {VDataTable} from 'vuetify/labs/VDataTable';
 import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/reservation.css';
 
 const {mobile} = useDisplay();
 const {status, data} = useAuth();
@@ -144,10 +146,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: any
-            };
+            const {status, message} = response as { status: number; message: any };
             if (status === 1) {
               this.locationList = message;
               this.isError = false;
@@ -174,10 +173,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: any
-            };
+            const {status, message} = response as { status: number; message: any };
             this.menuList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -199,10 +195,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: any
-            };
+            const {status, message} = response as { status: number; message: any };
             this.selectedLoc = message[0];
             this.pageSpinner = false;
             this.isError = false;
@@ -225,10 +218,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: any
-            };
+            const {status, message} = response as { status: number; message: any };
             this.seatList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -255,10 +245,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: any
-            };
+            const {status, message} = response as { status: number; message: any };
             if (status === 1) {
               this.resConfirm = true;
             } else {
@@ -946,8 +933,7 @@ export default {
 
 <style scoped>
 
-@import '~/assets/stylesheets/global.css';
-@import '~/assets/stylesheets/reservation.css';
+
 
 .like-a-link {
   cursor: pointer;

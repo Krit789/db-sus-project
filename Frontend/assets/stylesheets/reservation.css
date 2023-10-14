@@ -10,7 +10,7 @@
     /*min-width: 100vw;*/
 }
 
-.branch-status{
+.branch-status {
     background-color: #FFFFFF;
 }
 
@@ -23,10 +23,10 @@
     margin: 12px 0 0 0;
 }
 
-th, tr, td {
-    background: transparent !important;
-    color: black;
-}
+/*th, tr, td {*/
+/*    background: transparent !important;*/
+/*    color: black;*/
+/*}*/
 
 th {
     font-weight: 700 !important;

@@ -215,27 +215,30 @@ export default {
         },
       })
           .catch((error) => error.data)
-          .then((data) => this.get_status(data));
-    },
-    get_status({status: status, message: message}) {
-      if (status == 1) {
-        this.NotiText = "Registration Successful. Login with your account to begin!";
-        this.NotiColor = "success";
-        this.NotiIcon = "mdi-check-circle-outline";
-        this.snackbar = true;
-        this.dialogRe = false;
-      } else if (status == 2) {
-        this.NotiText = "Email already in use!";
-        this.NotiColor = "error";
-        this.NotiIcon = "mdi-alert";
-        this.snackbar = true;
-      } else {
-        this.NotiText = message;
-        this.NotiColor = "error";
-        this.NotiIcon = "mdi-alert";
-        this.snackbar = true;
-      }
-      this.isCardLoading = false;
+          .then((response) => {
+            const {message, status} = response as {
+              status: number;
+              message: any;
+            };
+            if (status === 1) {
+              this.NotiText = "Registration Successful. Login with your account to begin!";
+              this.NotiColor = "success";
+              this.NotiIcon = "mdi-check-circle-outline";
+              this.snackbar = true;
+              this.dialogRe = false;
+            } else if (status === 2) {
+              this.NotiText = "Email already in use!";
+              this.NotiColor = "error";
+              this.NotiIcon = "mdi-alert";
+              this.snackbar = true;
+            } else {
+              this.NotiText = message;
+              this.NotiColor = "error";
+              this.NotiIcon = "mdi-alert";
+              this.snackbar = true;
+            }
+            this.isCardLoading = false;
+          });
     },
   },
   computed: {
@@ -310,7 +313,7 @@ export default {
             >
               <v-icon class="mr-1" size="x-large">mdi-account-circle-outline</v-icon>
               <p>
-                {{ `${data.firstName} ${data.lastName.charAt(0)}.` }}
+                {{ `${accountData.first_name} ${accountData.last_name.charAt(0)}.` }}
               </p>
             </v-btn>
           </NuxtLink>
@@ -336,10 +339,10 @@ export default {
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                {{ data?.firstName + " " + data?.lastName }}
+                {{ accountData.first_name + " " + accountData.last_name }}
               </v-list-item-title>
               <v-list-item-subtitle>
-                {{ data?.email }}
+                {{ accountData.email }}
               </v-list-item-subtitle>
               <template v-slot:append>
                 <v-tooltip text="Account Settings">

@@ -10,7 +10,7 @@ export default NuxtAuthHandler({
     callbacks: {
         // Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
         jwt: async ({token, user}) => {
-            const isSignIn = user ? true : false;
+            const isSignIn = !!user;
             if (isSignIn) {
                 token.id = user ? user.id || "" : "";
                 token.role = user ? (user as any).role || "" : "";
@@ -63,7 +63,8 @@ export default NuxtAuthHandler({
                     // console.log(data.jwt);
                     const decodedData = parseJwt(data.jwt);
                     // console.log(decodedData);
-                    const u = {
+                    // console.log(u);
+                    return {
                         id: decodedData?.data.id,
                         email: decodedData?.data.email,
                         name: decodedData?.data.fn,
@@ -72,8 +73,6 @@ export default NuxtAuthHandler({
                         role: decodedData?.data.role,
                         token: decodedData?.data.token,
                     };
-                    // console.log(u);
-                    return u;
                 } else {
                     console.error("Warning: Malicious login attempt registered, bad credentials provided");
                     return null;
@@ -88,6 +87,5 @@ function parseJwt(token: string) {
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const buff = new Buffer(base64, "base64");
     const payloadinit = buff.toString("ascii");
-    const payload = JSON.parse(payloadinit);
-    return payload;
+    return JSON.parse(payloadinit);
 }

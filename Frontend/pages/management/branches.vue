@@ -700,8 +700,10 @@ export default {
         <v-card-text>
           <v-text-field v-model="tableNameDialog"
                         :rules="[(v) => (v || '').length <= 5 || 'Table Name must be 5 characters or less']"
-                        label="Table Name" persistent-counter prepend-icon="mdi-table-furniture"></v-text-field>
-          <v-text-field v-model="tableCapacity" label="Capacity" min="1" oninput="validity.valid || (value=1);"
+                        label="Table Name" persistent-counter
+                        prepend-icon="mdi-table-furniture"></v-text-field>
+          <v-text-field v-model="tableCapacity" label="Capacity" min="1"
+                        oninput="validity.valid || (value=1);"
                         prepend-icon="mdi-account-multiple" type="number"></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -729,7 +731,10 @@ export default {
     <v-dialog v-model="delTableDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>Table Deletion</v-card-title>
-        <v-card-text>Are you sure that you want to delete table {{ tableNameDialog }} at {{ bName }}?</v-card-text>
+        <v-card-text>Are you sure that you want to delete table {{ tableNameDialog }} at {{
+            bName
+          }}?
+        </v-card-text>
         <v-card-actions>
           <v-btn
               :disabled="loadingDialog"
@@ -834,7 +839,8 @@ export default {
           {{ bMgrID ? 'Reassign new manager to manage your branch' : 'Assign manager to manage your branch' }}
         </v-card-subtitle>
         <v-card-text>
-          <v-autocomplete v-model="bSelMgrID" :item-props="managerItemProps" :items="managerList" item-value="u_id"
+          <v-autocomplete v-model="bSelMgrID" :item-props="managerItemProps" :items="managerList"
+                          item-value="u_id"
                           label="Manager Selection"></v-autocomplete>
         </v-card-text>
         <v-card-actions>
@@ -864,7 +870,8 @@ export default {
     </v-dialog>
     <v-dialog v-model="bEditor" :fullscreen="mobile" :width="mobile ? '100%' : '500px'" persistent>
       <v-card class="tab-card blur-effect">
-        <v-tabs v-model="tabNum" bg-color="bg-transparent" color="black" style="height: 44px; padding: 0px 14px">
+        <v-tabs v-model="tabNum" bg-color="bg-transparent" color="black"
+                style="height: 44px; padding: 0px 14px">
           <v-tab value="one">General</v-tab>
           <v-tab
               value="two"
@@ -899,15 +906,21 @@ export default {
                     }
                   ">
                   <v-card-text>
-                    <v-text-field v-model="bName" :rules="[requiredForm]" label="Name" required></v-text-field>
-                    <v-textarea v-model="bAddress" label="Address" prepend-inner-icon="mdi-map-marker"></v-textarea>
-                    <v-text-field v-model="blayout" :rules="[urlValidator]" label="Seat Layout Image URL"
+                    <v-text-field v-model="bName" :rules="[requiredForm]" label="Name"
+                                  required></v-text-field>
+                    <v-textarea v-model="bAddress" label="Address"
+                                prepend-inner-icon="mdi-map-marker"></v-textarea>
+                    <v-text-field v-model="blayout" :rules="[urlValidator]"
+                                  label="Seat Layout Image URL"
                                   prepend-inner-icon="mdi-floor-plan"></v-text-field>
-                    <v-text-field v-model="bOpenTime" label="Open Time" prepend-inner-icon="mdi-weather-sunset-up"
+                    <v-text-field v-model="bOpenTime" label="Open Time"
+                                  prepend-inner-icon="mdi-weather-sunset-up"
                                   type="time"></v-text-field>
-                    <v-text-field v-model="bCloseTime" label="Close Time" prepend-inner-icon="mdi-weather-night"
+                    <v-text-field v-model="bCloseTime" label="Close Time"
+                                  prepend-inner-icon="mdi-weather-night"
                                   type="time"></v-text-field>
-                    <v-select v-model="bStatus" :items="bStatusList" item-title="name" item-value="id" label="Status"
+                    <v-select v-model="bStatus" :items="bStatusList" item-title="name"
+                              item-value="id" label="Status"
                               prepend-inner-icon="mdi-list-status"></v-select>
                   </v-card-text>
                   <v-btn
@@ -1116,7 +1129,8 @@ export default {
             }
           ">
           <template v-slot:top>
-            <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-store-search"></v-text-field>
+            <v-text-field v-model="dtSearch" placeholder="Search"
+                          prepend-inner-icon="mdi-store-search"></v-text-field>
           </template>
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr

@@ -99,9 +99,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $user = $user_data['user_id'];
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
-
-                    $point_u = $data->point_used;
-                    if ($point_u == NULL) $point_u = 0;
+                    $point_u = 0;
+                    if (isset($data->point_used)){
+                        $point_u = $data->point_used;
+                    }
 
                     $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time, 'point_used' => $point_u]);
                     $result = $obj->getResult();
@@ -115,8 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                             foreach ($data->menu as $menu) {
                                 //[0] menu_id [1] จำนวน
-                                $obj->select('menus', 'price', null, "menu_id={$menu->data}");
+                                $obj->select('menus', 'price', null, "menu_id={$menu->id}");
                                 $price = $obj->getResult()[0]['price'];
+
                                 if ($menu == $data->menu[sizeof($data->menu) - 1]) {
                                     $tmp .= "($res_id, $menu->id, $menu->amount, $price)";
                                 } else {
@@ -124,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 }
                             }
                             // error_log($tmp);
-                            $obj->insertlegacy('orders', 'res_id, menu_id, amount, price', $tmp);
+                            $obj->insertlegacy('orders', 'res_id, menu_id, amount, item_price', $tmp);
                             # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
 
                             $resutl = $obj->getResult();

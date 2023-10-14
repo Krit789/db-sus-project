@@ -228,7 +228,7 @@ export default {
     <v-dialog v-model="foodViewDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>
-          <h3 class="text-left">Your Order</h3>
+          <h3 class="text-left">Reservation Order</h3>
         </v-card-title>
         <v-card-text>
           <v-table density="compact" fixed-header height="50vh">

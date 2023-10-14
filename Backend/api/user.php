@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             foreach ($result1 as $datas) {
                                 $sum_p += $datas['item_price'] * $datas['amount'];
                             }
-                            $point += floor($sum_p/10);
+                            $point += floor($sum_p/20);
                             $point -= $result[0]['point_used'];
 
                             $obj->update('users', ['points' => $point], "user_id={$result[0]['user_id']}");

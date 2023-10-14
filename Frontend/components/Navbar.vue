@@ -22,6 +22,9 @@ const mySignInHandler = async ({email, password}: {
     return true;
   }
 };
+// defineExpose({
+//   signOut
+// });
 </script>
 
 <script lang="ts">

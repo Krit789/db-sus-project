@@ -2,7 +2,7 @@
 import {useDisplay} from 'vuetify';
 import '~/assets/stylesheets/global.css';
 import '~/assets/stylesheets/index.css';
-import 'assets/stylesheets/account.css';
+import '~/assets/stylesheets/account.css';
 
 const {signOut, data} = useAuth();
 const {mobile} = useDisplay();
@@ -11,6 +11,10 @@ useHead({
   title: 'My Account - Seatify',
   meta: [{name: 'Seatify App', content: 'My amazing site.'}],
 });
+defineExpose({
+  data
+});
+
 </script>
 
 <script lang="ts">

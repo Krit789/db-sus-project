@@ -36,7 +36,7 @@
 }
 
 .icon_img {
-    font-size: 60px;
+    font-size: 60px !important;
 }
 
 h2 {

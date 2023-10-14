@@ -17,7 +17,7 @@
 }
 
 .table-hover:hover {
-  background-color: #f7f7f7 !important;
+  background-color: #f0f0f093 !important;
   cursor: pointer;
 }
 

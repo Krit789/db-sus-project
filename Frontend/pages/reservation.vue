@@ -564,8 +564,7 @@ export default {
                       <v-img :src="selectedLoc.layout_img_url" class="img-layout mt-1 rounded-lg" width="600">
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
-                        </template>
-                        <template v-slot:error>
+
                           <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
@@ -573,12 +572,7 @@ export default {
                     <v-col>
                       <h3 class="text-left font-weight-medium">How many guests are coming?</h3>
                       <v-text-field
-                          v-model="resGuest"
-                          :on-update:model-value="
-                          () => {
-                            selectedSeat = null;
-                          }
-                        "
+                          v-model="resGuest" :on-update:model-value=" () => { selectedSeat = null; } "
                           :rules="[seatRule]"
                           min="1"
                           oninput="validity.valid || (value=1);"
@@ -596,27 +590,15 @@ export default {
                   <v-row>
                     <v-col>
                       <v-btn
-                          prepend-icon="mdi-arrow-left"
-                          variant="tonal"
-                          @click="
-                          () => {
-                            selectedSeat = null;
-                            stepper1--;
-                          }
-                        ">
+                          prepend-icon="mdi-arrow-left" variant="tonal"
+                          @click=" () => { selectedSeat = null; stepper1--; } ">
                         Back
                       </v-btn>
                     </v-col>
                     <v-col>
                       <v-btn
-                          :disabled="filterSeatCount == 0 || selectedSeat == null"
-                          prepend-icon="mdi-arrow-right"
-                          @click="
-                          () => {
-                            loadMenusFromLocation(selectedLocID);
-                            stepper1++;
-                          }
-                        ">
+                          :disabled="filterSeatCount == 0 || selectedSeat == null" prepend-icon="mdi-arrow-right"
+                          @click=" () => { loadMenusFromLocation(selectedLocID); stepper1++; } ">
                         Next
                       </v-btn>
                     </v-col>
@@ -638,16 +620,8 @@ export default {
                         <v-container>
                           <v-row>
                             <v-col
-                                v-for="food in menuList"
-                                :key="food.id"
-                                cols="12"
-                                md="6"
-                                sm="6"
-                                @click="
-                                () => {
-                                  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
-                                }
-                              ">
+                                v-for="food in menuList" :key="food.id" cols="12" md="6" sm="6"
+                                @click=" () => {  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });} ">
                               <v-card v-ripple>
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover="" height="300">
@@ -676,9 +650,10 @@ export default {
                   </v-col>
                   <v-col cols="12" md="4" sm="12">
                     <v-card class="bg-transparent" elevation="0">
-                      <h3 class="pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
+                      <h3 class="bg-transparent pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header="" height="400px">
+                        <v-table class="bg-transparent" :density="mobile ? 'compact' : 'comfortable'" fixed-header=""
+                                 height="400px">
                           <thead>
                           <tr>
                             <th class="bg-transparent text-left mx-0 px-0">Name</th>
@@ -691,7 +666,7 @@ export default {
                           </thead>
                           <tbody>
                           <tr v-for="order in foodPreOrderList" :key="order.id">
-                            <td class="text-left mx-0 px-0">
+                            <td class="text-left mx-0 px-0 ">
                               <v-tooltip location="bottom">
                                 <template v-slot:activator="{ props }">
                                   <p v-bind="props">{{ order.item_name }}</p>
@@ -699,19 +674,15 @@ export default {
                                 <span>{{ order.item_desc }}</span>
                               </v-tooltip>
                             </td>
-                            <td class="text-center mx-0 px-0" width="100px">
+                            <td class="text-center mx-0 px-0 " width="100px">
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      v-ripple
+                                      ripple=""
                                       color="red"
                                       size="x-small"
                                       v-bind="props"
-                                      @click="
-                                        () => {
-                                          updateMenuById(0, order.id);
-                                        }
-                                      ">
+                                      @click=" () => { updateMenuById(0, order.id);  } ">
                                     mdi-minus
                                   </v-icon>
                                 </template>
@@ -721,16 +692,12 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      v-ripple
+                                      v-ripple=""
                                       color="green"
                                       icon="mdi-plus ml-1"
                                       size="x-small"
                                       v-bind="props"
-                                      @click="
-                                        () => {
-                                          updateMenuById(1, order.id);
-                                        }
-                                      ">
+                                      @click=" () => { updateMenuById(1, order.id); } ">
                                     mdi-plus
                                   </v-icon>
                                 </template>
@@ -744,15 +711,11 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      v-ripple
+                                      ripple=""
                                       color="red"
                                       size="x-small"
                                       v-bind="props"
-                                      @click="
-                                        () => {
-                                          removeMenuById(order.id);
-                                        }
-                                      ">
+                                      @click=" () => { removeMenuById(order.id); } ">
                                     mdi-delete
                                   </v-icon>
                                 </template>
@@ -762,22 +725,13 @@ export default {
                           </tr>
                           </tbody>
                         </v-table>
-                        <v-table class="mx-3 mt-3 text-h6 font-weight-medium">
+                        <v-table class="mx-3 mt-3 text-h6 font-weight-medium bg-transparent">
                           <tbody>
                           <tr>
                             <td class="text-center px-0" width="200px"><b>Total</b></td>
                             <td class="text-right px-0" width="100px">{{ total }} ฿</td>
                             <td class="text-right px-0">
-                              <v-btn
-                                  color="red"
-                                  variant="text"
-                                  @click="
-                                    () => {
-                                      foodPreOrderList = [];
-                                    }
-                                  ">
-                                Clear
-                              </v-btn>
+                              <v-btn color="red" variant="text" @click=" () => { foodPreOrderList = [];}">Clear</v-btn>
                             </td>
                           </tr>
                           </tbody>
@@ -874,7 +828,7 @@ export default {
                         <v-card class="pa-3 bg-transparent summary-box">
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
-                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
+                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header=""
                                      max-height="300px">
                               <thead>
                               <tr>

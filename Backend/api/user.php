@@ -26,17 +26,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $res_code = $data->res_code;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select('reservations', "res_id, user_id", null, "res_code='{$res_code}' and status = 3", null, null);
+                        $obj->select('reservations', "res_id, user_id, ifNULL(point_used, 0) as `point_used`", null, "res_code='{$res_code}' and status = 3", null, null);
                         $result = $obj->getResult();
                         if (isset($result[0])) {
+
+                            $obj->select('users', 'points', null, "user_id=$result[0]['user_id']");
+                            $point = $obj->getResult()[0]['points'];
 
                             $obj->select('orders', '*', null, "res_id='{$result[0]['res_id']}'");
                             $result1 = $obj->getResult();
                             foreach ($result1 as $datas) {
                                 $sum_p += $datas['item_price'] * $datas['amount'];
                             }
+                            $point += floor($sum_p/10);
+                            $point -= $result[0]['point_used'];
 
-                            $obj->update('users', ['points' => floor($sum_p/10)], "user_id={$result[0]['user_id']}");
+                            $obj->update('users', ['points' => $point], "user_id={$result[0]['user_id']}");
                             $obj->update('reservations', ['status' => 1], "res_id={$result[0]['res_id']}");
                             $result = $obj->getResult();
                             if ($result[0] == 1) {
@@ -89,13 +94,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 3: #Customer ทำการจอง
-                    //ต้องส่งข้อมูล table_id, arrival, cus_count, menu(Optional)
+                    //ต้องส่งข้อมูล table_id, arrival, cus_count, point_used, menu(Optional)
                     $table_id = $data->table_id;
                     $user = $user_data['user_id'];
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
 
-                    $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time]);
+                    $point_u = $data->point_used;
+                    if ($point_u == NULL)$point_u=0;
+
+                    $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time, 'point_used' => $point_u]);
                     $result = $obj->getResult();
                     if ($result[0] == 1) {
 
@@ -137,12 +145,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     }
                     break;
                 case 4: #Customer ต้องการแก้ไขการจอง
-                    //ต้องส่งข้อมูล res_id, table_id, arrival, cus_count, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
+                    //ต้องส่งข้อมูล res_id, table_id, arrival, cus_count, point_used, menu(จะต้องส่งอันนี้มาก็ต่อเมื่อ Customer แก้ไขข้อมูลตัวเอง)
                     $user = $user_data['user_id'];
                     $res_id = $data->res_id;
                     $table_id = $data->table_id;
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
+                    $point_u = $data->point_used;
 
                     $date = date_create(substr($arrival, 0, 19));
                     date_add($date, date_interval_create_from_date_string("-1 hours"));
@@ -175,6 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 $resutl = $obj->getResult(); #อยากเช็คแต่ยังก่อน
                             }
                             $obj->update('reservations', ['arrival' => $arrival, 'table_id' => $table_id, 'cus_count' => $customer_count], "res_id='{$res_id}'");
+                            if ($point_u != NULL)$obj->update('reservations', ['point_used' => $point_u], "res_id='{$res_id}'");
                             $result = $obj->getResult();
                             if ($result[0] == 1) {
                                 echo json_encode([

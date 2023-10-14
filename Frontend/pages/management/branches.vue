@@ -10,7 +10,7 @@ import '~/assets/stylesheets/management/management.css';
 
 const {mobile} = useDisplay();
 
-const {status, data, signIn, signOut} = useAuth();
+const {data} = useAuth();
 const route = useRouter();
 useHead({
   title: 'Branches Management - Seatify Admin',
@@ -22,7 +22,6 @@ definePageMeta({
 });
 </script>
 <script lang="ts">
-import {integer} from 'vscode-languageserver-types';
 
 interface ManagerItem {
   u_id: number;
@@ -1290,6 +1289,7 @@ export default {
           <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh"
                  rounded="lg" text="Refresh" @click="loadData"></v-btn>
           <v-btn
+          v-if="data.role === 'GOD'"
               :disabled="dtLoading"
               :variant="'tonal'"
               class="ml-5 align-right mb-3"

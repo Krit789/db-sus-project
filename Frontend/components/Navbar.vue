@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
+import "~/assets/stylesheets/navbar.css";
+import "~/assets/stylesheets/global.css";
 
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
@@ -22,14 +24,18 @@ const mySignInHandler = async ({email, password}: {
     return true;
   }
 };
-// defineExpose({
-//   signOut
-// });
 </script>
 
 <script lang="ts">
-import "~/assets/stylesheets/navbar.css";
-import "~/assets/stylesheets/global.css";
+
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+  points: number;
+}
 
 export default {
   data: () => ({
@@ -51,6 +57,14 @@ export default {
     NotiIcon: "",
     timeout: 2000,
     isCardLoading: false,
+    accountData: {
+                  id: 0,
+                  first_name: "FN",
+                  last_name: "LN",
+                  email: "email",
+                  telephone: "",
+                  points: 0
+                } as User,
     items: [
       {
         title: "Home",
@@ -129,6 +143,25 @@ export default {
     ],
   }),
   methods: {
+    async loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: User;
+            };
+            this.accountData = message;
+          });
+    },
     passwordValidation(value: String) {
       if (this.passwordReg === value) return true;
       return "Both passwords must be similar.";
@@ -186,27 +219,30 @@ export default {
         },
       })
           .catch((error) => error.data)
-          .then((data) => this.get_status(data));
-    },
-    get_status({status: status, message: message}) {
-      if (status == 1) {
-        this.NotiText = "Registration Successful. Login with your account to begin!";
-        this.NotiColor = "success";
-        this.NotiIcon = "mdi-check-circle-outline";
-        this.snackbar = true;
-        this.dialogRe = false;
-      } else if (status == 2) {
-        this.NotiText = "Email already in use!";
-        this.NotiColor = "error";
-        this.NotiIcon = "mdi-alert";
-        this.snackbar = true;
-      } else {
-        this.NotiText = message;
-        this.NotiColor = "error";
-        this.NotiIcon = "mdi-alert";
-        this.snackbar = true;
-      }
-      this.isCardLoading = false;
+          .then((response) => {
+            const {message, status} = response as {
+              status: number;
+              message: any;
+            };
+            if (status === 1) {
+              this.NotiText = "Registration Successful. Login with your account to begin!";
+              this.NotiColor = "success";
+              this.NotiIcon = "mdi-check-circle-outline";
+              this.snackbar = true;
+              this.dialogRe = false;
+            } else if (status === 2) {
+              this.NotiText = "Email already in use!";
+              this.NotiColor = "error";
+              this.NotiIcon = "mdi-alert";
+              this.snackbar = true;
+            } else {
+              this.NotiText = message;
+              this.NotiColor = "error";
+              this.NotiIcon = "mdi-alert";
+              this.snackbar = true;
+            }
+            this.isCardLoading = false;
+          });
     },
   },
   computed: {
@@ -222,6 +258,9 @@ export default {
       this.drawer = false;
     },
   },
+  beforeMount() {
+    this.loadAccountData();
+  }
 };
 </script>
 
@@ -278,7 +317,7 @@ export default {
             >
               <v-icon class="mr-1" size="x-large">mdi-account-circle-outline</v-icon>
               <p>
-                {{ `${data.firstName} ${data.lastName.charAt(0)}.` }}
+                {{ `${accountData.first_name} ${accountData.last_name.charAt(0)}.` }}
               </p>
             </v-btn>
           </NuxtLink>
@@ -304,10 +343,10 @@ export default {
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                {{ data?.firstName + " " + data?.lastName }}
+                {{ accountData.first_name + " " + accountData.last_name }}
               </v-list-item-title>
-              <v-list-item-subtitle class="pb-1">
-                {{ data?.email }}
+              <v-list-item-subtitle>
+                {{ accountData.email }}
               </v-list-item-subtitle>
               <template v-slot:append>
                 <v-tooltip text="Account Settings">
@@ -327,6 +366,11 @@ export default {
                   </template>
                 </v-tooltip>
               </template>
+            </v-list-item>
+            <v-list-item height="auto">
+              <v-list-item-subtitle>
+                <v-icon>mdi-circle-multiple</v-icon> {{ accountData.points }} points
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-divider></v-divider>

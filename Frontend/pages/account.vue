@@ -11,9 +11,6 @@ useHead({
   title: 'My Account - Seatify',
   meta: [{name: 'Seatify App', content: 'My amazing site.'}],
 });
-defineExpose({
-  data
-});
 
 </script>
 
@@ -24,6 +21,7 @@ interface User {
   last_name: string;
   email: string;
   telephone: string | null;
+  points: number;
 }
 
 interface StatusData {
@@ -320,6 +318,7 @@ function toTitleCase(str: string) {
             <template v-if="data.role == 'USER'">Customer</template>
             <template v-else>{{ toTitleCase(data?.role) }}</template>
           </h3>
+          <h4><v-icon>mdi-circle-multiple</v-icon> {{ accountData.points }} points</h4>
         </v-col>
         <v-col class="user_rounded mt-10">
           <v-row class="mt-1 ml-2">

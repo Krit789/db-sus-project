@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import {useDisplay} from "vuetify";
+import "~/assets/stylesheets/navbar.css";
+import "~/assets/stylesheets/global.css";
 
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
@@ -28,8 +30,15 @@ const mySignInHandler = async ({email, password}: {
 </script>
 
 <script lang="ts">
-import "~/assets/stylesheets/navbar.css";
-import "~/assets/stylesheets/global.css";
+
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+  points: number;
+}
 
 export default {
   data: () => ({
@@ -51,6 +60,7 @@ export default {
     NotiIcon: "",
     timeout: 2000,
     isCardLoading: false,
+    accountData: {} as User,
     items: [
       {
         title: "Home",
@@ -129,6 +139,25 @@ export default {
     ],
   }),
   methods: {
+    async loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: User;
+            };
+            this.accountData = message;
+          });
+    },
     passwordValidation(value: String) {
       if (this.passwordReg === value) return true;
       return "Both passwords must be similar.";
@@ -222,6 +251,9 @@ export default {
       this.drawer = false;
     },
   },
+  beforeMount() {
+    this.loadAccountData();
+  }
 };
 </script>
 
@@ -306,7 +338,7 @@ export default {
               <v-list-item-title>
                 {{ data?.firstName + " " + data?.lastName }}
               </v-list-item-title>
-              <v-list-item-subtitle class="pb-1">
+              <v-list-item-subtitle>
                 {{ data?.email }}
               </v-list-item-subtitle>
               <template v-slot:append>
@@ -327,6 +359,11 @@ export default {
                   </template>
                 </v-tooltip>
               </template>
+            </v-list-item>
+            <v-list-item height="auto">
+              <v-list-item-subtitle>
+                <v-icon>mdi-circle-multiple</v-icon> {{ accountData.points }} points
+              </v-list-item-subtitle>
             </v-list-item>
           </v-list>
           <v-divider></v-divider>

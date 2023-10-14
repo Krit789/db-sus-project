@@ -398,7 +398,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     break;
                 case 12: #เรียกข้อมูลของตัวเอง
                     $id = $user_data['user_id'];
-                    $obj->select('users', "user_id `id`, first_name, last_name, email, telephone", null, "user_id=$id", null, 1);
+                    $obj->select('users', "user_id `id`, first_name, last_name, email, telephone, points", null, "user_id=$id", null, 1);
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

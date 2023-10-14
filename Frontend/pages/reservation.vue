@@ -442,8 +442,8 @@ export default {
 
                     <template v-slot:item="{internalItem, item, toggleExpand, isExpanded}">
                       <tr
-                          ripple
                           class="bg-transparent table-hover"
+                          ripple
                           @click="
                           () => {toggleExpand(internalItem);}">
                         <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
@@ -652,7 +652,7 @@ export default {
                     <v-card class="bg-transparent" elevation="0">
                       <h3 class="bg-transparent pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table class="bg-transparent" :density="mobile ? 'compact' : 'comfortable'" fixed-header=""
+                        <v-table :density="mobile ? 'compact' : 'comfortable'" class="bg-transparent" fixed-header=""
                                  height="400px">
                           <thead>
                           <tr>
@@ -678,8 +678,8 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      ripple=""
                                       color="red"
+                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { updateMenuById(0, order.id);  } ">
@@ -692,9 +692,9 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      ripple=""
                                       color="green"
                                       icon="mdi-plus ml-1"
+                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { updateMenuById(1, order.id); } ">
@@ -711,8 +711,8 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      ripple=""
                                       color="red"
+                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { removeMenuById(order.id); } ">

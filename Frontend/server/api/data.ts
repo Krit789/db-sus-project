@@ -14,13 +14,13 @@ export default defineEventHandler(async (event) => {
     const postBody = await readBody(event); // Read from POST body
 
     let url: string;
-    if (postBody.usage === "admin") {
+    if (postBody.usage === "admin")
         url = "/proxy/api/admin.php";
-    } else if (postBody.usage === "user") {
+    else if (postBody.usage === "user")
         url = "/proxy/api/user.php";
-    } else if (postBody.usage === "manager") {
+    else if (postBody.usage === "manager")
         url = "/proxy/api/manager.php";
-    } else {
+    else {
         setResponseStatus(event, 451);
         return {
             status: 0,

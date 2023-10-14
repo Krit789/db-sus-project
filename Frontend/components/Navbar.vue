@@ -58,13 +58,13 @@ export default {
     timeout: 2000,
     isCardLoading: false,
     accountData: {
-                  id: 0,
-                  first_name: "FN",
-                  last_name: "LN",
-                  email: "email",
-                  telephone: "",
-                  points: 0
-                } as User,
+      id: 0,
+      first_name: "FN",
+      last_name: "LN",
+      email: "email",
+      telephone: "",
+      points: 0
+    } as User,
     items: [
       {
         title: "Home",
@@ -369,7 +369,8 @@ export default {
             </v-list-item>
             <v-list-item height="auto">
               <v-list-item-subtitle>
-                <v-icon>mdi-circle-multiple</v-icon> {{ accountData.points }} points
+                <v-icon>mdi-circle-multiple</v-icon>
+                {{ accountData.points }} points
               </v-list-item-subtitle>
             </v-list-item>
           </v-list>

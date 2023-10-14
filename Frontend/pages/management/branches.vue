@@ -1289,7 +1289,7 @@ export default {
           <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh"
                  rounded="lg" text="Refresh" @click="loadData"></v-btn>
           <v-btn
-          v-if="data.role === 'GOD'"
+              v-if="data.role === 'GOD'"
               :disabled="dtLoading"
               :variant="'tonal'"
               class="ml-5 align-right mb-3"

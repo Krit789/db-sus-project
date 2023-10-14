@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="ts" setup xmlns:v="http://www.w3.org/1999/XSL/Transform">
 import {VStepper, VStepperHeader, VStepperItem, VStepperWindow, VStepperWindowItem} from 'vuetify/labs/VStepper';
 import {VSkeletonLoader} from 'vuetify/labs/VSkeletonLoader';
 import {DateTime, Interval} from 'luxon';
@@ -146,7 +146,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             if (status === 1) {
               this.locationList = message;
               this.isError = false;
@@ -173,7 +176,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.menuList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -195,7 +201,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.selectedLoc = message[0];
             this.pageSpinner = false;
             this.isError = false;
@@ -218,7 +227,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.seatList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -245,7 +257,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             if (status === 1) {
               this.resConfirm = true;
             } else {
@@ -313,7 +328,7 @@ export default {
 <template>
   <v-main class="justify-center reservation_main">
     <v-dialog v-model="resConfirm" :width="'auto'">
-      <v-card class="rounded-lg" :width="mobile ? 'auto' : '400px'">
+      <v-card :width="mobile ? 'auto' : '400px'" class="rounded-lg">
         <v-card-title>Confirmation</v-card-title>
         <v-card-text class="text-center">
           <v-icon color="success" icon="mdi-check" style="font-size: 120px"></v-icon>
@@ -333,7 +348,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block
+              block=""
               color="info"
               @click="
               () => {
@@ -357,7 +372,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block
+              block=""
               color="info"
               @click="
               () => {
@@ -377,31 +392,31 @@ export default {
             {{ errorData }}
           </v-alert>
           <v-stepper-header :elevation="0" class="branch-status rounded-xl blur-effect">
-            <v-stepper-item :complete="hasLocation" :disabled="hasLocation" value="1" color="#4279f6">
+            <v-stepper-item :complete="hasLocation" :disabled="hasLocation" color="#4279f6" value="1">
               <template v-slot:title>Select Branch</template>
             </v-stepper-item>
             <v-divider></v-divider>
 
-            <v-stepper-item value="2" color="#4279f6">
+            <v-stepper-item color="#4279f6" value="2">
               <template v-slot:title>Choose Time</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="3" color="#4279f6">
+            <v-stepper-item color="#4279f6" value="3">
               <template v-slot:title>Pick Your Seat</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="4" color="#4279f6">
+            <v-stepper-item color="#4279f6" value="4">
               <template v-slot:title>Pre-Order Food</template>
               <template v-slot:subtitle>Optional</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="5" color="#4279f6">
+            <v-stepper-item color="#4279f6" value="5">
               <template v-slot:title>Summary</template>
             </v-stepper-item>
           </v-stepper-header>
@@ -421,7 +436,7 @@ export default {
                                 color="rgba(255, 0, 0, 0)"
                                 item-value="location_id">
                     <template v-slot:top>
-                      <v-text-field v-model="dtSearch" placeholder="Search" class="bg-transparent"
+                      <v-text-field v-model="dtSearch" class="bg-transparent" placeholder="Search"
                                     prepend-inner-icon="mdi-text-search"></v-text-field>
                     </template>
 
@@ -551,7 +566,7 @@ export default {
                           <v-skeleton-loader width="600"></v-skeleton-loader>
                         </template>
                         <template v-slot:error>
-                          <v-img cover src="/images/img-error.webp" width="600"></v-img>
+                          <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
                     </v-col>
@@ -573,7 +588,7 @@ export default {
                       <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
                       <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute"
                                 :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name"
-                                prepend-inner-icon="mdi-table-chair" return-object></v-select>
+                                prepend-inner-icon="mdi-table-chair" return-object=""></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -635,9 +650,9 @@ export default {
                               ">
                               <v-card v-ripple>
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
-                                       cover height="300">
+                                       cover="" height="300">
                                   <template v-slot:error>
-                                    <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
+                                    <v-img cover="" height="300" src="/images/img-error.webp" width="300"></v-img>
                                   </template>
                                 </v-img>
                                 <v-card-title>
@@ -663,7 +678,7 @@ export default {
                     <v-card class="bg-transparent" elevation="0">
                       <h3 class="pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header height="400px">
+                        <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header="" height="400px">
                           <thead>
                           <tr>
                             <th class="bg-transparent text-left mx-0 px-0">Name</th>
@@ -932,7 +947,6 @@ export default {
 </template>
 
 <style scoped>
-
 
 
 .like-a-link {

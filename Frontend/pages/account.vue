@@ -318,7 +318,10 @@ function toTitleCase(str: string) {
             <template v-if="data.role == 'USER'">Customer</template>
             <template v-else>{{ toTitleCase(data?.role) }}</template>
           </h3>
-          <h4><v-icon>mdi-circle-multiple</v-icon> {{ accountData.points }} points</h4>
+          <h4>
+            <v-icon>mdi-circle-multiple</v-icon>
+            {{ accountData.points }} points
+          </h4>
         </v-col>
         <v-col class="user_rounded mt-10">
           <v-row class="mt-1 ml-2">

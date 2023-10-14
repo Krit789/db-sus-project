@@ -119,7 +119,7 @@ export default {
 
 <template>
   <v-container class="h-100 justify-center fill-height fluid" fill-height fluid=""
-               style="background: #BBDEFB;min-height: 100vh;">
+               style="background: #d6e3fb;min-height: 100vh;">
     <v-main class="my-a">
       <v-row class="mb-15" justify="center">
         <v-snackbar v-model=" snackbar" :color="NotiColor" :timeout="2000" location="top">

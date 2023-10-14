@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             foreach ($result1 as $datas) {
                                 $sum_p += $datas['item_price'] * $datas['amount'];
                             }
-                            $point += floor($sum_p/20);
+                            $point += floor($sum_p / 20);
                             $point -= $result[0]['point_used'];
 
                             $obj->update('users', ['points' => $point], "user_id={$result[0]['user_id']}");
@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $customer_count = $data->cus_count;
 
                     $point_u = $data->point_used;
-                    if ($point_u == NULL)$point_u=0;
+                    if ($point_u == NULL) $point_u = 0;
 
                     $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time, 'point_used' => $point_u]);
                     $result = $obj->getResult();
@@ -184,7 +184,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 $resutl = $obj->getResult(); #อยากเช็คแต่ยังก่อน
                             }
                             $obj->update('reservations', ['arrival' => $arrival, 'table_id' => $table_id, 'cus_count' => $customer_count], "res_id='{$res_id}'");
-                            if ($point_u != NULL)$obj->update('reservations', ['point_used' => $point_u], "res_id='{$res_id}'");
+                            if ($point_u != NULL) $obj->update('reservations', ['point_used' => $point_u], "res_id='{$res_id}'");
                             $result = $obj->getResult();
                             if ($result[0] == 1) {
                                 echo json_encode([

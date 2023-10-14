@@ -50,10 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $close_time = $obj->mysqli->real_escape_string($data->close_time);
                     $status = $data->status;
 
-                    if (isset($data->layout_img)){
+                    if (isset($data->layout_img)) {
                         $layout_img = $obj->mysqli->real_escape_string($data->layout_img);
                     }
-                    
+
                     if ($role == "MANAGER" || $role == "GOD") {
                         $obj->update("locations", ['name' => $loc_name, 'address' => $address, 'open_time' => $open_time, 'close_time' => $close_time, 'status' => $status, 'layout_img_url' => $layout_img], "location_id={$loc_id}");
                         $res = $obj->getResult();
@@ -250,7 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 1,
                             "message" => array()
                         ]);
-                    }else $ispermission = !$ispermission;
+                    } else $ispermission = !$ispermission;
                     break;
                 case 11: # Administrator, Manager ลบ menu ที่จะต้องการให้ไม่มีในสาขา
                     //ต้องส่งข้อมูล location_id, menu
@@ -277,7 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $res_id = $data->res_id;
 
                     if ($role == "MANAGER" || $role == "GOD") {
-                        $obj->select("orders",'*',"menus using (menu_id)", "res_id=$res_id");
+                        $obj->select("orders", '*', "menus using (menu_id)", "res_id=$res_id");
                         $res = $obj->getResult();
                         if ($res) echo json_encode([
                             'status' => 1,

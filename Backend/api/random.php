@@ -1,6 +1,5 @@
 <?php
-function randomCode($length)
-{
+function randomCode($length) {
     $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
@@ -10,8 +9,7 @@ function randomCode($length)
     return $randomString;
 }
 
-function randomPassword($length)
-{
+function randomPassword($length) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
     $charactersLength = strlen($characters);
     $randomString = '';

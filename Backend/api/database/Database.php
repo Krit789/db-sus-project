@@ -1,15 +1,13 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-class Database
-{
+class Database {
     public $mysqli = null;
     private $result = array();
     private $conn = false;
 
     //connect database using consturcted method
-    public function __construct()
-    {
+    public function __construct() {
         $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
         $dotenv->safeload();
         if (!$this->conn) {
@@ -31,8 +29,7 @@ class Database
     }
 
     // insert data
-    public function insert($table, $params = array())
-    {
+    public function insert($table, $params = array()) {
         if ($this->tableExist($table)) {
             $table_column = implode(', ', array_keys($params));
             $table_value = implode("', '", array_values($params));
@@ -57,8 +54,7 @@ class Database
         }
     }
 
-    private function tableExist($table)
-    {
+    private function tableExist($table) {
         $sql = "SHOW TABLES FROM " . $_SERVER['DB_DATABASE'] . " LIKE '{$table}'";
         // error_log($sql);
         $tableInDb = $this->mysqli->query($sql);
@@ -75,8 +71,7 @@ class Database
 
     // get data
 
-    public function insertlegacy($table, $table_column, $table_value)
-    {
+    public function insertlegacy($table, $table_column, $table_value) {
         if ($this->tableExist($table)) {
             $sql = "INSERT INTO $table ($table_column) VALUES $table_value";
             // echo $sql;
@@ -94,8 +89,7 @@ class Database
 
     // update data
 
-    public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $free = null, $group = null)
-    {
+    public function select($table, $row = "*", $join = null, $where = null, $order = null, $limit = null, $free = null, $group = null) {
         if ($this->tableExist($table)) {
             $sql = "SELECT $row FROM $table";
             if ($free != null)
@@ -134,8 +128,7 @@ class Database
 
     // update data
 
-    public function selectAndJoin($table, $row = "*", $left_join = null, $right_join = null, $where = null, $order = null, $limit = null, $free = null)
-    {
+    public function selectAndJoin($table, $row = "*", $left_join = null, $right_join = null, $where = null, $order = null, $limit = null, $free = null) {
         if ($this->tableExist($table)) {
             $sql = "SELECT $row FROM $table";
             if ($free != null)
@@ -173,8 +166,7 @@ class Database
 
     // delete data
 
-    public function update($table, $params = array(), $where = null)
-    {
+    public function update($table, $params = array(), $where = null) {
         if ($this->tableExist($table)) {
             $arg = array();
             foreach ($params as $key => $val) {
@@ -208,8 +200,7 @@ class Database
 
     // table exist
 
-    public function delete($table, $where = null)
-    {
+    public function delete($table, $where = null) {
         if ($this->tableExist($table)) {
             $sql = "DELETE FROM $table";
             if ($where != null) {
@@ -229,16 +220,14 @@ class Database
 
     // get result
 
-    public function getResult()
-    {
+    public function getResult() {
         $val = $this->result;
         $this->result = array();
         return $val;
     }
 
     // close the connection
-    public function __destruct()
-    {
+    public function __destruct() {
         if ($this->conn) {
             if ($this->mysqli->close()) {
                 $this->conn = false;

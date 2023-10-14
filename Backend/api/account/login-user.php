@@ -6,6 +6,7 @@ header("Access-Control-Allow-Headers: X-Requested-With");
 header('Content-Type:application/json');
 include '../../vendor/autoload.php';
 include '../check.php';
+
 use Firebase\JWT\JWT;
 
 $dotenv = Dotenv\Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);

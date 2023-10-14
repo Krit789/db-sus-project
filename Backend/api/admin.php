@@ -596,7 +596,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                         $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `reservation_amount`", null, null, 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1) as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
                         $res2 = $obj->getResult();
                         //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
-                        //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
+                        //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น
                         echo json_encode([
                             'status' => 1,
                             'message' => [$res, $res2]
@@ -623,7 +623,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $obj->select("locations", "location_id, locations.name as `l_name`, locations.address as `l_address`, users.first_name as `manager_fname`, users.last_name as `manager_lname`, sum(ifNULL(tmp.sum_price, 0)) as `total_earning`, count(distinct tmp.res_id) as `reservation_amount`", null, "location_id in ($tmp)", 'location_id', null, "left outer join (select location_id, res_id, arrival, menu_id, (menus.price*orders.amount) as `sum_price` from reservations join orders using (res_id) join tables using (table_id) join menus using (menu_id) right outer join locations using (location_id) where reservations.status = 1 and reservations.arrival between '$start' and '$end') as `tmp` using (location_id) join users on (users.user_id = locations.manager_id)", 'location_id');
                             $res2 = $obj->getResult();
                             //$res บอกแต่ละ reservation ว่าทำเงินได้เท่าไร
-                            //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น 
+                            //$res2 รวม reservation ทั้งหมดในสาขา และบอกจำนวนเงินที่ทำได้ใน สาขา นั้น
                             echo json_encode([
                                 'status' => 1,
                                 'message' => [$res, $res2]

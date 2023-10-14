@@ -10,17 +10,20 @@
     /*min-width: 100vw;*/
 }
 
+.branch-status{
+    background-color: #FFFFFF;
+}
 
 .summary-box {
     border-radius: 22px !important;
-    background: rgba(255, 255, 255, .8) !important;
+    background: rgba(255, 255, 255, 1) !important;
 }
 
 .img-layout {
     margin: 12px 0 0 0;
 }
 
-tr, td {
+th, tr, td {
     background: transparent !important;
     color: black;
 }

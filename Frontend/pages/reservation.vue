@@ -313,7 +313,7 @@ export default {
 <template>
   <v-main class="justify-center reservation_main">
     <v-dialog v-model="resConfirm" :width="'auto'">
-      <v-card :width="mobile ? 'auto' : '400px'">
+      <v-card class="rounded-lg" :width="mobile ? 'auto' : '400px'">
         <v-card-title>Confirmation</v-card-title>
         <v-card-text class="text-center">
           <v-icon color="success" icon="mdi-check" style="font-size: 120px"></v-icon>
@@ -376,32 +376,32 @@ export default {
           <v-alert v-if="isError" class="ma-3" color="error" icon="$error" title="Error">
             {{ errorData }}
           </v-alert>
-          <v-stepper-header :elevation="0" class="#E3F2FD rounded-xl blur-effect">
-            <v-stepper-item :complete="hasLocation" :disabled="hasLocation" value="1">
+          <v-stepper-header :elevation="0" class="branch-status rounded-xl blur-effect">
+            <v-stepper-item :complete="hasLocation" :disabled="hasLocation" value="1" color="#4279f6">
               <template v-slot:title>Select Branch</template>
             </v-stepper-item>
             <v-divider></v-divider>
 
-            <v-stepper-item value="2">
+            <v-stepper-item value="2" color="#4279f6">
               <template v-slot:title>Choose Time</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="3">
+            <v-stepper-item value="3" color="#4279f6">
               <template v-slot:title>Pick Your Seat</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="4">
+            <v-stepper-item value="4" color="#4279f6">
               <template v-slot:title>Pre-Order Food</template>
               <template v-slot:subtitle>Optional</template>
             </v-stepper-item>
 
             <v-divider></v-divider>
 
-            <v-stepper-item value="5">
+            <v-stepper-item value="5" color="#4279f6">
               <template v-slot:title>Summary</template>
             </v-stepper-item>
           </v-stepper-header>

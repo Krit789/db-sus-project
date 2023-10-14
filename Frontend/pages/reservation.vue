@@ -4,8 +4,6 @@ import {VSkeletonLoader} from 'vuetify/labs/VSkeletonLoader';
 import {DateTime, Interval} from 'luxon';
 import {VDataTable} from 'vuetify/labs/VDataTable';
 import {useDisplay} from 'vuetify';
-import '~/assets/stylesheets/global.css';
-import '~/assets/stylesheets/reservation.css';
 
 const {mobile} = useDisplay();
 const {status, data} = useAuth();
@@ -146,7 +144,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             if (status === 1) {
               this.locationList = message;
               this.isError = false;
@@ -173,7 +174,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.menuList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -195,7 +199,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.selectedLoc = message[0];
             this.pageSpinner = false;
             this.isError = false;
@@ -218,7 +225,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.seatList = message;
             this.pageSpinner = false;
             this.isError = false;
@@ -245,7 +255,10 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             if (status === 1) {
               this.resConfirm = true;
             } else {
@@ -417,31 +430,30 @@ export default {
                 <v-no-ssr>
                   <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
                                 :items="locationList" :loading="pageSpinner"
-                                :search="dtSearch" class="elevation-0 primary  bg-transparent"
+                                :search="dtSearch" class="elevation-0 primary bg-transparent"
                                 color="rgba(255, 0, 0, 0)"
                                 item-value="location_id">
                     <template v-slot:top>
-                      <v-text-field v-model="dtSearch" placeholder="Search"
+                      <v-text-field v-model="dtSearch" placeholder="Search" class="bg-transparent"
                                     prepend-inner-icon="mdi-text-search"></v-text-field>
                     </template>
 
-                    <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
+                    <template v-slot:item="{internalItem, item, toggleExpand, isExpanded}">
                       <tr
                           v-ripple
-                          class="table-hover"
+                          class="bg-transparent table-hover"
                           @click="
-                          () => {
-                            toggleExpand(internalItem);
-                          }
-                        ">
-                        <td class="text-start td-hover">{{ item.name }}</td>
-                        <td class="text-center td-hover">{{ DateTime.fromISO(item.close_time).toFormat('t') }}</td>
+                          () => {toggleExpand(internalItem);}">
+                        <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
+                        <td class="bg-transparent text-center td-hover">
+                          {{ DateTime.fromISO(item.close_time).toFormat('t') }}
+                        </td>
                       </tr>
                     </template>
 
                     <template v-slot:expanded-row="{ columns, item }">
-                      <tr>
-                        <td :colspan="columns.length" class="text-left">
+                      <tr class="bg-transparent">
+                        <td :colspan="columns.length" class="bg-transparent text-left">
                           <v-container>
                             <v-row>
                               <v-col col="12" sm="6">
@@ -667,10 +679,10 @@ export default {
                         <v-table :density="mobile ? 'compact' : 'comfortable'" fixed-header height="400px">
                           <thead>
                           <tr>
-                            <th class="text-left mx-0 px-0">Name</th>
-                            <th class="text-center mx-0 px-0">Amount</th>
-                            <th class="text-right px-0">Price</th>
-                            <th class="text-right mr-0 pr-0">
+                            <th class="bg-transparent text-left mx-0 px-0">Name</th>
+                            <th class="bg-transparent text-center mx-0 px-0">Amount</th>
+                            <th class="bg-transparent text-right px-0">Price</th>
+                            <th class="bg-transparent text-right mr-0 pr-0">
                               <v-icon size="xl-small">mdi-check-circle-outline</v-icon>
                             </th>
                           </tr>
@@ -864,9 +876,9 @@ export default {
                                      max-height="300px">
                               <thead>
                               <tr>
-                                <th class="text-left">Name</th>
-                                <th class="text-right">Amount</th>
-                                <th class="text-right">Price</th>
+                                <th class="bg-transparent text-left">Name</th>
+                                <th class="bg-transparent text-right">Amount</th>
+                                <th class="bg-transparent text-right">Price</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -933,6 +945,10 @@ export default {
 </template>
 
 <style scoped>
+
+@import '~/assets/stylesheets/global.css';
+@import '~/assets/stylesheets/reservation.css';
+
 .like-a-link {
   cursor: pointer;
 }

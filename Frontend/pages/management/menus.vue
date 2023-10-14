@@ -2,7 +2,10 @@
 // import { VDataTable } from "vuetify/labs/VDataTable";
 import {VDataTable} from "vuetify/labs/VDataTable";
 import {useDisplay} from "vuetify";
-
+import "~/assets/stylesheets/global.css";
+import "~/assets/stylesheets/index.css";
+import "~/assets/stylesheets/management/menus.css";
+import "~/assets/stylesheets/management/management.css";
 
 const {mobile} = useDisplay();
 const route = useRouter();
@@ -680,8 +683,5 @@ export default {
 </template>
 
 <style scoped>
-@import "~/assets/stylesheets/global.css";
-@import "~/assets/stylesheets/index.css";
-@import "~/assets/stylesheets/management/menus.css";
-@import "~/assets/stylesheets/management/management.css";
+
 </style>

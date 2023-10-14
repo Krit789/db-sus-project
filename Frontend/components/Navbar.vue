@@ -24,9 +24,6 @@ const mySignInHandler = async ({email, password}: {
     return true;
   }
 };
-// defineExpose({
-//   signOut
-// });
 </script>
 
 <script lang="ts">
@@ -60,7 +57,14 @@ export default {
     NotiIcon: "",
     timeout: 2000,
     isCardLoading: false,
-    accountData: {} as User,
+    accountData: {
+                  id: 0,
+                  first_name: "FN",
+                  last_name: "LN",
+                  email: "email",
+                  telephone: "",
+                  points: 0
+                } as User,
     items: [
       {
         title: "Home",

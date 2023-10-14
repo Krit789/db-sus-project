@@ -390,7 +390,7 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon
-                        v-ripple
+                        ripple
                         class="mr-3"
                         color="info"
                         v-bind="props"
@@ -411,7 +411,7 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon
-                        v-ripple
+                        ripple
                         color="red"
                         v-bind="props"
                         @click="
@@ -542,7 +542,7 @@ export default {
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
           </template>
           <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-            <tr v-ripple class="table-hover" @click="toggleGroup(item)">
+            <tr ripple class="table-hover" @click="toggleGroup(item)">
               <td :colspan="columns.length" class="text-start td-hover">
                 <v-btn :icon="isGroupOpen(item) ? '$expand' : '$next'" size="small" variant="text"></v-btn>
                 {{ item.value }} ({{ item.items.length }})
@@ -551,7 +551,7 @@ export default {
           </template>
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
-                v-ripple
+                ripple
                 class="table-hover"
                 @click="
                 () => {
@@ -619,7 +619,7 @@ export default {
                     <v-col cols="12" md="4" sm="6">
                       <b>Preview</b>
                       <br/>
-                      <v-card v-ripple class="text-center" elevation="4">
+                      <v-card ripple class="text-center" elevation="4">
                         <v-img :src="item.m_img ? item.m_img : '/images/img-coming-soon.webp'" aspect="16/9" cover
                                height="300">
                           <template v-slot:error>

@@ -364,7 +364,7 @@ export default {
           </template>
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
-                v-ripple
+                ripple
                 class="table-hover"
                 @click="
                 () => {

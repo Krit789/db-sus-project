@@ -442,7 +442,7 @@ export default {
 
                     <template v-slot:item="{internalItem, item, toggleExpand, isExpanded}">
                       <tr
-                          v-ripple
+                          ripple
                           class="bg-transparent table-hover"
                           @click="
                           () => {toggleExpand(internalItem);}">
@@ -622,7 +622,7 @@ export default {
                             <v-col
                                 v-for="food in menuList" :key="food.id" cols="12" md="6" sm="6"
                                 @click=" () => {  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });} ">
-                              <v-card v-ripple>
+                              <v-card ripple>
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover="" height="300">
                                   <template v-slot:error>
@@ -692,7 +692,7 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      v-ripple=""
+                                      ripple=""
                                       color="green"
                                       icon="mdi-plus ml-1"
                                       size="x-small"

@@ -340,7 +340,7 @@ export default {
                                 prepend-inner-icon="mdi-book-search"></v-text-field>
                 </template>
                 <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                  <tr v-ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
+                  <tr ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
                     <td class="text-center td-hover">{{ item.res_id }}</td>
                     <td class="text-center td-hover">
                       {{ item.user_id }}

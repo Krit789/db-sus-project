@@ -288,7 +288,7 @@ export default {
               loading-text="We're looking for your reservation, Hang tight!"
               sticky>
             <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-              <tr v-ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
+              <tr ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
                 <td class="td-hover text-left">
                   <v-tooltip location="top">
                     <template v-slot:activator="{ props }">

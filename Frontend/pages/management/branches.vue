@@ -1090,7 +1090,7 @@ export default {
           </v-card-text>
           <v-card-actions>
             <v-btn
-                block=""
+                block
                 color="primary"
                 @click="
                 () => {
@@ -1134,7 +1134,7 @@ export default {
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
                 class="table-hover"
-                ripple
+                v-ripple
                 @click="
                 () => {
                   toggleExpand(internalItem);

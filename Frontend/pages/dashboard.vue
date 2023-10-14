@@ -3,8 +3,10 @@ import {VDataTable} from 'vuetify/labs/VDataTable';
 import '~/assets/stylesheets/dashboard.css';
 import '~/assets/stylesheets/global.css';
 import {DateTime} from 'luxon';
+import {useDisplay} from 'vuetify';
 
 const {status, data, signIn, signOut} = useAuth();
+const {mobile} = useDisplay();
 
 useHead({
   title: 'My Reservation - Seatify',
@@ -288,7 +290,7 @@ export default {
               loading-text="We're looking for your reservation, Hang tight!"
               sticky>
             <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-              <tr class="text-end table-hover" ripple @click="toggleExpand(internalItem)">
+              <tr v-ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
                 <td class="td-hover text-left">
                   <v-tooltip location="top">
                     <template v-slot:activator="{ props }">
@@ -349,13 +351,11 @@ export default {
                             color="purple"
                             prepend-icon="mdi-food"
                             text="View Food Pre-Order"
-                            v-bind="props"
                             variant="text"
                             @click="
                             () => {
                               preOrderMenu = [];
-                              loadOrderByResID(item.res_id);
-                              foodViewDialog = true;
+                              loadOrderByResID(item.res_id).then(() => {foodViewDialog = true;});
                             }
                           "></v-btn>
                         <v-btn
@@ -389,7 +389,6 @@ export default {
                             color="red"
                             prepend-icon="mdi-cancel"
                             text="Cancel Reservation"
-                            v-bind="props"
                             variant="text"
                             @click="
                             () => {

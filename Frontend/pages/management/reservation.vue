@@ -340,7 +340,7 @@ export default {
                                 prepend-inner-icon="mdi-book-search"></v-text-field>
                 </template>
                 <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                  <tr class="text-end table-hover" ripple @click="toggleExpand(internalItem)">
+                  <tr class="text-end table-hover" v-ripple @click="toggleExpand(internalItem)">
                     <td class="text-center td-hover">{{ item.res_id }}</td>
                     <td class="text-center td-hover">
                       {{ item.user_id }}
@@ -420,13 +420,11 @@ export default {
                                 color="purple"
                                 prepend-icon="mdi-food"
                                 text="View Food Pre-Order"
-                                v-bind="props"
                                 variant="text"
                                 @click="
                                 () => {
                                   preOrderMenu = [];
-                                  loadOrderByResID(item.res_id);
-                                  foodViewDialog = true;
+                                  loadOrderByResID(item.res_id).then(() => {foodViewDialog = true;});
                                 }
                               "></v-btn>
                             <v-btn

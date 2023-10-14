@@ -320,18 +320,18 @@ export default {
 <template>
   <v-main class="justify-center report_main">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
-      <v-icon :icon="NotiIcon" start=""></v-icon>
+      <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
     </v-snackbar>
-    <v-dialog v-model="loadingDialog" :scrim="false" persistent="" width="200px">
+    <v-dialog v-model="loadingDialog" :scrim="false" persistent width="200px">
       <v-card color="primary">
         <v-card-text class="text-center">
           <p class="mb-1">Please Wait</p>
-          <v-progress-linear class="mb-0" color="white" indeterminate=""></v-progress-linear>
+          <v-progress-linear class="mb-0" color="white" indeterminate></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="selectReport" :fullscreen="mobile" :width="mobile ? '100%' : '900px'" persistent="">
+    <v-dialog v-model="selectReport" :fullscreen="mobile" :width="mobile ? '100%' : '900px'" persistent>
       <v-card class="" style="overflow: initial; z-index: initial">
         <v-card-title class="report-popup-header mt-4 mb-2 ml-1">Select Branches To Create Report</v-card-title>
         <v-card-item>

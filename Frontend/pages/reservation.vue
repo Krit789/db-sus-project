@@ -348,7 +348,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block=""
+              block
               color="info"
               @click="
               () => {
@@ -372,7 +372,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block=""
+              block
               color="info"
               @click="
               () => {
@@ -443,7 +443,7 @@ export default {
                     <template v-slot:item="{internalItem, item, toggleExpand, isExpanded}">
                       <tr
                           class="bg-transparent table-hover"
-                          ripple
+                          v-ripple
                           @click="
                           () => {toggleExpand(internalItem);}">
                         <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
@@ -565,7 +565,7 @@ export default {
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
 
-                          <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
+                          <v-img cover src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
                     </v-col>
@@ -582,7 +582,7 @@ export default {
                       <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
                       <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute"
                                 :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name"
-                                prepend-inner-icon="mdi-table-chair" return-object=""></v-select>
+                                prepend-inner-icon="mdi-table-chair" return-object></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -622,11 +622,11 @@ export default {
                             <v-col
                                 v-for="food in menuList" :key="food.id" cols="12" md="6" sm="6"
                                 @click=" () => {  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });} ">
-                              <v-card ripple>
+                              <v-card v-ripple>
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
-                                       cover="" height="300">
+                                       cover height="300">
                                   <template v-slot:error>
-                                    <v-img cover="" height="300" src="/images/img-error.webp" width="300"></v-img>
+                                    <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
                                   </template>
                                 </v-img>
                                 <v-card-title>
@@ -652,7 +652,7 @@ export default {
                     <v-card class="bg-transparent" elevation="0">
                       <h3 class="bg-transparent pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table :density="mobile ? 'compact' : 'comfortable'" class="bg-transparent" fixed-header=""
+                        <v-table :density="mobile ? 'compact' : 'comfortable'" class="bg-transparent" fixed-header
                                  height="400px">
                           <thead>
                           <tr>
@@ -679,7 +679,7 @@ export default {
                                 <template v-slot:activator="{ props }">
                                   <v-icon
                                       color="red"
-                                      ripple=""
+                                      v-ripple
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { updateMenuById(0, order.id);  } ">
@@ -694,7 +694,7 @@ export default {
                                   <v-icon
                                       color="green"
                                       icon="mdi-plus ml-1"
-                                      ripple=""
+                                      v-ripple
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { updateMenuById(1, order.id); } ">
@@ -712,7 +712,7 @@ export default {
                                 <template v-slot:activator="{ props }">
                                   <v-icon
                                       color="red"
-                                      ripple=""
+                                      v-ripple
                                       size="x-small"
                                       v-bind="props"
                                       @click=" () => { removeMenuById(order.id); } ">
@@ -825,10 +825,10 @@ export default {
                     </v-row>
                     <v-row>
                       <v-col>
-                        <v-card class="pa-3 bg-transparent summary-box">
+                        <v-card class="pa-3 bg-transparent summary-box" v-ripple>
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
-                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header=""
+                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
                                      max-height="300px">
                               <thead>
                               <tr>

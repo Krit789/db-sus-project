@@ -118,17 +118,17 @@ export default {
 </script>
 
 <template>
-  <v-container class="h-100 justify-center fill-height fluid" fill-height fluid=""
+  <v-container class="h-100 justify-center fill-height fluid" fill-height fluid
                style="background: #d6e3fb;min-height: 100vh;">
     <v-main class="my-a">
       <v-row class="mb-15" justify="center">
         <v-snackbar v-model=" snackbar" :color="NotiColor" :timeout="2000" location="top">
-          <v-icon :icon="NotiIcon" start=""></v-icon>
+          <v-icon :icon="NotiIcon" start></v-icon>
           {{ NotiText }}
         </v-snackbar>
         <v-card v-if="wantLogin" :loading="isCardLoading ? 'blue' : undefined"
                 :width="mobile ? '100%' : '700px'" class="blur-effect account_pane my-2">
-          <v-form class="justify-center" fast-fail="" @submit.prevent>
+          <v-form class="justify-center" fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3 text-center">
               <h1>Login</h1>
             </v-card-title>
@@ -195,7 +195,7 @@ export default {
         </v-card>
         <v-card v-else :loading="isCardLoading ? 'blue' : undefined"
                 :width="mobile ? '100%' : '700px'" class="blur-effect account_pane my-2">
-          <v-form fast-fail="" @submit.prevent>
+          <v-form fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3 text-center">
               <h1>Register</h1>
             </v-card-title>

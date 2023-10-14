@@ -395,7 +395,7 @@ export default {
                     <v-icon
                         class="mr-3"
                         color="info"
-                        ripple
+                        v-ripple
                         v-bind="props"
                         @click="
                           () => {
@@ -415,7 +415,7 @@ export default {
                   <template v-slot:activator="{ props }">
                     <v-icon
                         color="red"
-                        ripple
+                        v-ripple
                         v-bind="props"
                         @click="
                           () => {
@@ -545,7 +545,7 @@ export default {
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
           </template>
           <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-            <tr class="table-hover" ripple @click="toggleGroup(item)">
+            <tr class="table-hover" v-ripple @click="toggleGroup(item)">
               <td :colspan="columns.length" class="text-start td-hover">
                 <v-btn :icon="isGroupOpen(item) ? '$expand' : '$next'" size="small" variant="text"></v-btn>
                 {{ item.value }} ({{ item.items.length }})
@@ -555,7 +555,7 @@ export default {
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
                 class="table-hover"
-                ripple
+                v-ripple
                 @click="
                 () => {
                   toggleExpand(internalItem);
@@ -622,7 +622,7 @@ export default {
                     <v-col cols="12" md="4" sm="6">
                       <b>Preview</b>
                       <br/>
-                      <v-card class="text-center" elevation="4" ripple>
+                      <v-card class="text-center" elevation="4" v-ripple>
                         <v-img :src="item.m_img ? item.m_img : '/images/img-coming-soon.webp'" aspect="16/9" cover
                                height="300">
                           <template v-slot:error>

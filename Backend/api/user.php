@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $user = $user_data['user_id'];
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
-                    $point_u = 0;
+                    $point_u = null;
                     if (isset($data->point_used)){
                         $point_u = $data->point_used;
                     }

@@ -521,15 +521,15 @@ export default {
                   </tr>
                 </template>
                 <template v-slot:no-data>
-                  <v-alert color="info" icon="mdi-exclamation" title="Notice">
-                    <p>You don't have reservation to see.</p>
+                  <v-alert color="info" icon="mdi-exclamation" title="Notice" class="ma-3">
+                    <p>We don't have any reservations to show you. Try selecting different filters.</p>
                   </v-alert>
                 </template>
               </v-data-table>
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="mx-15">
+            <v-col cols="12" md="6">
               <p class="text-h5 text-left">Reservation Type</p>
               <v-select
                   v-model="resTypeSelect"
@@ -543,7 +543,7 @@ export default {
                   }
                 "></v-select>
             </v-col>
-            <v-col class="mx-15">
+            <v-col cols="12" md="6">
               <p class="text-h5 text-left">Branch</p>
               <v-select
                   v-model="locationIDSelect"

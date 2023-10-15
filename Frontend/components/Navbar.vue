@@ -367,7 +367,7 @@ export default {
                 </v-tooltip>
               </template>
             </v-list-item>
-            <v-list-item height="auto">
+            <v-list-item height="auto" v-if="data.role === 'USER'">
               <v-list-item-subtitle>
                 <v-icon>mdi-circle-multiple</v-icon>
                 {{ accountData.points }} points

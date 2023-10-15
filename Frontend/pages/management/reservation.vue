@@ -21,6 +21,10 @@ definePageMeta({
 </script>
 
 <script lang="ts">
+interface LocationItem {
+  l_id: number;
+  l_name: string;
+}
 interface MenuItem {
     m_id: number;
     m_name: string;
@@ -57,6 +61,8 @@ export default {
     dtErrorData: '',
     dtData: [] as Reservation[],
     preOrderMenu: [] as MenuItem[],
+    locationsList: [] as LocationItem[],
+    locationIDSelect: 0,
     pointUsed: 0,
     itemsPerPage: 10,
     dtLoading: false,
@@ -98,18 +104,22 @@ export default {
       {title: 'Table', align: 'end', key: 'table_id'},
       {title: 'Table Name', align: ' d-none', key: 'table_name'},
       {title: 'Status', align: 'end', key: 'res_status'},
-    ] as DataTableHeader[],
+    ],
   }),
   methods: {
     async loadData() {
       this.dtLoading = true;
-      await $fetch('/api/data', {
-        method: 'POST',
-        body: {
+      let requestBody = {
           type: 12,
           usage: 'admin',
           range: this.resTypeSelect,
-        },
+        }
+      if (this.locationIDSelect > 0) {
+        requestBody = Object.assign({}, requestBody, {loc_id: this.locationIDSelect})
+      }
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: requestBody,
         lazy: true,
       })
           .catch((error) => {
@@ -122,6 +132,36 @@ export default {
               message: any;
             };
             this.dtData = message;
+            this.dtLoading = false;
+            this.dtIsError = false;
+          });
+    },
+    async loadLocation() {
+      this.dtLoading = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 22,
+          usage: 'admin',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+            this.dtIsError = true;
+            this.dtErrorData = error.data;
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: any;
+            };
+            const defaultLocation = {
+              l_id: 0,
+              l_name: "All Branches",
+            };
+            const nextIndex = Object.keys(message).length;
+            message[nextIndex] = defaultLocation;
+            this.locationsList = message;
             this.dtLoading = false;
             this.dtIsError = false;
           });
@@ -241,6 +281,7 @@ export default {
   },
   beforeMount() {
     this.loadData();
+    this.loadLocation();
   },
 };
 </script>
@@ -496,6 +537,20 @@ export default {
                   density="compact"
                   item-title="title"
                   item-value="id"
+                  @update:modelValue="
+                  () => {
+                    loadData();
+                  }
+                "></v-select>
+            </v-col>
+            <v-col class="mx-15">
+              <p class="text-h5 text-left">Branch</p>
+              <v-select
+                  v-model="locationIDSelect"
+                  :items="locationsList"
+                  density="compact"
+                  item-title="l_name"
+                  item-value="l_id"
                   @update:modelValue="
                   () => {
                     loadData();

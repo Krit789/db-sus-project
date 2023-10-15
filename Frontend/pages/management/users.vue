@@ -30,6 +30,7 @@ type User = {
   role: "USER" | "MANAGER" | "GOD";
   created_on: string;
   status: "ACTIVE" | "SUSPENDED";
+  points: number;
 };
 
 export default {
@@ -419,6 +420,9 @@ export default {
                     <v-col cols="12" md="3" sm="6">
                       <b>Telephone</b>
                       <p>{{ item.telephone ? item.telephone : "-" }}</p>
+                      <br>
+                      <b>Points</b>
+                      <p><v-icon>mdi-circle-multiple</v-icon> {{ item.points }} pts.</p>
                     </v-col>
                     <v-col cols="12" md="3" sm="6">
                       <b>Created On</b>

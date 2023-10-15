@@ -48,24 +48,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 echo json_encode([
                                     'status' => 1,
                                     'message' => "Reseravtion Accepted",
-                                ], JSON_NUMERIC_CHECK);
+                                ]);
                             } else {
                                 echo json_encode([
                                     'status' => 0,
                                     'message' => "Server Problem",
-                                ], JSON_NUMERIC_CHECK);
+                                ]);
                             }
                         } else {
                             echo json_encode([
                                 'status' => 0,
                                 'message' => "Code not found"
-                            ], JSON_NUMERIC_CHECK);
+                            ]);
                         }
                     } else {
                         echo json_encode([
                             'status' => 0,
                             'message' => "Insufficient Permission",
-                        ], JSON_NUMERIC_CHECK);
+                        ]);
                     }
                     break;
                 case 2: #Customer ทำการยกเลิกการจอง หรือ Manager กับ Admin ทำการยกเลิกการจองนี้
@@ -76,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                     if (readReservation($user, $id) || $role == "MANAGER" || $role == "GOD") {
                         $obj->update('reservations', ['status' => 2], "res_id={$id}");
+                        $obj->rawUpdate('users', "points = points + (SELECT point_used FROM reservations WHERE res_id=$id)", "user_id=$user");
                         $result = $obj->getResult();
 
                         if ($result[0] == 1) echo json_encode([
@@ -100,19 +101,25 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $arrival = $data->arrival;
                     $customer_count = $data->cus_count;
                     $point_u = null;
+                    $insertion_row = ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time];
                     if (isset($data->point_used)){
-                        $point_u = $data->point_used;
+                        $insertion_row['point_used'] = $data->point_used;
                     }
 
-                    $obj->insert('reservations', ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time, 'point_used' => $point_u]);
+                    $obj->insert('reservations', $insertion_row);
                     $result = $obj->getResult();
                     if ($result[0] == 1) {
 
                         if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
                             $tmp = "";
+                            if (isset($data->point_used)){ // Reduce User Point upon reservation completion
+                                $obj->rawUpdate('users', "points = points - $data->point_used", "user_id=$user");
+                                $result = $obj->getResult();
+                                error_log(json_encode($result));
+                            }
                             $obj->select('reservations', 'res_id', null, "table_id=$table_id and user_id=$user", 'res_id desc', 1);
-                            $resutl = $obj->getResult();
-                            $res_id = $resutl[0]['res_id'];
+                            $result = $obj->getResult();
+                            $res_id = $result[0]['res_id'];
 
                             foreach ($data->menu as $menu) {
                                 //[0] menu_id [1] จำนวน
@@ -129,10 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $obj->insertlegacy('orders', 'res_id, menu_id, amount, item_price', $tmp);
                             # ต้องเช็คว่าเข้าไปไหมด้วย ??? หรือป่าว? ??
 
-                            $resutl = $obj->getResult();
-                            // if ($resutl[0] == 1){
+                            $result = $obj->getResult();
+                            // if ($result[0] == 1){
                             # Nothing just hanging around. เอาไว้เช็คว่าเข้าไหม ไม่ใช้
                             // }
+
                         }
 
                         echo json_encode([
@@ -183,7 +191,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 }
                                 $obj->insertlegacy('orders', 'res_id, menu_id, amount', $tmp);
 
-                                $resutl = $obj->getResult(); #อยากเช็คแต่ยังก่อน
+                                $result = $obj->getResult(); #อยากเช็คแต่ยังก่อน
                             }
                             $obj->update('reservations', ['arrival' => $arrival, 'table_id' => $table_id, 'cus_count' => $customer_count], "res_id='{$res_id}'");
                             if ($point_u != NULL) $obj->update('reservations', ['point_used' => $point_u], "res_id='{$res_id}'");
@@ -277,7 +285,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $time_range = ''; // or any other default value
                         }
                     }
-                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, locations.status as `location_status`", "tables using (table_id) join locations using (location_id)", "user_id={$id} " . ($time_range ? 'AND ' . $time_range : ''), 'res_id DESC', null);
+                    $obj->select('reservations', "res_id, arrival, reservations.status as `res_status`, cus_count, res_code, point_used, tables.name as `table_name`, tables.capacity as `table_capacity`, locations.name as `location_name`, locations.address as `location_address`, locations.status as `location_status`", "tables using (table_id) join locations using (location_id)", "user_id={$id} " . ($time_range ? 'AND ' . $time_range : ''), 'res_id DESC', null);
                     $res = $obj->getResult();
                     if ($res) {
                         echo json_encode([

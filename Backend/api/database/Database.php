@@ -198,6 +198,31 @@ class Database {
         }
     }
 
+
+    public function rawUpdate($table, $set, $where = null) {
+        if ($this->tableExist($table)) {
+            $sql = "UPDATE $table SET $set";
+            if ($where != null) {
+                $sql .= " WHERE $where";
+            }
+            try {
+                if ($this->mysqli->query($sql)) {
+                    array_push($this->result, true);
+                    return true;
+                } else {
+                    array_push($this->result, false);
+                    return false;
+                }
+            } catch (Exception $e) {
+                error_log("Error Occurred with the following query\n-- Query -----------------\n" . $sql . "\n-- Exception -------------\n" . $e . "\n-------------------------");
+                array_push($this->result, false);
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     // table exist
 
     public function delete($table, $where = null) {

@@ -64,6 +64,15 @@ interface LocationObject {
   manager_id: number;
 }
 
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+  points: number;
+}
+
 export default {
   data: () => ({
     isError: false,
@@ -78,7 +87,10 @@ export default {
     menuList: [] as MenuListObject[],
     seatList: [] as SeatObject[],
     filterSeatList: [] as SeatObject[],
+    accountData: {} as User,
     filterSeatCount: 0,
+    usePoint: false,
+    usePointAmount: 0,
     branchLayout: '',
     selectedLocID: 0,
     selectedLoc: {} as LocationObject,
@@ -94,6 +106,20 @@ export default {
     ],
   }),
   methods: {
+    setPoints(){
+      if (this.usePointAmount > Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))) {
+        this.usePointAmount = Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))
+      } else if (this.usePointAmount < 1) {
+        this.usePointAmount = 1
+      }
+    },
+    seatItemProps(item: any) {
+      return {
+        id: item.table_id,
+        title: item.name,
+        subtitle: `${item.capacity} ${(item.capacity == 1) ? 'people' : 'peoples'}`,
+      };
+    },
     addMenu(obj: MenuObject): void {
       if (!this.isMenuIDinPreOrder(obj.id)) {
         this.foodPreOrderList.push(obj);
@@ -185,6 +211,26 @@ export default {
             this.isError = false;
           });
     },
+    async loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: User;
+            };
+            this.accountData = message;
+            
+          });
+    },
     async loadLocationByID(locID: Number) {
       this.pageSpinner = true;
       await $fetch('/api/data', {
@@ -238,10 +284,7 @@ export default {
     },
     async makeReservation() {
       // console.log(this.foodPreOrderList)
-      this.pageSpinner = true;
-      await $fetch('/api/data', {
-        method: 'POST',
-        body: {
+      let requestBody = {
           type: 3,
           usage: 'user',
           location_id: this.selectedLocID,
@@ -249,7 +292,14 @@ export default {
           cus_count: this.resGuest,
           table_id: this.selectedSeat?.table_id,
           menu: this.foodPreOrderList,
-        },
+        }
+      if (this.usePointAmount > 0 && this.usePointAmount <= Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))){
+        requestBody = Object.assign({}, requestBody, {point_used: Number(this.usePointAmount)})
+      }
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: requestBody,
         lazy: true,
       })
           .catch((error) => {
@@ -305,8 +355,9 @@ export default {
   computed: {
     filteredSeatListCompute() {
       this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
-      this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest).length;
-      return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
+      this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2).length;
+      console.log()
+      return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2);
     },
     total: function () {
       return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
@@ -322,6 +373,7 @@ export default {
       this.stepper1 = 0;
     }
     this.loadLocation();
+    this.loadAccountData();
   },
 };
 </script>
@@ -575,13 +627,13 @@ export default {
                           v-model="resGuest" :on-update:model-value=" () => { selectedSeat = null; } "
                           :rules="[seatRule]"
                           min="1"
-                          oninput="validity.valid || (value=1);"
+                          oninput="this.value = (this.value) ? ((this.value > 0) ? this.value : 1) : this.value"
                           prepend-inner-icon="mdi-account-multiple"
                           required
                           type="number"></v-text-field>
                       <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
                       <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute"
-                                :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name"
+                                :item-props="seatItemProps" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name"
                                 prepend-inner-icon="mdi-table-chair" return-object></v-select>
                     </v-col>
                   </v-row>
@@ -825,9 +877,10 @@ export default {
                     </v-row>
                     <v-row>
                       <v-col>
-                        <v-card class="pa-3 bg-transparent summary-box" v-ripple>
+                        <v-card class="pa-3 bg-transparent summary-box">
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
+                            <v-card-item class="pa-0 ma-0">
                             <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
                                      max-height="300px">
                               <thead>
@@ -851,6 +904,26 @@ export default {
                               <td class="text-right">{{ total }} ฿</td>
                               </tbody>
                             </v-table>
+                            </v-card-item>
+                            <v-card-item class="ml-5 text-left pa-0 ma-0">
+                            <h3 class="mt-3 text-left text-h5 font-weight-medium">Additional Options</h3>
+                            <v-tooltip location="top left">
+                                <template v-slot:activator="{ props }">
+                                  <p v-bind="props">You currently have {{ accountData.points }} points.</p>
+                                </template>
+                                <span>1 Points equals to 1 Baht</span>
+                            </v-tooltip>
+                            <v-checkbox prepend-icon="mdi-circle-multiple" v-model="usePoint" color="primary" label="Use Points" :disabled="accountData.points < 1"></v-checkbox>
+                            <v-text-field
+                            v-if="usePoint"
+                          v-on:change="setPoints"
+                          v-model="usePointAmount"
+                          min="1"
+                          prepend-inner-icon="mdi-circle-multiple"
+                          required
+                          label="How many Points?"
+                          type="number"></v-text-field>
+                          </v-card-item>
                           </div>
                           <div v-else>
                             <p class="text-left ml-5">

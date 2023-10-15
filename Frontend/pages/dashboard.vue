@@ -14,17 +14,37 @@ useHead({
 });
 </script>
 <script lang="ts">
+interface Reservation {
+  res_id: number;
+  arrival: string;
+  res_status: "FULFILLED" | "CANCELLED" | "INPROGRESS";
+  cus_count: number;
+  res_code: string;
+  table_name: string;
+  table_capacity: number;
+  location_name: string;
+  location_address: string;
+  location_status: "OPERATIONAL";
+  point_used: number;
+}
+interface MenuItem {
+  m_id: number;
+  m_name: string;
+  m_price: number;
+  m_amount: number;
+}
+
+
 export default {
   data: () => ({
-    expandedDT: [],
     codeDialog: false,
     reservationCode: null,
     dtIsError: false,
     dtErrorData: '',
     isError: false,
     errorData: '',
-    dtData: [],
-    preOrderMenu: [],
+    dtData: [] as Reservation[],
+    preOrderMenu: [] as MenuItem[],
     itemsPerPage: 10,
     dtLoading: false,
     cancelReservationDialog: false,
@@ -37,6 +57,8 @@ export default {
     resTypeSelect: 2,
     loadingDialog: false,
     foodViewDialog: false,
+    preOrderLoading: false,
+    pointUsed: 0,
     resType: [
       {
         id: 0,
@@ -87,7 +109,7 @@ export default {
           });
     },
     async loadOrderByResID(res_id: number) {
-      this.loadingDialog = true;
+      this.preOrderLoading = true;
       await $fetch('/api/data', {
         method: 'POST',
         body: {
@@ -115,7 +137,7 @@ export default {
               this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             }
-            this.loadingDialog = false;
+            this.preOrderLoading = false;
           });
     },
     async cancelReservation(res_id: Number) {
@@ -158,7 +180,7 @@ export default {
   },
   computed: {
     total: function () {
-      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
+      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0);
     },
   },
   beforeMount() {
@@ -224,11 +246,15 @@ export default {
             </tr>
             </tbody>
           </v-table>
-          <v-table>
+          <v-table density="compact">
             <tbody>
+              <tr>
+              <td class="text-right font-weight-medium"><v-icon color="success">mdi-circle-multiple</v-icon> Points</td>
+              <td class="text-right font-weight-medium">{{ ((pointUsed) ? pointUsed : 0).toLocaleString() }} pts.</td>
+            </tr>
             <tr>
               <td class="text-right font-weight-medium">Total</td>
-              <td class="text-right font-weight-medium">{{ total }} ฿</td>
+              <td class="text-right font-weight-medium">{{ (total - pointUsed).toLocaleString() }} ฿</td>
             </tr>
             </tbody>
           </v-table>
@@ -277,7 +303,6 @@ export default {
         <v-no-ssr>
           <v-data-table
               :density="mobile ? 'compact' : 'comfortable'"
-              :expanded="expandedDT"
               :headers="dtHeaders"
               :items="dtData"
               :loading="dtLoading"
@@ -350,14 +375,16 @@ export default {
                         <v-btn
                             color="purple"
                             prepend-icon="mdi-food"
-                            text="View Food Pre-Order"
                             variant="text"
+                            class="text-left"
+                            width="222"
                             @click="
                             () => {
                               preOrderMenu = [];
-                              loadOrderByResID(item.res_id).then(() => {foodViewDialog = true;});
+                              pointUsed = item.point_used
+                              loadOrderByResID(item.res_id).then(() => {foodViewDialog = true; preOrderLoading = false;});
                             }
-                          "></v-btn>
+                          "><v-progress-circular indeterminate  v-if="preOrderLoading"></v-progress-circular><span v-if="!preOrderLoading">View Food Pre-Order</span></v-btn>
                         <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="success"
@@ -372,18 +399,17 @@ export default {
                           Reservation Code
                         </v-btn>
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
-                        <!-- <v-btn
+                        <v-btn
                           v-if="item.res_status === 'INPROGRESS'"
                           color="info"
                           prepend-icon="mdi-pencil"
                           text="Edit Reservation"
                           variant="text"
-                          v-bind="props"
                           @click="
                             () => {
                               // cancelReservation(item.res_id);
                             }
-                          "></v-btn> -->
+                          "></v-btn>
                         <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="red"

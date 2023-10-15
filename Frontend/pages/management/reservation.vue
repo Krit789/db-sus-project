@@ -21,6 +21,30 @@ definePageMeta({
 </script>
 
 <script lang="ts">
+interface MenuItem {
+    m_id: number;
+    m_name: string;
+    m_price: number;
+    m_amount: number;
+}
+interface Reservation {
+    res_id: number;
+    res_status: "FULFILLED" | "CANCELLED" | "INPROGRESS";
+    point_used: number | null;
+    cus_count: number;
+    arrival: string;
+    res_on: string;
+    loc_id: number;
+    loc_name: string;
+    loc_addr: string;
+    open_time: string;
+    close_time: string;
+    user_id: number;
+    first_name: string;
+    last_name: string;
+    table_id: number;
+    table_name: string;
+}
 export default {
   data: () => ({
     acceptRes: false as boolean,
@@ -31,8 +55,9 @@ export default {
     dtSearch: '',
     dtIsError: false,
     dtErrorData: '',
-    dtData: [],
-    preOrderMenu: [],
+    dtData: [] as Reservation[],
+    preOrderMenu: [] as MenuItem[],
+    pointUsed: 0,
     itemsPerPage: 10,
     dtLoading: false,
     foodViewDialog: false,
@@ -211,7 +236,7 @@ export default {
   },
   computed: {
     total: function () {
-      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0).toLocaleString();
+      return this.preOrderMenu.reduce((acc, item) => acc + item.m_price * item.m_amount, 0);
     },
   },
   beforeMount() {
@@ -247,11 +272,15 @@ export default {
             </tr>
             </tbody>
           </v-table>
-          <v-table>
+          <v-table density="compact">
             <tbody>
             <tr>
+              <td class="text-right font-weight-medium"><v-icon color="success">mdi-circle-multiple</v-icon> Points</td>
+              <td class="text-right font-weight-medium">{{  ((pointUsed) ? pointUsed : 0).toLocaleString() }} pts.</td>
+            </tr>
+            <tr>
               <td class="text-right font-weight-medium">Total</td>
-              <td class="text-right font-weight-medium">{{ total }} ฿</td>
+              <td class="text-right font-weight-medium">{{ (total - pointUsed).toLocaleString() }} ฿</td>
             </tr>
             </tbody>
           </v-table>
@@ -424,6 +453,7 @@ export default {
                                 @click="
                                 () => {
                                   preOrderMenu = [];
+                                  pointUsed = item.point_used
                                   loadOrderByResID(item.res_id).then(() => {foodViewDialog = true;});
                                 }
                               "></v-btn>

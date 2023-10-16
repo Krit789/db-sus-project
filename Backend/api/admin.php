@@ -349,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $time_range = ''; // or any other default value
                         }
                     }
-                    if (isset($data->loc_id)){
+                    if (isset($data->loc_id)) {
                         if ($time_range == '') {
                             $time_range .= " location_id = $data->loc_id";
                         } else {

@@ -102,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     $customer_count = $data->cus_count;
                     $point_u = null;
                     $insertion_row = ['table_id' => $table_id, 'user_id' => $user, 'arrival' => $arrival, 'status' => 3, 'cus_count' => $customer_count, 'res_code' => randomCode(8), 'create_time' => $time];
-                    if (isset($data->point_used)){
+                    if (isset($data->point_used)) {
                         $insertion_row['point_used'] = $data->point_used;
                     }
 
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         if (isset($data->menu[0])) { #ถ้ามี menu มาให้ทำอันนี้ menu ต้องเป็น array[2]: array[0]=>menu_id, array[1]=>amount ex.[[1, 2], [9, 2]]
                             $tmp = "";
-                            if (isset($data->point_used)){ // Reduce User Point upon reservation completion
+                            if (isset($data->point_used)) { // Reduce User Point upon reservation completion
                                 $obj->rawUpdate('users', "points = points - $data->point_used", "user_id=$user");
                                 $result = $obj->getResult();
                                 error_log(json_encode($result));

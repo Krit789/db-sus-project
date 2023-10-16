@@ -19,7 +19,7 @@ v-btn {
     border-radius: 32px;
 }
 
-img_background {
+.img_background {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

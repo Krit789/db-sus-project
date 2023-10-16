@@ -1,6 +1,6 @@
 <script lang="ts">
-import "~/assets/stylesheets/credit.css";
-import "~/assets/stylesheets/global.css";
+import '~/assets/stylesheets/credit.css';
+import '~/assets/stylesheets/global.css';
 
 export default {
   computed: {

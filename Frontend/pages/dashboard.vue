@@ -17,23 +17,23 @@ useHead({
 interface Reservation {
   res_id: number;
   arrival: string;
-  res_status: "FULFILLED" | "CANCELLED" | "INPROGRESS";
+  res_status: 'FULFILLED' | 'CANCELLED' | 'INPROGRESS';
   cus_count: number;
   res_code: string;
   table_name: string;
   table_capacity: number;
   location_name: string;
   location_address: string;
-  location_status: "OPERATIONAL";
+  location_status: 'OPERATIONAL';
   point_used: number;
 }
+
 interface MenuItem {
   m_id: number;
   m_name: string;
   m_price: number;
   m_amount: number;
 }
-
 
 export default {
   data: () => ({
@@ -248,9 +248,12 @@ export default {
           </v-table>
           <v-table density="compact">
             <tbody>
-              <tr>
-              <td class="text-right font-weight-medium"><v-icon color="success">mdi-circle-multiple</v-icon> Points</td>
-              <td class="text-right font-weight-medium">{{ ((pointUsed) ? pointUsed : 0).toLocaleString() }} pts.</td>
+            <tr>
+              <td class="text-right font-weight-medium">
+                <v-icon color="success">mdi-circle-multiple</v-icon>
+                Points
+              </td>
+              <td class="text-right font-weight-medium">{{ (pointUsed ? pointUsed : 0).toLocaleString() }} pts.</td>
             </tr>
             <tr>
               <td class="text-right font-weight-medium">Total</td>
@@ -266,10 +269,10 @@ export default {
               prepend-icon="mdi-close"
               variant="text"
               @click="
-            () => {
-              foodViewDialog = false;
-            }
-          ">
+              () => {
+                foodViewDialog = false;
+              }
+            ">
             Close
           </v-btn>
         </v-card-actions>
@@ -373,18 +376,24 @@ export default {
                     <v-row>
                       <v-col col="12" md="12" sm="6">
                         <v-btn
+                            class="text-left"
                             color="purple"
                             prepend-icon="mdi-food"
                             variant="text"
-                            class="text-left"
                             width="222"
                             @click="
                             () => {
                               preOrderMenu = [];
-                              pointUsed = item.point_used
-                              loadOrderByResID(item.res_id).then(() => {foodViewDialog = true; preOrderLoading = false;});
+                              pointUsed = item.point_used;
+                              loadOrderByResID(item.res_id).then(() => {
+                                foodViewDialog = true;
+                                preOrderLoading = false;
+                              });
                             }
-                          "><v-progress-circular indeterminate  v-if="preOrderLoading"></v-progress-circular><span v-if="!preOrderLoading">View Food Pre-Order</span></v-btn>
+                          ">
+                          <v-progress-circular v-if="preOrderLoading" indeterminate></v-progress-circular>
+                          <span v-if="!preOrderLoading">View Food Pre-Order</span>
+                        </v-btn>
                         <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="success"
@@ -400,12 +409,12 @@ export default {
                         </v-btn>
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
                         <v-btn
-                          v-if="item.res_status === 'INPROGRESS'"
-                          color="info"
-                          prepend-icon="mdi-pencil"
-                          text="Edit Reservation"
-                          variant="text"
-                          @click="
+                            v-if="item.res_status === 'INPROGRESS'"
+                            color="info"
+                            prepend-icon="mdi-pencil"
+                            text="Edit Reservation"
+                            variant="text"
+                            @click="
                             () => {
                               // cancelReservation(item.res_id);
                             }

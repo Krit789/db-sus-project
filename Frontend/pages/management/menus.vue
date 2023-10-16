@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 // import { VDataTable } from "vuetify/labs/VDataTable";
-import {VDataTable} from "vuetify/labs/VDataTable";
-import {useDisplay} from "vuetify";
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/management/menus.css";
-import "~/assets/stylesheets/management/management.css";
+import {VDataTable} from 'vuetify/labs/VDataTable';
+import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/index.css';
+import '~/assets/stylesheets/management/menus.css';
+import '~/assets/stylesheets/management/management.css';
 
 const {mobile} = useDisplay();
 const route = useRouter();
 const {status, data, signIn, signOut} = useAuth();
 useHead({
-  title: "Menu Management - Seatify Admin",
-  meta: [{name: "Seatify App", content: "My amazing site."}],
+  title: 'Menu Management - Seatify Admin',
+  meta: [{name: 'Seatify App', content: 'My amazing site.'}],
 });
 definePageMeta({
-  middleware: ["allowed-roles-only"],
-  meta: {permitted: ["GOD"]},
+  middleware: ['allowed-roles-only'],
+  meta: {permitted: ['GOD']},
 });
 </script>
 
@@ -38,56 +38,56 @@ interface MenuItem {
 
 export default {
   data: () => ({
-    groupBy: [{key: "c_name", order: "asc"}] as SortItem[],
+    groupBy: [{key: 'c_name', order: 'asc'}] as SortItem[],
     catRename: false,
     catRenameMode: 0,
     catDel: false,
     menuDialogMode: 0,
     addMenuDialog: false,
     manageCategory: false,
-    menuName: "",
-    menuDesc: "",
+    menuName: '',
+    menuDesc: '',
     menuID: 0,
     menuPrice: 69,
     menuCategoryID: 0,
-    menuCategoryName: "",
-    menuImgUrl: "",
+    menuCategoryName: '',
+    menuImgUrl: '',
     confDel: false,
-    dtSearch: "",
+    dtSearch: '',
     dtIsError: false,
-    dtErrorData: "",
+    dtErrorData: '',
     menuCategory: [] as menu_category[],
     dtData: [] as MenuItem[],
     dtExpand: [],
     itemsPerPage: 10,
     dtLoading: false,
     snackbar: false,
-    NotiColor: "",
+    NotiColor: '',
     timeout: 2000,
-    NotiIcon: "",
-    NotiText: "",
+    NotiIcon: '',
+    NotiText: '',
     dtHeaders: [
       // { title: "Menu ID", align: "start", key: "m_id" },
       // { title: "Menu Description", align: " d-none", key: "item_desc" },
       // { title: "Category", align: " d-none", key: "name" },
-      {title: "Name", align: "start", key: "m_name"},
-      {title: "Price", align: "start", key: "m_price"},
+      {title: 'Name', align: 'start', key: 'm_name'},
+      {title: 'Price', align: 'start', key: 'm_price'},
     ] as DataTableHeader[],
   }),
   methods: {
     urlValidator(url: string) {
       const expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
       const regex = new RegExp(expression);
-      if (url.match(regex) || url === "") return true;
-      return "Invalid URL Format";
+      if (url.match(regex) || url === '') return true;
+      return 'Invalid URL Format';
     },
     async loadData() {
       this.dtLoading = true;
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 5,
-          usage: "admin",
+          usage: 'admin',
         },
         lazy: true,
       })
@@ -98,7 +98,7 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.dtData = message;
             this.dtLoading = false;
@@ -107,11 +107,11 @@ export default {
     },
     async loadCategoryData() {
       this.dtLoading = true;
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 16,
-          usage: "admin",
+          usage: 'admin',
         },
         lazy: true,
       })
@@ -122,11 +122,11 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             const newCategory = {
               c_id: 0,
-              c_name: "Uncategorized",
+              c_name: 'Uncategorized',
             };
             const nextIndex = Object.keys(message).length;
             message[nextIndex] = newCategory;
@@ -137,11 +137,11 @@ export default {
     },
     async deleteMenu(menu_id: number) {
       this.dtLoading = true;
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 9,
-          usage: "admin",
+          usage: 'admin',
           menu_id: menu_id,
         },
         lazy: true,
@@ -153,19 +153,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
             this.confDel = false;
@@ -174,11 +174,11 @@ export default {
     },
     async deleteCategory(cat_id: number) {
       this.dtLoading = true;
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 15,
-          usage: "admin",
+          usage: 'admin',
           c_id: cat_id,
         },
         lazy: true,
@@ -190,19 +190,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
             this.catDel = false;
@@ -214,7 +214,7 @@ export default {
       this.dtLoading = true;
 
       let catQuery = {
-        usage: "admin",
+        usage: 'admin',
         c_name: cat_name,
       };
       if (cat_id > 0) {
@@ -223,8 +223,8 @@ export default {
         catQuery = Object.assign({}, catQuery, {type: 6});
       }
 
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: catQuery,
         lazy: true,
       })
@@ -235,19 +235,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
             this.catRename = false;
@@ -258,7 +258,7 @@ export default {
     async manageMenu(menu_id: number, menu_name: string, menu_price: number, menu_desc: string, menu_category_id: number, menu_img: string) {
       // this.dtLoading = true;
       let menuQuery = {
-        usage: "admin",
+        usage: 'admin',
         m_name: menu_name,
         price: menu_price,
       };
@@ -279,8 +279,8 @@ export default {
         menuQuery = Object.assign({}, menuQuery, {img_url: menu_img});
       }
       console.log(menuQuery);
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: menuQuery,
         lazy: true,
       })
@@ -291,19 +291,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.dtLoading = false;
             this.dtIsError = false;
             if (status === 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status === 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
             }
             this.addMenuDialog = false;
@@ -312,11 +312,11 @@ export default {
     },
     priceRule() {
       if (this.menuPrice >= 0) return true;
-      return "Price cannot be negative";
+      return 'Price cannot be negative';
     },
     requiredForm(value: string) {
       if (value) return true;
-      return "This field is required";
+      return 'This field is required';
     },
   },
 
@@ -341,8 +341,7 @@ export default {
               manageMenu(menuID, menuName, menuPrice, menuDesc, menuCategoryID, menuImgUrl);
             }
           "
-            @submit.prevent
-        >
+            @submit.prevent>
           <v-card-text>
             <v-text-field v-model="menuName" :rules="[requiredForm]" label="Name *"></v-text-field>
 
@@ -365,8 +364,7 @@ export default {
                 () => {
                   addMenuDialog = false;
                 }
-              "
-            >
+              ">
               Cancel
             </v-btn>
           </v-card-actions>
@@ -393,9 +391,9 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon
+                        v-ripple
                         class="mr-3"
                         color="info"
-                        v-ripple
                         v-bind="props"
                         @click="
                           () => {
@@ -404,8 +402,7 @@ export default {
                             catRenameMode = 0;
                             catRename = true;
                           }
-                        "
-                    >
+                        ">
                       mdi-pencil
                     </v-icon>
                   </template>
@@ -414,8 +411,8 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon
-                        color="red"
                         v-ripple
+                        color="red"
                         v-bind="props"
                         @click="
                           () => {
@@ -423,8 +420,7 @@ export default {
                             menuCategoryName = item.c_name;
                             catDel = true;
                           }
-                        "
-                    >
+                        ">
                       mdi-delete
                     </v-icon>
                   </template>
@@ -445,8 +441,7 @@ export default {
                 catRenameMode = 1;
                 catRename = true;
               }
-            "
-          >
+            ">
             Create Category
           </v-btn>
         </v-card-text>
@@ -473,8 +468,7 @@ export default {
                 deleteMenu(menuID);
                 menuID = 0;
               }
-            "
-          >
+            ">
             Confirm
           </v-btn>
           <v-btn color="error" prepend-icon="mdi-cancel" @click="confDel = false">Cancel</v-btn>
@@ -497,8 +491,7 @@ export default {
               () => {
                 deleteCategory(menuCategoryID);
               }
-            "
-          >
+            ">
             Confirm
           </v-btn>
           <v-btn color="error" prepend-icon="mdi-cancel" @click="catDel = false">Cancel</v-btn>
@@ -507,7 +500,7 @@ export default {
     </v-dialog>
     <v-dialog v-model="catRename" :width="'auto'">
       <v-card :width="mobile ? '250px' : '400px'">
-        <v-card-title>{{ catRenameMode === 0 ? "Rename Category" : "Create Category" }}</v-card-title>
+        <v-card-title>{{ catRenameMode === 0 ? 'Rename Category' : 'Create Category' }}</v-card-title>
         <v-card-text>
           <v-text-field v-model="menuCategoryName" label="Category Name"></v-text-field>
         </v-card-text>
@@ -519,9 +512,8 @@ export default {
               () => {
                 managCategory(menuCategoryID, menuCategoryName);
               }
-            "
-          >
-            {{ catRenameMode == 0 ? "Save" : "Create" }}
+            ">
+            {{ catRenameMode == 0 ? 'Save' : 'Create' }}
           </v-btn>
           <v-btn color="error" prepend-icon="mdi-cancel" @click="catRename = false">Cancel</v-btn>
         </v-card-actions>
@@ -529,7 +521,7 @@ export default {
     </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
-      <p class="text-h5 font-weight-light ml-8 text-left">{{ mobile ? "Tap" : "Click" }} on each category and menu to
+      <p class="text-h5 font-weight-light ml-8 text-left">{{ mobile ? 'Tap' : 'Click' }} on each category and menu to
         see further informations and actions</p>
       <v-sheet class="mt-8 ma-md-8 ma-sm-5" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
@@ -538,14 +530,13 @@ export default {
         </v-alert>
 
         <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders"
-                      :items="dtData"
-                      :loading="dtLoading" :search="dtSearch" class="elevation-1" fixed-header height="60vh"
-                      item-value="m_id" items-per-page="-1" sticky>
+                      :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" fixed-header
+                      height="60vh" item-value="m_id" items-per-page="-1" sticky>
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
           </template>
           <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-            <tr class="table-hover" v-ripple @click="toggleGroup(item)">
+            <tr v-ripple class="table-hover" @click="toggleGroup(item)">
               <td :colspan="columns.length" class="text-start td-hover">
                 <v-btn :icon="isGroupOpen(item) ? '$expand' : '$next'" size="small" variant="text"></v-btn>
                 {{ item.value }} ({{ item.items.length }})
@@ -554,14 +545,13 @@ export default {
           </template>
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
-                class="table-hover"
                 v-ripple
+                class="table-hover"
                 @click="
                 () => {
                   toggleExpand(internalItem);
                 }
-              "
-            >
+              ">
               <td class="text-start td-hover"></td>
               <td class="text-start td-hover">{{ item.m_name }}</td>
               <td class="text-start td-hover">{{ item.m_price.toLocaleString() }} ฿</td>
@@ -600,8 +590,7 @@ export default {
                             menuCategoryID = item.c_id ? item.c_id : 0;
                             addMenuDialog = true;
                           }
-                        "
-                      >
+                        ">
                         Edit Menu
                       </v-btn>
                       <v-btn
@@ -614,15 +603,14 @@ export default {
                             menuName = item.m_name;
                             confDel = true;
                           }
-                        "
-                      >
+                        ">
                         Remove Menu
                       </v-btn>
                     </v-col>
                     <v-col cols="12" md="4" sm="6">
                       <b>Preview</b>
                       <br/>
-                      <v-card class="text-center" elevation="4" v-ripple>
+                      <v-card v-ripple class="text-center" elevation="4">
                         <v-img :src="item.m_img ? item.m_img : '/images/img-coming-soon.webp'" aspect="16/9" cover
                                height="300">
                           <template v-slot:error>
@@ -672,8 +660,7 @@ export default {
                 menuCategoryID = 0;
                 addMenuDialog = true;
               }
-            "
-          ></v-btn>
+            "></v-btn>
           <v-btn :disabled="dtLoading" :variant="'tonal'" class="ml-5 mb-3" color="warning" prepend-icon="mdi-shape"
                  rounded="lg" text="Manage Category" @click="manageCategory = true"></v-btn>
         </v-col>
@@ -682,6 +669,4 @@ export default {
   </v-main>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,20 +1,17 @@
 <script lang="ts" setup>
-import {useDisplay} from "vuetify";
-import "~/assets/stylesheets/navbar.css";
-import "~/assets/stylesheets/global.css";
+import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/navbar.css';
+import '~/assets/stylesheets/global.css';
 
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
-const mySignInHandler = async ({email, password}: {
-  email: string;
-  password: string
-}) => {
-  const {error} = await signIn("credentials", {
+const mySignInHandler = async ({email, password}: { email: string; password: string }) => {
+  const {error} = await signIn('credentials', {
     email,
     password,
     redirect: false,
-    callbackUrl: "/",
+    callbackUrl: '/',
   });
   if (error) {
     // Do your custom error handling here
@@ -27,7 +24,6 @@ const mySignInHandler = async ({email, password}: {
 </script>
 
 <script lang="ts">
-
 interface User {
   id: number;
   first_name: string;
@@ -39,105 +35,105 @@ interface User {
 
 export default {
   data: () => ({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    email: "",
-    emailReg: "",
-    password: "",
-    passwordReg: "",
-    passwordRegConfirm: "",
+    first_name: '',
+    last_name: '',
+    phone: '',
+    email: '',
+    emailReg: '',
+    password: '',
+    passwordReg: '',
+    passwordRegConfirm: '',
     dialogIn: false,
     dialogRe: false,
     drawer: false,
     group: null,
     snackbar: false,
-    NotiText: "",
-    NotiColor: "",
-    NotiIcon: "",
+    NotiText: '',
+    NotiColor: '',
+    NotiIcon: '',
     timeout: 2000,
     isCardLoading: false,
     accountData: {
       id: 0,
-      first_name: "FN",
-      last_name: "LN",
-      email: "email",
-      telephone: "",
-      points: 0
+      first_name: 'FN',
+      last_name: 'LN',
+      email: 'email',
+      telephone: '',
+      points: 0,
     } as User,
     items: [
       {
-        title: "Home",
-        permitted: ["USER", "MANAGER", "GOD"],
-        value: "home",
-        action: "u-home",
+        title: 'Home',
+        permitted: ['USER', 'MANAGER', 'GOD'],
+        value: 'home',
+        action: 'u-home',
         props: {
-          prependIcon: "mdi-home",
+          prependIcon: 'mdi-home',
         },
       },
       {
-        title: "Reservation",
-        permitted: ["USER"],
-        value: "booking",
-        action: "u-booking",
+        title: 'Reservation',
+        permitted: ['USER'],
+        value: 'booking',
+        action: 'u-booking',
         props: {
-          prependIcon: "mdi-book-plus-multiple",
+          prependIcon: 'mdi-book-plus-multiple',
         },
       },
       {
-        title: "My Reservation",
-        permitted: ["USER"],
-        value: "status",
-        action: "u-status",
+        title: 'My Reservation',
+        permitted: ['USER'],
+        value: 'status',
+        action: 'u-status',
         props: {
-          prependIcon: "mdi-clipboard-text-clock",
+          prependIcon: 'mdi-clipboard-text-clock',
         },
       },
       {
-        title: "Report",
-        permitted: ["MANAGER", "GOD"],
-        value: "report",
-        action: "u-report",
+        title: 'Report',
+        permitted: ['MANAGER', 'GOD'],
+        value: 'report',
+        action: 'u-report',
         props: {
-          prependIcon: "mdi-chart-line",
+          prependIcon: 'mdi-chart-line',
         },
       },
     ],
     management: [
       {
-        title: "Branches",
-        permitted: ["MANAGER", "GOD"],
-        value: "mbranch",
-        action: "u-mbranch",
+        title: 'Branches',
+        permitted: ['MANAGER', 'GOD'],
+        value: 'mbranch',
+        action: 'u-mbranch',
         props: {
-          prependIcon: "mdi-store-marker",
+          prependIcon: 'mdi-store-marker',
         },
       },
       {
-        title: "Reservations",
-        permitted: ["MANAGER", "GOD"],
-        value: "mbooking",
-        action: "u-mbooking",
+        title: 'Reservations',
+        permitted: ['MANAGER', 'GOD'],
+        value: 'mbooking',
+        action: 'u-mbooking',
         props: {
-          prependIcon: "mdi-book-multiple",
+          prependIcon: 'mdi-book-multiple',
         },
       },
       {
-        title: "Menus",
-        permitted: ["GOD"],
-        value: "mmenu",
-        action: "u-menu",
+        title: 'Menus',
+        permitted: ['GOD'],
+        value: 'mmenu',
+        action: 'u-menu',
         props: {
-          prependIcon: "mdi-food",
+          prependIcon: 'mdi-food',
         },
       },
       {
-        title: "Users",
-        permitted: ["GOD"],
-        value: "muser",
-        action: "u-muser",
+        title: 'Users',
+        permitted: ['GOD'],
+        value: 'muser',
+        action: 'u-muser',
         props: {
-          prependIcon: "mdi-account",
+          prependIcon: 'mdi-account',
         },
       },
     ],
@@ -164,7 +160,7 @@ export default {
     },
     passwordValidation(value: String) {
       if (this.passwordReg === value) return true;
-      return "Both passwords must be similar.";
+      return 'Both passwords must be similar.';
     },
     emailValidation(value: String) {
       if (
@@ -174,42 +170,42 @@ export default {
       )
         return true;
 
-      return "E-Mail must be in correct format.";
+      return 'E-Mail must be in correct format.';
     },
     navActions: function (actions: String) {
       this.drawer = false;
       switch (actions) {
-        case "u-home":
-          this.$router.push("/");
+        case 'u-home':
+          this.$router.push('/');
           break;
-        case "u-booking":
-          this.$router.push("/reservation");
+        case 'u-booking':
+          this.$router.push('/reservation');
           break;
-        case "u-status":
-          this.$router.push("/dashboard");
+        case 'u-status':
+          this.$router.push('/dashboard');
           break;
-        case "u-report":
-          this.$router.push("/report");
+        case 'u-report':
+          this.$router.push('/report');
           break;
-        case "u-mbooking":
-          this.$router.push("/management/reservation");
+        case 'u-mbooking':
+          this.$router.push('/management/reservation');
           break;
-        case "u-mbranch":
-          this.$router.push("/management/branches");
+        case 'u-mbranch':
+          this.$router.push('/management/branches');
           break;
-        case "u-muser":
-          this.$router.push("/management/users");
+        case 'u-muser':
+          this.$router.push('/management/users');
           break;
-        case "u-menu":
-          this.$router.push("/management/menus");
+        case 'u-menu':
+          this.$router.push('/management/menus');
           break;
       }
       this.drawer = false;
     },
     makeRegistration: async function () {
       this.isCardLoading = true;
-      await $fetch("/proxy/api/account/create-user.php", {
-        method: "POST",
+      await $fetch('/proxy/api/account/create-user.php', {
+        method: 'POST',
         body: {
           fn: this.first_name,
           ln: this.last_name,
@@ -225,20 +221,20 @@ export default {
               message: any;
             };
             if (status === 1) {
-              this.NotiText = "Registration Successful. Login with your account to begin!";
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check-circle-outline";
+              this.NotiText = 'Registration Successful. Login with your account to begin!';
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check-circle-outline';
               this.snackbar = true;
               this.dialogRe = false;
             } else if (status === 2) {
-              this.NotiText = "Email already in use!";
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiText = 'Email already in use!';
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.snackbar = true;
             } else {
               this.NotiText = message;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.snackbar = true;
             }
             this.isCardLoading = false;
@@ -247,10 +243,10 @@ export default {
   },
   computed: {
     isLoginValid: function () {
-      return this.emailValidation(this.email) && this.password != "";
+      return this.emailValidation(this.email) && this.password != '';
     },
     isRegisValid() {
-      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != "" && this.last_name != "" && this.emailReg != "" && this.passwordRegConfirm != "";
+      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != '' && this.last_name != '' && this.emailReg != '' && this.passwordRegConfirm != '';
     },
   },
   watch: {
@@ -260,7 +256,7 @@ export default {
   },
   beforeMount() {
     this.loadAccountData();
-  }
+  },
 };
 </script>
 
@@ -278,8 +274,7 @@ export default {
             () => {
               $router.push('/');
             }
-          "
-        >
+          ">
           <NuxtLink :custom="true" to="/">Seatify | Seat Reservation Service</NuxtLink>
         </v-toolbar-title>
         <div v-if="status == 'unauthenticated' && !mobile">
@@ -290,8 +285,7 @@ export default {
               () => {
                 dialogRe = true;
               }
-            "
-          >
+            ">
             Register
           </v-btn>
           <v-btn
@@ -300,8 +294,7 @@ export default {
               () => {
                 dialogIn = true;
               }
-            "
-          >
+            ">
             Login
           </v-btn>
         </div>
@@ -313,8 +306,7 @@ export default {
                 () => {
                   $router.push('/account');
                 }
-              "
-            >
+              ">
               <v-icon class="mr-1" size="x-large">mdi-account-circle-outline</v-icon>
               <p>
                 {{ `${accountData.first_name} ${accountData.last_name.charAt(0)}.` }}
@@ -332,8 +324,7 @@ export default {
                 NotiIcon = 'mdi-check-circle-outline';
                 snackbar = true;
               })
-            "
-          >
+            ">
             Logout
           </v-btn>
         </div>
@@ -343,7 +334,7 @@ export default {
           <v-list>
             <v-list-item>
               <v-list-item-title>
-                {{ accountData.first_name + " " + accountData.last_name }}
+                {{ accountData.first_name + ' ' + accountData.last_name }}
               </v-list-item-title>
               <v-list-item-subtitle>
                 {{ accountData.email }}
@@ -361,13 +352,12 @@ export default {
                         () => {
                           $router.push('/account');
                         }
-                      "
-                    ></v-btn>
+                      "></v-btn>
                   </template>
                 </v-tooltip>
               </template>
             </v-list-item>
-            <v-list-item height="auto" v-if="data.role === 'USER'">
+            <v-list-item v-if="data.role === 'USER'" height="auto">
               <v-list-item-subtitle>
                 <v-icon>mdi-circle-multiple</v-icon>
                 {{ accountData.points }} points
@@ -414,8 +404,7 @@ export default {
                   NotiIcon = 'mdi-check-circle-outline';
                   snackbar = true;
                 })
-              "
-            ></v-list-item>
+              "></v-list-item>
           </v-list>
         </div>
         <div v-else>
@@ -433,8 +422,7 @@ export default {
                 () => {
                   dialogIn = true;
                 }
-              "
-            >
+              ">
               <v-list-item-title>Login</v-list-item-title>
             </v-list-item>
             <v-list-item
@@ -443,8 +431,7 @@ export default {
                 () => {
                   dialogRe = true;
                 }
-              "
-            >
+              ">
               <v-list-item-title>Register</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -477,8 +464,7 @@ export default {
                           dialogIn = false;
                           dialogRe = true;
                         }
-                      "
-                    >
+                      ">
                       Register Here
                     </a>
                   </p>
@@ -512,8 +498,7 @@ export default {
                         isCardLoading = false;
                       });
                     }
-                  "
-                >
+                  ">
                   Submit
                 </v-btn>
                 <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
@@ -573,8 +558,7 @@ export default {
                       dialogIn = true;
                       dialogRe = false;
                     }
-                  "
-                >
+                  ">
                   Login Here
                 </a>
               </p>

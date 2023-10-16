@@ -1,4 +1,4 @@
-import {getToken, getServerSession} from "#auth";
+import {getToken, getServerSession} from '#auth';
 
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event);
@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 403);
         return {
             status: 0,
-            message: "Access Denied",
+            message: 'Access Denied',
         };
     }
 
@@ -14,17 +14,14 @@ export default defineEventHandler(async (event) => {
     const postBody = await readBody(event); // Read from POST body
 
     let url: string;
-    if (postBody.usage === "admin")
-        url = "/proxy/api/admin.php";
-    else if (postBody.usage === "user")
-        url = "/proxy/api/user.php";
-    else if (postBody.usage === "manager")
-        url = "/proxy/api/manager.php";
+    if (postBody.usage === 'admin') url = '/proxy/api/admin.php';
+    else if (postBody.usage === 'user') url = '/proxy/api/user.php';
+    else if (postBody.usage === 'manager') url = '/proxy/api/manager.php';
     else {
         setResponseStatus(event, 451);
         return {
             status: 0,
-            message: "Invalid Usage",
+            message: 'Invalid Usage',
         };
     }
 
@@ -33,7 +30,7 @@ export default defineEventHandler(async (event) => {
         const result: any = Object.assign({}, postBody, tokenObj);
 
         const reservations = await $fetch(url, {
-            method: "POST",
+            method: 'POST',
             body: result,
         }).catch((error) => error.data);
         return reservations;
@@ -41,7 +38,7 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 418);
         return {
             status: 0,
-            message: "Invalid Session Token",
+            message: 'Invalid Session Token',
         };
     }
 });

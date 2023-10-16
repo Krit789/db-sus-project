@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import {VDataTable} from "vuetify/labs/VDataTable";
-import {DateTime} from "luxon";
-import {useDisplay} from "vuetify";
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
-import "~/assets/stylesheets/management/users.css";
-import "~/assets/stylesheets/management/management.css";
+import {VDataTable} from 'vuetify/labs/VDataTable';
+import {DateTime} from 'luxon';
+import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/index.css';
+import '~/assets/stylesheets/management/users.css';
+import '~/assets/stylesheets/management/management.css';
 
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRouter();
 useHead({
-  title: "User Management - Seatify Admin",
-  meta: [{name: "Seatify App", content: "My amazing site."}],
-  link: [{rel: "icon", type: "image/png", href: "favicon.ico"}],
+  title: 'User Management - Seatify Admin',
+  meta: [{name: 'Seatify App', content: 'My amazing site.'}],
+  link: [{rel: 'icon', type: 'image/png', href: 'favicon.ico'}],
 });
 definePageMeta({
-  middleware: ["allowed-roles-only"],
-  meta: {permitted: ["GOD"]},
+  middleware: ['allowed-roles-only'],
+  meta: {permitted: ['GOD']},
 });
 </script>
 <script lang="ts">
@@ -27,23 +27,23 @@ type User = {
   last_name: string;
   email: string;
   telephone: string | null;
-  role: "USER" | "MANAGER" | "GOD";
+  role: 'USER' | 'MANAGER' | 'GOD';
   created_on: string;
-  status: "ACTIVE" | "SUSPENDED";
+  status: 'ACTIVE' | 'SUSPENDED';
   points: number;
 };
 
 export default {
   data: () => ({
     snackbar: false,
-    NotiColor: "",
+    NotiColor: '',
     timeout: 2000,
-    NotiIcon: "",
-    NotiText: "",
+    NotiIcon: '',
+    NotiText: '',
     userID: 0,
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
     userRole: 1,
     userStatus: 0,
     loadingDialog: false,
@@ -51,52 +51,52 @@ export default {
     userStatusDialogType: 1, // 1 is reactivation : 2 is suspension
     userPWResetDialog: false,
     newUserPWDialog: false,
-    userNewPW: "",
+    userNewPW: '',
     userAction: false,
-    dtErrorData: "",
-    dtSearch: "",
+    dtErrorData: '',
+    dtSearch: '',
     dtIsError: false,
     dtData: [] as User[],
     roles: [
       {
         id: 1,
-        name: "User",
+        name: 'User',
       },
       {
         id: 2,
-        name: "Manager",
+        name: 'Manager',
       },
       {
         id: 3,
-        name: "Administrator",
+        name: 'Administrator',
       },
     ],
     itemsPerPage: 10,
     dtLoading: false,
     dtHeaders: [
       {
-        title: "User ID",
-        align: "center",
+        title: 'User ID',
+        align: 'center',
         sortable: true,
-        key: "user_id",
+        key: 'user_id',
       },
-      {title: "First Name", align: "start", key: "first_name"},
-      {title: "Last Name", align: "start", key: "last_name"},
-      {title: "Email", align: " d-none", key: "email"},
-      {title: "Telephone", align: " d-none", key: "telephone"},
-      {title: "Role", align: "start", key: "role"},
-      {title: "Created On", align: " d-none", key: "created_on"},
-      {title: "Status", align: "start", key: "status"},
+      {title: 'First Name', align: 'start', key: 'first_name'},
+      {title: 'Last Name', align: 'start', key: 'last_name'},
+      {title: 'Email', align: ' d-none', key: 'email'},
+      {title: 'Telephone', align: ' d-none', key: 'telephone'},
+      {title: 'Role', align: 'start', key: 'role'},
+      {title: 'Created On', align: ' d-none', key: 'created_on'},
+      {title: 'Status', align: 'start', key: 'status'},
     ] as DataTableHeader[],
   }),
   methods: {
     async loadData() {
       this.dtLoading = true;
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 1,
-          usage: "admin",
+          usage: 'admin',
         },
         lazy: true,
       })
@@ -107,7 +107,7 @@ export default {
           .then((response) => {
             const {message} = response as {
               status: number;
-              message: any
+              message: any;
             }; // Destructure inside the callback
             this.dtData = message;
             this.dtLoading = false;
@@ -115,11 +115,11 @@ export default {
           });
     },
     async updateRole(user_id: number, user_role: number) {
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 10,
-          usage: "admin",
+          usage: 'admin',
           u_role: user_role,
           u_id: user_id,
         },
@@ -132,19 +132,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: any;
-              message: any
+              message: any;
             }; // Destructure inside the callback
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
               this.loadData();
             }
@@ -152,11 +152,11 @@ export default {
           });
     },
     async changeStatus(user_id: number, user_status: number) {
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 2,
-          usage: "admin",
+          usage: 'admin',
           u_id: user_id,
           u_status: user_status,
         },
@@ -169,19 +169,19 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             }; // Destructure inside the callback
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
               this.NotiText = message;
               this.loadData();
             }
@@ -189,11 +189,11 @@ export default {
           });
     },
     async resetPassword(user_id: number) {
-      await $fetch("/api/data", {
-        method: "POST",
+      await $fetch('/api/data', {
+        method: 'POST',
         body: {
           type: 3,
-          usage: "admin",
+          usage: 'admin',
           u_id: user_id,
         },
         lazy: true,
@@ -205,20 +205,20 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: any;
-              message: any
+              message: any;
             }; // Destructure inside the callback
             this.dtLoading = false;
             this.dtIsError = false;
             if (status == 0) {
               this.snackbar = true;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.NotiText = message;
             } else if (status == 1) {
               this.snackbar = true;
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check";
-              this.NotiText = "Password Resetted!";
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check';
+              this.NotiText = 'Password Resetted!';
               this.userNewPW = message;
               this.newUserPWDialog = true;
             }
@@ -265,8 +265,7 @@ export default {
               () => {
                 updateRole(userID, userRole);
               }
-            "
-          >
+            ">
             Apply
           </v-btn>
           <v-btn append-icon="mdi-cancel" color="error" @click="userAction = false">Cancel</v-btn>
@@ -275,10 +274,10 @@ export default {
     </v-dialog>
     <v-dialog v-model="userStatusDialog" :fullscreen="mobile" :width="mobile ? '100%' : '500px'">
       <v-card :width="mobile ? '100%' : '500px'">
-        <v-card-title>{{ userStatusDialogType === 2 ? "Account Suspension" : "Account Activation" }}</v-card-title>
+        <v-card-title>{{ userStatusDialogType === 2 ? 'Account Suspension' : 'Account Activation' }}</v-card-title>
         <v-card-text>
-          <p>You are changing the status of '{{ firstName + " " + lastName }}' ID: {{ userID }} to
-            {{ userStatusDialogType === 2 ? "Suspended" : "Active" }} are you sure that you want to continue?</p>
+          <p>You are changing the status of '{{ firstName + ' ' + lastName }}' ID: {{ userID }} to
+            {{ userStatusDialogType === 2 ? 'Suspended' : 'Active' }} are you sure that you want to continue?</p>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -288,8 +287,7 @@ export default {
               () => {
                 changeStatus(userID, userStatusDialogType);
               }
-            "
-          >
+            ">
             Confirm
           </v-btn>
           <v-btn append-icon="mdi-cancel" color="error" @click="userStatusDialog = false">Cancel</v-btn>
@@ -300,7 +298,7 @@ export default {
       <v-card :width="mobile ? '100%' : '500px'">
         <v-card-title>Password Reset</v-card-title>
         <v-card-text>
-          <p>You resetting the password of '{{ firstName + " " + lastName }}' ID: {{ userID }} to a randomly generated
+          <p>You resetting the password of '{{ firstName + ' ' + lastName }}' ID: {{ userID }} to a randomly generated
             characters. Are you sure that you want to continue? A dialog showing the new password will follow.</p>
         </v-card-text>
         <v-card-actions>
@@ -313,8 +311,7 @@ export default {
                 resetPassword(userID);
                 userID = 0;
               }
-            "
-          >
+            ">
             Confirm
           </v-btn>
           <v-btn append-icon="mdi-cancel" color="error" @click="userPWResetDialog = false">Cancel</v-btn>
@@ -326,7 +323,7 @@ export default {
         <v-card-title>New Password</v-card-title>
         <v-card-text>
           <p>
-            This is the new password for '{{ firstName + " " + lastName }}' ID: {{ userID }}. This dialog will only show
+            This is the new password for '{{ firstName + ' ' + lastName }}' ID: {{ userID }}. This dialog will only show
             up
             <b>once</b>
             ! Make sure to keep it safe.
@@ -342,8 +339,7 @@ export default {
                 newUserPWDialog = false;
                 userNewPW = '';
               }
-            "
-          >
+            ">
             Close
           </v-btn>
         </v-card-actions>
@@ -365,14 +361,13 @@ export default {
           </template>
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
-                class="table-hover"
                 v-ripple
+                class="table-hover"
                 @click="
                 () => {
                   toggleExpand(internalItem);
                 }
-              "
-            >
+              ">
               <td class="text-center td-hover">{{ item.user_id }}</td>
               <td class="text-start td-hover">{{ item.first_name }}</td>
               <td class="text-start td-hover">{{ item.last_name }}</td>
@@ -380,12 +375,12 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon v-bind="props">{{
-                        item.role == "USER" ? "mdi-account-outline" : item.role == "MANAGER" ? "mdi-account-tie" : item.role == "GOD" ? "mdi-account-star" : "mdi-help"
+                        item.role == 'USER' ? 'mdi-account-outline' : item.role == 'MANAGER' ? 'mdi-account-tie' : item.role == 'GOD' ? 'mdi-account-star' : 'mdi-help'
                       }}
                     </v-icon>
                   </template>
                   <span>{{
-                      item.role == "USER" ? "Customer" : item.role == "MANAGER" ? "Manager" : item.role == "GOD" ? "Administrator" : item.role
+                      item.role == 'USER' ? 'Customer' : item.role == 'MANAGER' ? 'Manager' : item.role == 'GOD' ? 'Administrator' : item.role
                     }}</span>
                 </v-tooltip>
               </td>
@@ -393,12 +388,12 @@ export default {
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon v-bind="props">{{
-                        item.status == "ACTIVE" ? "mdi-check" : item.status == "SUSPENDED" ? "mdi-close" : "mdi-help"
+                        item.status == 'ACTIVE' ? 'mdi-check' : item.status == 'SUSPENDED' ? 'mdi-close' : 'mdi-help'
                       }}
                     </v-icon>
                   </template>
                   <span>{{
-                      item.status == "ACTIVE" ? "Active" : item.status == "SUSPENDED" ? "Suspended" : item.status
+                      item.status == 'ACTIVE' ? 'Active' : item.status == 'SUSPENDED' ? 'Suspended' : item.status
                     }}</span>
                 </v-tooltip>
               </td>
@@ -419,19 +414,22 @@ export default {
                     </v-col>
                     <v-col cols="12" md="3" sm="6">
                       <b>Telephone</b>
-                      <p>{{ item.telephone ? item.telephone : "-" }}</p>
-                      <br>
+                      <p>{{ item.telephone ? item.telephone : '-' }}</p>
+                      <br/>
                       <b>Points</b>
-                      <p><v-icon>mdi-circle-multiple</v-icon> {{ item.points }} pts.</p>
+                      <p>
+                        <v-icon>mdi-circle-multiple</v-icon>
+                        {{ item.points }} pts.
+                      </p>
                     </v-col>
                     <v-col cols="12" md="3" sm="6">
                       <b>Created On</b>
                       <p>
                         <v-icon>mdi-calendar-blank</v-icon>
-                        {{ DateTime.fromSQL(item.created_on).toFormat("DDDD") }}
+                        {{ DateTime.fromSQL(item.created_on).toFormat('DDDD') }}
                         <br/>
                         <v-icon>mdi-clock-outline</v-icon>
-                        {{ DateTime.fromSQL(item.created_on).toFormat("t") }}
+                        {{ DateTime.fromSQL(item.created_on).toFormat('t') }}
                       </p>
                     </v-col>
                   </v-row>
@@ -450,8 +448,7 @@ export default {
                             userRole = item.role == 'USER' ? 1 : item.role == 'MANAGER' ? 2 : item.role == 'GOD' ? 3 : 1;
                             userAction = true;
                           }
-                        "
-                      >
+                        ">
                         Edit
                       </v-btn>
                       <v-btn
@@ -468,8 +465,7 @@ export default {
                             userStatusDialog = true;
                             userStatusDialogType = 2;
                           }
-                        "
-                      >
+                        ">
                         Suspend User
                       </v-btn>
                       <v-btn
@@ -486,8 +482,7 @@ export default {
                             userStatusDialog = true;
                             userStatusDialogType = 1;
                           }
-                        "
-                      >
+                        ">
                         Activate User
                       </v-btn>
                       <v-btn
@@ -502,8 +497,7 @@ export default {
                             userNewPW = '';
                             userPWResetDialog = true;
                           }
-                        "
-                      >
+                        ">
                         Reset Password
                       </v-btn>
                     </v-col>

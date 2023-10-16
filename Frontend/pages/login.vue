@@ -1,35 +1,32 @@
 <script lang="ts" setup>
-import "~/assets/stylesheets/global.css";
-import "~/assets/stylesheets/index.css";
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/index.css';
 
-import {useDisplay} from "vuetify";
+import {useDisplay} from 'vuetify';
 
 const {mobile} = useDisplay();
 definePageMeta({
   auth: {
     unauthenticatedOnly: true,
-    navigateAuthenticatedTo: "/",
+    navigateAuthenticatedTo: '/',
   },
 });
 useHead({
-  title: "Seatify: Authentication Required",
+  title: 'Seatify: Authentication Required',
   meta: [
     {
-      name: "Seatify: Seat Reservation Service",
-      content: "Seatify, The Seat Reservation Service that makes the difference.",
+      name: 'Seatify: Seat Reservation Service',
+      content: 'Seatify, The Seat Reservation Service that makes the difference.',
     },
   ],
 });
 const {status, data, signIn} = useAuth();
-const mySignInHandler = async ({email, password}: {
-  email: string;
-  password: string
-}) => {
-  const {error} = await signIn("credentials", {
+const mySignInHandler = async ({email, password}: { email: string; password: string }) => {
+  const {error} = await signIn('credentials', {
     email,
     password,
     redirect: true,
-    callbackUrl: "/",
+    callbackUrl: '/',
   });
   return !error;
 };
@@ -38,25 +35,25 @@ const mySignInHandler = async ({email, password}: {
 <script lang="ts">
 export default {
   data: () => ({
-    first_name: "",
-    last_name: "",
-    phone: "",
-    emailReg: "",
-    passwordReg: "",
-    passwordRegConfirm: "",
-    email: "",
-    password: "",
+    first_name: '',
+    last_name: '',
+    phone: '',
+    emailReg: '',
+    passwordReg: '',
+    passwordRegConfirm: '',
+    email: '',
+    password: '',
     snackbar: false,
-    NotiText: "",
-    NotiColor: "",
-    NotiIcon: "",
+    NotiText: '',
+    NotiColor: '',
+    NotiIcon: '',
     wantLogin: true,
     isCardLoading: false,
   }),
   methods: {
     passwordValidation(value: String) {
       if (this.passwordReg === value) return true;
-      return "Both passwords must be similar.";
+      return 'Both passwords must be similar.';
     },
     emailValidation(value: String) {
       if (
@@ -66,12 +63,12 @@ export default {
       )
         return true;
 
-      return "E-Mail must be in correct format.";
+      return 'E-Mail must be in correct format.';
     },
     makeRegistration: async function () {
       this.isCardLoading = true;
-      await $fetch("/proxy/api/account/create-user.php", {
-        method: "POST",
+      await $fetch('/proxy/api/account/create-user.php', {
+        method: 'POST',
         body: {
           fn: this.first_name,
           ln: this.last_name,
@@ -84,22 +81,22 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             if (status == 1) {
-              this.NotiText = "Registration Successful. Login with your account to begin!";
-              this.NotiColor = "success";
-              this.NotiIcon = "mdi-check-circle-outline";
+              this.NotiText = 'Registration Successful. Login with your account to begin!';
+              this.NotiColor = 'success';
+              this.NotiIcon = 'mdi-check-circle-outline';
               this.snackbar = true;
             } else if (status == 2) {
-              this.NotiText = "Email already in use!";
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiText = 'Email already in use!';
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.snackbar = true;
             } else {
               this.NotiText = message;
-              this.NotiColor = "error";
-              this.NotiIcon = "mdi-alert";
+              this.NotiColor = 'error';
+              this.NotiIcon = 'mdi-alert';
               this.snackbar = true;
             }
             this.isCardLoading = false;
@@ -108,10 +105,10 @@ export default {
   },
   computed: {
     isLoginValid: function () {
-      return this.emailValidation(this.email) && this.password != "";
+      return this.emailValidation(this.email) && this.password != '';
     },
     isRegisValid() {
-      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != "" && this.last_name != "" && this.emailReg != "" && this.passwordRegConfirm != "";
+      return this.emailValidation(this.emailReg) && this.passwordValidation(this.passwordRegConfirm) && this.first_name != '' && this.last_name != '' && this.emailReg != '' && this.passwordRegConfirm != '';
     },
   },
 };
@@ -119,15 +116,15 @@ export default {
 
 <template>
   <v-container class="h-100 justify-center fill-height fluid" fill-height fluid
-               style="background: #d6e3fb;min-height: 100vh;">
+               style="background: #d6e3fb; min-height: 100vh">
     <v-main class="my-a">
       <v-row class="mb-15" justify="center">
-        <v-snackbar v-model=" snackbar" :color="NotiColor" :timeout="2000" location="top">
+        <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="2000" location="top">
           <v-icon :icon="NotiIcon" start></v-icon>
           {{ NotiText }}
         </v-snackbar>
-        <v-card v-if="wantLogin" :loading="isCardLoading ? 'blue' : undefined"
-                :width="mobile ? '100%' : '700px'" class="blur-effect account_pane my-2">
+        <v-card v-if="wantLogin" :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                class="blur-effect account_pane my-2">
           <v-form class="justify-center" fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3 text-center">
               <h1>Login</h1>
@@ -147,11 +144,10 @@ export default {
                 <a
                     class="like-a-link"
                     @click="
-                () => {
-                  wantLogin = false;
-                }
-              "
-                >
+                    () => {
+                      wantLogin = false;
+                    }
+                  ">
                   Register Here
                 </a>
               </p>
@@ -163,28 +159,27 @@ export default {
                   rounded="lg"
                   type="submit"
                   @click="
-              () => {
-                isCardLoading = true;
-                mySignInHandler({
-                  email: email,
-                  password: password,
-                }).then((val) => {
-                  if (val) {
-                    NotiText = 'Sign In Success!';
-                    NotiColor = 'success';
-                    NotiIcon = 'mdi-check-circle-outline';
-                    snackbar = true;
-                  } else {
-                    NotiText = 'Sign In Failure!';
-                    NotiColor = 'error';
-                    NotiIcon = 'mdi-alert-circle';
-                    snackbar = true;
+                  () => {
+                    isCardLoading = true;
+                    mySignInHandler({
+                      email: email,
+                      password: password,
+                    }).then((val) => {
+                      if (val) {
+                        NotiText = 'Sign In Success!';
+                        NotiColor = 'success';
+                        NotiIcon = 'mdi-check-circle-outline';
+                        snackbar = true;
+                      } else {
+                        NotiText = 'Sign In Failure!';
+                        NotiColor = 'error';
+                        NotiIcon = 'mdi-alert-circle';
+                        snackbar = true;
+                      }
+                      isCardLoading = false;
+                    });
                   }
-                  isCardLoading = false;
-                });
-              }
-            "
-              >
+                ">
                 Submit
               </v-btn>
               <v-btn :variant="'plain'" class="mt-2 cancel_button" color="primary" rounded="lg"
@@ -193,8 +188,8 @@ export default {
             </v-card-actions>
           </v-form>
         </v-card>
-        <v-card v-else :loading="isCardLoading ? 'blue' : undefined"
-                :width="mobile ? '100%' : '700px'" class="blur-effect account_pane my-2">
+        <v-card v-else :loading="isCardLoading ? 'blue' : undefined" :width="mobile ? '100%' : '700px'"
+                class="blur-effect account_pane my-2">
           <v-form fast-fail @submit.prevent>
             <v-card-title class="mt-4 ml-4 pb-3 text-center">
               <h1>Register</h1>
@@ -227,9 +222,8 @@ export default {
                                   type="password"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]"
-                                  label="Confirm Password *" prepend-inner-icon="mdi-lock-check"
-                                  type="password"></v-text-field>
+                    <v-text-field v-model="passwordRegConfirm" :rules="[passwordValidation]" label="Confirm Password *"
+                                  prepend-inner-icon="mdi-lock-check" type="password"></v-text-field>
                   </v-col>
                 </v-row>
               </v-sheet>
@@ -238,11 +232,10 @@ export default {
                 <a
                     class="like-a-link"
                     @click="
-                () => {
-                  wantLogin = true;
-                }
-              "
-                >
+                    () => {
+                      wantLogin = true;
+                    }
+                  ">
                   Login Here
                 </a>
               </p>
@@ -256,6 +249,5 @@ export default {
         </v-card>
       </v-row>
     </v-main>
-
   </v-container>
 </template>

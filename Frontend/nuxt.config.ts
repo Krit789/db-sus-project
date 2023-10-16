@@ -1,15 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, {transformAssetUrls} from "vite-plugin-vuetify";
+import vuetify, {transformAssetUrls} from 'vite-plugin-vuetify';
 
 export default defineNuxtConfig({
     app: {
-        pageTransition: {name: "page", mode: "out-in"},
+        pageTransition: {name: 'page', mode: 'out-in'},
         head: {
-            link: [{rel: "icon", type: "image/png", href: "/favicon.ico"}],
+            link: [{rel: 'icon', type: 'image/png', href: '/favicon.ico'}],
             script: [
                 // Polyfills for Safari 13.1 support
                 // <script src="https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at"></script>
-                {src: "https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at"},
+                {src: 'https://polyfill.io/v3/polyfill.min.js?features=IntersectionObserver,ResizeObserver,WebAnimations,Object.fromEntries,Array.prototype.at'},
             ],
         },
     },
@@ -20,15 +20,15 @@ export default defineNuxtConfig({
             enabled: true,
         },
     },
-    css: ["vuetify/styles/main.sass"],
+    css: ['vuetify/styles/main.sass'],
     build: {
-        transpile: ["vuetify"],
+        transpile: ['vuetify'],
     },
     modules: [
-        "@sidebase/nuxt-auth",
+        '@sidebase/nuxt-auth',
         /* Treeshaking: https://next.vuetifyjs.com/en/features/treeshaking/ */
         (_options, nuxt) => {
-            nuxt.hooks.hook("vite:extendConfig", (config) => {
+            nuxt.hooks.hook('vite:extendConfig', (config) => {
                 // @ts-expect-error
                 config.plugins.push(vuetify({autoImport: true}));
             });
@@ -39,9 +39,9 @@ export default defineNuxtConfig({
         isEnabled: true,
         override: true,
         // The origin is set to the development origin. Change this when deploying to production by setting `origin` in this config before build-time or by exporting `AUTH_ORIGIN` by running `export AUTH_ORIGIN=...`
-        origin: "http://localhost:3000",
+        origin: 'http://localhost:3000',
         // The base path to the authentication endpoints. Change this if you want to add your auth-endpoints at a non-default location
-        basePath: "/api/auth",
+        basePath: '/api/auth',
         // Whether to periodically refresh the session. Change this to `true` for a refresh every seconds or set this to a number like `5000` for a refresh every 5000 milliseconds (aka: 5 seconds)
         enableSessionRefreshPeriodically: false,
         // Whether to refresh the session whenever a window focus event happens, i.e, when your user refocuses the window. Set this to `false` to turn this off
@@ -62,8 +62,8 @@ export default defineNuxtConfig({
     },
     nitro: {
         routeRules: {
-            "/management/**": {ssr: false},
-            "/proxy/**": {proxy: "https://s.iservkmitl.tech/**"},  // For prod
+            '/management/**': {ssr: false},
+            '/proxy/**': {proxy: 'https://s.iservkmitl.tech/**'}, // For prod
             // "/proxy/**": { proxy: "http://127.0.0.1:8000/**" }, // For local development
         },
     },

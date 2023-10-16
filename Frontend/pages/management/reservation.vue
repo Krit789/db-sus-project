@@ -25,30 +25,33 @@ interface LocationItem {
   l_id: number;
   l_name: string;
 }
+
 interface MenuItem {
-    m_id: number;
-    m_name: string;
-    m_price: number;
-    m_amount: number;
+  m_id: number;
+  m_name: string;
+  m_price: number;
+  m_amount: number;
 }
+
 interface Reservation {
-    res_id: number;
-    res_status: "FULFILLED" | "CANCELLED" | "INPROGRESS";
-    point_used: number | null;
-    cus_count: number;
-    arrival: string;
-    res_on: string;
-    loc_id: number;
-    loc_name: string;
-    loc_addr: string;
-    open_time: string;
-    close_time: string;
-    user_id: number;
-    first_name: string;
-    last_name: string;
-    table_id: number;
-    table_name: string;
+  res_id: number;
+  res_status: 'FULFILLED' | 'CANCELLED' | 'INPROGRESS';
+  point_used: number | null;
+  cus_count: number;
+  arrival: string;
+  res_on: string;
+  loc_id: number;
+  loc_name: string;
+  loc_addr: string;
+  open_time: string;
+  close_time: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  table_id: number;
+  table_name: string;
 }
+
 export default {
   data: () => ({
     acceptRes: false as boolean,
@@ -110,12 +113,12 @@ export default {
     async loadData() {
       this.dtLoading = true;
       let requestBody = {
-          type: 12,
-          usage: 'admin',
-          range: this.resTypeSelect,
-        }
+        type: 12,
+        usage: 'admin',
+        range: this.resTypeSelect,
+      };
       if (this.locationIDSelect > 0) {
-        requestBody = Object.assign({}, requestBody, {loc_id: this.locationIDSelect})
+        requestBody = Object.assign({}, requestBody, {loc_id: this.locationIDSelect});
       }
       await $fetch('/api/data', {
         method: 'POST',
@@ -157,7 +160,7 @@ export default {
             };
             const defaultLocation = {
               l_id: 0,
-              l_name: "All Branches",
+              l_name: 'All Branches',
             };
             const nextIndex = Object.keys(message).length;
             message[nextIndex] = defaultLocation;
@@ -286,7 +289,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="management_main">
+  <v-main class="management_main ">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
@@ -316,8 +319,11 @@ export default {
           <v-table density="compact">
             <tbody>
             <tr>
-              <td class="text-right font-weight-medium"><v-icon color="success">mdi-circle-multiple</v-icon> Points</td>
-              <td class="text-right font-weight-medium">{{  ((pointUsed) ? pointUsed : 0).toLocaleString() }} pts.</td>
+              <td class="text-right font-weight-medium">
+                <v-icon color="success">mdi-circle-multiple</v-icon>
+                Points
+              </td>
+              <td class="text-right font-weight-medium">{{ (pointUsed ? pointUsed : 0).toLocaleString() }} pts.</td>
             </tr>
             <tr>
               <td class="text-right font-weight-medium">Total</td>
@@ -365,7 +371,7 @@ export default {
     </v-dialog>
     <div class="main_container management_container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation Management</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
             dtErrorData
           }}
@@ -374,21 +380,22 @@ export default {
           <v-row>
             <v-col>
               <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="dtData"
-                            :loading="dtLoading" :multi-sort="true" :search="dtSearch" class="elevation-1"
-                            fixed-header height="40vh" item-value="res_id" items-per-page="-1" sticky>
+                            :loading="dtLoading" :multi-sort="true" :search="dtSearch"
+                            class="0 rounded-lg bg-transparent" fixed-header
+                            height="40vh" item-value="res_id" items-per-page="-1" sticky>
                 <template v-slot:top>
-                  <v-card elevation="0">
-                    <v-card-title class="text-left">Accept Reservation</v-card-title>
+                  <v-card class="py-3 px-6 rounded-xl top-card-blur" elevation="2">
                     <v-card-item>
                       <v-container>
+                        <div class="ml-0 accept-reservation reservation-header-text">Accept Reservation</div>
                         <v-row>
-                          <v-col>
+                          <v-col class="pb-0">
                             <v-text-field v-model="resConfCode" density="compact" label="Reservation Code"
                                           v-bind:error-messages="acceptError"></v-text-field>
                           </v-col>
                         </v-row>
                         <v-row>
-                          <v-col>
+                          <v-col class="pa-0">
                             <v-btn
                                 :disabled="dtLoading"
                                 color="success"
@@ -403,45 +410,69 @@ export default {
                             </v-btn>
                           </v-col>
                         </v-row>
+
+                        <v-row class="mt-10">
+                          <v-col cols="12" md="6">
+                            <p class="reservation-header-text">Reservation Type</p>
+                            <v-select
+                                v-model="resTypeSelect"
+                                :items="resType"
+                                density="compact"
+                                item-title="title"
+                                item-value="id"
+                                @update:modelValue="() => {loadData();}"></v-select>
+                          </v-col>
+                          <v-col cols="12" md="6">
+                            <p class="reservation-header-text">Branch</p>
+                            <v-select
+                                v-model="locationIDSelect"
+                                :items="locationsList"
+                                density="compact"
+                                item-title="l_name"
+                                item-value="l_id"
+                                @update:modelValue="() => {loadData();}"></v-select>
+                          </v-col>
+                        </v-row>
                       </v-container>
                     </v-card-item>
                   </v-card>
-                  <v-text-field v-model="dtSearch" placeholder="Search"
+
+                  <v-text-field v-model="dtSearch" class="mt-10" placeholder="Search"
                                 prepend-inner-icon="mdi-book-search"></v-text-field>
                 </template>
                 <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
-                  <tr class="text-end table-hover" v-ripple @click="toggleExpand(internalItem)">
-                    <td class="text-center td-hover">{{ item.res_id }}</td>
-                    <td class="text-center td-hover">
+                  <tr v-ripple="" class="text-end table-hover" @click="toggleExpand(internalItem)">
+                    <td class="text-center td-hover bg-transparent">{{ item.res_id }}</td>
+                    <td class="text-center td-hover bg-transparent">
                       {{ item.user_id }}
                       <v-tooltip activator="parent" location="top">{{
                           item.first_name + ' ' + item.last_name
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="text-left td-hover">
+                    <td class="text-left td-hover bg-transparent">
                       {{ item.loc_name }}
                       <v-tooltip activator="parent" location="top">ID: {{ item.loc_id }}</v-tooltip>
                     </td>
-                    <td class="text-right td-hover">
+                    <td class="text-right td-hover bg-transparent">
                       {{ DateTime.fromSQL(item.res_on).toFormat('D') }}
                       <v-tooltip activator="parent" location="top">{{
                           DateTime.fromSQL(item.res_on).toFormat('fff')
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="text-right td-hover">
+                    <td class="text-right td-hover bg-transparent">
                       {{ DateTime.fromSQL(item.arrival).toFormat('D') }}
                       <v-tooltip activator="parent" location="top">{{
                           DateTime.fromSQL(item.arrival).toFormat('fff')
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="td-hover">{{ item.cus_count }}</td>
-                    <td class="text-right td-hover">
+                    <td class="td-hover bg-transparent">{{ item.cus_count }}</td>
+                    <td class="text-right td-hover bg-transparent">
                       {{ item.table_name }}
                     </td>
-                    <td class="td-hover">
+                    <td class="td-hover bg-transparent">
                       <v-tooltip location="top">
                         <template v-slot:activator="{ props }">
                           <v-icon v-bind="props">{{
@@ -494,8 +525,10 @@ export default {
                                 @click="
                                 () => {
                                   preOrderMenu = [];
-                                  pointUsed = item.point_used
-                                  loadOrderByResID(item.res_id).then(() => {foodViewDialog = true;});
+                                  pointUsed = item.point_used;
+                                  loadOrderByResID(item.res_id).then(() => {
+                                    foodViewDialog = true;
+                                  });
                                 }
                               "></v-btn>
                             <v-btn
@@ -521,43 +554,14 @@ export default {
                   </tr>
                 </template>
                 <template v-slot:no-data>
-                  <v-alert color="info" icon="mdi-exclamation" title="Notice" class="ma-3">
+                  <v-alert class="ma-3" color="info" icon="mdi-exclamation" title="Notice">
                     <p>We don't have any reservations to show you. Try selecting different filters.</p>
                   </v-alert>
                 </template>
               </v-data-table>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="12" md="6">
-              <p class="text-h5 text-left">Reservation Type</p>
-              <v-select
-                  v-model="resTypeSelect"
-                  :items="resType"
-                  density="compact"
-                  item-title="title"
-                  item-value="id"
-                  @update:modelValue="
-                  () => {
-                    loadData();
-                  }
-                "></v-select>
-            </v-col>
-            <v-col cols="12" md="6">
-              <p class="text-h5 text-left">Branch</p>
-              <v-select
-                  v-model="locationIDSelect"
-                  :items="locationsList"
-                  density="compact"
-                  item-title="l_name"
-                  item-value="l_id"
-                  @update:modelValue="
-                  () => {
-                    loadData();
-                  }
-                "></v-select>
-            </v-col>
-          </v-row>
+
           <v-row>
             <v-col>
               <v-btn :disabled="dtLoading" :variant="'tonal'" class="align-right mb-3" prepend-icon="mdi-refresh"

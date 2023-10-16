@@ -11,7 +11,6 @@ useHead({
   title: 'My Account - Seatify',
   meta: [{name: 'Seatify App', content: 'My amazing site.'}],
 });
-
 </script>
 
 <script lang="ts">

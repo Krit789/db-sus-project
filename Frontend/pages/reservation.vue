@@ -106,18 +106,27 @@ export default {
     ],
   }),
   methods: {
-    setPoints(){
-      if (this.usePointAmount > Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))) {
-        this.usePointAmount = Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))
+    setPoints() {
+      if (
+          this.usePointAmount >
+          Math.min(
+              this.accountData.points,
+              this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+          )
+      ) {
+        this.usePointAmount = Math.min(
+            this.accountData.points,
+            this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+        );
       } else if (this.usePointAmount < 1) {
-        this.usePointAmount = 1
+        this.usePointAmount = 1;
       }
     },
     seatItemProps(item: any) {
       return {
         id: item.table_id,
         title: item.name,
-        subtitle: `${item.capacity} ${(item.capacity == 1) ? 'people' : 'peoples'}`,
+        subtitle: `${item.capacity} ${item.capacity == 1 ? 'people' : 'peoples'}`,
       };
     },
     addMenu(obj: MenuObject): void {
@@ -174,7 +183,7 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             if (status === 1) {
               this.locationList = message;
@@ -204,7 +213,7 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.menuList = message;
             this.pageSpinner = false;
@@ -228,7 +237,6 @@ export default {
               message: User;
             };
             this.accountData = message;
-            
           });
     },
     async loadLocationByID(locID: Number) {
@@ -249,7 +257,7 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.selectedLoc = message[0];
             this.pageSpinner = false;
@@ -275,7 +283,7 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             this.seatList = message;
             this.pageSpinner = false;
@@ -285,16 +293,23 @@ export default {
     async makeReservation() {
       // console.log(this.foodPreOrderList)
       let requestBody = {
-          type: 3,
-          usage: 'user',
-          location_id: this.selectedLocID,
-          arrival: DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'),
-          cus_count: this.resGuest,
-          table_id: this.selectedSeat?.table_id,
-          menu: this.foodPreOrderList,
-        }
-      if (this.usePointAmount > 0 && this.usePointAmount <= Math.min(this.accountData.points, this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0))){
-        requestBody = Object.assign({}, requestBody, {point_used: Number(this.usePointAmount)})
+        type: 3,
+        usage: 'user',
+        location_id: this.selectedLocID,
+        arrival: DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'),
+        cus_count: this.resGuest,
+        table_id: this.selectedSeat?.table_id,
+        menu: this.foodPreOrderList,
+      };
+      if (
+          this.usePointAmount > 0 &&
+          this.usePointAmount <=
+          Math.min(
+              this.accountData.points,
+              this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+          )
+      ) {
+        requestBody = Object.assign({}, requestBody, {point_used: Number(this.usePointAmount)});
       }
       this.pageSpinner = true;
       await $fetch('/api/data', {
@@ -309,12 +324,12 @@ export default {
           .then((response) => {
             const {status, message} = response as {
               status: number;
-              message: any
+              message: any;
             };
             if (status === 1) {
               this.resConfirm = true;
             } else {
-              this.resFailConfirm = true
+              this.resFailConfirm = true;
             }
           });
     },
@@ -356,7 +371,7 @@ export default {
     filteredSeatListCompute() {
       this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
       this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2).length;
-      console.log()
+      console.log();
       return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2);
     },
     total: function () {
@@ -419,8 +434,9 @@ export default {
         <v-card-text class="text-center">
           <v-icon color="red" icon="mdi-close" style="font-size: 120px"></v-icon>
           <br/>
-          Sorry, it looks like your reservation didn't went through.<br>Please try again or contact staff for
-          assistance.
+          Sorry, it looks like your reservation didn't went through.
+          <br/>
+          Please try again or contact staff for assistance.
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -482,22 +498,23 @@ export default {
                     branches</p>
                 </v-card-text>
                 <v-no-ssr>
-                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
-                                :items="locationList" :loading="pageSpinner"
-                                :search="dtSearch" class="elevation-0 primary bg-transparent"
-                                color="rgba(255, 0, 0, 0)"
-                                item-value="location_id">
+                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="locationList"
+                                :loading="pageSpinner" :search="dtSearch" class="elevation-0 primary bg-transparent"
+                                color="rgba(255, 0, 0, 0)" item-value="location_id">
                     <template v-slot:top>
                       <v-text-field v-model="dtSearch" class="bg-transparent" placeholder="Search"
                                     prepend-inner-icon="mdi-text-search"></v-text-field>
                     </template>
 
-                    <template v-slot:item="{internalItem, item, toggleExpand, isExpanded}">
+                    <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                       <tr
-                          class="bg-transparent table-hover"
                           v-ripple
+                          class="bg-transparent table-hover"
                           @click="
-                          () => {toggleExpand(internalItem);}">
+                          () => {
+                            toggleExpand(internalItem);
+                          }
+                        ">
                         <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
                         <td class="bg-transparent text-center td-hover">
                           {{ DateTime.fromISO(item.close_time).toFormat('t') }}
@@ -624,7 +641,12 @@ export default {
                     <v-col>
                       <h3 class="text-left font-weight-medium">How many guests are coming?</h3>
                       <v-text-field
-                          v-model="resGuest" :on-update:model-value=" () => { selectedSeat = null; } "
+                          v-model="resGuest"
+                          :on-update:model-value="
+                          () => {
+                            selectedSeat = null;
+                          }
+                        "
                           :rules="[seatRule]"
                           min="1"
                           oninput="this.value = (this.value) ? ((this.value > 0) ? this.value : 1) : this.value"
@@ -632,9 +654,10 @@ export default {
                           required
                           type="number"></v-text-field>
                       <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
-                      <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute"
-                                :item-props="seatItemProps" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name"
-                                prepend-inner-icon="mdi-table-chair" return-object></v-select>
+                      <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :item-props="seatItemProps"
+                                :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name"
+                                item-value="table_id"
+                                label="Table Name" prepend-inner-icon="mdi-table-chair" return-object></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -642,15 +665,27 @@ export default {
                   <v-row>
                     <v-col>
                       <v-btn
-                          prepend-icon="mdi-arrow-left" variant="tonal"
-                          @click=" () => { selectedSeat = null; stepper1--; } ">
+                          prepend-icon="mdi-arrow-left"
+                          variant="tonal"
+                          @click="
+                          () => {
+                            selectedSeat = null;
+                            stepper1--;
+                          }
+                        ">
                         Back
                       </v-btn>
                     </v-col>
                     <v-col>
                       <v-btn
-                          :disabled="filterSeatCount == 0 || selectedSeat == null" prepend-icon="mdi-arrow-right"
-                          @click=" () => { loadMenusFromLocation(selectedLocID); stepper1++; } ">
+                          :disabled="filterSeatCount == 0 || selectedSeat == null"
+                          prepend-icon="mdi-arrow-right"
+                          @click="
+                          () => {
+                            loadMenusFromLocation(selectedLocID);
+                            stepper1++;
+                          }
+                        ">
                         Next
                       </v-btn>
                     </v-col>
@@ -672,8 +707,16 @@ export default {
                         <v-container>
                           <v-row>
                             <v-col
-                                v-for="food in menuList" :key="food.id" cols="12" md="6" sm="6"
-                                @click=" () => {  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });} ">
+                                v-for="food in menuList"
+                                :key="food.id"
+                                cols="12"
+                                md="6"
+                                sm="6"
+                                @click="
+                                () => {
+                                  addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
+                                }
+                              ">
                               <v-card v-ripple>
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover height="300">
@@ -718,7 +761,7 @@ export default {
                           </thead>
                           <tbody>
                           <tr v-for="order in foodPreOrderList" :key="order.id">
-                            <td class="text-left mx-0 px-0 ">
+                            <td class="text-left mx-0 px-0">
                               <v-tooltip location="bottom">
                                 <template v-slot:activator="{ props }">
                                   <p v-bind="props">{{ order.item_name }}</p>
@@ -726,15 +769,19 @@ export default {
                                 <span>{{ order.item_desc }}</span>
                               </v-tooltip>
                             </td>
-                            <td class="text-center mx-0 px-0 " width="100px">
+                            <td class="text-center mx-0 px-0" width="100px">
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      color="red"
                                       v-ripple
+                                      color="red"
                                       size="x-small"
                                       v-bind="props"
-                                      @click=" () => { updateMenuById(0, order.id);  } ">
+                                      @click="
+                                        () => {
+                                          updateMenuById(0, order.id);
+                                        }
+                                      ">
                                     mdi-minus
                                   </v-icon>
                                 </template>
@@ -744,12 +791,16 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
+                                      v-ripple
                                       color="green"
                                       icon="mdi-plus ml-1"
-                                      v-ripple
                                       size="x-small"
                                       v-bind="props"
-                                      @click=" () => { updateMenuById(1, order.id); } ">
+                                      @click="
+                                        () => {
+                                          updateMenuById(1, order.id);
+                                        }
+                                      ">
                                     mdi-plus
                                   </v-icon>
                                 </template>
@@ -763,11 +814,15 @@ export default {
                               <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
                                   <v-icon
-                                      color="red"
                                       v-ripple
+                                      color="red"
                                       size="x-small"
                                       v-bind="props"
-                                      @click=" () => { removeMenuById(order.id); } ">
+                                      @click="
+                                        () => {
+                                          removeMenuById(order.id);
+                                        }
+                                      ">
                                     mdi-delete
                                   </v-icon>
                                 </template>
@@ -783,7 +838,16 @@ export default {
                             <td class="text-center px-0" width="200px"><b>Total</b></td>
                             <td class="text-right px-0" width="100px">{{ total }} ฿</td>
                             <td class="text-right px-0">
-                              <v-btn color="red" variant="text" @click=" () => { foodPreOrderList = [];}">Clear</v-btn>
+                              <v-btn
+                                  color="red"
+                                  variant="text"
+                                  @click="
+                                    () => {
+                                      foodPreOrderList = [];
+                                    }
+                                  ">
+                                Clear
+                              </v-btn>
                             </td>
                           </tr>
                           </tbody>
@@ -853,7 +917,7 @@ export default {
                               <v-icon icon="mdi-clock-time-three"></v-icon>
                               Date and Time
                             </h3>
-                            <p class="ml-4 text-h6 font-weight-light ">
+                            <p class="ml-4 text-h6 font-weight-light">
                               <v-icon>mdi-calendar-blank</v-icon>
                               {{ DateTime.fromISO(selectedTime).toFormat('DDDD') }}
                               <br/>
@@ -881,49 +945,44 @@ export default {
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
                             <v-card-item class="pa-0 ma-0">
-                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
-                                     max-height="300px">
-                              <thead>
-                              <tr>
-                                <th class="bg-transparent text-left">Name</th>
-                                <th class="bg-transparent text-right">Amount</th>
-                                <th class="bg-transparent text-right">Price</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              <tr v-for="order in foodPreOrderList" :key="order.id">
-                                <td class="text-left">{{ order.item_name }}</td>
-                                <td class="text-right">{{ order.amount }}</td>
-                                <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
-                              </tr>
-                              </tbody>
-                            </v-table>
-                            <v-table class="mx-3 text-h6">
-                              <tbody>
-                              <td class="text-right">Total</td>
-                              <td class="text-right">{{ total }} ฿</td>
-                              </tbody>
-                            </v-table>
+                              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
+                                       max-height="300px">
+                                <thead>
+                                <tr>
+                                  <th class="bg-transparent text-left">Name</th>
+                                  <th class="bg-transparent text-right">Amount</th>
+                                  <th class="bg-transparent text-right">Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="order in foodPreOrderList" :key="order.id">
+                                  <td class="text-left">{{ order.item_name }}</td>
+                                  <td class="text-right">{{ order.amount }}</td>
+                                  <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
+                                </tr>
+                                </tbody>
+                              </v-table>
+                              <v-table class="mx-3 text-h6">
+                                <tbody>
+                                <td class="text-right">Total</td>
+                                <td class="text-right">{{ total }} ฿</td>
+                                </tbody>
+                              </v-table>
                             </v-card-item>
                             <v-card-item class="ml-5 text-left pa-0 ma-0">
-                            <h3 class="mt-3 text-left text-h5 font-weight-medium">Additional Options</h3>
-                            <v-tooltip location="top left">
+                              <h3 class="mt-3 text-left text-h5 font-weight-medium">Additional Options</h3>
+                              <v-tooltip location="top left">
                                 <template v-slot:activator="{ props }">
                                   <p v-bind="props">You currently have {{ accountData.points }} points.</p>
                                 </template>
                                 <span>1 Points equals to 1 Baht</span>
-                            </v-tooltip>
-                            <v-checkbox prepend-icon="mdi-circle-multiple" v-model="usePoint" color="primary" label="Use Points" :disabled="accountData.points < 1"></v-checkbox>
-                            <v-text-field
-                            v-if="usePoint"
-                          v-on:change="setPoints"
-                          v-model="usePointAmount"
-                          min="1"
-                          prepend-inner-icon="mdi-circle-multiple"
-                          required
-                          label="How many Points?"
-                          type="number"></v-text-field>
-                          </v-card-item>
+                              </v-tooltip>
+                              <v-checkbox v-model="usePoint" :disabled="accountData.points < 1" color="primary"
+                                          label="Use Points" prepend-icon="mdi-circle-multiple"></v-checkbox>
+                              <v-text-field v-if="usePoint" v-model="usePointAmount" label="How many Points?" min="1"
+                                            prepend-inner-icon="mdi-circle-multiple" required type="number"
+                                            v-on:change="setPoints"></v-text-field>
+                            </v-card-item>
                           </div>
                           <div v-else>
                             <p class="text-left ml-5">
@@ -974,8 +1033,6 @@ export default {
 </template>
 
 <style scoped>
-
-
 .like-a-link {
   cursor: pointer;
 }

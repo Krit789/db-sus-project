@@ -175,7 +175,7 @@ export default {
             ticks: {
               callback: (value, index, values) => {
                 return value + ' ฿';
-              }
+              },
             },
             title: {
               display: true,
@@ -337,10 +337,8 @@ export default {
         <v-card-item>
           <v-no-ssr>
             <v-data-table v-model="selectedDT" :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders"
-                          :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1"
-                          height="40vh" item-value="l_id" items-per-page="-1" select-strategy="page" show-expand
-                          show-select
-                          sticky>
+                          :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" height="40vh"
+                          item-value="l_id" items-per-page="-1" select-strategy="page" show-expand show-select sticky>
               <template v-slot:top>
                 <v-row>
                   <v-col>
@@ -473,7 +471,7 @@ export default {
               <JsonCSV :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
-          <v-col class="pa-0 ma-0 ">
+          <v-col class="pa-0 ma-0">
             <h3 class="ml-5 mb-3 pl-3 graph-title">Branch Earnings</h3>
             <v-sheet class="rounded-xl mx-5 px-8 pa-3 overflow-auto" style="height: 50vh">
               <Bar id="locationEarning" :key="reportData[1]" :data="earningsChartData" :options="earningChartOptions"/>

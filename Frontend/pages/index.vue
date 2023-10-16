@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import '~/assets/stylesheets/global.css';
 import '~/assets/stylesheets/index.css';
-import { DateTime } from 'luxon';
+import {DateTime} from 'luxon';
 
 definePageMeta({auth: false});
 const {status, data} = useAuth();
@@ -35,7 +35,19 @@ export default {
 </script>
 <template>
   <v-main class="mt-n16">
-    <v-parallax class="index_parallax" :src="(DateTime.now() >= DateTime.now().set({hour: 0, minute: 0}) && DateTime.now() < DateTime.now().set({hour: 6, minute: 0})) ? '/images/home/banner-night.webp' : (DateTime.now() >= DateTime.now().set({hour: 6, minute: 0}) && DateTime.now() < DateTime.now().set({hour: 12, minute: 0})) ? '/images/home/banner-morning.webp' : (DateTime.now() >= DateTime.now().set({hour: 12, minute: 0}) && DateTime.now() < DateTime.now().set({hour: 18, minute: 0})) ? '/images/home/banner.webp' : (DateTime.now() >= DateTime.now().set({hour: 18, minute: 0}) && DateTime.now() <= DateTime.now().set({hour: 23, minute: 59, second: 59})) ? '/images/home/banner-evening.webp' : '/images/home/banner.webp'">
+    <v-parallax
+        :src="
+        DateTime.now() >= DateTime.now().set({ hour: 0, minute: 0 }) && DateTime.now() < DateTime.now().set({ hour: 6, minute: 0 })
+          ? '/images/home/banner-night.webp'
+          : DateTime.now() >= DateTime.now().set({ hour: 6, minute: 0 }) && DateTime.now() < DateTime.now().set({ hour: 12, minute: 0 })
+          ? '/images/home/banner-morning.webp'
+          : DateTime.now() >= DateTime.now().set({ hour: 12, minute: 0 }) && DateTime.now() < DateTime.now().set({ hour: 18, minute: 0 })
+          ? '/images/home/banner.webp'
+          : DateTime.now() >= DateTime.now().set({ hour: 18, minute: 0 }) && DateTime.now() <= DateTime.now().set({ hour: 23, minute: 59, second: 59 })
+          ? '/images/home/banner-evening.webp'
+          : '/images/home/banner.webp'
+      "
+        class="index_parallax">
       <div class="text-center mt-16 first-box">
         <h1 class="text-h2 font-weight-bold text-white mt-16">Seatify</h1>
         <p class="text-h5 mb-5 text-white index_text_shadow">Satisfying your seaty needs.</p>

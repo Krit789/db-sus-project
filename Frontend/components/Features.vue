@@ -31,9 +31,8 @@ const route = useRoute();
 
     <!--Row 2 Create Branches Report   -->
     <!-- remember to remove debug condition -->
-    <v-row v-if="(status == 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))"
-           class="feature_rounded mx-3 mt-8 px-5 py-8"
-           justify="center" no-gutters>
+    <v-row v-if="status == 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD')"
+           class="feature_rounded mx-3 mt-8 px-5 py-8" justify="center" no-gutters>
       <v-col class="" col="">
         <h2 class="text-primary text-h4">Create Branches Report</h2>
         <v-row align-content="center" class="h-100 pb-10">
@@ -48,8 +47,7 @@ const route = useRoute();
                 () => {
                   $router.push('/report');
                 }
-              "
-            >
+              ">
               Create Report
             </v-btn>
           </v-col>
@@ -61,9 +59,8 @@ const route = useRoute();
     </v-row>
 
     <!--Row 3 Manage Branches and Manage Reservation   -->
-    <v-row v-if="(status === 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD'))"
-           id="management_features" class="mt-8 px-3"
-           justify="center">
+    <v-row v-if="status === 'authenticated' && (data.role === 'MANAGER' || data.role === 'GOD')"
+           id="management_features" class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Branches</h2>
         <v-img class="report_macbook" height="180" src="https://cdn-icons-png.flaticon.com/512/2727/2727399.png"
@@ -79,8 +76,7 @@ const route = useRoute();
               () => {
                 $router.push('/management/branches');
               }
-            "
-          >
+            ">
             Manage Branches
           </v-btn>
         </v-row>
@@ -100,16 +96,14 @@ const route = useRoute();
               () => {
                 $router.push('/management/reservation');
               }
-            "
-          >
+            ">
             Manage Reservations
           </v-btn>
         </v-row>
       </v-col>
     </v-row>
     <!--Row 4 Manage Menu and Manage User   -->
-    <v-row v-if="status === 'authenticated' && data.role === 'GOD'" class="mt-8 px-3"
-           justify="center">
+    <v-row v-if="status === 'authenticated' && data.role === 'GOD'" class="mt-8 px-3" justify="center">
       <v-col class="feature_rounded row_three_container">
         <h2 class="text-primary text-h4">Manage Menus</h2>
         <v-img class="report_macbook" height="180" src="https://cdn-icons-png.flaticon.com/512/11521/11521835.png"
@@ -125,8 +119,7 @@ const route = useRoute();
               () => {
                 $router.push('/management/menus');
               }
-            "
-          >
+            ">
             Manage Menus
           </v-btn>
         </v-row>
@@ -147,8 +140,7 @@ const route = useRoute();
               () => {
                 $router.push('/management/users');
               }
-            "
-          >
+            ">
             Manage Users
           </v-btn>
         </v-row>
@@ -158,6 +150,6 @@ const route = useRoute();
 </template>
 
 <script lang="ts">
-import "~/assets/stylesheets/features.css";
-import "~/assets/stylesheets/global.css";
+import '~/assets/stylesheets/features.css';
+import '~/assets/stylesheets/global.css';
 </script>

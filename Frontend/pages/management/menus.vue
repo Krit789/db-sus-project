@@ -523,21 +523,22 @@ export default {
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
       <p class="text-h5 font-weight-light ml-8 text-left">{{ mobile ? 'Tap' : 'Click' }} on each category and menu to
         see further informations and actions</p>
-      <v-sheet class="mt-8 ma-md-8 ma-sm-5" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-sm-5 bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
             dtErrorData
           }}
         </v-alert>
 
         <v-data-table :density="mobile ? 'compact' : 'comfortable'" :group-by="groupBy" :headers="dtHeaders"
-                      :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1" fixed-header
+                      :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-0 bg-transparent"
+                      fixed-header
                       height="60vh" item-value="m_id" items-per-page="-1" sticky>
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search" prepend-inner-icon="mdi-book-search"></v-text-field>
           </template>
           <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
-            <tr v-ripple class="table-hover" @click="toggleGroup(item)">
-              <td :colspan="columns.length" class="text-start td-hover">
+            <tr v-ripple class="table-hover bg-table" @click="toggleGroup(item)">
+              <td :colspan="columns.length" class="text-start td-hover bg-table">
                 <v-btn :icon="isGroupOpen(item) ? '$expand' : '$next'" size="small" variant="text"></v-btn>
                 {{ item.value }} ({{ item.items.length }})
               </td>
@@ -546,21 +547,21 @@ export default {
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
                 v-ripple
-                class="table-hover"
+                class="table-hover bg-table"
                 @click="
                 () => {
                   toggleExpand(internalItem);
                 }
               ">
-              <td class="text-start td-hover"></td>
-              <td class="text-start td-hover">{{ item.m_name }}</td>
-              <td class="text-start td-hover">{{ item.m_price.toLocaleString() }} ฿</td>
+              <td class="text-start td-hover bg-table"></td>
+              <td class="text-start td-hover bg-table">{{ item.m_name }}</td>
+              <td class="text-start td-hover bg-table">{{ item.m_price.toLocaleString() }} ฿</td>
             </tr>
           </template>
 
           <template v-slot:expanded-row="{ columns, item }">
             <tr>
-              <td :colspan="columns.length" class="text-left">
+              <td :colspan="columns.length" class="text-left bg-table-items1">
                 <v-container>
                   <v-row>
                     <v-col col="12" sm="6">

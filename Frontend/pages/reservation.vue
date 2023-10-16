@@ -509,22 +509,22 @@ export default {
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                       <tr
                           v-ripple
-                          class="bg-transparent table-hover"
+                          class="bg-table table-hover"
                           @click="
                           () => {
                             toggleExpand(internalItem);
                           }
                         ">
-                        <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
-                        <td class="bg-transparent text-center td-hover">
+                        <td class="bg-table text-start td-hover">{{ item.name }}</td>
+                        <td class="bg-table text-center td-hover">
                           {{ DateTime.fromISO(item.close_time).toFormat('t') }}
                         </td>
                       </tr>
                     </template>
 
                     <template v-slot:expanded-row="{ columns, item }">
-                      <tr class="bg-transparent">
-                        <td :colspan="columns.length" class="bg-transparent text-left">
+                      <tr class="bg-table">
+                        <td :colspan="columns.length" class="bg-table text-left">
                           <v-container>
                             <v-row>
                               <v-col col="12" sm="6">

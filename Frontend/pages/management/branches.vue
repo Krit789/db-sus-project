@@ -625,7 +625,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="management_main">
+  <v-main class="management-main">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top" multi-line>
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
@@ -1092,7 +1092,7 @@ export default {
         </div>
       </v-card>
     </v-dialog>
-    <div class="main_container management_container mx-auto blur-effect">
+    <div class="main_container management-container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold my-8 ml-8 text-left">Branches Management</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
@@ -1125,9 +1125,9 @@ export default {
                   toggleExpand(internalItem);
                 }
               ">
-              <td class="text-start td-hover">{{ item.l_id }}</td>
-              <td class="text-start td-hover">{{ item.l_name }}</td>
-              <td class="text-center td-hover">
+              <td class="text-start td-hover bg-table">{{ item.l_id }}</td>
+              <td class="text-start td-hover bg-table">{{ item.l_name }}</td>
+              <td class="text-center td-hover bg-table">
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon v-bind="props">{{

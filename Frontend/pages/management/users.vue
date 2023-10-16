@@ -233,7 +233,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="management_main">
+  <v-main class="management-main">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top" multi-line>
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
@@ -345,7 +345,7 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div class="main_container management_container mx-auto blur-effect">
+    <div class="main_container management-container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">User Management</h1>
       <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{

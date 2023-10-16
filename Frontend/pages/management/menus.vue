@@ -327,7 +327,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="management_main">
+  <v-main class="management-main">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top" multi-line>
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
@@ -519,7 +519,7 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div class="main_container management_container mx-auto blur-effect">
+    <div class="main_container management-container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Menu Management</h1>
       <p class="text-h5 font-weight-light ml-8 text-left">{{ mobile ? 'Tap' : 'Click' }} on each category and menu to
         see further informations and actions</p>

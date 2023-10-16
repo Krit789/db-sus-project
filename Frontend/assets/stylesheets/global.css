@@ -50,6 +50,10 @@ img_background {
     /*text-transform: none;*/
 }
 
+.bg-table {
+    background: rgba(255, 255, 255, 0.4) !important;
+}
+
 
 body {
     font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;

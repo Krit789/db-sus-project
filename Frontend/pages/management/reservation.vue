@@ -289,7 +289,7 @@ export default {
 };
 </script>
 <template>
-  <v-main class="management_main ">
+  <v-main class="management-main ">
     <v-snackbar v-model="snackbar" :color="NotiColor" :timeout="timeout" location="top">
       <v-icon :icon="NotiIcon" start></v-icon>
       {{ NotiText }}
@@ -369,7 +369,7 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div class="main_container management_container mx-auto blur-effect">
+    <div class="main_container management-container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">Reservation Management</h1>
       <v-sheet class="mt-8 ma-md-8 ma-sm-5 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
@@ -442,37 +442,37 @@ export default {
                 </template>
                 <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                   <tr v-ripple="" class="text-end table-hover" @click="toggleExpand(internalItem)">
-                    <td class="text-center td-hover bg-transparent">{{ item.res_id }}</td>
-                    <td class="text-center td-hover bg-transparent">
+                    <td class="text-center td-hover bg-table">{{ item.res_id }}</td>
+                    <td class="text-center td-hover bg-table">
                       {{ item.user_id }}
                       <v-tooltip activator="parent" location="top">{{
                           item.first_name + ' ' + item.last_name
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="text-left td-hover bg-transparent">
+                    <td class="text-left td-hover bg-table">
                       {{ item.loc_name }}
                       <v-tooltip activator="parent" location="top">ID: {{ item.loc_id }}</v-tooltip>
                     </td>
-                    <td class="text-right td-hover bg-transparent">
+                    <td class="text-right td-hover bg-table">
                       {{ DateTime.fromSQL(item.res_on).toFormat('D') }}
                       <v-tooltip activator="parent" location="top">{{
                           DateTime.fromSQL(item.res_on).toFormat('fff')
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="text-right td-hover bg-transparent">
+                    <td class="text-right td-hover bg-table">
                       {{ DateTime.fromSQL(item.arrival).toFormat('D') }}
                       <v-tooltip activator="parent" location="top">{{
                           DateTime.fromSQL(item.arrival).toFormat('fff')
                         }}
                       </v-tooltip>
                     </td>
-                    <td class="td-hover bg-transparent">{{ item.cus_count }}</td>
-                    <td class="text-right td-hover bg-transparent">
+                    <td class="td-hover bg-table">{{ item.cus_count }}</td>
+                    <td class="text-right td-hover bg-table">
                       {{ item.table_name }}
                     </td>
-                    <td class="td-hover bg-transparent">
+                    <td class="td-hover bg-table">
                       <v-tooltip location="top">
                         <template v-slot:activator="{ props }">
                           <v-icon v-bind="props">{{

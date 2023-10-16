@@ -523,8 +523,8 @@ export default {
                     </template>
 
                     <template v-slot:expanded-row="{ columns, item }">
-                      <tr class="bg-table">
-                        <td :colspan="columns.length" class="bg-table text-left">
+                      <tr class="bg-table-items1">
+                        <td :colspan="columns.length" class="bg-table-items1 text-left">
                           <v-container>
                             <v-row>
                               <v-col col="12" sm="6">
@@ -702,13 +702,14 @@ export default {
                 <v-row>
                   <v-col cols="12" md="8" sm="12">
                     <h3 class="ml-3 text-left font-weight-medium">Menus</h3>
-                    <v-lazy :min-height="200" :options="{ threshold: 0.5 }" class="" transition="fade-transition">
-                      <v-card class="overflow-auto bg-transparent" elevation="0" height="525">
+                    <v-lazy :min-height="600" :options="{ threshold: 0.5 }" class="" transition="fade-transition">
+                      <v-card class="overflow-auto bg-transparent" elevation="0" height="750">
                         <v-container>
                           <v-row>
                             <v-col
                                 v-for="food in menuList"
                                 :key="food.id"
+
                                 cols="12"
                                 md="6"
                                 sm="6"
@@ -717,7 +718,7 @@ export default {
                                   addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
                                 }
                               ">
-                              <v-card v-ripple>
+                              <v-card v-ripple style="min-height:500px; border-radius: 22px !important;" class="elevation-3">
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover height="300">
                                   <template v-slot:error>

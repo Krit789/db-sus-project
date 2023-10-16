@@ -347,13 +347,14 @@ export default {
     </v-dialog>
     <div class="main_container management-container mx-auto blur-effect">
       <h1 class="text-h3 font-weight-bold mt-8 ml-8 text-left">User Management</h1>
-      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center" rounded="lg">
+      <v-sheet class="mt-8 ma-md-8 ma-xs-1 text-center bg-transparent" rounded="lg">
         <v-alert v-if="dtIsError" class="ma-3" color="error" icon="$error" title="Fetch Error">{{
             dtErrorData
           }}
         </v-alert>
         <v-data-table v-model:items-per-page="itemsPerPage" :density="mobile ? 'compact' : 'comfortable'"
-                      :headers="dtHeaders" :items="dtData" :loading="dtLoading" :search="dtSearch" class="elevation-1"
+                      :headers="dtHeaders" :items="dtData" :loading="dtLoading" :search="dtSearch"
+                      class="elevation-0 bg-transparent"
                       item-value="user_id">
           <template v-slot:top>
             <v-text-field v-model="dtSearch" placeholder="Search"
@@ -362,16 +363,16 @@ export default {
           <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
             <tr
                 v-ripple
-                class="table-hover"
+                class="table-hover bg-table"
                 @click="
                 () => {
                   toggleExpand(internalItem);
                 }
               ">
-              <td class="text-center td-hover">{{ item.user_id }}</td>
-              <td class="text-start td-hover">{{ item.first_name }}</td>
-              <td class="text-start td-hover">{{ item.last_name }}</td>
-              <td class="text-start td-hover">
+              <td class="text-center td-hover bg-table">{{ item.user_id }}</td>
+              <td class="text-start td-hover bg-table">{{ item.first_name }}</td>
+              <td class="text-start td-hover bg-table">{{ item.last_name }}</td>
+              <td class="text-start td-hover bg-table">
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon v-bind="props">{{
@@ -384,7 +385,7 @@ export default {
                     }}</span>
                 </v-tooltip>
               </td>
-              <td class="text-start td-hover">
+              <td class="text-start td-hover bg-table">
                 <v-tooltip location="top">
                   <template v-slot:activator="{ props }">
                     <v-icon v-bind="props">{{
@@ -401,7 +402,7 @@ export default {
           </template>
           <template v-slot:expanded-row="{ columns, item }">
             <tr>
-              <td :colspan="columns.length" class="text-left">
+              <td :colspan="columns.length" class="text-left bg-table-items1">
                 <v-container>
                   <v-row>
                     <v-col cols="12" md="3" sm="6">

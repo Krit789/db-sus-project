@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 case 1: # Administrator เรียกดู user ทั้งหมด
                     if ($role == "GOD") {
 
-                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status", null, null, "role, user_id");
+                        $obj->select("users", "user_id, first_name, last_name, email, telephone, role, created_on, status, points", null, null, "role, user_id");
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -349,8 +349,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             $time_range = ''; // or any other default value
                         }
                     }
+                    if (isset($data->loc_id)) {
+                        if ($time_range == '') {
+                            $time_range .= " location_id = $data->loc_id";
+                        } else {
+                            $time_range .= " AND location_id = $data->loc_id";
+                        }
+                    }
+
                     if ($role == "GOD") {
-                        $obj->select("reservations", "res_id, reservations.status `res_status`, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', $time_range, "reservations.status desc, arrival");
+                        $obj->select("reservations", "res_id, reservations.status `res_status`, point_used, cus_count, arrival, create_time AS `res_on`, location_id `loc_id`, locations.name `loc_name`, address `loc_addr`, open_time, close_time, user_id, first_name, last_name,table_id, tables.name `table_name`", 'tables using (table_id) join users using (user_id) join locations using (location_id)', $time_range, "reservations.status desc, arrival");
                         $result = $obj->getResult();
 
                         if ($result) echo json_encode([
@@ -622,6 +630,40 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             'status' => 0,
                             'message' => "You don't have permission to create report"
                         ]);
+                    }
+                    break;
+                case 22: # Administrator เรียกดูสาขาทั้งหมด รวมทุกสถานะ แต่ข้อมูลน้อยกว่า
+                    if ($role == 'GOD') {
+                        $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`", null, null, null, "locations.name"); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $res = $obj->getResult();
+                        if ($res) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $res,
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+                    } else if ($role == 'MANAGER') {
+                        $u_id = $user_data['user_id'];
+                        $obj->selectAndJoin('locations', "location_id `l_id`, name `l_name`", null, null, "manager_id=$u_id", "locations.name"); #ยังไม่รู้ว่าจะแสดงยังไง `status` enum('OPERATIONAL','MAINTENANCE','OUTOFORDER')
+                        $res = $obj->getResult();
+                        if ($res) {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => $res,
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => 1,
+                                'message' => array() #ถ้ามันหาไม่เจอสัก row มันก็จะเข้าอันนี้
+                            ]);
+                        }
+                    } else {
+                        $ispermission = true;
                     }
                     break;
                 default:

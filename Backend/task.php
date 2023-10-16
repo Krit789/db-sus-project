@@ -13,11 +13,13 @@ try {
         'status' => 1,
         'message' => "Task Performed Successfully",
     ]);
+    error_log("Task Performed Successfully");
 } catch (Exception $e) {
     echo json_encode([
         'status' => 1,
         'message' => "Failed to Perform Task with following error: '$e'",
     ]);
+    error_log("Failed to Perform Task");
 }
 exit();
 ?>

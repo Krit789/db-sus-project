@@ -34,18 +34,21 @@
     background-color: white;
 }
 
+
 .v-card-text {
 
 }
+
 
 .active-tab {
     background-color: black;
 }
 
-th, tr, td {
-    background: transparent !important;
-    color: black;
-}
+
+/*th, tr, td {*/
+/*    background: transparent !important;*/
+/*    color: black;*/
+/*}*/
 
 th {
     font-weight: 700 !important;

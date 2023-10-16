@@ -1,4 +1,4 @@
-.management_main {
+.management-main {
     background: url(~/assets/images/background/surface_duo.webp);
     background-repeat: no-repeat;
     background-position: center;
@@ -8,13 +8,18 @@
     min-height: 100vh;
 }
 
-.management_container {
+.management-container {
     padding: 12px 32px 22px 32px;
     margin-top: 22px;
 }
 
+/*.bg-table {*/
+/*    background: rgba(255, 255, 255, 0.4) !important;*/
+/*}*/
+
+
 @media only screen and (max-width: 600px) {
-    .management_container {
+    .management-container {
         padding: 12px 8px 22px 8px;
     }
 }

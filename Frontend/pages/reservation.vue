@@ -1,152 +1,187 @@
 <script lang="ts" setup xmlns:v="http://www.w3.org/1999/XSL/Transform">
-  import { VStepper, VStepperHeader, VStepperItem, VStepperWindow, VStepperWindowItem } from 'vuetify/labs/VStepper';
-  import { VSkeletonLoader } from 'vuetify/labs/VSkeletonLoader';
-  import { DateTime, Interval } from 'luxon';
-  import { VDataTable } from 'vuetify/labs/VDataTable';
-  import { useDisplay } from 'vuetify';
-  import '~/assets/stylesheets/global.css';
-  import '~/assets/stylesheets/reservation.css';
+import {VStepper, VStepperHeader, VStepperItem, VStepperWindow, VStepperWindowItem} from 'vuetify/labs/VStepper';
+import {VSkeletonLoader} from 'vuetify/labs/VSkeletonLoader';
+import {DateTime, Interval} from 'luxon';
+import {VDataTable} from 'vuetify/labs/VDataTable';
+import {useDisplay} from 'vuetify';
+import '~/assets/stylesheets/global.css';
+import '~/assets/stylesheets/reservation.css';
 
-  const { mobile } = useDisplay();
-  const { status, data } = useAuth();
-  const route = useRoute();
-  const router = useRouter();
+const {mobile} = useDisplay();
+const {status, data} = useAuth();
+const route = useRoute();
+const router = useRouter();
 
-  definePageMeta({
-    middleware: ['allowed-roles-only'],
-    meta: { permitted: ['USER'] },
-  });
+definePageMeta({
+  middleware: ['allowed-roles-only'],
+  meta: {permitted: ['USER']},
+});
 
-  useHead({
-    title: 'Booking - Seatify',
-    meta: [{ name: 'Seatify App', content: 'My amazing site.' }],
-  });
+useHead({
+  title: 'Booking - Seatify',
+  meta: [{name: 'Seatify App', content: 'My amazing site.'}],
+});
 </script>
 
 <script lang="ts">
-  interface MenuObject {
-    id: number;
-    item_name: string;
-    item_desc: string;
-    amount: number;
-    price: number;
-    // Add more properties as needed
-  }
+interface MenuObject {
+  id: number;
+  item_name: string;
+  item_desc: string;
+  amount: number;
+  price: number;
+  // Add more properties as needed
+}
 
-  interface SeatObject {
-    table_id: number;
-    name: string;
-    capacity: number;
-    location_id: number;
-    // Add more properties as needed
-  }
+interface SeatObject {
+  table_id: number;
+  name: string;
+  capacity: number;
+  location_id: number;
+  // Add more properties as needed
+}
 
-  interface MenuListObject {
-    id: number;
-    item_name: string;
-    item_desc: string;
-    mc_id: number;
-    price: number;
-    img_url: string;
-    mc_name: string;
-    // Add more properties as needed
-  }
+interface MenuListObject {
+  id: number;
+  item_name: string;
+  item_desc: string;
+  mc_id: number;
+  price: number;
+  img_url: string;
+  mc_name: string;
+  // Add more properties as needed
+}
 
-  interface LocationObject {
-    location_id: number;
-    name: string;
-    address: string;
-    open_time: string;
-    close_time: string;
-    status: string;
-    creation_date: string;
-    layout_img_url: string;
-    manager_id: number;
-  }
+interface LocationObject {
+  location_id: number;
+  name: string;
+  address: string;
+  open_time: string;
+  close_time: string;
+  status: string;
+  creation_date: string;
+  layout_img_url: string;
+  manager_id: number;
+}
 
-  export default {
-    data: () => ({
-      isError: false,
-      isTimeValid: false,
-      errorData: '',
-      stepper1: 0,
-      pageSpinner: false,
-      hasLocation: false,
-      resConfirm: false,
-      resFailConfirm: false,
-      locationList: [] as LocationObject[],
-      menuList: [] as MenuListObject[],
-      seatList: [] as SeatObject[],
-      filterSeatList: [] as SeatObject[],
-      filterSeatCount: 0,
-      branchLayout: '',
-      selectedLocID: 0,
-      selectedLoc: {} as LocationObject,
-      selectedTime: '' as string | DateTime,
-      selectedSeat: null as SeatObject | null,
-      foodPreOrderList: [] as MenuObject[],
-      dtSearch: '',
-      resDateTime: '',
-      resGuest: 1,
-      dtHeaders: [
-        { title: 'Name', align: 'start', key: 'name' },
-        { title: 'Close Time', align: 'center', key: 'close_time' },
-      ],
-    }),
-    methods: {
-      addMenu(obj: MenuObject): void {
-        if (!this.isMenuIDinPreOrder(obj.id)) {
-          this.foodPreOrderList.push(obj);
-        } else {
-          this.updateMenuById(1, obj.id);
-        }
-      },
-      removeMenuById(id: number): void {
-        this.foodPreOrderList = this.foodPreOrderList.filter((item) => item.id !== id);
-      },
-      updateMenuById(addOrReduce: number, id: number): void {
-        let tmp: MenuObject;
-        for (let i = 0; i < this.foodPreOrderList.length; i++) {
-          if (this.foodPreOrderList[i].id === id) {
-            tmp = this.foodPreOrderList[i];
-            if (addOrReduce == 1) {
-              tmp.amount++;
-            } else {
-              tmp.amount--;
-              if (tmp.amount == 0) {
-                this.removeMenuById(id);
-              }
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+  points: number;
+}
+
+export default {
+  data: () => ({
+    isError: false,
+    isTimeValid: false,
+    errorData: '',
+    stepper1: 0,
+    pageSpinner: false,
+    hasLocation: false,
+    resConfirm: false,
+    resFailConfirm: false,
+    locationList: [] as LocationObject[],
+    menuList: [] as MenuListObject[],
+    seatList: [] as SeatObject[],
+    filterSeatList: [] as SeatObject[],
+    accountData: {} as User,
+    filterSeatCount: 0,
+    usePoint: false,
+    usePointAmount: 0,
+    branchLayout: '',
+    selectedLocID: 0,
+    selectedLoc: {} as LocationObject,
+    selectedTime: '' as string | DateTime,
+    selectedSeat: null as SeatObject | null,
+    foodPreOrderList: [] as MenuObject[],
+    dtSearch: '',
+    resDateTime: '',
+    resGuest: 1,
+    dtHeaders: [
+      {title: 'Name', align: 'start', key: 'name'},
+      {title: 'Close Time', align: 'center', key: 'close_time'},
+    ],
+  }),
+  methods: {
+    setPoints() {
+      if (
+          this.usePointAmount >
+          Math.min(
+              this.accountData.points,
+              this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+          )
+      ) {
+        this.usePointAmount = Math.min(
+            this.accountData.points,
+            this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+        );
+      } else if (this.usePointAmount < 1) {
+        this.usePointAmount = 1;
+      }
+    },
+    seatItemProps(item: any) {
+      return {
+        id: item.table_id,
+        title: item.name,
+        subtitle: `${item.capacity} ${item.capacity == 1 ? 'people' : 'peoples'}`,
+      };
+    },
+    addMenu(obj: MenuObject): void {
+      if (!this.isMenuIDinPreOrder(obj.id)) {
+        this.foodPreOrderList.push(obj);
+      } else {
+        this.updateMenuById(1, obj.id);
+      }
+    },
+    removeMenuById(id: number): void {
+      this.foodPreOrderList = this.foodPreOrderList.filter((item) => item.id !== id);
+    },
+    updateMenuById(addOrReduce: number, id: number): void {
+      let tmp: MenuObject;
+      for (let i = 0; i < this.foodPreOrderList.length; i++) {
+        if (this.foodPreOrderList[i].id === id) {
+          tmp = this.foodPreOrderList[i];
+          if (addOrReduce == 1) {
+            tmp.amount++;
+          } else {
+            tmp.amount--;
+            if (tmp.amount == 0) {
+              this.removeMenuById(id);
             }
-            break;
           }
+          break;
         }
-      },
-      isMenuIDinPreOrder(id: Number) {
-        for (let i = 0; i < this.foodPreOrderList.length; i++) {
-          if (this.foodPreOrderList[i].id === id) return true;
-        }
-        return false;
-      },
-      findSeatforSelectedDT() {
-        this.selectedTime = DateTime.fromISO(this.resDateTime);
-        this.loadAvailableTable(this.selectedLocID, DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'));
-      },
-      async loadLocation() {
-        this.pageSpinner = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 7,
-            usage: 'user',
-          },
-          lazy: true,
-        })
+      }
+    },
+    isMenuIDinPreOrder(id: Number) {
+      for (let i = 0; i < this.foodPreOrderList.length; i++) {
+        if (this.foodPreOrderList[i].id === id) return true;
+      }
+      return false;
+    },
+    findSeatforSelectedDT() {
+      this.selectedTime = DateTime.fromISO(this.resDateTime);
+      this.loadAvailableTable(this.selectedLocID, DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'));
+    },
+    async loadLocation() {
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 7,
+          usage: 'user',
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.isError = true;
             this.errorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as {
+            const {status, message} = response as {
               status: number;
               message: any;
             };
@@ -159,24 +194,24 @@
             }
             this.pageSpinner = false;
           });
-      },
-      async loadMenusFromLocation(locID: Number) {
-        this.pageSpinner = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 5,
-            usage: 'user',
-            location_id: locID,
-          },
-          lazy: true,
-        })
+    },
+    async loadMenusFromLocation(locID: Number) {
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 5,
+          usage: 'user',
+          location_id: locID,
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.isError = true;
             this.errorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as {
+            const {status, message} = response as {
               status: number;
               message: any;
             };
@@ -184,24 +219,43 @@
             this.pageSpinner = false;
             this.isError = false;
           });
-      },
-      async loadLocationByID(locID: Number) {
-        this.pageSpinner = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 10,
-            usage: 'user',
-            location_id: locID,
-          },
-          lazy: true,
-        })
+    },
+    async loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: User;
+            };
+            this.accountData = message;
+          });
+    },
+    async loadLocationByID(locID: Number) {
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 10,
+          usage: 'user',
+          location_id: locID,
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.isError = true;
             this.errorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as {
+            const {status, message} = response as {
               status: number;
               message: any;
             };
@@ -209,25 +263,25 @@
             this.pageSpinner = false;
             this.isError = false;
           });
-      },
-      async loadAvailableTable(locID: Number, arriavalTime: string) {
-        this.pageSpinner = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 11,
-            usage: 'user',
-            location_id: locID,
-            arrival: arriavalTime,
-          },
-          lazy: true,
-        })
+    },
+    async loadAvailableTable(locID: Number, arriavalTime: string) {
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 11,
+          usage: 'user',
+          location_id: locID,
+          arrival: arriavalTime,
+        },
+        lazy: true,
+      })
           .catch((error) => {
             this.isError = true;
             this.errorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as {
+            const {status, message} = response as {
               status: number;
               message: any;
             };
@@ -235,29 +289,40 @@
             this.pageSpinner = false;
             this.isError = false;
           });
-      },
-      async makeReservation() {
-        // console.log(this.foodPreOrderList)
-        this.pageSpinner = true;
-        await $fetch('/api/data', {
-          method: 'POST',
-          body: {
-            type: 3,
-            usage: 'user',
-            location_id: this.selectedLocID,
-            arrival: DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'),
-            cus_count: this.resGuest,
-            table_id: this.selectedSeat?.table_id,
-            menu: this.foodPreOrderList,
-          },
-          lazy: true,
-        })
+    },
+    async makeReservation() {
+      // console.log(this.foodPreOrderList)
+      let requestBody = {
+        type: 3,
+        usage: 'user',
+        location_id: this.selectedLocID,
+        arrival: DateTime.fromISO(this.resDateTime).toFormat('yyyy-LL-dd TT'),
+        cus_count: this.resGuest,
+        table_id: this.selectedSeat?.table_id,
+        menu: this.foodPreOrderList,
+      };
+      if (
+          this.usePointAmount > 0 &&
+          this.usePointAmount <=
+          Math.min(
+              this.accountData.points,
+              this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0),
+          )
+      ) {
+        requestBody = Object.assign({}, requestBody, {point_used: Number(this.usePointAmount)});
+      }
+      this.pageSpinner = true;
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: requestBody,
+        lazy: true,
+      })
           .catch((error) => {
             this.isError = true;
             this.errorData = error.data;
           })
           .then((response) => {
-            const { status, message } = response as {
+            const {status, message} = response as {
               status: number;
               message: any;
             };
@@ -267,63 +332,65 @@
               this.resFailConfirm = true;
             }
           });
-      },
-      seatRule() {
-        if (this.filterSeatCount >= 1) return true;
-        return 'No seat with specified condition available';
-      },
-      isDateTimeValidRule() {
-        if (this.isDateTimeInRange() && this.isDateTimeInOperation()) return true;
-        if (!this.isDateTimeInOperation()) return 'Reservation must be in operational time';
-        if (!this.isDateTimeInRange()) return 'Reservation date must be > 2 hours and < 14 days into the future';
-        return 'Reservation date must be > 2 hours and < 14 days into the future and must be in operational time';
-      },
-      isDateTimeInRange() {
-        const time = DateTime.fromISO(this.resDateTime);
-        const start = DateTime.now().plus({ hours: 1 });
-        const end = DateTime.now().plus({ days: 14 });
-        const interval = Interval.fromDateTimes(start, end);
-
-        return interval.contains(time);
-      },
-      isDateTimeInOperation() {
-        const time = DateTime.fromISO(this.resDateTime);
-        const openTime = DateTime.fromSQL(this.selectedLoc.open_time);
-        const closeTime = DateTime.fromSQL(this.selectedLoc.close_time).minus({ minutes: 30 });
-
-        const timeHours = time.hour;
-        const timeMinutes = time.minute;
-        const startHours = openTime.hour;
-        const startMinutes = openTime.minute;
-        const endHours = closeTime.hour;
-        const endMinutes = closeTime.minute;
-
-        return (timeHours > startHours || (timeHours === startHours && timeMinutes >= startMinutes)) && (timeHours < endHours || (timeHours === endHours && timeMinutes <= endMinutes));
-      },
     },
+    seatRule() {
+      if (this.filterSeatCount >= 1) return true;
+      return 'No seat with specified condition available';
+    },
+    isDateTimeValidRule() {
+      if (this.isDateTimeInRange() && this.isDateTimeInOperation()) return true;
+      if (!this.isDateTimeInOperation()) return 'Reservation must be in operational time';
+      if (!this.isDateTimeInRange()) return 'Reservation date must be > 2 hours and < 14 days into the future';
+      return 'Reservation date must be > 2 hours and < 14 days into the future and must be in operational time';
+    },
+    isDateTimeInRange() {
+      const time = DateTime.fromISO(this.resDateTime);
+      const start = DateTime.now().plus({hours: 1});
+      const end = DateTime.now().plus({days: 14});
+      const interval = Interval.fromDateTimes(start, end);
 
-    computed: {
-      filteredSeatListCompute() {
-        this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
-        this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest).length;
-        return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest);
-      },
-      total: function () {
-        return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
-      },
+      return interval.contains(time);
     },
-    beforeMount() {
-      if (this.$route.query.location_id != null) {
-        this.hasLocation = true;
-        this.selectedLocID = Number(this.$route.query.location_id);
-        this.loadLocationByID(Number(this.$route.query.location_id));
-        this.stepper1 = 1;
-      } else {
-        this.stepper1 = 0;
-      }
-      this.loadLocation();
+    isDateTimeInOperation() {
+      const time = DateTime.fromISO(this.resDateTime);
+      const openTime = DateTime.fromSQL(this.selectedLoc.open_time);
+      const closeTime = DateTime.fromSQL(this.selectedLoc.close_time).minus({minutes: 30});
+
+      const timeHours = time.hour;
+      const timeMinutes = time.minute;
+      const startHours = openTime.hour;
+      const startMinutes = openTime.minute;
+      const endHours = closeTime.hour;
+      const endMinutes = closeTime.minute;
+
+      return (timeHours > startHours || (timeHours === startHours && timeMinutes >= startMinutes)) && (timeHours < endHours || (timeHours === endHours && timeMinutes <= endMinutes));
     },
-  };
+  },
+
+  computed: {
+    filteredSeatListCompute() {
+      this.filterSeatList = JSON.parse(JSON.stringify(this.seatList));
+      this.filterSeatCount = this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2).length;
+      console.log();
+      return this.filterSeatList.filter((item) => Number(item.capacity) >= this.resGuest && Number(item.capacity) <= this.resGuest + 2);
+    },
+    total: function () {
+      return this.foodPreOrderList.reduce((acc, item) => acc + item.price * item.amount, 0).toLocaleString();
+    },
+  },
+  beforeMount() {
+    if (this.$route.query.location_id != null) {
+      this.hasLocation = true;
+      this.selectedLocID = Number(this.$route.query.location_id);
+      this.loadLocationByID(Number(this.$route.query.location_id));
+      this.stepper1 = 1;
+    } else {
+      this.stepper1 = 0;
+    }
+    this.loadLocation();
+    this.loadAccountData();
+  },
+};
 </script>
 <template>
   <v-main class="justify-center reservation_main">
@@ -332,13 +399,13 @@
         <v-card-title>Confirmation</v-card-title>
         <v-card-text class="text-center">
           <v-icon color="success" icon="mdi-check" style="font-size: 120px"></v-icon>
-          <br />
+          <br/>
           Your reservation was created successfully!
-          <br />
+          <br/>
           You can view your reservation code
           <a
-            class="like-a-link"
-            @click="
+              class="like-a-link"
+              @click="
               () => {
                 router.push('/dashboard');
               }
@@ -348,9 +415,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            block=""
-            color="info"
-            @click="
+              block
+              color="info"
+              @click="
               () => {
                 resConfirm = false;
                 navigateTo('/');
@@ -366,16 +433,16 @@
         <v-card-title>Reseravtion Abort</v-card-title>
         <v-card-text class="text-center">
           <v-icon color="red" icon="mdi-close" style="font-size: 120px"></v-icon>
-          <br />
+          <br/>
           Sorry, it looks like your reservation didn't went through.
-          <br />
+          <br/>
           Please try again or contact staff for assistance.
         </v-card-text>
         <v-card-actions>
           <v-btn
-            block=""
-            color="info"
-            @click="
+              block
+              color="info"
+              @click="
               () => {
                 resFailConfirm = false;
               }
@@ -427,54 +494,58 @@
               <v-card class="bg-transparent" title="">
                 <v-card-text>
                   <h3 class="text-h4 font-weight-medium text-left">Select Branches</h3>
-                  <p class="text-h6 font-weight-light text-left">Click on the row to see more infomation of the branches</p>
+                  <p class="text-h6 font-weight-light text-left">Click on the row to see more infomation of the
+                    branches</p>
                 </v-card-text>
                 <v-no-ssr>
-                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="locationList" :loading="pageSpinner" :search="dtSearch" class="elevation-0 primary bg-transparent" color="rgba(255, 0, 0, 0)" item-value="location_id">
+                  <v-data-table :density="mobile ? 'compact' : 'comfortable'" :headers="dtHeaders" :items="locationList"
+                                :loading="pageSpinner" :search="dtSearch" class="elevation-0 primary bg-transparent"
+                                color="rgba(255, 0, 0, 0)" item-value="location_id">
                     <template v-slot:top>
-                      <v-text-field v-model="dtSearch" class="bg-transparent" placeholder="Search" prepend-inner-icon="mdi-text-search"></v-text-field>
+                      <v-text-field v-model="dtSearch" class="bg-transparent" placeholder="Search"
+                                    prepend-inner-icon="mdi-text-search"></v-text-field>
                     </template>
 
                     <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
                       <tr
-                        class="bg-transparent table-hover"
-                        ripple
-                        @click="
+                          v-ripple
+                          class="bg-table table-hover"
+                          @click="
                           () => {
                             toggleExpand(internalItem);
                           }
                         ">
-                        <td class="bg-transparent text-start td-hover">{{ item.name }}</td>
-                        <td class="bg-transparent text-center td-hover">
+                        <td class="bg-table text-start td-hover">{{ item.name }}</td>
+                        <td class="bg-table text-center td-hover">
                           {{ DateTime.fromISO(item.close_time).toFormat('t') }}
                         </td>
                       </tr>
                     </template>
 
                     <template v-slot:expanded-row="{ columns, item }">
-                      <tr class="bg-transparent">
-                        <td :colspan="columns.length" class="bg-transparent text-left">
+                      <tr class="bg-table-items1">
+                        <td :colspan="columns.length" class="bg-table-items1 text-left">
                           <v-container>
                             <v-row>
                               <v-col col="12" sm="6">
                                 <b>Operating Hours</b>
-                                <br />
+                                <br/>
                                 {{ DateTime.fromISO(item.open_time).toFormat('t') }} -
                                 {{ DateTime.fromISO(item.close_time).toFormat('t') }}
-                                <br />
+                                <br/>
                               </v-col>
                               <v-col col="12" sm="6">
                                 <b>Address</b>
-                                <br />
+                                <br/>
                                 {{ item.address }}
                               </v-col>
                             </v-row>
                             <v-row>
                               <v-col col="12">
                                 <v-btn
-                                  prepend-icon="mdi-check-decagram"
-                                  variant="tonal"
-                                  @click="
+                                    prepend-icon="mdi-check-decagram"
+                                    variant="tonal"
+                                    @click="
                                     () => {
                                       loadLocationByID(item.location_id);
                                       selectedLocID = item.location_id;
@@ -491,7 +562,8 @@
                     </template>
                   </v-data-table>
                 </v-no-ssr>
-                <v-btn :disabled="pageSpinner" class="align-right my-3" prepend-icon="mdi-refresh" rounded="2xl" text="Refresh" variant="tonal" @click="loadLocation"></v-btn>
+                <v-btn :disabled="pageSpinner" class="align-right my-3" prepend-icon="mdi-refresh" rounded="2xl"
+                       text="Refresh" variant="tonal" @click="loadLocation"></v-btn>
               </v-card>
             </v-stepper-window-item>
             <v-stepper-window-item value="2">
@@ -508,7 +580,9 @@
                   <v-row justify="space-around">
                     <v-col cols="12" sm="6">
                       <h3 class="text-left font-weight-medium">Date & Time</h3>
-                      <v-text-field v-model="resDateTime" :rules="[isDateTimeValidRule]" prepend-inner-icon="mdi-calendar-multiselect-outline" required type="datetime-local"></v-text-field>
+                      <v-text-field v-model="resDateTime" :rules="[isDateTimeValidRule]"
+                                    prepend-inner-icon="mdi-calendar-multiselect-outline" required
+                                    type="datetime-local"></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -517,10 +591,10 @@
                   <v-row>
                     <v-col>
                       <v-btn
-                        v-if="!hasLocation"
-                        prepend-icon="mdi-arrow-left"
-                        variant="tonal"
-                        @click="
+                          v-if="!hasLocation"
+                          prepend-icon="mdi-arrow-left"
+                          variant="tonal"
+                          @click="
                           () => {
                             resDateTime = '';
                             stepper1--;
@@ -531,10 +605,10 @@
                     </v-col>
                     <v-col>
                       <v-btn
-                        :disabled="!(isDateTimeInRange() && isDateTimeInOperation())"
-                        class="text-right"
-                        prepend-icon="mdi-arrow-right"
-                        @click="
+                          :disabled="!(isDateTimeInRange() && isDateTimeInOperation())"
+                          class="text-right"
+                          prepend-icon="mdi-arrow-right"
+                          @click="
                           () => {
                             stepper1++;
                             findSeatforSelectedDT();
@@ -560,27 +634,30 @@
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
 
-                          <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
+                          <v-img cover src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
                     </v-col>
                     <v-col>
                       <h3 class="text-left font-weight-medium">How many guests are coming?</h3>
                       <v-text-field
-                        v-model="resGuest"
-                        :on-update:model-value="
+                          v-model="resGuest"
+                          :on-update:model-value="
                           () => {
                             selectedSeat = null;
                           }
                         "
-                        :rules="[seatRule]"
-                        min="1"
-                        oninput="validity.valid || (value=1);"
-                        prepend-inner-icon="mdi-account-multiple"
-                        required
-                        type="number"></v-text-field>
+                          :rules="[seatRule]"
+                          min="1"
+                          oninput="this.value = (this.value) ? ((this.value > 0) ? this.value : 1) : this.value"
+                          prepend-inner-icon="mdi-account-multiple"
+                          required
+                          type="number"></v-text-field>
                       <h3 class="text-left font-weight-medium">Pick Your Seat</h3>
-                      <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name" item-value="table_id" label="Table Name" prepend-inner-icon="mdi-table-chair" return-object=""></v-select>
+                      <v-select v-model="selectedSeat" :disabled="filterSeatCount == 0" :item-props="seatItemProps"
+                                :items="filteredSeatListCompute" :rules="[seatRule]" item-title="name"
+                                item-value="table_id"
+                                label="Table Name" prepend-inner-icon="mdi-table-chair" return-object></v-select>
                     </v-col>
                   </v-row>
                 </v-container>
@@ -588,9 +665,9 @@
                   <v-row>
                     <v-col>
                       <v-btn
-                        prepend-icon="mdi-arrow-left"
-                        variant="tonal"
-                        @click="
+                          prepend-icon="mdi-arrow-left"
+                          variant="tonal"
+                          @click="
                           () => {
                             selectedSeat = null;
                             stepper1--;
@@ -601,9 +678,9 @@
                     </v-col>
                     <v-col>
                       <v-btn
-                        :disabled="filterSeatCount == 0 || selectedSeat == null"
-                        prepend-icon="mdi-arrow-right"
-                        @click="
+                          :disabled="filterSeatCount == 0 || selectedSeat == null"
+                          prepend-icon="mdi-arrow-right"
+                          @click="
                           () => {
                             loadMenusFromLocation(selectedLocID);
                             stepper1++;
@@ -625,25 +702,28 @@
                 <v-row>
                   <v-col cols="12" md="8" sm="12">
                     <h3 class="ml-3 text-left font-weight-medium">Menus</h3>
-                    <v-lazy :min-height="200" :options="{ threshold: 0.5 }" class="" transition="fade-transition">
-                      <v-card class="overflow-auto bg-transparent" elevation="0" height="525">
+                    <v-lazy :min-height="600" :options="{ threshold: 0.5 }" class="" transition="fade-transition">
+                      <v-card class="overflow-auto bg-transparent" elevation="0" height="750">
                         <v-container>
                           <v-row>
                             <v-col
-                              v-for="food in menuList"
-                              :key="food.id"
-                              cols="12"
-                              md="6"
-                              sm="6"
-                              @click="
+                                v-for="food in menuList"
+                                :key="food.id"
+
+                                cols="12"
+                                md="6"
+                                sm="6"
+                                @click="
                                 () => {
                                   addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
                                 }
                               ">
-                              <v-card ripple>
-                                <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9" cover="" height="300">
+                              <v-card v-ripple class="elevation-3"
+                                      style="min-height:500px; border-radius: 22px !important;">
+                                <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
+                                       cover height="300">
                                   <template v-slot:error>
-                                    <v-img cover="" height="300" src="/images/img-error.webp" width="300"></v-img>
+                                    <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
                                   </template>
                                 </v-img>
                                 <v-card-title>
@@ -669,33 +749,34 @@
                     <v-card class="bg-transparent" elevation="0">
                       <h3 class="bg-transparent pr-0 mr-0 text-left font-weight-medium">Your Order</h3>
                       <div v-if="foodPreOrderList.length > 0">
-                        <v-table :density="mobile ? 'compact' : 'comfortable'" class="bg-transparent" fixed-header="" height="400px">
+                        <v-table :density="mobile ? 'compact' : 'comfortable'" class="bg-transparent" fixed-header
+                                 height="400px">
                           <thead>
-                            <tr>
-                              <th class="bg-transparent text-left mx-0 px-0">Name</th>
-                              <th class="bg-transparent text-center mx-0 px-0">Amount</th>
-                              <th class="bg-transparent text-right px-0">Price</th>
-                              <th class="bg-transparent text-right mr-0 pr-0">
-                                <v-icon size="xl-small">mdi-check-circle-outline</v-icon>
-                              </th>
-                            </tr>
+                          <tr>
+                            <th class="bg-transparent text-left mx-0 px-0">Name</th>
+                            <th class="bg-transparent text-center mx-0 px-0">Amount</th>
+                            <th class="bg-transparent text-right px-0">Price</th>
+                            <th class="bg-transparent text-right mr-0 pr-0">
+                              <v-icon size="xl-small">mdi-check-circle-outline</v-icon>
+                            </th>
+                          </tr>
                           </thead>
                           <tbody>
-                            <tr v-for="order in foodPreOrderList" :key="order.id">
-                              <td class="text-left mx-0 px-0">
-                                <v-tooltip location="bottom">
-                                  <template v-slot:activator="{ props }">
-                                    <p v-bind="props">{{ order.item_name }}</p>
-                                  </template>
-                                  <span>{{ order.item_desc }}</span>
-                                </v-tooltip>
-                              </td>
-                              <td class="text-center mx-0 px-0" width="100px">
-                                <v-tooltip location="top">
-                                  <template v-slot:activator="{ props }">
-                                    <v-icon
+                          <tr v-for="order in foodPreOrderList" :key="order.id">
+                            <td class="text-left mx-0 px-0">
+                              <v-tooltip location="bottom">
+                                <template v-slot:activator="{ props }">
+                                  <p v-bind="props">{{ order.item_name }}</p>
+                                </template>
+                                <span>{{ order.item_desc }}</span>
+                              </v-tooltip>
+                            </td>
+                            <td class="text-center mx-0 px-0" width="100px">
+                              <v-tooltip location="top">
+                                <template v-slot:activator="{ props }">
+                                  <v-icon
+                                      v-ripple
                                       color="red"
-                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click="
@@ -703,18 +784,18 @@
                                           updateMenuById(0, order.id);
                                         }
                                       ">
-                                      mdi-minus
-                                    </v-icon>
-                                  </template>
-                                  <span>Decrease Amount</span>
-                                </v-tooltip>
-                                {{ order.amount }}
-                                <v-tooltip location="top">
-                                  <template v-slot:activator="{ props }">
-                                    <v-icon
+                                    mdi-minus
+                                  </v-icon>
+                                </template>
+                                <span>Decrease Amount</span>
+                              </v-tooltip>
+                              {{ order.amount }}
+                              <v-tooltip location="top">
+                                <template v-slot:activator="{ props }">
+                                  <v-icon
+                                      v-ripple
                                       color="green"
                                       icon="mdi-plus ml-1"
-                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click="
@@ -722,19 +803,21 @@
                                           updateMenuById(1, order.id);
                                         }
                                       ">
-                                      mdi-plus
-                                    </v-icon>
-                                  </template>
-                                  <span>Increase Amount</span>
-                                </v-tooltip>
-                              </td>
-                              <td class="text-right mx-0 px-0" width="90px">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
-                              <td class="text-right mx-0 pr-0" width="10px">
-                                <v-tooltip location="top">
-                                  <template v-slot:activator="{ props }">
-                                    <v-icon
+                                    mdi-plus
+                                  </v-icon>
+                                </template>
+                                <span>Increase Amount</span>
+                              </v-tooltip>
+                            </td>
+                            <td class="text-right mx-0 px-0" width="90px">
+                              {{ (order.amount * order.price).toLocaleString() }} ฿
+                            </td>
+                            <td class="text-right mx-0 pr-0" width="10px">
+                              <v-tooltip location="top">
+                                <template v-slot:activator="{ props }">
+                                  <v-icon
+                                      v-ripple
                                       color="red"
-                                      ripple=""
                                       size="x-small"
                                       v-bind="props"
                                       @click="
@@ -742,22 +825,22 @@
                                           removeMenuById(order.id);
                                         }
                                       ">
-                                      mdi-delete
-                                    </v-icon>
-                                  </template>
-                                  <span>Delete Order</span>
-                                </v-tooltip>
-                              </td>
-                            </tr>
+                                    mdi-delete
+                                  </v-icon>
+                                </template>
+                                <span>Delete Order</span>
+                              </v-tooltip>
+                            </td>
+                          </tr>
                           </tbody>
                         </v-table>
                         <v-table class="mx-3 mt-3 text-h6 font-weight-medium bg-transparent">
                           <tbody>
-                            <tr>
-                              <td class="text-center px-0" width="200px"><b>Total</b></td>
-                              <td class="text-right px-0" width="100px">{{ total }} ฿</td>
-                              <td class="text-right px-0">
-                                <v-btn
+                          <tr>
+                            <td class="text-center px-0" width="200px"><b>Total</b></td>
+                            <td class="text-right px-0" width="100px">{{ total }} ฿</td>
+                            <td class="text-right px-0">
+                              <v-btn
                                   color="red"
                                   variant="text"
                                   @click="
@@ -765,10 +848,10 @@
                                       foodPreOrderList = [];
                                     }
                                   ">
-                                  Clear
-                                </v-btn>
-                              </td>
-                            </tr>
+                                Clear
+                              </v-btn>
+                            </td>
+                          </tr>
                           </tbody>
                         </v-table>
                       </div>
@@ -786,9 +869,9 @@
                 <v-row>
                   <v-col>
                     <v-btn
-                      prepend-icon="mdi-arrow-left"
-                      variant="tonal"
-                      @click="
+                        prepend-icon="mdi-arrow-left"
+                        variant="tonal"
+                        @click="
                         () => {
                           stepper1--;
                         }
@@ -798,8 +881,8 @@
                   </v-col>
                   <v-col>
                     <v-btn
-                      prepend-icon="mdi-arrow-right"
-                      @click="
+                        prepend-icon="mdi-arrow-right"
+                        @click="
                         () => {
                           stepper1++;
                         }
@@ -839,7 +922,7 @@
                             <p class="ml-4 text-h6 font-weight-light">
                               <v-icon>mdi-calendar-blank</v-icon>
                               {{ DateTime.fromISO(selectedTime).toFormat('DDDD') }}
-                              <br />
+                              <br/>
                               <v-icon>mdi-clock-outline</v-icon>
                               {{ DateTime.fromISO(selectedTime).toFormat('t') }}
                             </p>
@@ -863,28 +946,45 @@
                         <v-card class="pa-3 bg-transparent summary-box">
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
                           <div v-if="foodPreOrderList.length > 0">
-                            <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header="" max-height="300px">
-                              <thead>
+                            <v-card-item class="pa-0 ma-0">
+                              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
+                                       max-height="300px">
+                                <thead>
                                 <tr>
                                   <th class="bg-transparent text-left">Name</th>
                                   <th class="bg-transparent text-right">Amount</th>
                                   <th class="bg-transparent text-right">Price</th>
                                 </tr>
-                              </thead>
-                              <tbody>
+                                </thead>
+                                <tbody>
                                 <tr v-for="order in foodPreOrderList" :key="order.id">
                                   <td class="text-left">{{ order.item_name }}</td>
                                   <td class="text-right">{{ order.amount }}</td>
                                   <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
                                 </tr>
-                              </tbody>
-                            </v-table>
-                            <v-table class="mx-3 text-h6">
-                              <tbody>
+                                </tbody>
+                              </v-table>
+                              <v-table class="mx-3 text-h6">
+                                <tbody>
                                 <td class="text-right">Total</td>
                                 <td class="text-right">{{ total }} ฿</td>
-                              </tbody>
-                            </v-table>
+                                </tbody>
+                              </v-table>
+                            </v-card-item>
+                            <v-card-item class="ml-5 text-left pa-0 ma-0">
+                              <h3 class="mt-3 text-left text-h5 font-weight-medium">Additional Options</h3>
+                              <v-tooltip location="top left">
+                                <template v-slot:activator="{ props }">
+                                  <p v-bind="props">You currently have {{ accountData.points }} points.</p>
+                                </template>
+                                <span>1 Points equals to 1 Baht</span>
+                              </v-tooltip>
+                              <v-checkbox v-model="usePoint" :disabled="accountData.points < 1" color="primary"
+                                          label="Use Points" prepend-icon="mdi-circle-multiple"></v-checkbox>
+                              <v-text-field v-if="usePoint" v-model="usePointAmount" label="How many Points?" min="1"
+                                            prepend-inner-icon="mdi-circle-multiple" required type="number"
+                                            v-on:change="setPoints"></v-text-field>
+                            </v-card-item>
                           </div>
                           <div v-else>
                             <p class="text-left ml-5">
@@ -901,9 +1001,9 @@
                   <v-row>
                     <v-col>
                       <v-btn
-                        prepend-icon="mdi-arrow-left"
-                        variant="tonal"
-                        @click="
+                          prepend-icon="mdi-arrow-left"
+                          variant="tonal"
+                          @click="
                           () => {
                             stepper1--;
                           }
@@ -913,9 +1013,9 @@
                     </v-col>
                     <v-col>
                       <v-btn
-                        color="success"
-                        prepend-icon="mdi-check"
-                        @click="
+                          color="success"
+                          prepend-icon="mdi-check"
+                          @click="
                           () => {
                             makeReservation();
                           }
@@ -935,13 +1035,13 @@
 </template>
 
 <style scoped>
-  .like-a-link {
-    cursor: pointer;
-  }
+.like-a-link {
+  cursor: pointer;
+}
 
-  .like-a-link:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    color: #0373de;
-  }
+.like-a-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #0373de;
+}
 </style>

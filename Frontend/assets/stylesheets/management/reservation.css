@@ -16,3 +16,14 @@
 /*    font-weight: 700 !important;*/
 /*    font-size: 30px !important;*/
 /*}*/
+
+
+.reservation-header-text {
+    font-size: 24px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.top-card-blur {
+    background: rgba(255, 255, 255, 0.9) !important;
+}

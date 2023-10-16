@@ -21,7 +21,10 @@ useHead({
   ],
 });
 const {status, data, signIn} = useAuth();
-const mySignInHandler = async ({email, password}: { email: string; password: string }) => {
+const mySignInHandler = async ({email, password}: {
+  email: string;
+  password: string
+}) => {
   const {error} = await signIn('credentials', {
     email,
     password,

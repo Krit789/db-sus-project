@@ -718,7 +718,8 @@ export default {
                                   addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
                                 }
                               ">
-                              <v-card v-ripple style="min-height:500px; border-radius: 22px !important;" class="elevation-3">
+                              <v-card v-ripple class="elevation-3"
+                                      style="min-height:500px; border-radius: 22px !important;">
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover height="300">
                                   <template v-slot:error>

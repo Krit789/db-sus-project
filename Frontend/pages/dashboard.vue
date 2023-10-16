@@ -319,7 +319,7 @@ export default {
               sticky>
             <template v-slot:item="{ internalItem, item, toggleExpand, isExpanded }">
               <tr v-ripple class="text-end table-hover" @click="toggleExpand(internalItem)">
-                <td class="td-hover text-left">
+                <td class="td-hover text-left bg-table">
                   <v-tooltip location="top">
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -335,12 +335,12 @@ export default {
                       }}</span>
                   </v-tooltip>
                 </td>
-                <td class="text-center td-hover">{{ item.location_name }}</td>
-                <td class="td-hover">{{ item.cus_count }}</td>
-                <td class="text-left td-hover">
+                <td class="text-center td-hover bg-table">{{ item.location_name }}</td>
+                <td class="td-hover bg-table">{{ item.cus_count }}</td>
+                <td class="text-left td-hover bg-table">
                   {{ item.table_name }}
                 </td>
-                <td class="text-left td-hover">
+                <td class="text-left td-hover bg-table">
                   {{ DateTime.fromSQL(item.arrival).toFormat('t D') }}
                   <v-tooltip activator="parent" location="top">{{
                       DateTime.fromSQL(item.arrival).toFormat('t DDDD')
@@ -351,7 +351,7 @@ export default {
             </template>
             <template v-slot:expanded-row="{ columns, item }">
               <tr>
-                <td :colspan="columns.length" class="text-left">
+                <td :colspan="columns.length" class="text-left bg-table-items1">
                   <v-container>
                     <v-row>
                       <v-col col="12" sm="6">

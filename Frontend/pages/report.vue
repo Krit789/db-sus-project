@@ -208,7 +208,10 @@ export default {
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             this.dtData = message;
             this.dtLoading = false;
             this.dtIsError = false;
@@ -232,7 +235,10 @@ export default {
             this.dtErrorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as { status: number; message: any };
+            const {status, message} = response as {
+              status: number;
+              message: any
+            };
             if (status === 1) {
               this.reportData = message;
               this.extractDataForChart();

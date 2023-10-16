@@ -6,7 +6,10 @@ import '~/assets/stylesheets/global.css';
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
-const mySignInHandler = async ({email, password}: { email: string; password: string }) => {
+const mySignInHandler = async ({email, password}: {
+  email: string;
+  password: string
+}) => {
   const {error} = await signIn('credentials', {
     email,
     password,

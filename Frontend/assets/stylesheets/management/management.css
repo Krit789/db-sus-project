@@ -1,8 +1,6 @@
 .management-main {
-    background: url(~/assets/images/background/surface_duo.webp);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+    /*background: url(~/assets/images/background/surface_duo.webp);*/
+    background: url(~/assets/images/background/WindowsInsider_Light.webp) no-repeat fixed center;
     background-size: cover;
     overflow: clip;
     min-height: 100vh;

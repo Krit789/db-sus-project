@@ -1,10 +1,8 @@
 
 .reservation_main {
-    /*background: url(~/assets/images/background/SurfaceLaptop3_Blue.webp);*/
-    background: url(~/assets/images/background/Wat_Salut.webp);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
+    /*background: url(~/assets/images/background/WindowsInsider_Light.webp) no-repeat fixed center;*/
+    /*background: url(~/assets/images/background/SurfaceLaptop3_Blue.webp) no-repeat fixed center;*/
+    background: url(~/assets/images/background/Surface_XP.webp) no-repeat fixed center;
     background-size: cover;
     overflow: clip;
     min-height: 100vh;
@@ -22,6 +20,13 @@
 
 .img-layout {
     margin: 12px 0 0 0;
+}
+
+.food-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(1px) saturate(1.2);
+    min-height: 500px;
+    border-radius: 22px !important;
 }
 
 /*th, tr, td {*/

@@ -2,6 +2,9 @@
 
 @import 'fonts.css';
 
+body {
+    /*zoom: 80%;*/
+}
 
 v-btn {
     color: #0373DE;
@@ -26,7 +29,7 @@ img_background {
 
 .blur-effect {
     background: rgba(245, 245, 247, .82);
-    backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(22px) saturate(1.86);
     -webkit-backdrop-filter: blur(15px) saturate(86%);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;

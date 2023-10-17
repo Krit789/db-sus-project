@@ -30,11 +30,11 @@ export default NuxtAuthHandler({
             (session as any).lastName = token.lastName;
             (session as any).email = token.email;
             (session as any).tel = token.tel;
-            // (session as any).token = token.token; // No need to send token back to user every callback
             return Promise.resolve(session);
         },
     },
     providers: [
+        // @ts-expect-error
         CredentialsProvider.default({
             name: "Credentials",
             credentials: {
@@ -59,11 +59,7 @@ export default NuxtAuthHandler({
                 }).catch((error) => error);
 
                 if (data?.status == 1) {
-                    //   console.log("This Works!");
-                    // console.log(data.jwt);
                     const decodedData = parseJwt(data.jwt);
-                    // console.log(decodedData);
-                    // console.log(u);
                     return {
                         id: decodedData?.data.id,
                         email: decodedData?.data.email,

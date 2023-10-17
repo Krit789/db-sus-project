@@ -43,8 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'message' => 'Invalid Credentials',
             ]); else {
                 $payload = [
-                    'iss' => "localhost",
-                    'aud' => 'localhost',
+                    'iss' => "s.iservkmitl.tech",
+                    'aud' => 's.iservkmitl.tech',
                     'exp' => time() + 1000, //10 mint
                     'data' => [
                         'id' => $id,

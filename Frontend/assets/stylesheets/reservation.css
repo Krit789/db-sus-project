@@ -2,7 +2,7 @@
 .reservation_main {
     /*background: url(~/assets/images/background/WindowsInsider_Light.webp) no-repeat fixed center;*/
     /*background: url(~/assets/images/background/SurfaceLaptop3_Blue.webp) no-repeat fixed center;*/
-    background: url(~/assets/images/background/Surface_XP.webp) no-repeat fixed center;
+    background: url(~/assets/images/background/surface_xp.webp) no-repeat fixed center;
     background-size: cover;
     overflow: clip;
     min-height: 100vh;

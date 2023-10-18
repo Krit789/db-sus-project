@@ -229,10 +229,10 @@ export default {
         },
         lazy: true,
       })
-          .catch((error) => {
+          .catch(() => {
           })
           .then((response) => {
-            const {status, message} = response as {
+            const {message} = response as {
               status: number;
               message: User;
             };
@@ -255,7 +255,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
+            const {message} = response as {
               status: number;
               message: any;
             };
@@ -281,7 +281,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
+            const {message} = response as {
               status: number;
               message: any;
             };
@@ -322,7 +322,7 @@ export default {
             this.errorData = error.data;
           })
           .then((response) => {
-            const {status, message} = response as {
+            const {status} = response as {
               status: number;
               message: any;
             };
@@ -415,7 +415,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block
+              block=""
               color="info"
               @click="
               () => {
@@ -440,7 +440,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block
+              block=""
               color="info"
               @click="
               () => {
@@ -634,7 +634,7 @@ export default {
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
 
-                          <v-img cover src="/images/img-error.webp" width="600"></v-img>
+                          <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
                     </v-col>
@@ -722,7 +722,7 @@ export default {
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
                                        cover="" height="300">
                                   <template v-slot:error>
-                                    <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
+                                    <v-img cover="" height="300" src="/images/img-error.webp" width="300"></v-img>
                                   </template>
                                 </v-img>
                                 <v-card-title>

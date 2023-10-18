@@ -9,13 +9,20 @@
     /*min-width: 100vw;*/
 }
 
+.table-summary {
+    font-family: "Sarabun", "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Roboto", sans-serif !important;
+    overflow: hidden !important;
+    min-height: 32px;
+    padding-right: 12px;
+}
+
 .branch-status {
-    background-color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.89);
 }
 
 .summary-box {
-    border-radius: 22px !important;
-    background: rgba(255, 255, 255, 1) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, .69) !important;
 }
 
 .img-layout {
@@ -23,8 +30,8 @@
 }
 
 .food-card {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(1px) saturate(1.2);
+    background: rgba(255, 255, 255, 0.89) !important;
+    /*backdrop-filter: blur(1px) saturate(1.2);*/
     min-height: 500px;
     border-radius: 22px !important;
 }

@@ -944,26 +944,29 @@ export default {
                       <v-col>
                         <v-card class="pa-3 bg-transparent summary-box">
                           <h3 class="ml-5 mt-3 text-left text-h5 font-weight-medium">Your Order</h3>
-                          <div v-if="foodPreOrderList.length > 0">
+                          <div v-if="foodPreOrderList.length > 0" class="mt-3">
                             <v-card-item class="pa-0 ma-0">
-                              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3" fixed-header
+                              <v-table :density="mobile ? 'compact' : 'comfortable'" class="mx-3 bg-transparent"
+                                       fixed-header
                                        max-height="300px">
                                 <thead>
                                 <tr>
-                                  <th class="bg-transparent text-left">Name</th>
-                                  <th class="bg-transparent text-right">Amount</th>
-                                  <th class="bg-transparent text-right">Price</th>
+                                  <th class="bg-transparent text-left bg-table">Name</th>
+                                  <th class="bg-transparent text-right bg-table">Amount</th>
+                                  <th class="bg-transparent text-right bg-table">Price</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr v-for="order in foodPreOrderList" :key="order.id">
-                                  <td class="text-left">{{ order.item_name }}</td>
-                                  <td class="text-right">{{ order.amount }}</td>
-                                  <td class="text-right">{{ (order.amount * order.price).toLocaleString() }} ฿</td>
+                                  <td class="text-left bg-table">{{ order.item_name }}</td>
+                                  <td class="text-right bg-table">{{ order.amount }}</td>
+                                  <td class="text-right bg-table">{{ (order.amount * order.price).toLocaleString() }}
+                                    ฿
+                                  </td>
                                 </tr>
                                 </tbody>
                               </v-table>
-                              <v-table class="mx-3 text-h6">
+                              <v-table class="mx-3 text-h6 bg-table table-summary overflow-y-hidden">
                                 <tbody>
                                 <td class="text-right">Total</td>
                                 <td class="text-right">{{ total }} ฿</td>

@@ -19,6 +19,7 @@ useHead({
 
 const {mobile} = useDisplay();
 const router = useRouter();
+
 </script>
 
 <script lang="ts">
@@ -243,7 +244,7 @@ export default {
               this.reportData = message;
               this.extractDataForChart();
               this.createChartData(this.reportData[0]);
-              console.log(this.earningsChartData, this.salesChartData);
+              // console.log(this.earningsChartData, this.salesChartData);
             } else {
             }
             this.loadingDialog = false;
@@ -474,7 +475,7 @@ export default {
               <Bar id="locationSales" :key="reportData[1]" :data="salesChartData" :options="salesChartOptions"/>
             </v-sheet>
             <v-btn class="ml-10 mt-3" color="success" prepend-icon="mdi-download-circle" variant="text" @click="">
-              <JsonCSV :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
+              <JsonCSV v-if="reportData[0]" :data="reportData[0]" name="total_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
           <v-col class="pa-0 ma-0">
@@ -483,7 +484,7 @@ export default {
               <Bar id="locationEarning" :key="reportData[1]" :data="earningsChartData" :options="earningChartOptions"/>
             </v-sheet>
             <v-btn class="ml-10 mt-3" color="success" prepend-icon="mdi-download-circle" variant="text" @click="">
-              <JsonCSV :data="reportData[1]" name="reservation_earnings.csv">Download as CSV</JsonCSV>
+              <JsonCSV v-if="reportData[1]" :data="reportData[1]" name="reservation_earnings.csv">Download as CSV</JsonCSV>
             </v-btn>
           </v-col>
         </v-row>
@@ -510,6 +511,7 @@ export default {
                 </tr>
                 </tbody>
               </v-table>
+              <v-no-ssr>
               <v-table class="mr-10 mt-2 bg-transparent" height="40px">
                 <tr class="text-h5">
                   <td :width="mobile ? 'auto' : '500px'" class="text-right"></td>
@@ -524,6 +526,7 @@ export default {
                   </td>
                 </tr>
               </v-table>
+            </v-no-ssr>
             </v-sheet>
           </v-col>
         </v-row>

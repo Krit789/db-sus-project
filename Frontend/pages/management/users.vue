@@ -87,7 +87,7 @@ export default {
       {title: 'Role', align: 'start', key: 'role'},
       {title: 'Created On', align: ' d-none', key: 'created_on'},
       {title: 'Status', align: 'start', key: 'status'},
-    ] as DataTableHeader[],
+    ],
   }),
   methods: {
     async loadData() {

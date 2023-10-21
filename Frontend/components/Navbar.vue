@@ -3,9 +3,28 @@ import {useDisplay} from 'vuetify';
 import '~/assets/stylesheets/navbar.css';
 import '~/assets/stylesheets/global.css';
 
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  telephone: string | null;
+  points: number;
+}
+
 const {mobile} = useDisplay();
 const {status, data, signIn, signOut} = useAuth();
 const route = useRoute();
+
+let accountData: Ref<User> = ref({
+      id: 0,
+      first_name: 'FN',
+      last_name: 'LN',
+      email: 'email',
+      telephone: '',
+      points: 0,
+    });
+
 const mySignInHandler = async ({email, password}: {
   email: string;
   password: string
@@ -24,17 +43,55 @@ const mySignInHandler = async ({email, password}: {
     return true;
   }
 };
+
+async function loadAccountData() {
+      await $fetch('/api/data', {
+        method: 'POST',
+        body: {
+          type: 12,
+          usage: 'user',
+        },
+        lazy: true,
+      })
+          .catch((error) => {
+          })
+          .then((response) => {
+            const {status, message} = response as {
+              status: number;
+              message: User;
+            };
+            if (status == 1) {
+              accountData.value = message;
+            } else {
+              signOut();
+            }
+          });
+    }
+
+
+watch(
+  () => route.path,
+  () => {
+    if (route.path === '/' || route.path === '/reservation' || route.path === '/dashboard' || route.path === '/account')
+    loadAccountData()
+  },
+);
+
+watch(
+  () => status.value,
+  () => {
+    if (status.value === 'authenticated')
+    loadAccountData()
+  },
+);
+
+
+onBeforeMount(() => { loadAccountData();});
+
 </script>
 
 <script lang="ts">
-interface User {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  telephone: string | null;
-  points: number;
-}
+
 
 export default {
   data: () => ({
@@ -56,14 +113,6 @@ export default {
     NotiIcon: '',
     timeout: 2000,
     isCardLoading: false,
-    accountData: {
-      id: 0,
-      first_name: 'FN',
-      last_name: 'LN',
-      email: 'email',
-      telephone: '',
-      points: 0,
-    } as User,
     items: [
       {
         title: 'Home',
@@ -142,25 +191,6 @@ export default {
     ],
   }),
   methods: {
-    async loadAccountData() {
-      await $fetch('/api/data', {
-        method: 'POST',
-        body: {
-          type: 12,
-          usage: 'user',
-        },
-        lazy: true,
-      })
-          .catch((error) => {
-          })
-          .then((response) => {
-            const {status, message} = response as {
-              status: number;
-              message: User;
-            };
-            this.accountData = message;
-          });
-    },
     passwordValidation(value: String) {
       if (this.passwordReg === value) return true;
       return 'Both passwords must be similar.';
@@ -255,10 +285,11 @@ export default {
   watch: {
     group() {
       this.drawer = false;
+
     },
   },
   beforeMount() {
-    this.loadAccountData();
+    // this.loadAccountData();
   },
 };
 </script>

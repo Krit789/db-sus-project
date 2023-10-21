@@ -49,6 +49,11 @@ export default {
     dtLoading: false,
     cancelReservationDialog: false,
     cancelResID: 0,
+    editResID: 0,
+    editResTime: "",
+    editResGuest: 0,
+    editResTableID: "",
+    editResMenu: [],
     snackbar: false,
     NotiColor: '',
     timeout: 2000,
@@ -58,6 +63,7 @@ export default {
     loadingDialog: false,
     foodViewDialog: false,
     preOrderLoading: false,
+    editReservationDialog: false,
     pointUsed: 0,
     resType: [
       {
@@ -224,6 +230,16 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="editReservationDialog" :width="'auto'">
+      <v-card :width="mobile ? 'auto' : '400px'">
+        <v-card-title>Reservation Cancellation</v-card-title>
+        <v-card-text>Are you sure that you want to cancel this reservation?</v-card-text>
+        <v-card-actions>
+          <v-btn color="success" prepend-icon="mdi-save" @click="() => {}">Save</v-btn>
+          <v-btn color="error" prepend-icon="mdi-cancel" @click="editReservationDialog = false">Cancel</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="foodViewDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
         <v-card-title>
@@ -266,7 +282,6 @@ export default {
           <v-btn
               block
               class="mt-3"
-              prepend-icon="mdi-close"
               variant="text"
               @click="
               () => {
@@ -408,22 +423,25 @@ export default {
                           Reservation Code
                         </v-btn>
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
-                        <v-btn
+                        <!-- <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="info"
                             prepend-icon="mdi-pencil"
-                            text="Edit Reservation"
+                            text="Edit"
                             variant="text"
                             @click="
                             () => {
-                              // cancelReservation(item.res_id);
+                              editResID = item.res_id
+                              editResGuest = item.cus_count
+                              editResTableID = item.table
+                              editReservationDialog = true;
                             }
-                          "></v-btn>
+                          "></v-btn> -->
                         <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="red"
                             prepend-icon="mdi-cancel"
-                            text="Cancel Reservation"
+                            text="Cancel"
                             variant="text"
                             @click="
                             () => {

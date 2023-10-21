@@ -761,7 +761,6 @@ export default {
               prepend-icon="mdi-check"
               @click="
               () => {
-                // addMenuRestriction(menu_id, loc_id);
                 addMenuRestriction(bID, menuID);
                 menuID = 0;
                 menuName = '';

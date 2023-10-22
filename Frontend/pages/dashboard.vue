@@ -183,6 +183,45 @@ export default {
             this.dtIsError = false;
           });
     },
+  //   seatRule() {
+  //     if (this.filterSeatCount >= 1) return true;
+  //     return 'No seat with specified condition available';
+  //   },
+  //   isDateTimeValidRule() {
+  //     if (this.isDateTimeInRange() && this.isDateTimeInOperation()) return true;
+  //     if (!this.isDateTimeInOperation()) return 'Reservation must be in operational time';
+  //     if (!this.isDateTimeInRange()) return 'Reservation date must be > 2 hours and < 14 days into the future';
+  //     return 'Reservation date must be > 2 hours and < 14 days into the future and must be in operational time';
+  //   },
+  //   isDateTimeInRange() {
+  //     const time = DateTime.fromISO(this.resDateTime);
+  //     const start = DateTime.now().plus({hours: 1});
+  //     const end = DateTime.now().plus({days: 14});
+  //     const interval = Interval.fromDateTimes(start, end);
+
+  //     return interval.contains(time);
+  //   },
+  //   isDateTimeInOperation() {
+  //     const time = DateTime.fromISO(this.resDateTime);
+  //     const openTime = DateTime.fromSQL(this.selectedLoc.open_time);
+  //     const closeTime = DateTime.fromSQL(this.selectedLoc.close_time).minus({minutes: 30});
+
+  //     const timeHours = time.hour;
+  //     const timeMinutes = time.minute;
+  //     const startHours = openTime.hour;
+  //     const startMinutes = openTime.minute;
+  //     const endHours = closeTime.hour;
+  //     const endMinutes = closeTime.minute;
+
+  //     return (timeHours > startHours || (timeHours === startHours && timeMinutes >= startMinutes)) && (timeHours < endHours || (timeHours === endHours && timeMinutes <= endMinutes));
+  //   },
+  // },
+  //   isDateTimeValidRule() {
+  //     if (this.isDateTimeInRange() && this.isDateTimeInOperation()) return true;
+  //     if (!this.isDateTimeInOperation()) return 'Reservation must be in operational time';
+  //     if (!this.isDateTimeInRange()) return 'Reservation date must be > 2 hours and < 14 days into the future';
+  //     return 'Reservation date must be > 2 hours and < 14 days into the future and must be in operational time';
+  //   }
   },
   computed: {
     total: function () {
@@ -232,10 +271,26 @@ export default {
     </v-dialog>
     <v-dialog v-model="editReservationDialog" :width="'auto'">
       <v-card :width="mobile ? 'auto' : '400px'">
-        <v-card-title>Reservation Cancellation</v-card-title>
-        <v-card-text>Are you sure that you want to cancel this reservation?</v-card-text>
+        <v-card-title>Editing Reservation</v-card-title>
+        <v-card-item>
+          <v-text-field type="datetime-local" label="Reservation Time" prepend-inner-icon="mdi-calendar-multiselect-outline" v-model="editResTime"></v-text-field>
+          <v-text-field
+                          v-model="editResGuest"
+                          :on-update:model-value="
+                          () => {
+                            editResTableID = '';
+                          }
+                        "
+                          min="1"
+                          oninput="this.value = (this.value) ? ((this.value > 0) ? this.value : 1) : this.value"
+                          prepend-inner-icon="mdi-account-multiple"
+                          label="Guests"
+                          type="number"></v-text-field>
+                          <v-select v-model="editResTableID" label="Table Name" prepend-inner-icon="mdi-table-chair" return-object></v-select>
+                          <v-btn variant="text" prepend-icon="mdi-food" color="purple">Edit Order</v-btn>
+        </v-card-item>
         <v-card-actions>
-          <v-btn color="success" prepend-icon="mdi-save" @click="() => {}">Save</v-btn>
+          <v-btn color="success" prepend-icon="mdi-content-save" @click="() => {}">Save</v-btn>
           <v-btn color="error" prepend-icon="mdi-cancel" @click="editReservationDialog = false">Cancel</v-btn>
         </v-card-actions>
       </v-card>
@@ -423,7 +478,7 @@ export default {
                           Reservation Code
                         </v-btn>
                         <!-- Might re-work this part later on. It's 3 AM, I'm so tired already I'm not doing it anymore! -->
-                        <!-- <v-btn
+                        <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="info"
                             prepend-icon="mdi-pencil"
@@ -433,10 +488,11 @@ export default {
                             () => {
                               editResID = item.res_id
                               editResGuest = item.cus_count
-                              editResTableID = item.table
+                              editResTableID = item.table_name
+                              editResTime = item.arrival
                               editReservationDialog = true;
                             }
-                          "></v-btn> -->
+                          "></v-btn>
                         <v-btn
                             v-if="item.res_status === 'INPROGRESS'"
                             color="red"

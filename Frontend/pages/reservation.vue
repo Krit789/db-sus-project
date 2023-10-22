@@ -415,7 +415,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block=""
+              block
               color="info"
               @click="
               () => {
@@ -440,7 +440,7 @@ export default {
         </v-card-text>
         <v-card-actions>
           <v-btn
-              block=""
+              block
               color="info"
               @click="
               () => {
@@ -634,7 +634,7 @@ export default {
                         <template v:slot:placeholder>
                           <v-skeleton-loader width="600"></v-skeleton-loader>
 
-                          <v-img cover="" src="/images/img-error.webp" width="600"></v-img>
+                          <v-img cover src="/images/img-error.webp" width="600"></v-img>
                         </template>
                       </v-img>
                     </v-col>
@@ -718,11 +718,11 @@ export default {
                                   addMenu({ id: food.id, item_name: food.item_name, item_desc: food.item_desc, amount: 1, price: food.price });
                                 }
                               ">
-                              <v-card v-ripple="" class="elevation-3 food-card">
+                              <v-card v-ripple class="elevation-3 food-card">
                                 <v-img :src="food.img_url ? food.img_url : '/images/img-coming-soon.webp'" aspect="16/9"
-                                       cover="" height="300">
+                                       cover height="300">
                                   <template v-slot:error>
-                                    <v-img cover="" height="300" src="/images/img-error.webp" width="300"></v-img>
+                                    <v-img cover height="300" src="/images/img-error.webp" width="300"></v-img>
                                   </template>
                                 </v-img>
                                 <v-card-title>

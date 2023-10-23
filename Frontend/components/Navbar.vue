@@ -72,7 +72,7 @@ async function loadAccountData() {
 watch(
   () => route.path,
   () => {
-    if (route.path === '/' || route.path === '/reservation' || route.path === '/dashboard' || route.path === '/account')
+    if (status.value === 'authenticated' && (route.path === '/' || route.path === '/reservation' || route.path === '/dashboard' || route.path === '/account'))
     loadAccountData()
   },
 );
